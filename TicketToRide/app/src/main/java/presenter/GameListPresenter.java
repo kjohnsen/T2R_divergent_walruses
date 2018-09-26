@@ -9,4 +9,14 @@ public class GameListPresenter implements IGameListPresenter {
     public GameListPresenter(IGameListActivity activity) {
         this.activity = activity;
     }
+
+    @Override
+    public void createGame(String gameName, int numPlayers) {
+
+    }
+
+    @Override
+    public void joinGame(String gameID) {
+
+    }
 }
