@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">TicketToRide</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm">Confirm Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="game_name">Game Name</string>
+    <string name="game_players">Players in Game</string>
+    <string name="spots_left">Spots Left</string>
+    <string name="create_game">Create Game</string>
 </resources>
