@@ -9,4 +9,10 @@
     <string name="game_players">Players in Game</string>
     <string name="spots_left">Spots Left</string>
     <string name="create_game">Create Game</string>
+    <string-array name="num_players_list">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>
