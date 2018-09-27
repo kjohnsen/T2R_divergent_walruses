@@ -1,9 +1,9 @@
 package main.java.interfaces;
 
-import main.java.model.GameID;
-import main.java.model.GameInfo;
-import main.java.model.Player;
-import main.java.model.PlayerColor;
+import modelclasses.GameID;
+import modelclasses.GameInfo;
+import modelclasses.Player;
+import modelclasses.PlayerColor;
 import results.Results;
 
 public interface iClient {

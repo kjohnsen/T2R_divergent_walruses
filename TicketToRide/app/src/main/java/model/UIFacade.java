@@ -1,6 +1,10 @@
-package main.java.model;
+package model;
 
 import main.java.interfaces.iClient;
+import modelclasses.GameID;
+import modelclasses.GameInfo;
+import modelclasses.Player;
+import modelclasses.PlayerColor;
 import results.Results;
 
 public class UIFacade implements iClient {
