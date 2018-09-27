@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
 
+import modelclasses.GameInfo;
 import presenter.GameListPresenter;
 import presenter.IGameListPresenter;
 
@@ -59,9 +60,9 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
-        private main.java.model.GameInfo games[];
+        private GameInfo games[];
         private int lastSelectedPosition = -1;
-        public GameListAdapter(main.java.model.GameInfo r[]) {
+        public GameListAdapter(GameInfo r[]) {
             games = r;
         }
         @Override

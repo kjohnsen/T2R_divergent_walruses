@@ -1,7 +1,9 @@
-package main.java.model;
+package model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import modelclasses.User;
 
 public class ClientModel implements PropertyChangeListener {
     private User currentUser;

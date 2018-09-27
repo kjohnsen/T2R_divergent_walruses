@@ -1,4 +1,4 @@
-package main.java.model;
+package modelclasses;
 
 public class Player {
     private String username;
