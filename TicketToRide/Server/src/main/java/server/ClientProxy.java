@@ -4,10 +4,10 @@ import interfaces.iClient;
 import results.Results;
 import results.GameResults;
 import results.LoggedInResults;
-import model.Player;
-import model.PlayerColor;
-import model.GameID;
-import model.GameInfo;
+import modelclasses.Player;
+import modelclasses.PlayerColor;
+import modelclasses.GameID;
+import modelclasses.GameInfo;
 
 public class ClientProxy implements iClient {
 

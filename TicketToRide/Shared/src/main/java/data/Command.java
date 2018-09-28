@@ -52,13 +52,9 @@ public class Command {
     }
 
     public Results execute() {
-        //Results results = new Results();
 
         try {
-            //String processor the class? yeah that makes sense.
-            //And then name the method in that class to invoke.
             Class<?> receiver = Class.forName(get_className());
-
 
             //this is a round-about way of using an array of strings for class types because
             //gson cannot serialize an array of type: Class.
@@ -74,18 +70,9 @@ public class Command {
                 arrayIndex++;
             }
 
-
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            //crap this returns a string...
-            Object returnedObject = (Object)method.invoke(null, get_paramValues());
-
-            //gotta make a Result object out of it.
-            //Basically just wrap it in the Object data
-
-            //result = new Result();
-            //result.setData(returnedObject);
-            //result.setSuccess(true);
+            return (Results) method.invoke(null, get_paramValues());
         }
         catch (Exception e) {
             e.printStackTrace();

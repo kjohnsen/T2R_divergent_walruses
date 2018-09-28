@@ -1,6 +1,6 @@
 package model;
 
-import main.java.interfaces.iClient;
+import interfaces.iClient;
 import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
