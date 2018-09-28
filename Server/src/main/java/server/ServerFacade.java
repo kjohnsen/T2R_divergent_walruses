@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 
+import interfaces.IServer;
 import model.ServerModel;
 import results.LoggedInResults;
 import results.GameResults;
@@ -13,7 +14,7 @@ import modelclasses.PlayerColor;
 import java.util.UUID;
 
 // this will implement iServer, once that is a thing
-public class ServerFacade {
+public class ServerFacade implements IServer {
 
     public LoggedInResults loginUser(String username, String password) {
 
