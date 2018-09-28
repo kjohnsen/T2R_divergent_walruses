@@ -1,6 +1,6 @@
 package model;
 
-import main.java.interfaces.iClient;
+import interfaces.iClient;
 import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -25,7 +25,7 @@ public class UIFacade implements iClient {
 
     @Override
     public Results loginUser(String authToken) {
-        return null;
+
     }
 
     @Override

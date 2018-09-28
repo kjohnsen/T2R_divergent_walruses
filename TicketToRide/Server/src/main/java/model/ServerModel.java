@@ -1,6 +1,8 @@
 package model;
 
 import java.util.Map;
+import modelclasses.GameInfo;
+import modelclasses.GameID;
 
 public class ServerModel {
 

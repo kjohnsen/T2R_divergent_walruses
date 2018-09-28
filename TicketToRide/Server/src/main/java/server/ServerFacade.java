@@ -1,15 +1,17 @@
 package server;
 
 import java.util.ArrayList;
+
+import interfaces.IServer;
 import results.LoggedInResults;
 import results.GameResults;
 import results.Results;
 import data.Command;
-import model.GameID;
-import model.PlayerColor;
+import modelclasses.GameID;
+import modelclasses.PlayerColor;
 
 // this will implement iServer, once that is a thing
-public class ServerFacade {
+public class ServerFacade implements IServer {
 
     private String _requesterAuthToken;
 

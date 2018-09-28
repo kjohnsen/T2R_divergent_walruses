@@ -1,4 +1,5 @@
-package main.java.interfaces;
+package interfaces;
+
 
 import modelclasses.GameID;
 import modelclasses.GameInfo;
