@@ -1,6 +1,5 @@
 package interfaces;
 
-
 import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
