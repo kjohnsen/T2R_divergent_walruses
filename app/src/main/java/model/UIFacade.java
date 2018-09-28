@@ -25,7 +25,7 @@ public class UIFacade implements iClient {
 
     @Override
     public Results loginUser(String authToken) {
-        return null;
+
     }
 
     @Override
