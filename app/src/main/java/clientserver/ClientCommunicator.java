@@ -1,5 +1,7 @@
 package clientserver;
 
+import android.util.Log;
+
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +12,7 @@ import java.net.URL;
 import data.Command;
 import data.Serializer;
 import model.ClientModel;
+import results.LoggedInResults;
 import results.Results;
 
 public class ClientCommunicator {
@@ -59,12 +62,19 @@ public class ClientCommunicator {
             serializer.writeString(serializedCommand, requestBody);
             requestBody.close();
 
-            if(connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            //Should always return a results, possibly with an error
+            //if(connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 InputStream responseBody = connection.getInputStream();
                 String serializedResults = serializer.readString(responseBody);
                 Results results = (Results)serializer.decode(serializedResults, Results.class);
                 return results;
-            }
+            //} //else if(connection.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+//                //Not sure how to do this since
+//                Results results = new LoggedInResults();
+//                results.setErrorMessage(connection.getResponseMessage());
+//                results.setSuccess(false);
+//                return results;
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

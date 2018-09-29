@@ -39,7 +39,11 @@ public class ServerProxy implements IServer {
 
     @Override
     public GameResults createGame(String name, int numPlayers) {
-        return null;
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String[] parameterTypes = {"String", "int"};
+        Object[] parameters = {name, numPlayers};
+        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        return (GameResults) ClientCommunicator.getInstance().send(command);
     }
 
     @Override
@@ -54,11 +58,21 @@ public class ServerProxy implements IServer {
 
     @Override
     public Results chooseColor(PlayerColor color) {
-        return null;
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String[] parameterTypes = {"PlayerColor"};
+        Object[] parameters = {color};
+        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public ArrayList<Command> getCommands(String clientID) {
+        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        String[] parameterTypes = {"String"};
+        Object[] parameters = {clientID};
+        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Results results = ClientCommunicator.getInstance().send(command);
+        //Results needs to have the list of commands in it
         return null;
     }
 }
