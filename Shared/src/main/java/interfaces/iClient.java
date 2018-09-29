@@ -7,15 +7,10 @@ import modelclasses.PlayerColor;
 import results.Results;
 
 public interface iClient {
-    public Results joinGame(Player player, GameID gameID);
-
-    public Results createGame(GameInfo gameInfo);
-
-    public Results startGame(GameID gameID);
-
-    public Results loginUser(String authToken);
-
-    public Results registerUser(String authToken);
-
-    public Results claimColor(Player player, PlayerColor pc);
+    void loginUser(String username, String password);
+    void registerUser(String username, String password);
+    void joinGame(Player player, GameID gameID);
+    void createGame(GameInfo gameInfo);
+    void startGame(GameInfo gameInfo);
+    void claimColor(Player player, PlayerColor playerColor);
 }
