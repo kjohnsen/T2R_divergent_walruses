@@ -13,7 +13,6 @@ import modelclasses.PlayerColor;
 
 import java.util.UUID;
 
-// this will implement iServer, once that is a thing
 public class ServerFacade implements IServer {
 
     public LoggedInResults loginUser(String username, String password) {
@@ -44,6 +43,17 @@ public class ServerFacade implements IServer {
         loggedInResults.setAuthToken(authToken);
         loggedInResults.setSuccess(true);
 
+        String className = "iClient";
+        String methodName = "loginUser";
+        String[] paramTypes = new String[] {"String", "String"};
+        Object[] paramValues = new Object[] {username, password};
+        Command command = new Command(className, methodName, paramTypes, paramValues);
+        Command[] commands = new Command[] {command};
+        loggedInResults.setClientCommands(commands);
+
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.loginUser(username, password);
+
         return loggedInResults;
     }
 
@@ -69,6 +79,17 @@ public class ServerFacade implements IServer {
         //set results
         loggedInResults.setAuthToken(authToken);
         loggedInResults.setSuccess(true);
+
+        String className = "iClient";
+        String methodName = "registerUser";
+        String[] paramTypes = new String[] {"String", "String"};
+        Object[] paramValues = new Object[] {username, password};
+        Command command = new Command(className, methodName, paramTypes, paramValues);
+        Command[] commands = new Command[] {command};
+        loggedInResults.setClientCommands(commands);
+
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.registerUser(username, password);
 
         return loggedInResults;
     }

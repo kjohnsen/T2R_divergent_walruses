@@ -1,9 +1,7 @@
 package server;
 
+import data.CommandManager;
 import interfaces.iClient;
-import results.Results;
-import results.GameResults;
-import results.LoggedInResults;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameID;
@@ -13,12 +11,12 @@ public class ClientProxy implements iClient {
 
     @Override
     public void loginUser(String username, String password) {
-
+        CommandManager.getInstance().addClient(username);
     }
 
     @Override
     public void registerUser(String username, String password) {
-
+        CommandManager.getInstance().addClient(username);
     }
 
     @Override

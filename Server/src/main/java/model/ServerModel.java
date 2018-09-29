@@ -10,11 +10,11 @@ public class ServerModel {
     private static ServerModel instance = null;
 
     private Map<String, String> _authTokens;
-    //does this map users to passwords?
+    // maps usernames to passwords
     private Map<String, String> _users;
     private Map<GameID, GameInfo> _games;
 
-    public ServerModel() { }
+    private ServerModel() { }
 
     public static ServerModel getInstance(){
         if(instance == null) {

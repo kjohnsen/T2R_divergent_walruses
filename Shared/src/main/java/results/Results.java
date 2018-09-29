@@ -1,8 +1,11 @@
 package results;
 
+import data.Command;
+
 abstract public class Results {
 
     private Boolean isSuccess;
+    Command[] clientCommands;
     private String errorMessage;
 
     public Boolean getSuccess() {
@@ -11,6 +14,14 @@ abstract public class Results {
 
     public void setSuccess(Boolean success) {
         isSuccess = success;
+    }
+
+    public Command[] getClientCommands() {
+        return clientCommands;
+    }
+
+    public void setClientCommands(Command[] clientCommands) {
+        this.clientCommands = clientCommands;
     }
 
     public String getErrorMessage() {
