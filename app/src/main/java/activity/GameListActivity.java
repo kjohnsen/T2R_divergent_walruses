@@ -15,7 +15,12 @@ import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
 
+import java.util.ArrayList;
+
+import model.ClientModel;
+import model.UIFacade;
 import modelclasses.GameInfo;
+import modelclasses.Player;
 import presenter.GameListPresenter;
 import presenter.IGameListPresenter;
 
@@ -61,7 +66,6 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
         private GameInfo games[];
-        private int lastSelectedPosition = -1;
         public GameListAdapter(GameInfo r[]) {
             games = r;
         }
@@ -73,8 +77,17 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         }
         @Override
         public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
-            String option = games[position].toString();
-            holder.bind(option, position);
+            String gameName = games[position].getName();
+            StringBuilder players = new StringBuilder();
+            ArrayList<Player> playerList = games[position].getPlayers();
+            for (int i = 0; i < playerList.size(); i++) {
+                players.append(playerList.get(i).getUsername());
+                if (i < playerList.size() - 1) {
+                    players.append(", ");
+                }
+            }
+            int spotsLeft = games[position].getTotalPlayers() - playerList.size();
+            holder.bind(gameName, players.toString(), Integer.toString(spotsLeft));
         }
 
         @Override
@@ -82,15 +95,25 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             return games.length;
         }
         class GameHolder extends RecyclerView.ViewHolder {
-            private String option;
-            private TextView eTextView;
+            private TextView gameName;
+            private TextView gamePlayers;
+            private TextView numSpots;
             GameHolder(View view) {
                 super(view);
-                eTextView = view.findViewById(R.id.itemName);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        UIFacade.getInstance().joinGame();
+                    }
+                });
+                gameName = findViewById(R.id.itemName);
+                gamePlayers = findViewById(R.id.itemPlayers);
+                numSpots = findViewById(R.id.itemNum);
             }
-            void bind(String o, int position) {
-                option = o;
-                eTextView.setText(option);
+            void bind(String name, String players, String spotsLeft) {
+                gameName.setText(name);
+                gamePlayers.setText(players);
+                numSpots.setText(spotsLeft);
             }
         }
     }

@@ -13,6 +13,15 @@ import results.Results;
 
 public class UIFacade implements iClient {
 
+    private static final UIFacade ourInstance = new UIFacade();
+
+    public static UIFacade getInstance() {
+        return ourInstance;
+    }
+
+    private UIFacade() {
+    }
+
     @Override
     public void loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
