@@ -36,7 +36,17 @@
          String password = "asdf";
 
          List<Object> listParameters = Arrays.asList(new Object[] {username, password});
-         Command testCommand = new Command("CommandFacade","loginUser", listParameters);
+         Command testCommand = new Command("server.ServerFacade","loginUser", listParameters);
+
+         testCommand.execute();
+
+         try{
+             Class<?> testClass = Class.forName("java.lang.String");
+             System.out.print(testClass);
+         } catch (ClassNotFoundException e) {
+
+         }
+
 
      }
 
