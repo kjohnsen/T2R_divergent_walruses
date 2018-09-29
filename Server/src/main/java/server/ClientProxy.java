@@ -11,30 +11,33 @@ import modelclasses.GameInfo;
 
 public class ClientProxy implements iClient {
 
-    public ClientProxy(){}
+    @Override
+    public void loginUser(String username, String password) {
 
-    public GameResults joinGame(Player player, GameID gameID) {
-        return null;
     }
 
-    public GameResults createGame(GameInfo gameInfo) {
-        return null;
+    @Override
+    public void registerUser(String username, String password) {
+
     }
 
-    public GameResults startGame(GameID gameID) {
-        return null;
+    @Override
+    public void joinGame(Player player, GameID gameID) {
+
     }
 
-    public LoggedInResults loginUser(String authToken) {
-        return null;
+    @Override
+    public void createGame(GameInfo gameInfo) {
+
     }
 
-    public LoggedInResults registerUser(String authToken) {
-        return null;
+    @Override
+    public void startGame(GameInfo gameInfo) {
+
     }
 
-    public Results claimColor(Player player, PlayerColor color) {
-        return null;
-    }
+    @Override
+    public void claimColor(Player player, PlayerColor playerColor) {
 
+    }
 }

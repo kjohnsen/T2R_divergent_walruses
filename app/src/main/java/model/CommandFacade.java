@@ -8,33 +8,34 @@ import modelclasses.PlayerColor;
 import results.Results;
 
 public class CommandFacade implements iClient {
+
     @Override
-    public Results joinGame(Player player, GameID gameID) {
-        return null;
+    public void loginUser(String username, String password) {
+
     }
 
     @Override
-    public Results createGame(GameInfo gameInfo) {
-        return null;
+    public void registerUser(String username, String password) {
+
     }
 
     @Override
-    public Results startGame(GameID gameID) {
-        return null;
+    public void joinGame(Player player, GameID gameID) {
+
     }
 
     @Override
-    public Results loginUser(String authToken) {
-        return null;
+    public void createGame(GameInfo gameInfo) {
+
     }
 
     @Override
-    public Results registerUser(String authToken) {
-        return null;
+    public void startGame(GameInfo gameInfo) {
+
     }
 
     @Override
-    public Results claimColor(Player player, PlayerColor pc) {
-        return null;
+    public void claimColor(Player player, PlayerColor playerColor) {
+
     }
 }
