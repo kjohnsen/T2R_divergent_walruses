@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.GameInfo;
+import modelclasses.Player;
 import results.LoggedInResults;
 import results.GameResults;
 import results.Results;
@@ -51,8 +53,8 @@ public class ServerFacade implements IServer {
 
         //set results
         loggedInResults.setAuthToken(authToken);
-        loggedInResults.setSuccess(true);
         loggedInResults.getClientCommands().add(loginClientCommand);
+        loggedInResults.setSuccess(true);
 
         return loggedInResults;
     }
@@ -76,18 +78,43 @@ public class ServerFacade implements IServer {
         serverModel.get_users().put(username, password);
         serverModel.get_authTokens().put(username, authToken);
 
-        Command command = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
+        Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
 
         //set results
         loggedInResults.setAuthToken(authToken);
+        loggedInResults.getClientCommands().add(registerUserCommand);
         loggedInResults.setSuccess(true);
-        loggedInResults.getClientCommands().add(command);
 
         return loggedInResults;
     }
 
     public GameResults createGame(String name, int numPlayers) {
-        return null;
+
+        //creating a game doesn't add any players.. going to be all null.
+        GameID gameID = new GameID(name, UUID.randomUUID().toString());
+
+        //players are going to be null for now... until they join the game.
+        //this way you can still check the size of the arrayList.
+        ArrayList<Player> players = new ArrayList<>();
+        for(int i = 0; i < numPlayers; i++) {
+            Player player = null;
+            players.add(player);
+        }
+
+        //create game info and add to server model.
+        GameInfo gameInfo = new GameInfo(gameID, players);
+        ServerModel.getInstance().get_games().put(gameID, gameInfo);
+
+        //create command for client side.
+        //TODO: this should update everyone's screen.
+        //TODO: so i have to create a command for every user with an authtoken??
+        Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+
+        GameResults gameResults = new GameResults(gameID);
+        gameResults.getClientCommands().add(createGameCommand);
+        gameResults.setSuccess(true);
+
+        return gameResults;
     }
 
     public GameResults joinGame(GameID gameID) {
