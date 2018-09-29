@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.GameInfo;
+import modelclasses.Player;
 import results.LoggedInResults;
 import results.GameResults;
 import results.Results;
@@ -87,7 +89,27 @@ public class ServerFacade implements IServer {
     }
 
     public GameResults createGame(String name, int numPlayers) {
-        return null;
+
+        //get the right players for the game. we don't know what players they are yet though.
+        //we only know the first player... the guy who's creating the game.
+        //it should automatically add him to the game, right?
+        //we don't have to do that for now i guess. because we're not passing in client info.
+
+        GameID gameID = new GameID(name, UUID.randomUUID().toString());
+
+        //players are going to be null for now... until they join the game.
+        //this way you can still check the size of the arrayList.
+        ArrayList<Player> players = new ArrayList<>();
+        for(int i = 0; i < numPlayers; i++) {
+            Player player = null;
+            players.add(player);
+        }
+
+        GameInfo gameInfo = new GameInfo(gameID, players);
+
+        ServerModel.getInstance().get_games().put(gameID, gameInfo);
+
+        return new GameResults(gameID);
     }
 
     public GameResults joinGame(GameID gameID) {
