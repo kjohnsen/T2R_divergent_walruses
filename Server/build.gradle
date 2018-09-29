@@ -3,6 +3,8 @@ apply plugin: 'java-library'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':Shared')
+    implementation files('libs/junit-4.12.jar')
+    implementation files('libs/hamcrest-core-1.3.jar')
 }
 
 sourceCompatibility = "7"

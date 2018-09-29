@@ -5,7 +5,6 @@ import data.Command;
 public class GameResults extends Results {
 
     String gameID;
-    Command[] clientCommands;
 
     public String getGameID() {
         return gameID;
@@ -15,11 +14,4 @@ public class GameResults extends Results {
         this.gameID = gameID;
     }
 
-    public Command[] getClientCommands() {
-        return clientCommands;
-    }
-
-    public void setClientCommands(Command[] clientCommands) {
-        this.clientCommands = clientCommands;
-    }
 }

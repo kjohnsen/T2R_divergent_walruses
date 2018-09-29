@@ -4,6 +4,8 @@ import results.Results;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Command {
 
@@ -17,6 +19,22 @@ public class Command {
         _methodName = methodName;
         _paramTypes = paramTypes;
         _paramValues = paramValues;
+    }
+
+    //another simplified constructor
+    public Command(String className, String methodName, List<Object> parameters){
+        ArrayList<String> paramTypes = new ArrayList<>();
+        ArrayList<Object> _parameters = new ArrayList<>();
+
+        for(Object object : parameters) {
+            paramTypes.add(object.getClass().getSimpleName());
+            _parameters.add(object);
+        }
+
+        _className = className;
+        _methodName = methodName;
+        _paramTypes = paramTypes.toArray(new String[0]);
+        _paramValues = _parameters.toArray();
     }
 
     public String get_className() {
