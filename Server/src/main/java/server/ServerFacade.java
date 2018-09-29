@@ -76,12 +76,12 @@ public class ServerFacade implements IServer {
         serverModel.get_users().put(username, password);
         serverModel.get_authTokens().put(username, authToken);
 
-        Command command = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
+        Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
 
         //set results
         loggedInResults.setAuthToken(authToken);
         loggedInResults.setSuccess(true);
-        loggedInResults.getClientCommands().add(command);
+        loggedInResults.getClientCommands().add(registerUserCommand);
 
         return loggedInResults;
     }
