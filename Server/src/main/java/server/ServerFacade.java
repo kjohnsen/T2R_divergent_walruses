@@ -53,8 +53,8 @@ public class ServerFacade implements IServer {
 
         //set results
         loggedInResults.setAuthToken(authToken);
-        loggedInResults.setSuccess(true);
         loggedInResults.getClientCommands().add(loginClientCommand);
+        loggedInResults.setSuccess(true);
 
         return loggedInResults;
     }
@@ -82,19 +82,15 @@ public class ServerFacade implements IServer {
 
         //set results
         loggedInResults.setAuthToken(authToken);
-        loggedInResults.setSuccess(true);
         loggedInResults.getClientCommands().add(registerUserCommand);
+        loggedInResults.setSuccess(true);
 
         return loggedInResults;
     }
 
     public GameResults createGame(String name, int numPlayers) {
 
-        //get the right players for the game. we don't know what players they are yet though.
-        //we only know the first player... the guy who's creating the game.
-        //it should automatically add him to the game, right?
-        //we don't have to do that for now i guess. because we're not passing in client info.
-
+        //creating a game doesn't add any players.. going to be all null.
         GameID gameID = new GameID(name, UUID.randomUUID().toString());
 
         //players are going to be null for now... until they join the game.
@@ -105,11 +101,14 @@ public class ServerFacade implements IServer {
             players.add(player);
         }
 
+        //create game info and add to server model.
         GameInfo gameInfo = new GameInfo(gameID, players);
-
         ServerModel.getInstance().get_games().put(gameID, gameInfo);
 
-        return new GameResults(gameID);
+        GameResults gameResults = new GameResults(gameID);
+        gameResults.setSuccess(true);
+
+        return gameResults;
     }
 
     public GameResults joinGame(GameID gameID) {
