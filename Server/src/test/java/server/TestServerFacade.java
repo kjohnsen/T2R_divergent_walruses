@@ -1,4 +1,4 @@
- package serverTest;
+ package server;
 
  import static org.junit.Assert.* ;
 
@@ -21,11 +21,6 @@
      @Before
      public void setUp(){
          serverFacade = new ServerFacade();
-         return;
-     }
-
-     @After
-     public void tearDown(){
          return;
      }
 
