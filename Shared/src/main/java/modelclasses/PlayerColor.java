@@ -3,30 +3,21 @@ package modelclasses;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class PlayerColor{
-    private static final ArrayList<Color> availableColors;
+public enum PlayerColor {
+    MAGENTA(Color.MAGENTA),
+    BLUE(Color.BLUE),
+    RED(Color.RED),
+    GREEN(Color.GREEN),
+    YELLOW(Color.YELLOW),
+    ORANGE(Color.ORANGE),
+    BLACK(Color.BLACK);
+
     private Color color;
-
-    static {
-        availableColors = new ArrayList<>();
-        availableColors.add(Color.MAGENTA);
-        availableColors.add(Color.BLACK);
-        availableColors.add(Color.BLUE);
-        availableColors.add(Color.RED);
-        availableColors.add(Color.GREEN);
-        availableColors.add(Color.YELLOW);
-        availableColors.add(Color.ORANGE);
-    }
-
-    public PlayerColor(Color color) {
+    private PlayerColor(Color color) {
         this.color = color;
     }
 
     public Color getColor() {
         return color;
-    }
-
-    public static ArrayList<Color> getAvailableColors() {
-        return availableColors;
     }
 }
