@@ -2,9 +2,6 @@ package server;
 
 import interfaces.iClient;
 import modelclasses.User;
-import results.Results;
-import results.GameResults;
-import results.LoggedInResults;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameID;
@@ -33,12 +30,12 @@ public class ClientProxy implements iClient {
     }
 
     @Override
-    public void startGame(GameInfo gameInfo) {
+    public void startGame(GameID gameID) {
 
     }
 
     @Override
-    public void claimColor(Player player, PlayerColor playerColor) {
+    public void claimColor(String username, PlayerColor playerColor) {
 
     }
 }

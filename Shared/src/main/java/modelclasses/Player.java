@@ -1,6 +1,8 @@
 package modelclasses;
 
-public class Player {
+import java.util.Observable;
+
+public class Player extends Observable{
     private String username;
     private PlayerColor playerColor;
 
@@ -18,5 +20,6 @@ public class Player {
 
     public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
+        this.notifyObservers();
     }
 }

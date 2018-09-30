@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.User;
 
-public class ClientModel extends Observable {
+public class ClientModel extends Observable implements Observer {
     private User currentUser;
 
-    private ArrayList<GameInfo> gameList;
+    private ArrayList<GameInfo> gameList = new ArrayList<>();
 
     private GameInfo currentGame;
 
@@ -25,6 +26,19 @@ public class ClientModel extends Observable {
     private ClientModel() {
     }
 
+    public void reset() {
+        currentGame = null;
+        currentUser = null;
+        gameList = new ArrayList<>();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        // ClientModel observes objects (e.g. games), and can then report changes
+        // to anyone observing ClientModel
+        this.notifyObservers(o);
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         this.notifyObservers();
@@ -32,6 +46,9 @@ public class ClientModel extends Observable {
 
     public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
+        for (GameInfo game : gameList) {
+            game.addObserver(this);
+        }
         this.notifyObservers();
     }
 
@@ -46,6 +63,14 @@ public class ClientModel extends Observable {
 
     public ArrayList<GameInfo> getGameList() {
         return gameList;
+    }
+    public GameInfo getGame(GameID gameID) {
+        for (GameInfo gameInfo : gameList) {
+            if (gameInfo.getGameID().equals(gameID)) {
+                return gameInfo;
+            }
+        }
+        return null;
     }
 
     public GameInfo getCurrentGame() {
