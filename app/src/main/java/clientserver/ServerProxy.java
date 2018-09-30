@@ -12,6 +12,7 @@ import results.Results;
 
 public class ServerProxy implements IServer {
     private static final ServerProxy ourInstance = new ServerProxy();
+    private ClientCommunicator clientCommunicator = ClientCommunicator.getInstance();
 
     private ServerProxy() {}
 
@@ -19,21 +20,24 @@ public class ServerProxy implements IServer {
         return ourInstance;
     }
 
+    public void setClientCommunicator(ClientCommunicator clientCommunicator) {
+        this.clientCommunicator = clientCommunicator;
+    }
+
     @Override
     public LoggedInResults loginUser(String username, String password) {
         String[] parameterTypes = {"String", "String"};
         Object[] parameters = {username, password};
         Command command = new Command("ServerFacade", "loginUser", parameterTypes, parameters);
-        return (LoggedInResults)ClientCommunicator.getInstance().send(command);
+        return (LoggedInResults)clientCommunicator.send(command);
     }
 
     @Override
     public LoggedInResults registerUser(String username, String password) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String", "String"};
         Object[] parameters = {username, password};
         Command command = new Command("ServerFacade", "registerUser", parameterTypes, parameters);
-        return (LoggedInResults)ClientCommunicator.getInstance().send(command);
+        return (LoggedInResults)clientCommunicator.send(command);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class ServerProxy implements IServer {
         String[] parameterTypes = {"String", "int"};
         Object[] parameters = {name, numPlayers};
         Command command = new Command("ServerFacade", "createGame", parameterTypes, parameters);
-        return (GameResults) ClientCommunicator.getInstance().send(command);
+        return (GameResults) clientCommunicator.send(command);
     }
 
     @Override
@@ -56,20 +60,18 @@ public class ServerProxy implements IServer {
 
     @Override
     public Results chooseColor(PlayerColor color) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"PlayerColor"};
         Object[] parameters = {color};
         Command command = new Command("ServerFacade", "chooseColor", parameterTypes, parameters);
-        return ClientCommunicator.getInstance().send(command);
+        return clientCommunicator.send(command);
     }
 
     @Override
     public ArrayList<Command> getCommands(String clientID) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String"};
         Object[] parameters = {clientID};
         Command command = new Command("ServerFacade", "getCommands", parameterTypes, parameters);
-        Results results = ClientCommunicator.getInstance().send(command);
+        Results results = clientCommunicator.send(command);
         return results.getClientCommands();
     }
 }
