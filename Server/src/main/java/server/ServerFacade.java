@@ -102,7 +102,7 @@ public class ServerFacade implements IServer {
         }
 
         //create game info and add to server model.
-        GameInfo gameInfo = new GameInfo(gameID, players);
+        GameInfo gameInfo = new GameInfo(gameID, players, numPlayers);
         ServerModel.getInstance().get_games().put(gameID, gameInfo);
 
         //create command for client side.

@@ -1,22 +1,36 @@
 package model;
 
+import clientserver.ServerProxy;
 import interfaces.iClient;
 import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.User;
 import results.Results;
 
 public class CommandFacade implements iClient {
 
-    @Override
-    public void loginUser(String username, String password) {
+    private static final CommandFacade ourInstance = new CommandFacade();
 
+    public static CommandFacade getInstance() {
+        return ourInstance;
+    }
+
+    private CommandFacade() {
+    }
+
+
+    @Override
+    public void loginUser(User user, String authToken) {
+        ClientModel.getInstance().setCurrentUser(user);
+        ServerProxy.getInstance().setAuthToken(authToken);
     }
 
     @Override
-    public void registerUser(String username, String password) {
-
+    public void registerUser(User user, String authToken) {
+        ClientModel.getInstance().setCurrentUser(user);
+        ServerProxy.getInstance().setAuthToken(authToken);
     }
 
     @Override

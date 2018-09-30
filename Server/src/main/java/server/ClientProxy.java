@@ -1,6 +1,7 @@
 package server;
 
 import interfaces.iClient;
+import modelclasses.User;
 import results.Results;
 import results.GameResults;
 import results.LoggedInResults;
@@ -12,12 +13,12 @@ import modelclasses.GameInfo;
 public class ClientProxy implements iClient {
 
     @Override
-    public void loginUser(String username, String password) {
+    public void loginUser(User user, String authToken) {
 
     }
 
     @Override
-    public void registerUser(String username, String password) {
+    public void registerUser(User user, String authToken) {
 
     }
 
