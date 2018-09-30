@@ -21,10 +21,9 @@ public class ServerProxy implements IServer {
 
     @Override
     public LoggedInResults loginUser(String username, String password) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String", "String"};
         Object[] parameters = {username, password};
-        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Command command = new Command("ServerFacade", "loginUser", parameterTypes, parameters);
         return (LoggedInResults)ClientCommunicator.getInstance().send(command);
     }
 
@@ -33,16 +32,15 @@ public class ServerProxy implements IServer {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String", "String"};
         Object[] parameters = {username, password};
-        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Command command = new Command("ServerFacade", "registerUser", parameterTypes, parameters);
         return (LoggedInResults)ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public GameResults createGame(String name, int numPlayers) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String", "int"};
         Object[] parameters = {name, numPlayers};
-        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Command command = new Command("ServerFacade", "createGame", parameterTypes, parameters);
         return (GameResults) ClientCommunicator.getInstance().send(command);
     }
 
@@ -61,7 +59,7 @@ public class ServerProxy implements IServer {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"PlayerColor"};
         Object[] parameters = {color};
-        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Command command = new Command("ServerFacade", "chooseColor", parameterTypes, parameters);
         return ClientCommunicator.getInstance().send(command);
     }
 
@@ -70,9 +68,8 @@ public class ServerProxy implements IServer {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String"};
         Object[] parameters = {clientID};
-        Command command = new Command(IServer.class.getName(), methodName, parameterTypes, parameters);
+        Command command = new Command("ServerFacade", "getCommands", parameterTypes, parameters);
         Results results = ClientCommunicator.getInstance().send(command);
-        //Results needs to have the list of commands in it
-        return null;
+        return results.getClientCommands();
     }
 }

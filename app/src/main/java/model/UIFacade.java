@@ -17,9 +17,10 @@ public class UIFacade implements iClient {
     public void loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
-            //execute command
+            for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
+                loggedInResults.getClientCommands().get(i).execute();
+            }
         } else {
-            //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
                 //results never got server, make message
             } else {
@@ -32,7 +33,9 @@ public class UIFacade implements iClient {
     public void registerUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
-            //execute command
+            for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
+                loggedInResults.getClientCommands().get(i).execute();
+            }
         } else {
             //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
