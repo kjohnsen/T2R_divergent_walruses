@@ -2,8 +2,9 @@ package data;
 
 import results.Results;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Command {
 
@@ -17,6 +18,22 @@ public class Command {
         _methodName = methodName;
         _paramTypes = paramTypes;
         _paramValues = paramValues;
+    }
+
+    //another simplified constructor
+    public Command(String className, String methodName, List<Object> parameters){
+        ArrayList<String> paramTypes = new ArrayList<>();
+        ArrayList<Object> _parameters = new ArrayList<>();
+
+        for(Object object : parameters) {
+            paramTypes.add(object.getClass().getName());
+            _parameters.add(object);
+        }
+
+        _className = className;
+        _methodName = methodName;
+        _paramTypes = paramTypes.toArray(new String[0]);
+        _paramValues = _parameters.toArray();
     }
 
     public String get_className() {
@@ -58,17 +75,14 @@ public class Command {
 
             //this is a round-about way of using an array of strings for class types because
             //gson cannot serialize an array of type: Class.
-            Class<?>[] paramTypesArray = new Class<?>[get_paramTypes().length];
-            //quickly change paramtypes into classes
-            int arrayIndex = 0;
-            for(String stringType: get_paramTypes()){
-                switch(stringType){
-                    case "String":
-                        paramTypesArray[arrayIndex] = String.class;
-                        break;
-                }
-                arrayIndex++;
+            Class<?>[] paramTypesArray;
+
+            //turn param types from string to Class
+            ArrayList<Class<?>> paramTypesList = new ArrayList<>();
+            for(String stringType : get_paramTypes()){
+                paramTypesList.add(Class.forName(stringType));
             }
+            paramTypesArray = paramTypesList.toArray(new Class[paramTypesList.size()]);
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
