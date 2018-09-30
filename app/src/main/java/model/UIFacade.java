@@ -64,7 +64,7 @@ public class UIFacade {
 
     }
 
-    public void claimColor(Player player, PlayerColor playerColor) {
+    public void claimColor(PlayerColor playerColor) {
 
     }
 }
