@@ -1,25 +1,21 @@
 package results;
 
 import data.Command;
+import modelclasses.GameID;
 
 public class GameResults extends Results {
 
-    String gameID;
-    Command[] clientCommands;
+    GameID gameID;
 
-    public String getGameID() {
-        return gameID;
-    }
-
-    public void setGameID(String gameID) {
+    public GameResults(GameID gameID) {
         this.gameID = gameID;
     }
 
-    public Command[] getClientCommands() {
-        return clientCommands;
+    public GameID getGameID() {
+        return gameID;
     }
 
-    public void setClientCommands(Command[] clientCommands) {
-        this.clientCommands = clientCommands;
+    public void setGameID(GameID gameID) {
+        this.gameID = gameID;
     }
 }
