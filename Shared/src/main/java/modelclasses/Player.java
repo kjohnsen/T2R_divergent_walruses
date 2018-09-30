@@ -22,4 +22,13 @@ public class Player extends Observable{
         this.playerColor = playerColor;
         this.notifyObservers();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return username.equals(player.getUsername()) &&
+                playerColor.equals(player.getPlayerColor());
+    }
 }

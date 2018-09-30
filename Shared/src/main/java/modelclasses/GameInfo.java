@@ -62,7 +62,7 @@ public class GameInfo extends Observable implements Observer {
         if (o == null || getClass() != o.getClass()) return false;
         GameInfo gameInfo = (GameInfo) o;
         return numPlayers == gameInfo.numPlayers &&
-                Objects.equals(gameID, gameInfo.gameID) &&
+                gameID.equals(gameInfo.gameID) &&
                 Objects.equals(players, gameInfo.players);
     }
 
