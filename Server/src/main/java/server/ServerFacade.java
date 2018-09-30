@@ -105,10 +105,23 @@ public class ServerFacade implements IServer {
         GameInfo gameInfo = new GameInfo(gameID, players);
         ServerModel.getInstance().get_games().put(gameID, gameInfo);
 
+
+
+        //create commands for every client in the server model
+        for(String authToken : ServerModel.getInstance().get_authTokens().keySet()) {
+
+        }
+
+
         //create command for client side.
         //TODO: this should update everyone's screen.
         //TODO: so i have to create a command for every user with an authtoken??
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+
+
+
+
+
 
         GameResults gameResults = new GameResults(gameID);
         gameResults.getClientCommands().add(createGameCommand);

@@ -9,6 +9,7 @@ public class ServerModel {
 
     private static ServerModel instance = null;
 
+    //authTokens to usernames
     private Map<String, String> _authTokens;
     //does this map users to passwords?
     private Map<String, String> _users;
