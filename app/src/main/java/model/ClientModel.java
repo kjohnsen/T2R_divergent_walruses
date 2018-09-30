@@ -76,6 +76,4 @@ public class ClientModel extends Observable implements Observer {
     public GameInfo getCurrentGame() {
         return currentGame;
     }
-
-    public User getCurrentUser() { return currentUser; }
 }
