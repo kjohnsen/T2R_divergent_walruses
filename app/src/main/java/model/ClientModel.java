@@ -21,4 +21,6 @@ public class ClientModel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
 
     }
+
+    public User getCurrentUser() { return currentUser; }
 }

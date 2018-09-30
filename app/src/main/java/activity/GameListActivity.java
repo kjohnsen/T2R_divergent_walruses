@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import model.ClientModel;
 import model.UIFacade;
+import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import presenter.GameListPresenter;
@@ -98,12 +99,14 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             private TextView gameName;
             private TextView gamePlayers;
             private TextView numSpots;
+            private GameID gameID;
             GameHolder(View view) {
                 super(view);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        UIFacade.getInstance().joinGame();
+                        String username = ClientModel.getInstance().getCurrentUser().getUsername();
+                        UIFacade.getInstance().joinGame(username, gameID);
                     }
                 });
                 gameName = findViewById(R.id.itemName);

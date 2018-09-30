@@ -11,7 +11,7 @@ import results.GameResults;
 import results.LoggedInResults;
 import results.Results;
 
-public class UIFacade implements iClient {
+public class UIFacade {
 
     private static final UIFacade ourInstance = new UIFacade();
 
@@ -22,7 +22,6 @@ public class UIFacade implements iClient {
     private UIFacade() {
     }
 
-    @Override
     public void loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
@@ -37,7 +36,6 @@ public class UIFacade implements iClient {
         }
     }
 
-    @Override
     public void registerUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
@@ -52,24 +50,20 @@ public class UIFacade implements iClient {
         }
     }
 
-    @Override
-    public void joinGame(Player player, GameID gameID) {
+    public void joinGame(String username, GameID gameID) {
 
     }
 
-    @Override
     public void createGame(GameInfo gameInfo) {
         //GameInfo needs methods to get attributes
         //GameResults gameResults = ServerProxy.getInstance().createGame()
 
     }
 
-    @Override
     public void startGame(GameInfo gameInfo) {
 
     }
 
-    @Override
     public void claimColor(Player player, PlayerColor playerColor) {
 
     }

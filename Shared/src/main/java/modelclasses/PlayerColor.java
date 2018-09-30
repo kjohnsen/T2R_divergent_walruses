@@ -1,4 +1,3 @@
 package modelclasses;
 
-public class PlayerColor {
-}
+public enum PlayerColor { RED, YELLOW, BLUE, GREEN, BLACK, UNASSIGNED }
