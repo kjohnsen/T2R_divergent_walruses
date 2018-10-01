@@ -3,6 +3,7 @@ package server;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import data.CommandManager;
 import interfaces.IServer;
 import model.ServerModel;
 import modelclasses.GameInfo;
@@ -13,11 +14,11 @@ import results.Results;
 import data.Command;
 import modelclasses.GameID;
 import modelclasses.PlayerColor;
+import modelclasses.User;
 
 import java.util.Arrays;
 import java.util.UUID;
 
-// this will implement iServer, once that is a thing
 public class ServerFacade implements IServer {
 
     public LoggedInResults loginUser(String username, String password) {
@@ -43,7 +44,7 @@ public class ServerFacade implements IServer {
         String authToken = UUID.randomUUID().toString();
 
         //this is where we will call DAO methods in the future
-        serverModel.get_authTokens().put(username, authToken);
+        serverModel.getAuthTokens().put(username, authToken);
 
         //**************** BUILD COMMAND OBJECT  **********************
         Command loginClientCommand = new Command("CommandFacade","loginUser", Arrays.asList(new Object[] {username, password}));
@@ -53,6 +54,11 @@ public class ServerFacade implements IServer {
         loggedInResults.setAuthToken(authToken);
         loggedInResults.getClientCommands().add(loginClientCommand);
         loggedInResults.setSuccess(true);
+
+
+        ClientProxy clientProxy = new ClientProxy();
+        User user = new User(username);
+        clientProxy.loginUser(user, authToken);
 
         return loggedInResults;
     }
@@ -73,8 +79,8 @@ public class ServerFacade implements IServer {
 
         //once all checks have passed... get an authtoken.
         String authToken = UUID.randomUUID().toString();
-        serverModel.get_users().put(username, password);
-        serverModel.get_authTokens().put(username, authToken);
+        serverModel.getUsers().put(username, password);
+        serverModel.getAuthTokens().put(username, authToken);
 
         Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
 
@@ -82,6 +88,10 @@ public class ServerFacade implements IServer {
         loggedInResults.setAuthToken(authToken);
         loggedInResults.getClientCommands().add(registerUserCommand);
         loggedInResults.setSuccess(true);
+
+        ClientProxy clientProxy = new ClientProxy();
+        User user = new User(username);
+        clientProxy.registerUser(user, password);
 
         return loggedInResults;
     }
@@ -101,11 +111,17 @@ public class ServerFacade implements IServer {
 
         //create game info and add to server model.
         GameInfo gameInfo = new GameInfo(gameID, players, numPlayers);
-        ServerModel.getInstance().get_games().put(gameID, gameInfo);
+        ServerModel.getInstance().getGames().put(gameID, gameInfo);
 
-        //create command for client side.
-        //TODO: this should update everyone's screen.
-        //TODO: so i have to create a command for every user with an authtoken??
+        //create commands for every client in the server model except the one that asked
+        //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
+        //TODO: how do I exclude the client that is calling from the command manager?
+        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
+            Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+            CommandManager.getInstance().addCommand(authToken, clientCommand);
+        }
+
+
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
 
         GameResults gameResults = new GameResults(gameID);
