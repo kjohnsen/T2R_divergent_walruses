@@ -1,8 +1,6 @@
 package modelclasses;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
