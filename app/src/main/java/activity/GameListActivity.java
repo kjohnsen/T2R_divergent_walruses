@@ -3,7 +3,10 @@ package activity;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,13 @@ import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
 
+import java.util.ArrayList;
+
+import model.ClientModel;
+import model.UIFacade;
+import modelclasses.GameID;
 import modelclasses.GameInfo;
+import modelclasses.Player;
 import presenter.GameListPresenter;
 import presenter.IGameListPresenter;
 
@@ -30,13 +39,17 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     private IGameListPresenter presenter;
 
     @Override
-    public void populateGameList() {
-
+    public void populateGameList(ArrayList<GameInfo> games) {
+        gameList = findViewById(R.id.gameList);
+        gameListManager = new LinearLayoutManager(this);
+        gameList.setLayoutManager(gameListManager);
+        gameListAdapter = new GameListAdapter(games);
+        gameList.setAdapter(gameListAdapter);
     }
 
     @Override
-    public void setCreateGameEnabled() {
-
+    public void setCreateGameEnabled(boolean enabled) {
+        createGameButton.setEnabled(enabled);
     }
 
     @Override
@@ -45,6 +58,22 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         setContentView(R.layout.activity_game_list);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
+        gameName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.createGameNameChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         numPlayers = findViewById(R.id.numPlayers);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.num_players_list, android.R.layout.simple_spinner_item);
@@ -54,16 +83,15 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.createGame(gameName.getText().toString(),Integer.parseInt(numPlayers.getSelectedItem().toString()));
+                presenter.createGame(Integer.parseInt(numPlayers.getSelectedItem().toString()));
             }
         });
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
-        private GameInfo games[];
-        private int lastSelectedPosition = -1;
-        public GameListAdapter(GameInfo r[]) {
-            games = r;
+        private ArrayList<GameInfo> games;
+        public GameListAdapter(ArrayList<GameInfo> games) {
+            this.games = games;
         }
         @Override
         @NonNull
@@ -73,24 +101,43 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         }
         @Override
         public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
-            String option = games[position].toString();
-            holder.bind(option, position);
+            String gameName = games.get(position).getGameID().getName();
+            StringBuilder players = new StringBuilder();
+            ArrayList<Player> playerList = games.get(position).getPlayers();
+            for (int i = 0; i < playerList.size(); i++) {
+                players.append(playerList.get(i).getUsername());
+                if (i < playerList.size() - 1) {
+                    players.append(", ");
+                }
+            }
+            int spotsLeft = games.get(position).getNumPlayers() - playerList.size();
+            holder.bind(gameName, players.toString(), Integer.toString(spotsLeft));
         }
 
         @Override
         public int getItemCount() {
-            return games.length;
+            return games.size();
         }
         class GameHolder extends RecyclerView.ViewHolder {
-            private String option;
-            private TextView eTextView;
+            private TextView gameName;
+            private TextView gamePlayers;
+            private TextView numSpots;
             GameHolder(View view) {
                 super(view);
-                eTextView = view.findViewById(R.id.itemName);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.joinGame(gameName.getText().toString());
+                    }
+                });
+                gameName = findViewById(R.id.itemName);
+                gamePlayers = findViewById(R.id.itemPlayers);
+                numSpots = findViewById(R.id.itemNum);
             }
-            void bind(String o, int position) {
-                option = o;
-                eTextView.setText(option);
+            void bind(String name, String players, String spotsLeft) {
+                gameName.setText(name);
+                gamePlayers.setText(players);
+                numSpots.setText(spotsLeft);
             }
         }
     }

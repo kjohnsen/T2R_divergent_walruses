@@ -17,10 +17,6 @@ import modelclasses.PlayerColor;
 import modelclasses.User;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 
 public class ServerFacade implements IServer {
@@ -107,10 +103,10 @@ public class ServerFacade implements IServer {
 
         //players are going to be null for now... until they join the game.
         //this way you can still check the size of the arrayList.
-        HashMap<String, Player> players = new HashMap<>();
+        ArrayList<Player> players = new ArrayList<>();
         for(int i = 0; i < numPlayers; i++) {
             Player player = null;
-            players.put(player.getUsername(), player);
+            players.add(player);
         }
 
         //create game info and add to server model.

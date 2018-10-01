@@ -1,18 +1,16 @@
 package modelclasses;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
 public class GameInfo extends Observable implements Observer {
     private GameID gameID;
-    private HashMap<String, Player> players;
+    private ArrayList<Player> players;
     private int numPlayers;
 
-    public GameInfo(GameID gameID, HashMap<String, Player> players, int numPlayers) {
+    public GameInfo(GameID gameID, ArrayList<Player> players, int numPlayers) {
         this.gameID = gameID;
         this.numPlayers = numPlayers;
         setPlayers(players);
@@ -26,7 +24,7 @@ public class GameInfo extends Observable implements Observer {
     }
 
     public boolean addPlayer(Player player) {
-        players.put(player.getUsername(), player);
+        players.add(player);
         this.notifyObservers();
         player.addObserver(this);
         return true;
@@ -36,17 +34,22 @@ public class GameInfo extends Observable implements Observer {
         return gameID;
     }
 
-    public HashMap<String, Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public Player getPlayer(String username) {
-        return players.get(username);
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                return p;
+            }
+        }
+        return null;
     }
 
-    public void setPlayers(HashMap<String, Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
-        for (Player p : players.values()) {
+        for (Player p : players) {
             p.addObserver(this);
         }
         this.notifyObservers();
@@ -62,7 +65,7 @@ public class GameInfo extends Observable implements Observer {
         if (o == null || getClass() != o.getClass()) return false;
         GameInfo gameInfo = (GameInfo) o;
         return numPlayers == gameInfo.numPlayers &&
-                Objects.equals(gameID, gameInfo.gameID) &&
+                gameID.equals(gameInfo.gameID) &&
                 Objects.equals(players, gameInfo.players);
     }
 

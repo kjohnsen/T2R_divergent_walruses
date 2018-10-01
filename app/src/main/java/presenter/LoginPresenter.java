@@ -1,6 +1,7 @@
 package presenter;
 
 import activity.ILoginActivity;
+import model.UIFacade;
 
 public class LoginPresenter implements ILoginPresenter {
     private String loginUsername = null;
@@ -14,12 +15,12 @@ public class LoginPresenter implements ILoginPresenter {
 
     @Override
     public void login() {
-        //TODO: Hook up login method to UIFacade
+        UIFacade.getInstance().loginUser(loginUsername, loginPassword);
     }
 
     @Override
     public void register() {
-        //TODO: Hook up register method to UIFacade
+        UIFacade.getInstance().registerUser(registerUsername, registerPassword);
     }
 
     @Override

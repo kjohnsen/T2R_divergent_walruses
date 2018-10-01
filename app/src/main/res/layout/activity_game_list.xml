@@ -82,6 +82,14 @@
         app:layout_constraintBottom_toTopOf="@id/topBarGuide"
         app:layout_constraintEnd_toStartOf="@id/rightGuide"
         app:layout_constraintStart_toEndOf="@id/menuTwo"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/gameList"
+        app:layout_constraintTop_toBottomOf="@id/topBarGuide"
+        app:layout_constraintBottom_toTopOf="@id/bottomGuide"
+        app:layout_constraintStart_toEndOf="@id/leftGuide"
+        app:layout_constraintEnd_toStartOf="@id/rightGuide"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,6 +112,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/createGame"
         android:text="@string/create_game"
+        android:enabled="false"
         app:layout_constraintEnd_toStartOf="@id/rightGuide"
         app:layout_constraintTop_toBottomOf="@id/bottomGuide"
         app:layout_constraintBottom_toBottomOf="parent"/>

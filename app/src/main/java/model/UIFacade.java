@@ -13,6 +13,15 @@ import results.Results;
 
 public class UIFacade {
 
+    private static final UIFacade ourInstance = new UIFacade();
+
+    public static UIFacade getInstance() {
+        return ourInstance;
+    }
+
+    private UIFacade() {
+    }
+
     public void loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
@@ -41,11 +50,11 @@ public class UIFacade {
         }
     }
 
-    public void joinGame(GameID gameID) {
+    public void joinGame(String gameName) {
 
     }
 
-    public void createGame(GameInfo gameInfo) {
+    public void createGame(String gameName, int numPlayers) {
         //GameInfo needs methods to get attributes
         //GameResults gameResults = ServerProxy.getInstance().createGame()
 
