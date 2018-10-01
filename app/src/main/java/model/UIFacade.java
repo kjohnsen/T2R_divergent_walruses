@@ -50,11 +50,11 @@ public class UIFacade {
         }
     }
 
-    public void joinGame(String username, GameID gameID) {
+    public void joinGame(String gameName) {
 
     }
 
-    public void createGame(GameInfo gameInfo) {
+    public void createGame(String gameName, int numPlayers) {
         //GameInfo needs methods to get attributes
         //GameResults gameResults = ServerProxy.getInstance().createGame()
 

@@ -54,7 +54,7 @@ public class CommandFacadeTest {
         Player player = new Player("bobby");
         GameID gameID = new GameID("game", "id");
         ArrayList<GameInfo> gameList = new ArrayList<>();
-        GameInfo gameInfo = new GameInfo(gameID, new HashMap<String, Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
 
@@ -65,7 +65,7 @@ public class CommandFacadeTest {
     @Test
     public void createGame() {
         GameID gameID = new GameID("game", "id");
-        GameInfo gameInfo = new GameInfo(gameID, new HashMap<String, Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
 
         CommandFacade.getInstance().createGame(gameInfo);
         assertThat(ClientModel.getInstance().getGameList(), hasItem(gameInfo));
@@ -75,7 +75,7 @@ public class CommandFacadeTest {
     public void startGame() {
         GameID gameID = new GameID("game", "id");
         ArrayList<GameInfo> gameList = new ArrayList<>();
-        GameInfo gameInfo = new GameInfo(gameID, new HashMap<String, Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
 
@@ -87,7 +87,7 @@ public class CommandFacadeTest {
     public void claimColor() {
         Player player = new Player("bobby");
         GameID gameID = new GameID("game", "id");
-        GameInfo gameInfo = new GameInfo(gameID, new HashMap<String, Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
         ClientModel.getInstance().setCurrentGame(gameInfo);
         ClientModel.getInstance().getCurrentGame().addPlayer(player);
         CommandFacade.getInstance().claimColor("bobby", PlayerColor.BLUE);

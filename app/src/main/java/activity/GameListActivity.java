@@ -3,7 +3,10 @@ package activity;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +39,17 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     private IGameListPresenter presenter;
 
     @Override
-    public void populateGameList() {
-
+    public void populateGameList(ArrayList<GameInfo> games) {
+        gameList = findViewById(R.id.gameList);
+        gameListManager = new LinearLayoutManager(this);
+        gameList.setLayoutManager(gameListManager);
+        gameListAdapter = new GameListAdapter(games);
+        gameList.setAdapter(gameListAdapter);
     }
 
     @Override
-    public void setCreateGameEnabled() {
-
+    public void setCreateGameEnabled(boolean enabled) {
+        createGameButton.setEnabled(enabled);
     }
 
     @Override
@@ -51,6 +58,22 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         setContentView(R.layout.activity_game_list);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
+        gameName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.createGameNameChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         numPlayers = findViewById(R.id.numPlayers);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.num_players_list, android.R.layout.simple_spinner_item);
@@ -60,15 +83,15 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.createGame(gameName.getText().toString(),Integer.parseInt(numPlayers.getSelectedItem().toString()));
+                presenter.createGame(Integer.parseInt(numPlayers.getSelectedItem().toString()));
             }
         });
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
-        private GameInfo games[];
-        public GameListAdapter(GameInfo r[]) {
-            games = r;
+        private ArrayList<GameInfo> games;
+        public GameListAdapter(ArrayList<GameInfo> games) {
+            this.games = games;
         }
         @Override
         @NonNull
@@ -78,35 +101,33 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         }
         @Override
         public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
-            String gameName = games[position].getName();
+            String gameName = games.get(position).getGameID().getName();
             StringBuilder players = new StringBuilder();
-            ArrayList<Player> playerList = games[position].getPlayers();
+            ArrayList<Player> playerList = games.get(position).getPlayers();
             for (int i = 0; i < playerList.size(); i++) {
                 players.append(playerList.get(i).getUsername());
                 if (i < playerList.size() - 1) {
                     players.append(", ");
                 }
             }
-            int spotsLeft = games[position].getTotalPlayers() - playerList.size();
+            int spotsLeft = games.get(position).getNumPlayers() - playerList.size();
             holder.bind(gameName, players.toString(), Integer.toString(spotsLeft));
         }
 
         @Override
         public int getItemCount() {
-            return games.length;
+            return games.size();
         }
         class GameHolder extends RecyclerView.ViewHolder {
             private TextView gameName;
             private TextView gamePlayers;
             private TextView numSpots;
-            private GameID gameID;
             GameHolder(View view) {
                 super(view);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String username = ClientModel.getInstance().getCurrentUser().getUsername();
-                        UIFacade.getInstance().joinGame(username, gameID);
+                        presenter.joinGame(gameName.getText().toString());
                     }
                 });
                 gameName = findViewById(R.id.itemName);
