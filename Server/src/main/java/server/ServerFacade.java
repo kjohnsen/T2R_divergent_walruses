@@ -120,7 +120,7 @@ public class ServerFacade implements IServer {
         //create commands for every client in the server model except the one that asked
         //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
         //TODO: how do I exclude the client that is calling from the command manager?
-        for(String authToken : ServerModel.getInstance().get_authTokens().keySet()) {
+        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
             CommandManager.getInstance().addCommand(authToken, clientCommand);
         }
