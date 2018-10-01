@@ -12,12 +12,12 @@ public class ClientProxy implements iClient {
 
     @Override
     public void loginUser(User user, String authToken) {
-
+        CommandManager.getInstance().addClient(authToken);
     }
 
     @Override
     public void registerUser(User user, String authToken) {
-
+        CommandManager.getInstance().addClient(authToken);
     }
 
     @Override

@@ -13,6 +13,7 @@ import results.Results;
 import data.Command;
 import modelclasses.GameID;
 import modelclasses.PlayerColor;
+import modelclasses.User;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,7 +47,7 @@ public class ServerFacade implements IServer {
         String authToken = UUID.randomUUID().toString();
 
         //this is where we will call DAO methods in the future
-        serverModel.get_authTokens().put(username, authToken);
+        serverModel.getAuthTokens().put(username, authToken);
 
         //**************** BUILD COMMAND OBJECT  **********************
         Command loginClientCommand = new Command("CommandFacade","loginUser", Arrays.asList(new Object[] {username, password}));
@@ -57,16 +58,10 @@ public class ServerFacade implements IServer {
         loggedInResults.getClientCommands().add(loginClientCommand);
         loggedInResults.setSuccess(true);
 
-        String className = "iClient";
-        String methodName = "loginUser";
-        String[] paramTypes = new String[] {"String", "String"};
-        Object[] paramValues = new Object[] {username, password};
-        Command command = new Command(className, methodName, paramTypes, paramValues);
-        Command[] commands = new Command[] {command};
-        loggedInResults.setClientCommands(commands);
 
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.loginUser(username, password);
+        User user = new User(username);
+        clientProxy.loginUser(user, authToken);
 
         return loggedInResults;
     }
@@ -87,8 +82,8 @@ public class ServerFacade implements IServer {
 
         //once all checks have passed... get an authtoken.
         String authToken = UUID.randomUUID().toString();
-        serverModel.get_users().put(username, password);
-        serverModel.get_authTokens().put(username, authToken);
+        serverModel.getUsers().put(username, password);
+        serverModel.getAuthTokens().put(username, authToken);
 
         Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
 
@@ -97,16 +92,9 @@ public class ServerFacade implements IServer {
         loggedInResults.getClientCommands().add(registerUserCommand);
         loggedInResults.setSuccess(true);
 
-        String className = "iClient";
-        String methodName = "registerUser";
-        String[] paramTypes = new String[] {"String", "String"};
-        Object[] paramValues = new Object[] {username, password};
-        Command command = new Command(className, methodName, paramTypes, paramValues);
-        Command[] commands = new Command[] {command};
-        loggedInResults.setClientCommands(commands);
-
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.registerUser(username, password);
+        User user = new User(username);
+        clientProxy.registerUser(user, password);
 
         return loggedInResults;
     }
@@ -126,7 +114,7 @@ public class ServerFacade implements IServer {
 
         //create game info and add to server model.
         GameInfo gameInfo = new GameInfo(gameID, players, numPlayers);
-        ServerModel.getInstance().get_games().put(gameID, gameInfo);
+        ServerModel.getInstance().getGames().put(gameID, gameInfo);
 
         //create command for client side.
         //TODO: this should update everyone's screen.

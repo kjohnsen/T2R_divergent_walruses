@@ -7,8 +7,8 @@ public class CommandManager {
 
     private static CommandManager instance = null;
 
-    // These strings are usernames
-    private Map<String, ArrayList<Command>> _clientCommands;
+    // These strings are authTokens
+    private Map<String, ArrayList<Command>> clientCommands;
 
     private CommandManager(){}
 
@@ -20,17 +20,17 @@ public class CommandManager {
     }
 
     public ArrayList<Command> getCommands(String clientID) {
-        return _clientCommands.get(clientID);
+        return clientCommands.get(clientID);
     }
 
     public void addCommand(String clientID, Command command) {
-        ArrayList<Command> commands = _clientCommands.get(clientID);
+        ArrayList<Command> commands = clientCommands.get(clientID);
         commands.add(command);
     }
 
     public void addClient(String clientID) {
         ArrayList<Command> commands = new ArrayList<>();
-        _clientCommands.put(clientID, commands);
+        clientCommands.put(clientID, commands);
     }
 
 }
