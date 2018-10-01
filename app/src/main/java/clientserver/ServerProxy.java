@@ -19,6 +19,8 @@ public class ServerProxy implements IServer {
         return ourInstance;
     }
 
+    private String authToken;
+
     @Override
     public LoggedInResults loginUser(String username, String password) {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -74,5 +76,9 @@ public class ServerProxy implements IServer {
         Results results = ClientCommunicator.getInstance().send(command);
         //Results needs to have the list of commands in it
         return null;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

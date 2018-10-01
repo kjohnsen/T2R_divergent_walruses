@@ -1,12 +1,22 @@
 package results;
 
+import java.util.ArrayList;
+
 import data.Command;
 
 abstract public class Results {
 
     private Boolean isSuccess;
-    Command[] clientCommands;
     private String errorMessage;
+    ArrayList<Command> clientCommands;
+
+    public ArrayList<Command> getClientCommands() {
+        return clientCommands;
+    }
+
+    public void setClientCommands(ArrayList<Command> clientCommands) {
+        this.clientCommands = clientCommands;
+    }
 
     public Boolean getSuccess() {
         return isSuccess;
@@ -14,14 +24,6 @@ abstract public class Results {
 
     public void setSuccess(Boolean success) {
         isSuccess = success;
-    }
-
-    public Command[] getClientCommands() {
-        return clientCommands;
-    }
-
-    public void setClientCommands(Command[] clientCommands) {
-        this.clientCommands = clientCommands;
     }
 
     public String getErrorMessage() {
