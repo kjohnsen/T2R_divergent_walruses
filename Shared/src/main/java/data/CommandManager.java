@@ -1,5 +1,6 @@
 package data;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -23,7 +24,9 @@ public class CommandManager {
         return clientCommands.get(clientID);
     }
 
+    //gets the array list of commands with the given client ID and adds it.
     public void addCommand(String clientID, Command command) {
+        getCommands(clientID).add(command);
         ArrayList<Command> commands = clientCommands.get(clientID);
         commands.add(command);
     }
