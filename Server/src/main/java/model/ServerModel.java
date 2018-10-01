@@ -9,18 +9,10 @@ public class ServerModel {
 
     private static ServerModel instance = null;
 
-<<<<<<< HEAD
-    //authTokens to usernames
-    private Map<String, String> _authTokens;
-    //does this map users to passwords?
-    private Map<String, String> _users;
-    private Map<GameID, GameInfo> _games;
-=======
     private Map<String, String> authTokens;
     // maps usernames to passwords
     private Map<String, String> users;
     private Map<GameID, GameInfo> games;
->>>>>>> master
 
     private ServerModel() { }
 
