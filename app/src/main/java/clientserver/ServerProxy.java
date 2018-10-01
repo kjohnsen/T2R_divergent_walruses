@@ -20,6 +20,8 @@ public class ServerProxy implements IServer {
         return ourInstance;
     }
 
+    private String authToken;
+
     public void setClientCommunicator(ClientCommunicator clientCommunicator) {
         this.clientCommunicator = clientCommunicator;
     }
@@ -73,5 +75,9 @@ public class ServerProxy implements IServer {
         Command command = new Command("ServerFacade", "getCommands", parameterTypes, parameters);
         Results results = clientCommunicator.send(command);
         return results.getClientCommands();
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }
