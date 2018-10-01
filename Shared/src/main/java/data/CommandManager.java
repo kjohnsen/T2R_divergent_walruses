@@ -8,37 +8,32 @@ public class CommandManager {
 
     private static CommandManager instance = null;
 
-    private static HashMap<String, ArrayList<Command>> _clientCommands;
-    private static ArrayList<String> _clientIDs;
+    // These strings are authTokens
+    private Map<String, ArrayList<Command>> clientCommands;
 
+    private CommandManager(){}
 
-    public static CommandManager getInstance(){
-        if(instance == null) {
+    public static CommandManager getInstance() {
+        if (instance == null) {
             instance = new CommandManager();
-            _clientCommands = new HashMap();
-            _clientIDs = new ArrayList();
-
         }
         return instance;
     }
 
-    private CommandManager(){}
-
-    public static HashMap<String, ArrayList<Command>> get_clientCommands() {
-        return _clientCommands;
-    }
-
-    public static ArrayList<String> get_clientIDs() {
-        return _clientIDs;
-    }
-
     public ArrayList<Command> getCommands(String clientID) {
-        return null;
+        return clientCommands.get(clientID);
     }
 
     //gets the array list of commands with the given client ID and adds it.
     public void addCommand(String clientID, Command command) {
-        get_clientCommands().get(clientID).add(command);
+        getCommands(clientID).add(command);
+        ArrayList<Command> commands = clientCommands.get(clientID);
+        commands.add(command);
+    }
+
+    public void addClient(String clientID) {
+        ArrayList<Command> commands = new ArrayList<>();
+        clientCommands.put(clientID, commands);
     }
 
 }
