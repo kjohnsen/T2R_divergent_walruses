@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
@@ -50,20 +50,20 @@ public class CommandFacadeTest {
     @Test
     public void joinGame() {
         Player player = new Player("bobby");
-        GameID gameID = new GameID("game", "id");
+        GameName gameName = new GameName("game", "id");
         ArrayList<GameInfo> gameList = new ArrayList<>();
-        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
 
-        CommandFacade.getInstance().joinGame(player, gameID);
-        assertEquals(ClientModel.getInstance().getGame(gameID).getPlayer(player.getUsername()), player);
+        CommandFacade.getInstance().joinGame(player, gameName);
+        assertEquals(ClientModel.getInstance().getGame(gameName).getPlayer(player.getUsername()), player);
     }
 
     @Test
     public void createGame() {
-        GameID gameID = new GameID("game", "id");
-        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
+        GameName gameName = new GameName("game", "id");
+        GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
 
         CommandFacade.getInstance().createGame(gameInfo);
         assertThat(ClientModel.getInstance().getGameList(), hasItem(gameInfo));
@@ -71,21 +71,21 @@ public class CommandFacadeTest {
 
     @Test
     public void startGame() {
-        GameID gameID = new GameID("game", "id");
+        GameName gameName = new GameName("game", "id");
         ArrayList<GameInfo> gameList = new ArrayList<>();
-        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
+        GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
 
-        CommandFacade.getInstance().startGame(gameID);
+        CommandFacade.getInstance().startGame(gameName);
         assertEquals(ClientModel.getInstance().getCurrentGame(), gameInfo);
     }
 
     @Test
     public void claimColor() {
         Player player = new Player("bobby");
-        GameID gameID = new GameID("game", "id");
-        GameInfo gameInfo = new GameInfo(gameID, new ArrayList<Player>(), 5);
+        GameName gameName = new GameName("game", "id");
+        GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         ClientModel.getInstance().setCurrentGame(gameInfo);
         ClientModel.getInstance().getCurrentGame().addPlayer(player);
         CommandFacade.getInstance().claimColor("bobby", PlayerColor.BLUE);

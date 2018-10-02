@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.ArrayList;
 import data.Command;
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import results.GameResults;
 import results.LoggedInResults;
@@ -13,13 +13,13 @@ public interface IServer {
 
     LoggedInResults registerUser(String username, String password);
 
-    GameResults createGame(String name, int numPlayers);
+    GameResults createGame(String name, int numPlayers, String authToken);
 
-    GameResults joinGame(GameID gameID);
+    GameResults joinGame(GameName gameName, String authToken);
 
-    GameResults startGame(GameID gameID);
+    GameResults startGame(GameName gameName, String authToken);
 
-    Results chooseColor(PlayerColor color);
+    Results chooseColor(PlayerColor color, String authToken);
 
-    ArrayList<Command> getCommands(String clientID);
+    ArrayList<Command> getCommands(String clientID, String authToken);
 }

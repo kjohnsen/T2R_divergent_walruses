@@ -1,6 +1,5 @@
 package server;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import data.CommandManager;
@@ -12,7 +11,7 @@ import results.LoggedInResults;
 import results.GameResults;
 import results.Results;
 import data.Command;
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.User;
 
@@ -96,10 +95,10 @@ public class ServerFacade implements IServer {
         return loggedInResults;
     }
 
-    public GameResults createGame(String name, int numPlayers) {
+    public GameResults createGame(String name, int numPlayers, String clientAuthToken) {
 
         //creating a game doesn't add any players.. going to be all null.
-        GameID gameID = new GameID(name, UUID.randomUUID().toString());
+        GameName gameName = new GameName(name, UUID.randomUUID().toString());
 
         //players are going to be null for now... until they join the game.
         //this way you can still check the size of the arrayList.
@@ -110,40 +109,42 @@ public class ServerFacade implements IServer {
         }
 
         //create game info and add to server model.
-        GameInfo gameInfo = new GameInfo(gameID, players, numPlayers);
-        ServerModel.getInstance().getGames().put(gameID, gameInfo);
+        GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
+        ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
         //create commands for every client in the server model except the one that asked
         //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
         //TODO: how do I exclude the client that is calling from the command manager?
         for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
-            Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
-            CommandManager.getInstance().addCommand(authToken, clientCommand);
+            if (!authToken.equals(clientAuthToken)) {
+                Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+                CommandManager.getInstance().addCommand(authToken, clientCommand);
+            }
         }
 
 
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
 
-        GameResults gameResults = new GameResults(gameID);
+        GameResults gameResults = new GameResults(gameName);
         gameResults.getClientCommands().add(createGameCommand);
         gameResults.setSuccess(true);
 
         return gameResults;
     }
 
-    public GameResults joinGame(GameID gameID) {
+    public GameResults joinGame(GameName gameName, String authToken) {
         return null;
     }
 
-    public GameResults startGame(GameID gameID) {
+    public GameResults startGame(GameName gameName, String authToken) {
         return null;
     }
 
-    public Results chooseColor(PlayerColor color) {
+    public Results chooseColor(PlayerColor color, String authToken) {
         return null;
     }
 
-    public ArrayList<Command> getCommands(String clientID) {
+    public ArrayList<Command> getCommands(String clientID, String authToken) {
         return null;
     }
 

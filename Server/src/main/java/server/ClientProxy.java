@@ -5,7 +5,7 @@ import interfaces.iClient;
 import modelclasses.User;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.GameInfo;
 
 public class ClientProxy implements iClient {
@@ -21,7 +21,7 @@ public class ClientProxy implements iClient {
     }
 
     @Override
-    public void joinGame(Player player, GameID gameID) {
+    public void joinGame(Player player, GameName gameName) {
 
     }
 
@@ -31,7 +31,7 @@ public class ClientProxy implements iClient {
     }
 
     @Override
-    public void startGame(GameID gameID) {
+    public void startGame(GameName gameName) {
 
     }
 

@@ -1,11 +1,10 @@
 package modelclasses;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class User {
     private String username;
-    private ArrayList<GameID> gameIDlist;
+    private ArrayList<GameName> gameNameList;
 
     public User(String username) {
         this.username = username;

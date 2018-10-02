@@ -1,12 +1,10 @@
 package model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.User;
 
@@ -64,9 +62,9 @@ public class ClientModel extends Observable implements Observer {
     public ArrayList<GameInfo> getGameList() {
         return gameList;
     }
-    public GameInfo getGame(GameID gameID) {
+    public GameInfo getGame(GameName gameName) {
         for (GameInfo gameInfo : gameList) {
-            if (gameInfo.getGameID().equals(gameID)) {
+            if (gameInfo.getGameName().equals(gameName)) {
                 return gameInfo;
             }
         }
