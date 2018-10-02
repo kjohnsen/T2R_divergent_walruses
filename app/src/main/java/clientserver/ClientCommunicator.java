@@ -19,7 +19,6 @@ public class ClientCommunicator {
     private Serializer serializer = new Serializer();
     private String serverHost = "localhost";
     private String serverPort = "8080";
-    private String authToken = null;
     private static final ClientCommunicator ourInstance = new ClientCommunicator();
 
     private ClientCommunicator() {}
@@ -55,8 +54,8 @@ public class ClientCommunicator {
             connection.setDoOutput(true);
 
             //Send the auth token if there is one...
-            if(authToken != null) {
-                connection.addRequestProperty("Authorization", authToken);
+            if(ServerProxy.getInstance().getAuthToken() != null) {
+                connection.addRequestProperty("Authorization", ServerProxy.getInstance().getAuthToken());
             }
 
             //Add the command to the request body...
@@ -70,16 +69,6 @@ public class ClientCommunicator {
             InputStream responseBody = connection.getInputStream();
             String serializedResults = serializer.readString(responseBody);
             Results results = (Results)serializer.decode(serializedResults, Results.class);
-
-            //Do we need this here or will the command facade add it?
-            /*
-            if(results instanceof LoggedInResults) {
-                LoggedInResults loggedInResults = (LoggedInResults)results;
-                if(loggedInResults.getSuccess()) {
-                    authToken = loggedInResults.getAuthToken();
-                }
-            }
-            */
 
             return results;
         } catch (IOException e) {

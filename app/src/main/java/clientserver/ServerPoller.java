@@ -10,17 +10,21 @@ import java.security.Provider;
 import java.util.ArrayList;
 
 import data.Command;
+import interfaces.IServer;
 import model.ClientModel;
 
 public class ServerPoller extends Service{
     private static final ServerPoller ourInstance = new ServerPoller();
-    private Handler handler = null;
+    private static Handler handler = null;
     private static final long DEFAULT_POLL_INTERVAL = 2 * 1000; //2 seconds
+    private static IServer serverProxy = ServerProxy.getInstance();
 
     private Runnable runnableService = new Runnable() {
         @Override
         public void run() {
             getCommands();
+
+            //Post this service again in 2 seconds...
             handler.postDelayed(runnableService, DEFAULT_POLL_INTERVAL);
         }
     };
@@ -38,8 +42,11 @@ public class ServerPoller extends Service{
     }
 
     private synchronized void getCommands() {
-        //Need access to the client model...
-        //ArrayList<Command> commands = ServerProxy.getInstance().getCommands()
+        //Where are authtoken and clientID?
+        ArrayList<Command> commands = serverProxy.getCommands(ServerProxy.getInstance().getAuthToken(), ServerProxy.getInstance().getAuthToken());
+        for(int i = 0; i < commands.size(); ++i) {
+            commands.get(i).execute();
+        }
     }
 
     @Override
