@@ -22,6 +22,7 @@ public class UIFacade {
     private UIFacade() {
     }
 
+    //These should all return strings, or null if there is no error message
     public void loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
