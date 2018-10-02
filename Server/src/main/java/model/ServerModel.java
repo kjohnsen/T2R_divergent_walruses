@@ -2,7 +2,7 @@ package model;
 
 import java.util.Map;
 import modelclasses.GameInfo;
-import modelclasses.GameID;
+import modelclasses.GameName;
 
 
 public class ServerModel {
@@ -12,7 +12,7 @@ public class ServerModel {
     private Map<String, String> authTokens;
     // maps usernames to passwords
     private Map<String, String> users;
-    private Map<GameID, GameInfo> games;
+    private Map<GameName, GameInfo> games;
 
     private ServerModel() { }
 
@@ -48,11 +48,11 @@ public class ServerModel {
         this.users = users;
     }
 
-    public Map<GameID, GameInfo> getGames() {
+    public Map<GameName, GameInfo> getGames() {
         return games;
     }
 
-    public void setGames(Map<GameID, GameInfo> games) {
+    public void setGames(Map<GameName, GameInfo> games) {
         this.games = games;
     }
     //********************************************

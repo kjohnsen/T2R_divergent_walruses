@@ -20,9 +20,6 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
-import model.ClientModel;
-import model.UIFacade;
-import modelclasses.GameID;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import presenter.GameListPresenter;
@@ -101,7 +98,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         }
         @Override
         public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
-            String gameName = games.get(position).getGameID().getName();
+            String gameName = games.get(position).getGameName().getName();
             StringBuilder players = new StringBuilder();
             ArrayList<Player> playerList = games.get(position).getPlayers();
             for (int i = 0; i < playerList.size(); i++) {

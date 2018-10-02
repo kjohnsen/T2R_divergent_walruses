@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import clientserver.ServerProxy;
 import interfaces.iClient;
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
@@ -35,8 +35,8 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void joinGame(Player player, GameID gameID) {
-        ClientModel.getInstance().getGame(gameID).addPlayer(player);
+    public void joinGame(Player player, GameName gameName) {
+        ClientModel.getInstance().getGame(gameName).addPlayer(player);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startGame(GameID gameID) {
-        GameInfo gameInfo = ClientModel.getInstance().getGame(gameID);
+    public void startGame(GameName gameName) {
+        GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
     }
 

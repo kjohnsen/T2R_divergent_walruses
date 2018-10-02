@@ -24,7 +24,7 @@ public class GameListPresenter implements IGameListPresenter {
         }
         ArrayList<GameInfo> games = ClientModel.getInstance().getGameList();
         for (GameInfo g : games) {
-            if (g.getGameID().getName().equals(gameName)) {
+            if (g.getGameName().getName().equals(gameName)) {
                 activity.setCreateGameEnabled(false);
                 return;
             }
