@@ -6,12 +6,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class GameInfo extends Observable implements Observer {
-    private GameID gameID;
+    private GameName gameName;
     private ArrayList<Player> players;
     private int numPlayers;
 
-    public GameInfo(GameID gameID, ArrayList<Player> players, int numPlayers) {
-        this.gameID = gameID;
+    public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
+        this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
         this.notifyObservers();
@@ -30,8 +30,8 @@ public class GameInfo extends Observable implements Observer {
         return true;
     }
 
-    public GameID getGameID() {
-        return gameID;
+    public GameName getGameName() {
+        return gameName;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -65,12 +65,12 @@ public class GameInfo extends Observable implements Observer {
         if (o == null || getClass() != o.getClass()) return false;
         GameInfo gameInfo = (GameInfo) o;
         return numPlayers == gameInfo.numPlayers &&
-                gameID.equals(gameInfo.gameID) &&
+                gameName.equals(gameInfo.gameName) &&
                 Objects.equals(players, gameInfo.players);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameID, players, numPlayers);
+        return Objects.hash(gameName, players, numPlayers);
     }
 }

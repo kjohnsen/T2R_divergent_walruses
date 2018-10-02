@@ -1,21 +1,20 @@
 package results;
 
-import data.Command;
-import modelclasses.GameID;
+import modelclasses.GameName;
 
 public class GameResults extends Results {
 
-    GameID gameID;
+    GameName gameName;
 
-    public GameResults(GameID gameID) {
-        this.gameID = gameID;
+    public GameResults(GameName gameName) {
+        this.gameName = gameName;
     }
 
-    public GameID getGameID() {
-        return gameID;
+    public GameName getGameName() {
+        return gameName;
     }
 
-    public void setGameID(GameID gameID) {
-        this.gameID = gameID;
+    public void setGameName(GameName gameName) {
+        this.gameName = gameName;
     }
 }

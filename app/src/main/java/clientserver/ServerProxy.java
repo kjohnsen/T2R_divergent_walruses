@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import data.Command;
 import interfaces.IServer;
-import modelclasses.GameID;
+import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import results.GameResults;
 import results.LoggedInResults;
@@ -40,7 +40,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public GameResults createGame(String name, int numPlayers) {
+    public GameResults createGame(String name, int numPlayers, String authToken) {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String", "int"};
         Object[] parameters = {name, numPlayers};
@@ -49,17 +49,17 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public GameResults joinGame(GameID gameID) {
+    public GameResults joinGame(GameName gameName, String authToken) {
         return null;
     }
 
     @Override
-    public GameResults startGame(GameID gameID) {
+    public GameResults startGame(GameName gameName, String authToken) {
         return null;
     }
 
     @Override
-    public Results chooseColor(PlayerColor color) {
+    public Results chooseColor(PlayerColor color, String authToken) {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"PlayerColor"};
         Object[] parameters = {color};
@@ -68,7 +68,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public ArrayList<Command> getCommands(String clientID) {
+    public ArrayList<Command> getCommands(String clientID, String authToken) {
         String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         String[] parameterTypes = {"String"};
         Object[] parameters = {clientID};
