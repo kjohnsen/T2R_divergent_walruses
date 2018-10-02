@@ -1,8 +1,11 @@
 package presenter;
 
+import android.content.Intent;
+
 import java.util.Observable;
 import java.util.Observer;
 
+import activity.IGameListActivity;
 import activity.ILoginActivity;
 import model.ClientModel;
 import model.UIFacade;
@@ -78,6 +81,6 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     }
 
     public void update(Observable observable, Object o) {
-
+        activity.goToGameList();
     }
 }
