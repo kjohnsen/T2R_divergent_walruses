@@ -1,9 +1,13 @@
 package presenter;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import activity.ILoginActivity;
+import model.ClientModel;
 import model.UIFacade;
 
-public class LoginPresenter implements ILoginPresenter {
+public class LoginPresenter implements ILoginPresenter, Observer {
     private String loginUsername = null;
     private String loginPassword = null;
     private String registerUsername = null;
@@ -11,16 +15,25 @@ public class LoginPresenter implements ILoginPresenter {
     private String registerConfirm = null;
     private ILoginActivity activity;
 
-    public LoginPresenter(ILoginActivity activity) { this.activity = activity; }
+    public LoginPresenter(ILoginActivity activity) {
+        this.activity = activity;
+        ClientModel.getInstance().addObserver(this);
+    }
 
     @Override
     public void login() {
-        UIFacade.getInstance().loginUser(loginUsername, loginPassword);
+        String message = UIFacade.getInstance().loginUser(loginUsername, loginPassword);
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override
     public void register() {
-        UIFacade.getInstance().registerUser(registerUsername, registerPassword);
+        String message = UIFacade.getInstance().registerUser(registerUsername, registerPassword);
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override
@@ -62,5 +75,9 @@ public class LoginPresenter implements ILoginPresenter {
         boolean allow = (registerUsername != null && registerPassword != null
                 && registerPassword.equals(registerConfirm));
         activity.setRegisterEnabled(allow);
+    }
+
+    public void update(Observable observable, Object o) {
+
     }
 }

@@ -1,19 +1,22 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import activity.IGameListActivity;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.GameInfo;
 
-public class GameListPresenter implements IGameListPresenter {
+public class GameListPresenter implements IGameListPresenter, Observer {
 
     private IGameListActivity activity;
     private String gameName = null;
 
     public GameListPresenter(IGameListActivity activity) {
         this.activity = activity;
+        ClientModel.getInstance().addObserver(this);
     }
 
     @Override
@@ -41,5 +44,10 @@ public class GameListPresenter implements IGameListPresenter {
     @Override
     public void joinGame(String gameName) {
         UIFacade.getInstance().joinGame(gameName);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+
     }
 }

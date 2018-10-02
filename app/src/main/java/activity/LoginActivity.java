@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
@@ -143,5 +144,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         if (registerButton != null) {
             registerButton.setEnabled(enabled);
         }
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
