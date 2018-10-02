@@ -1,15 +1,9 @@
 package model;
 
-import clientserver.ServerPoller;
 import clientserver.ServerProxy;
-import interfaces.iClient;
-import modelclasses.GameID;
 import modelclasses.GameInfo;
-import modelclasses.Player;
 import modelclasses.PlayerColor;
-import results.GameResults;
 import results.LoggedInResults;
-import results.Results;
 
 public class UIFacade {
 
