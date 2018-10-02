@@ -98,7 +98,7 @@ public class ServerFacade implements IServer {
     public GameResults createGame(String name, int numPlayers, String clientAuthToken) {
 
         //creating a game doesn't add any players.. going to be all null.
-        GameName gameName = new GameName(name, UUID.randomUUID().toString());
+        GameName gameName = new GameName(name);
 
         //players are going to be null for now... until they join the game.
         //this way you can still check the size of the arrayList.

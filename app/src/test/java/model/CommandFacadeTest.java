@@ -50,7 +50,7 @@ public class CommandFacadeTest {
     @Test
     public void joinGame() {
         Player player = new Player("bobby");
-        GameName gameName = new GameName("game", "id");
+        GameName gameName = new GameName("game");
         ArrayList<GameInfo> gameList = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
@@ -62,7 +62,7 @@ public class CommandFacadeTest {
 
     @Test
     public void createGame() {
-        GameName gameName = new GameName("game", "id");
+        GameName gameName = new GameName("game");
         GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
 
         CommandFacade.getInstance().createGame(gameInfo);
@@ -71,7 +71,7 @@ public class CommandFacadeTest {
 
     @Test
     public void startGame() {
-        GameName gameName = new GameName("game", "id");
+        GameName gameName = new GameName("game");
         ArrayList<GameInfo> gameList = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         gameList.add(gameInfo);
@@ -84,7 +84,7 @@ public class CommandFacadeTest {
     @Test
     public void claimColor() {
         Player player = new Player("bobby");
-        GameName gameName = new GameName("game", "id");
+        GameName gameName = new GameName("game");
         GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
         ClientModel.getInstance().setCurrentGame(gameInfo);
         ClientModel.getInstance().getCurrentGame().addPlayer(player);
