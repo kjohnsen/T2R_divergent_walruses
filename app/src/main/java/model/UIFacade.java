@@ -56,7 +56,7 @@ public class UIFacade {
 
     }
 
-    public void startGame(GameInfo gameInfo) {
+    public void startGame() {
 
     }
 

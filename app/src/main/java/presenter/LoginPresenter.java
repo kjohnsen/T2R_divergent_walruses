@@ -81,6 +81,7 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     }
 
     public void update(Observable observable, Object o) {
+        observable.deleteObserver(this);
         activity.goToGameList();
     }
 }

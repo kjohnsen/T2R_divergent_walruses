@@ -1,5 +1,6 @@
 package activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -87,7 +88,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
         private ArrayList<GameInfo> games;
-        public GameListAdapter(ArrayList<GameInfo> games) {
+        GameListAdapter(ArrayList<GameInfo> games) {
             this.games = games;
         }
         @Override
@@ -137,5 +138,11 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 numSpots.setText(spotsLeft);
             }
         }
+    }
+
+    @Override
+    public void goToGameLobby() {
+        Intent intent = new Intent(this, GameLobbyActivity.class);
+        startActivity(intent);
     }
 }
