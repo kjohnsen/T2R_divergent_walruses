@@ -16,30 +16,32 @@ public class UIFacade {
     private UIFacade() {
     }
 
-    public void loginUser(String username, String password) {
+    //returns null if no error, or an error message if there is one
+    public String loginUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             //execute command
+            return null;
         } else {
-            //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
-                //results never got server, make message
+                return "Server error-- no connection";
             } else {
-                //user or server error, get message from results
+                return loggedInResults.getErrorMessage();
             }
         }
     }
 
-    public void registerUser(String username, String password) {
+    //returns null if no error, or an error message if there is one
+    public String registerUser(String username, String password) {
         LoggedInResults loggedInResults = ServerProxy.getInstance().registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             //execute command
+            return null;
         } else {
-            //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
-                //results never got server, make message
+                return "Server error-- no connection";
             } else {
-                //user or server error, get message from results
+                return loggedInResults.getErrorMessage();
             }
         }
     }
@@ -54,7 +56,7 @@ public class UIFacade {
 
     }
 
-    public void startGame(GameInfo gameInfo) {
+    public void startGame() {
 
     }
 

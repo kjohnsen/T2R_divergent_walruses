@@ -47,6 +47,15 @@
         android:orientation="vertical"
         android:id="@+id/menuTwo"
         app:layout_constraintGuide_percent=".65"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/join_game"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@id/leftGuide"
+        app:layout_constraintEnd_toEndOf="@id/rightGuide"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/topBarGuide"/>
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -1,5 +1,6 @@
 package activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +29,6 @@ import presenter.IGameListPresenter;
 public class GameListActivity extends AppCompatActivity implements IGameListActivity {
 
     private RecyclerView gameList;
-    private GameListAdapter gameListAdapter;
-    private RecyclerView.LayoutManager gameListManager;
     private EditText gameName;
     private Spinner numPlayers;
     private Button createGameButton;
@@ -37,10 +36,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
     @Override
     public void populateGameList(ArrayList<GameInfo> games) {
-        gameList = findViewById(R.id.gameList);
-        gameListManager = new LinearLayoutManager(this);
-        gameList.setLayoutManager(gameListManager);
-        gameListAdapter = new GameListAdapter(games);
+        GameListAdapter gameListAdapter = new GameListAdapter(games);
         gameList.setAdapter(gameListAdapter);
     }
 
@@ -83,11 +79,14 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 presenter.createGame(Integer.parseInt(numPlayers.getSelectedItem().toString()));
             }
         });
+        gameList = findViewById(R.id.gameList);
+        RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(this);
+        gameList.setLayoutManager(gameListManager);
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
         private ArrayList<GameInfo> games;
-        public GameListAdapter(ArrayList<GameInfo> games) {
+        GameListAdapter(ArrayList<GameInfo> games) {
             this.games = games;
         }
         @Override
@@ -137,5 +136,11 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 numSpots.setText(spotsLeft);
             }
         }
+    }
+
+    @Override
+    public void goToGameLobby() {
+        Intent intent = new Intent(this, GameLobbyActivity.class);
+        startActivity(intent);
     }
 }
