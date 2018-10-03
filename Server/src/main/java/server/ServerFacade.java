@@ -43,7 +43,7 @@ public class ServerFacade implements IServer {
         String authToken = UUID.randomUUID().toString();
 
         //this is where we will call DAO methods in the future
-        serverModel.getAuthTokens().put(username, authToken);
+        serverModel.getAuthTokens().put(authToken, username);
 
         //**************** BUILD COMMAND OBJECT  **********************
         Command loginClientCommand = new Command("CommandFacade","loginUser", Arrays.asList(new Object[] {username, password}));
@@ -56,7 +56,7 @@ public class ServerFacade implements IServer {
 
 
         ClientProxy clientProxy = new ClientProxy();
-        User user = new User(username);
+        User user = new User(username, password);
         clientProxy.loginUser(user, authToken);
 
         return loggedInResults;
@@ -78,8 +78,9 @@ public class ServerFacade implements IServer {
 
         //once all checks have passed... get an authtoken.
         String authToken = UUID.randomUUID().toString();
-        serverModel.getUsers().put(username, password);
-        serverModel.getAuthTokens().put(username, authToken);
+        User newUser = new User(username, password);
+        serverModel.getUsers().put(username, newUser);
+        serverModel.getAuthTokens().put(authToken, username);
 
         Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
 
@@ -89,7 +90,7 @@ public class ServerFacade implements IServer {
         loggedInResults.setSuccess(true);
 
         ClientProxy clientProxy = new ClientProxy();
-        User user = new User(username);
+        User user = new User(username, password);
         clientProxy.registerUser(user, password);
 
         return loggedInResults;
@@ -115,7 +116,7 @@ public class ServerFacade implements IServer {
         //create commands for every client in the server model except the one that asked
         //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
         //TODO: how do I exclude the client that is calling from the command manager?
-        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
+        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
@@ -132,8 +133,42 @@ public class ServerFacade implements IServer {
         return gameResults;
     }
 
-    public GameResults joinGame(GameName gameName, String authToken) {
-        return null;
+    public GameResults joinGame(GameName gameName, String clientAuthToken) {
+
+        GameResults gameResults = new GameResults(gameName);
+        gameResults.setSuccess(false);
+
+        GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
+        if (game == null) {
+            gameResults.setErrorMessage("Game does not exist");
+            return gameResults;
+        }
+
+        ArrayList<Player> gamePlayers = game.getPlayers();
+        if (gamePlayers.size() > 4) {
+            gameResults.setErrorMessage("Game is full");
+            return gameResults;
+        }
+
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
+        Player player = new Player(username); // create new player
+        game.addPlayer(player); // add player to game
+        User user = ServerModel.getInstance().getUser(username); // look up user
+        user.addGame(gameName); // add game to user game list
+
+        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+            if (!authToken.equals(clientAuthToken)) {
+                Command clientCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
+                CommandManager.getInstance().addCommand(authToken, clientCommand);
+            }
+        }
+
+        Command joinGameCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
+
+        gameResults.getClientCommands().add(joinGameCommand);
+        gameResults.setSuccess(true);
+
+        return gameResults;
     }
 
     public GameResults startGame(GameName gameName, String authToken) {
