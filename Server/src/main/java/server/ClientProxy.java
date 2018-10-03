@@ -8,6 +8,10 @@ import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 
+//okay this has to be wrong... how are we using the iclient??
+//should this be the only thing touching the command manager?
+//if so.... it's gotta do more than this.
+//TODO: asdfasdf
 public class ClientProxy implements iClient {
 
     @Override

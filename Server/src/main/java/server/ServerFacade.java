@@ -100,28 +100,19 @@ public class ServerFacade implements IServer {
         //creating a game doesn't add any players.. going to be all null.
         GameName gameName = new GameName(name);
 
-        //players are going to be null for now... until they join the game.
-        //this way you can still check the size of the arrayList.
         ArrayList<Player> players = new ArrayList<>();
-        for(int i = 0; i < numPlayers; i++) {
-            Player player = null;
-            players.add(player);
-        }
 
         //create game info and add to server model.
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
         //create commands for every client in the server model except the one that asked
-        //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
-        //TODO: how do I exclude the client that is calling from the command manager?
         for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
             }
         }
-
 
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
 
@@ -132,8 +123,30 @@ public class ServerFacade implements IServer {
         return gameResults;
     }
 
-    public GameResults joinGame(GameName gameName, String authToken) {
-        return null;
+    public GameResults joinGame(GameName gameName, String clientAuthToken) {
+
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
+
+        Player player = new Player(username);
+        ServerModel.getInstance().getGames().get(gameName).addPlayer(player);
+
+        //add commands to command manager that are not the client's command
+        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
+            if (!authToken.equals(clientAuthToken)) {
+                Command clientCommand = new Command("CommandFacade", "joinGame", Arrays.asList(player, gameName));
+                CommandManager.getInstance().addCommand(authToken, clientCommand);
+            }
+        }
+
+        //why do we need to have anything other than the command array in the results?
+        Command joinGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {player, gameName}));
+
+        //there's no point in including this but whatever
+        GameResults gameResults = new GameResults(gameName);
+        gameResults.getClientCommands().add(joinGameCommand);
+        gameResults.setSuccess(true);
+
+        return gameResults;
     }
 
     public GameResults startGame(GameName gameName, String authToken) {
@@ -144,8 +157,14 @@ public class ServerFacade implements IServer {
         return null;
     }
 
+    //not sure what's happening here either...
+    //TODO: asdfasdf
     public ArrayList<Command> getCommands(String clientID, String authToken) {
-        return null;
+
+        //wait is this supposed to return results??
+
+        //what's the difference between client id and authtoken??
+        return CommandManager.getInstance().getCommands(authToken);
     }
 
 }
