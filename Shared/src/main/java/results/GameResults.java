@@ -1,5 +1,8 @@
 package results;
 
+import java.util.ArrayList;
+
+import data.Command;
 import modelclasses.GameName;
 
 public class GameResults extends Results {
@@ -8,6 +11,7 @@ public class GameResults extends Results {
 
     public GameResults(GameName gameName) {
         this.gameName = gameName;
+        this.setClientCommands(new ArrayList<Command>());
     }
 
     public GameName getGameName() {
