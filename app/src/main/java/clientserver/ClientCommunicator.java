@@ -12,6 +12,7 @@ import java.net.URL;
 import data.Command;
 import data.Serializer;
 import model.ClientModel;
+import model.UIFacade;
 import results.LoggedInResults;
 import results.Results;
 
@@ -54,8 +55,8 @@ public class ClientCommunicator {
             connection.setDoOutput(true);
 
             //Send the auth token if there is one...
-            if(ServerProxy.getInstance().getAuthToken() != null) {
-                connection.addRequestProperty("Authorization", ServerProxy.getInstance().getAuthToken());
+            if(UIFacade.getInstance().getAuthToken() != null) {
+                connection.addRequestProperty("Authorization", UIFacade.getInstance().getAuthToken());
             }
 
             //Add the command to the request body...

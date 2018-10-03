@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import data.Command;
 import interfaces.IServer;
 import model.ClientModel;
+import model.UIFacade;
 
 public class ServerPoller extends Service{
     private static final ServerPoller ourInstance = new ServerPoller();
@@ -31,6 +32,14 @@ public class ServerPoller extends Service{
 
     private ServerPoller() {}
 
+    public static IServer getServerProxy() {
+        return serverProxy;
+    }
+
+    public static void setServerProxy(IServer serverProxy) {
+        ServerPoller.serverProxy = serverProxy;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -43,7 +52,7 @@ public class ServerPoller extends Service{
 
     private synchronized void getCommands() {
         //Where are authtoken and clientID?
-        ArrayList<Command> commands = serverProxy.getCommands(ServerProxy.getInstance().getAuthToken(), ServerProxy.getInstance().getAuthToken());
+        ArrayList<Command> commands = serverProxy.getCommands(UIFacade.getInstance().getAuthToken(), UIFacade.getInstance().getAuthToken());
         for(int i = 0; i < commands.size(); ++i) {
             commands.get(i).execute();
         }

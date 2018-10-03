@@ -13,12 +13,21 @@ public class UIFacade {
 
     private static final UIFacade ourInstance = new UIFacade();
     private IServer serverProxy = ServerProxy.getInstance();
+    private String authToken = null;
 
     public static UIFacade getInstance() {
         return ourInstance;
     }
 
     private UIFacade() {}
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public IServer getServerProxy() {
         return serverProxy;
@@ -64,7 +73,7 @@ public class UIFacade {
     }
 
     public String joinGame(String gameName) {
-        GameResults gameResults = serverProxy.joinGame(new GameName(gameName), ServerProxy.getInstance().getAuthToken());
+        GameResults gameResults = serverProxy.joinGame(new GameName(gameName), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -80,7 +89,7 @@ public class UIFacade {
     }
 
     public String createGame(String gameName, int numPlayers) {
-        GameResults gameResults = serverProxy.createGame(gameName, numPlayers, ServerProxy.getInstance().getAuthToken());
+        GameResults gameResults = serverProxy.createGame(gameName, numPlayers, authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -96,7 +105,7 @@ public class UIFacade {
     }
 
     public String startGame(GameInfo gameInfo) {
-        GameResults gameResults = serverProxy.startGame(gameInfo.getGameName(), ServerProxy.getInstance().getAuthToken());
+        GameResults gameResults = serverProxy.startGame(gameInfo.getGameName(), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -112,7 +121,7 @@ public class UIFacade {
     }
 
     public String claimColor(PlayerColor playerColor) {
-        Results results = serverProxy.chooseColor(playerColor, ServerProxy.getInstance().getAuthToken());
+        Results results = serverProxy.chooseColor(playerColor, authToken);
         if(results != null && results.getSuccess()) {
             for(int i = 0; i < results.getClientCommands().size(); ++i) {
                 results.getClientCommands().get(i).execute();
