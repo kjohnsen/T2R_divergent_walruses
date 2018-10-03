@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,9 +14,11 @@ import modelclasses.PlayerColor;
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     private IGameLobbyActivity activity;
+    private ArrayList<String> availableColors;
 
     public GameLobbyPresenter(IGameLobbyActivity activity) {
         this.activity = activity;
+        availableColors = PlayerColor.getColors();
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -35,17 +38,13 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();
-                ArrayList<String> colors = new ArrayList<>();
                 for (Object object : array) {
                     Player player = (Player) object;
                     players.add(player);
-                    PlayerColor color = player.getPlayerColor();
-                    if (!player.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
-                        colors.add(color.name());
-                    }
+                    availableColors.remove(player.getPlayerColor().name());
                 }
                 activity.updatePlayerList(players);
-                activity.updateAvailableColors(colors);
+                activity.updateAvailableColors(availableColors);
                 if (ClientModel.getInstance().currentGameReady()) {
                     activity.setStartGameEnabled(true);
                 }

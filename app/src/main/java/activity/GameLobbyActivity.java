@@ -24,8 +24,6 @@ import presenter.IGameLobbyPresenter;
 public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyActivity {
 
     private RecyclerView playerList;
-    private PlayerListAdapter playerListAdapter;
-    private RecyclerView.LayoutManager playerListManager;
     private Spinner colorSpinner;
     private Button startGameButton;
     private IGameLobbyPresenter presenter;
@@ -43,6 +41,9 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
                 presenter.startGame();
             }
         });
+        playerList = findViewById(R.id.gameList);
+        RecyclerView.LayoutManager playerListManager = new LinearLayoutManager(this);
+        playerList.setLayoutManager(playerListManager);
     }
 
     public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
@@ -92,10 +93,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
 
     @Override
     public void updatePlayerList(ArrayList<Player> players) {
-        playerList = findViewById(R.id.gameList);
-        playerListManager = new LinearLayoutManager(this);
-        playerList.setLayoutManager(playerListManager);
-        playerListAdapter = new PlayerListAdapter(players);
+        PlayerListAdapter playerListAdapter = new PlayerListAdapter(players);
         playerList.setAdapter(playerListAdapter);
     }
 
