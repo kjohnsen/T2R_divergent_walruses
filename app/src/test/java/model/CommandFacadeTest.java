@@ -28,7 +28,7 @@ public class CommandFacadeTest {
 
     @Test
     public void loginUser() {
-        User user = new User("bobby");
+        User user = new User("bobby", "password");
 
         CommandFacade.getInstance().loginUser(user, "auth");
         assertEquals(ClientModel.getInstance().getCurrentUser(), user);
@@ -36,7 +36,7 @@ public class CommandFacadeTest {
 
     @Test
     public void registerUser() {
-        User user = new User("bobby");
+        User user = new User("bobby", "password");
 
         CommandFacade.getInstance().registerUser(user, "auth");
         assertEquals(ClientModel.getInstance().getCurrentUser(), user);
