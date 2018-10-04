@@ -17,6 +17,7 @@ public enum PlayerColor {
         for (PlayerColor c : values()) {
             colors.add(c.name());
         }
+        colors.remove("UNCHOSEN");
         return colors;
     }
 }

@@ -34,7 +34,14 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+<<<<<<< Updated upstream
         if (o.getClass().isArray()) {
+=======
+        if (o instanceof GameInfo) {
+            observable.deleteObserver(this);
+            activity.startGame();
+        } else {
+>>>>>>> Stashed changes
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();

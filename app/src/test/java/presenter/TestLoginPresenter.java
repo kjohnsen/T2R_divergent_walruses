@@ -3,8 +3,6 @@ package presenter;
 import org.junit.Before;
 import org.junit.Test;
 
-import activity.ILoginActivity;
-
 import static org.junit.Assert.*;
 
 public class TestLoginPresenter {
