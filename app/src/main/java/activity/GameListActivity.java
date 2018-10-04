@@ -1,6 +1,7 @@
 package activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,7 +77,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.createGame(Integer.parseInt(numPlayers.getSelectedItem().toString()));
+                CreateGameTask c = new CreateGameTask();
+                c.doInBackground((Integer)numPlayers.getSelectedItem());
             }
         });
         gameList = findViewById(R.id.gameList);
@@ -120,21 +122,38 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             private TextView numSpots;
             GameHolder(View view) {
                 super(view);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        presenter.joinGame(gameName.getText().toString());
-                    }
-                });
                 gameName = findViewById(R.id.itemName);
                 gamePlayers = findViewById(R.id.itemPlayers);
                 numSpots = findViewById(R.id.itemNum);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        JoinGameTask j = new JoinGameTask();
+                        j.execute(gameName.getText().toString());
+                    }
+                });
             }
             void bind(String name, String players, String spotsLeft) {
                 gameName.setText(name);
                 gamePlayers.setText(players);
                 numSpots.setText(spotsLeft);
             }
+        }
+    }
+
+    public class CreateGameTask extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected Void doInBackground(Integer... s) {
+            presenter.createGame(s[0]);
+            return null;
+        }
+    }
+
+    public class JoinGameTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... s) {
+            presenter.joinGame(s[0]);
+            return null;
         }
     }
 

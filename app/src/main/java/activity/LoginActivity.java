@@ -2,6 +2,7 @@ package activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -121,14 +122,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.login();
+                Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
+                LoginTask l = new LoginTask();
+                l.execute();
             }
         });
         registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.register();
+                Toast.makeText(LoginActivity.this, "Registering...", Toast.LENGTH_SHORT).show();
+                RegisterTask r = new RegisterTask();
+                r.execute();
             }
         });
     }
@@ -149,7 +154,23 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
     @Override
     public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public class RegisterTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... s) {
+            presenter.register();
+            return null;
+        }
+    }
+
+    public class LoginTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... s) {
+            presenter.login();
+            return null;
+        }
     }
 
     @Override
