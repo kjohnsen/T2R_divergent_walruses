@@ -58,7 +58,7 @@ public class UIFacade {
 
     //returns null if no error, or an error message if there is one
     public String registerUser(String username, String password) {
-        LoggedInResults loggedInResults = ServerProxy.getInstance().registerUser(username, password);
+        LoggedInResults loggedInResults = serverProxy.registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
                 loggedInResults.getClientCommands().get(i).execute();

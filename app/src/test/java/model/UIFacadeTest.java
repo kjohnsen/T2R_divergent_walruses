@@ -67,9 +67,15 @@ public class UIFacadeTest {
 
     @Test
     public void startGame() {
-        String success = uiFacade.startGame(new GameInfo(new GameName("success"), new ArrayList<Player>(), 0));
-        String fail = uiFacade.startGame(new GameInfo(new GameName("fail"), new ArrayList<Player>(), 0));
-        String nullResults = uiFacade.startGame(new GameInfo(new GameName("null"), new ArrayList<Player>(), 0));
+        GameInfo successInfo = new GameInfo(new GameName("success"), new ArrayList<Player>(), 2);
+        GameInfo failInfo = new GameInfo(new GameName("fail"), new ArrayList<Player>(), 2);
+        GameInfo nullInfo = new GameInfo(new GameName("null"), new ArrayList<Player>(), 2);
+        ClientModel.getInstance().setCurrentGame(successInfo);
+        String success = uiFacade.startGame();
+        ClientModel.getInstance().setCurrentGame(failInfo);
+        String fail = uiFacade.startGame();
+        ClientModel.getInstance().setCurrentGame(nullInfo);
+        String nullResults = uiFacade.startGame();
 
         assertNull(success);
         assertTrue(fail.equals("Game cannot start"));
