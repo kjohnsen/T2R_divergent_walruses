@@ -2,6 +2,7 @@ package clientserver;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -18,12 +19,13 @@ public class ServerPoller extends Service{
     private static final ServerPoller ourInstance = new ServerPoller();
     private static Handler handler = null;
     private static final long DEFAULT_POLL_INTERVAL = 2 * 1000; //2 seconds
-    private static IServer serverProxy = ServerProxy.getInstance();
+    private  IServer serverProxy = ServerProxy.getInstance();
 
     private Runnable runnableService = new Runnable() {
         @Override
         public void run() {
-            getCommands();
+            //Start the async task...
+            new GetCommandsTask().execute();
 
             //Post this service again in 2 seconds...
             handler.postDelayed(runnableService, DEFAULT_POLL_INTERVAL);
@@ -32,12 +34,12 @@ public class ServerPoller extends Service{
 
     private ServerPoller() {}
 
-    public static IServer getServerProxy() {
+    public IServer getServerProxy() {
         return serverProxy;
     }
 
-    public static void setServerProxy(IServer serverProxy) {
-        ServerPoller.serverProxy = serverProxy;
+    public void setServerProxy(IServer serverProxy) {
+        this.serverProxy = serverProxy;
     }
 
     @Nullable
@@ -50,18 +52,28 @@ public class ServerPoller extends Service{
         return ourInstance;
     }
 
-    private synchronized void getCommands() {
-        //Where are authtoken and clientID?
-        ArrayList<Command> commands = serverProxy.getCommands(UIFacade.getInstance().getAuthToken(), UIFacade.getInstance().getAuthToken());
-        for(int i = 0; i < commands.size(); ++i) {
-            commands.get(i).execute();
-        }
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //Start the service...
         handler = new Handler();
         handler.post(runnableService);
         return START_STICKY;
+    }
+
+    private class GetCommandsTask extends AsyncTask<Void, Void, ArrayList<Command>> {
+
+        @Override
+        protected ArrayList<Command> doInBackground(Void... voids) {
+            //Send the request to the server...
+            return serverProxy.getCommands(UIFacade.getInstance().getAuthToken(), UIFacade.getInstance().getAuthToken());
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Command> commands) {
+            //Execute any commands that we get back...
+            for(int i = 0; i < commands.size(); ++i) {
+                commands.get(i).execute();
+            }
+        }
     }
 }

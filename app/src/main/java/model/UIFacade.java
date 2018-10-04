@@ -107,7 +107,8 @@ public class UIFacade {
         return null;
     }
 
-    public String startGame(GameInfo gameInfo) {
+    public String startGame() {
+        GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();
         GameResults gameResults = serverProxy.startGame(gameInfo.getGameName(), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
@@ -139,6 +140,6 @@ public class UIFacade {
         return null;
     }
 
-    
+
 
 }

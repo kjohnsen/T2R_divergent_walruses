@@ -1,6 +1,7 @@
 package clientserver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
@@ -23,58 +24,50 @@ public class ServerProxy implements IServer {
 
     @Override
     public LoggedInResults loginUser(String username, String password) {
-        String[] parameterTypes = {"String", "String"};
-        Object[] parameters = {username, password};
-        Command command = new Command("ServerFacade", "loginUser", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "loginUser", Arrays.asList(new Object[] {username, password}));
         return (LoggedInResults)ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public LoggedInResults registerUser(String username, String password) {
-        String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        String[] parameterTypes = {"String", "String"};
-        Object[] parameters = {username, password};
-        Command command = new Command("ServerFacade", "registerUser", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
         return (LoggedInResults)ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public GameResults createGame(String name, int numPlayers, String authToken) {
-        String[] parameterTypes = {"String", "int", "String"};
-        Object[] parameters = {name, numPlayers, authToken};
-        Command command = new Command("ServerFacade", "createGame", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "createGame", Arrays.asList(new Object[] {numPlayers, authToken}));
         return (GameResults) ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public GameResults joinGame(GameName gameName, String authToken) {
-        String[] parameterTypes = {"GameName", "String"};
-        Object[] parameters = {gameName, authToken};
-        Command command = new Command("ServerFacade", "joinGame", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "joinGame", Arrays.asList(new Object[] {gameName, authToken}));
         return (GameResults)ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public GameResults startGame(GameName gameName, String authToken) {
-        String[] parameterTypes = {"GameName", "String"};
-        Object[] parameters = {gameName, authToken};
-        Command command = new Command("ServerFacade", "startGame", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "startGame", Arrays.asList(new Object[] {gameName, authToken}));
         return (GameResults)ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results chooseColor(PlayerColor color, String authToken) {
-        String[] parameterTypes = {"PlayerColor", "String"};
-        Object[] parameters = {color, authToken};
-        Command command = new Command("ServerFacade", "chooseColor", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "chooseColor", Arrays.asList(new Object[] {color, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public ArrayList<Command> getCommands(String clientID, String authToken) {
-        String[] parameterTypes = {"String", "String"};
-        Object[] parameters = {clientID, authToken};
-        Command command = new Command("ServerFacade", "getCommands", parameterTypes, parameters);
+        //Send the command...
+        Command command = new Command("ServerFacade", "getCommands", Arrays.asList(new Object[] {clientID, authToken}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results.getClientCommands();
     }
