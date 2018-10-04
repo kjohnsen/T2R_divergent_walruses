@@ -13,4 +13,14 @@ public class LoginMock implements ILoginActivity {
     public void setRegisterEnabled(boolean enabled) {
         //just here for mocking purposes
     }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        //just here for mocking purposes
+    }
+
+    @Override
+    public void goToGameList() {
+        //just here for mocking purposes
+    }
 }

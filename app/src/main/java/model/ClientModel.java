@@ -47,12 +47,12 @@ public class ClientModel extends Observable implements Observer {
         for (GameInfo game : gameList) {
             game.addObserver(this);
         }
-        this.notifyObservers();
+        this.notifyObservers(gameList);
     }
 
     public void setCurrentGame(GameInfo currentGame) {
         this.currentGame = currentGame;
-        this.notifyObservers();
+        this.notifyObservers(currentGame);
     }
 
     public User getCurrentUser() {
@@ -73,5 +73,9 @@ public class ClientModel extends Observable implements Observer {
 
     public GameInfo getCurrentGame() {
         return currentGame;
+    }
+
+    public boolean currentGameReady() {
+        return currentGame.ready();
     }
 }

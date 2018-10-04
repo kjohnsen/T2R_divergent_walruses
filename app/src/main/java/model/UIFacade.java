@@ -45,6 +45,7 @@ public class UIFacade {
                 loggedInResults.getClientCommands().get(i).execute();
             }
         } else {
+            //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
                 return "Cannot reach server";
             } else {
@@ -55,13 +56,15 @@ public class UIFacade {
         return null;
     }
 
+    //returns null if no error, or an error message if there is one
     public String registerUser(String username, String password) {
-        LoggedInResults loggedInResults = serverProxy.registerUser(username, password);
+        LoggedInResults loggedInResults = ServerProxy.getInstance().registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
                 loggedInResults.getClientCommands().get(i).execute();
             }
         } else {
+            //throw an error and have the presenter catch it and display it in a toast?
             if(loggedInResults == null) {
                 return "Cannot reach server";
             } else {
@@ -133,7 +136,9 @@ public class UIFacade {
                 return results.getErrorMessage();
             }
         }
-
         return null;
     }
+
+    
+
 }

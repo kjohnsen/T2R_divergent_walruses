@@ -2,7 +2,7 @@ package modelclasses;
 
 import java.util.Observable;
 
-public class Player extends Observable{
+public class Player extends Observable {
     private String username;
     private PlayerColor playerColor;
 

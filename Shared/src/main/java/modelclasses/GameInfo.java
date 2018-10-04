@@ -59,6 +59,10 @@ public class GameInfo extends Observable implements Observer {
         return numPlayers;
     }
 
+    public boolean ready() {
+        return (numPlayers - players.size() == 0);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
