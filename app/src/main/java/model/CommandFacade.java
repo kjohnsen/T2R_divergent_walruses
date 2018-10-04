@@ -25,13 +25,13 @@ public class CommandFacade implements iClient {
     @Override
     public void loginUser(User user, String authToken) {
         ClientModel.getInstance().setCurrentUser(user);
-        ServerProxy.getInstance().setAuthToken(authToken);
+        UIFacade.getInstance().setAuthToken(authToken);
     }
 
     @Override
     public void registerUser(User user, String authToken) {
         ClientModel.getInstance().setCurrentUser(user);
-        ServerProxy.getInstance().setAuthToken(authToken);
+        UIFacade.getInstance().setAuthToken(authToken);
     }
 
     @Override
