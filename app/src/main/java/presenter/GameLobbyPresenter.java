@@ -8,6 +8,7 @@ import java.util.Observer;
 import activity.IGameLobbyActivity;
 import model.ClientModel;
 import model.UIFacade;
+import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 
@@ -24,17 +25,26 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public void chooseColor(String color) {
-        UIFacade.getInstance().claimColor(PlayerColor.valueOf(color));
+        String message = UIFacade.getInstance().claimColor(PlayerColor.valueOf(color));
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override
     public void startGame() {
-        UIFacade.getInstance().startGame();
+        String message = UIFacade.getInstance().startGame();
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o.getClass().isArray()) {
+        if (o instanceof GameInfo) {
+            observable.deleteObserver(this);
+            activity.startGame();
+        } else if (o.getClass().isArray()) {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();

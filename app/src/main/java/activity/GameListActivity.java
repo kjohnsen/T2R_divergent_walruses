@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
@@ -155,6 +156,11 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             presenter.joinGame(s[0]);
             return null;
         }
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
