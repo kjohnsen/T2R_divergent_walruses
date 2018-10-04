@@ -16,6 +16,26 @@ public class User {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public ArrayList<GameName> getGameNameList() {
+        return gameNameList;
+    }
+
+    public void setGameNameList(ArrayList<GameName> gameNameList) {
+        this.gameNameList = gameNameList;
+    }
+
     public void addGame(GameName gameName) {
         gameNameList.add(gameName);
     }

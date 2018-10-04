@@ -9,7 +9,7 @@ public class CommandManager {
     private static CommandManager instance = null;
 
     // These strings are authTokens
-    private Map<String, ArrayList<Command>> clientCommands;
+    private Map<String, ArrayList<Command>> clientCommands = new HashMap<>();
 
     private CommandManager(){}
 

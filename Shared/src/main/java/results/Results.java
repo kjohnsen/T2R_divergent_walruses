@@ -8,7 +8,7 @@ abstract public class Results {
 
     private Boolean isSuccess;
     private String errorMessage;
-    ArrayList<Command> clientCommands;
+    ArrayList<Command> clientCommands = new ArrayList();
 
     public ArrayList<Command> getClientCommands() {
         return clientCommands;

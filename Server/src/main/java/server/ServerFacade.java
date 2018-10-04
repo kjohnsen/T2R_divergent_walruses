@@ -46,7 +46,7 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
 
         //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("CommandFacade","loginUser", Arrays.asList(new Object[] {username, password}));
+        Command loginClientCommand = new Command("CommandFacade","loginUser", Arrays.asList(new Object[] {username, authToken}));
         //************************************************************
 
         //set results
@@ -82,7 +82,7 @@ public class ServerFacade implements IServer {
         serverModel.getUsers().put(username, newUser);
         serverModel.getAuthTokens().put(authToken, username);
 
-        Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
+        Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, authToken}));
 
         //set results
         loggedInResults.setAuthToken(authToken);
