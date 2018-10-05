@@ -23,6 +23,7 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
+import clientserver.ServerPoller;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import presenter.GameListPresenter;
@@ -51,6 +52,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
+        ServerPoller.getInstance().startService(null);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
         gameName.addTextChangedListener(new TextWatcher() {
