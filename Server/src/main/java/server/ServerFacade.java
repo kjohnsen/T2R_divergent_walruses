@@ -23,7 +23,6 @@ public class ServerFacade implements IServer {
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
-        results.setSuccess(false);
 
         //************** Check parameters with Model/DB *******************
         ServerModel serverModel = ServerModel.getInstance();
@@ -64,7 +63,6 @@ public class ServerFacade implements IServer {
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
-        results.setSuccess(false);
 
         //first check to see if the username exists.
         ServerModel serverModel = ServerModel.getInstance();
@@ -95,7 +93,6 @@ public class ServerFacade implements IServer {
     public Results createGame(String name, int numPlayers, String clientAuthToken) {
 
         Results results = new Results();
-        results.setSuccess(false);
 
         //creating a game doesn't add any players.. going to be all null.
         GameName gameName = new GameName(name);
@@ -142,7 +139,6 @@ public class ServerFacade implements IServer {
     public Results joinGame(GameName gameName, String clientAuthToken) {
 
         Results results = new Results();
-        results.setSuccess(false);
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         if (game == null) {
@@ -185,7 +181,6 @@ public class ServerFacade implements IServer {
     public Results startGame(GameName gameName, String clientAuthToken) {
 
         Results results = new Results();
-        results.setSuccess(false);
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         if (game == null) {
