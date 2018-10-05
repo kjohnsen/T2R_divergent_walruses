@@ -8,4 +8,6 @@ public interface ILoginPresenter {
     void registerUsernameChanged(String username);
     void registerPasswordChanged(String password);
     void registerConfirmChanged(String confirm);
+    void hostIPChanged(String hostIP);
+    void hostPortChanged(String hostPort);
 }

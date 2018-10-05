@@ -71,4 +71,14 @@ public class ServerProxy implements IServer {
         Results results = ClientCommunicator.getInstance().send(command);
         return results.getClientCommands();
     }
+
+    @Override
+    public void setHostIP(String hostIP) {
+        ClientCommunicator.getInstance().setServerHost(hostIP);
+    }
+
+    @Override
+    public void setHostPort(String hostPort) {
+        ClientCommunicator.getInstance().setServerPort(hostPort);
+    }
 }

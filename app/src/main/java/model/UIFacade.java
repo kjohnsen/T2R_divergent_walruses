@@ -140,6 +140,11 @@ public class UIFacade {
         return null;
     }
 
+    public void setHostIP(String hostIP) {
+        serverProxy.setHostIP(hostIP);
+    }
 
-
+    public void setHostPort(String hostPort) {
+        serverProxy.setHostPort(hostPort);
+    }
 }
