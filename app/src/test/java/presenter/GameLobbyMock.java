@@ -1,8 +1,5 @@
 package presenter;
 
-<<<<<<< HEAD
-public class GameLobbyMock {
-=======
 import java.util.ArrayList;
 
 import activity.IGameLobbyActivity;
@@ -60,5 +57,4 @@ public class GameLobbyMock implements IGameLobbyActivity {
     public void startGame() {
         //just here for mocking purposes
     }
->>>>>>> master
 }

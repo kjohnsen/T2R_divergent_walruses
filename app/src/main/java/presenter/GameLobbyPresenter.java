@@ -44,11 +44,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             activity.startGame();
-<<<<<<< HEAD
-        } else if (o.getClass().isArray()) {
-=======
         } else {
->>>>>>> master
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();

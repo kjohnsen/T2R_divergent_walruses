@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 public class TestLoginPresenter {
 
     private static LoginPresenter loginPresenter;
-<<<<<<< HEAD
     private static LoginMock loginMock;
 
     @BeforeClass
@@ -42,6 +41,8 @@ public class TestLoginPresenter {
         loginPresenter.registerPasswordChanged("Bark");
         loginPresenter.registerConfirmChanged("Sticks");
         assertTrue(!loginMock.registerEnabled());
+        loginPresenter.registerConfirmChanged("Bark");
+        assertTrue(loginMock.registerEnabled());
     }
     @Test
     public void loginEmptyPassword() {
@@ -55,39 +56,5 @@ public class TestLoginPresenter {
         loginPresenter.registerPasswordChanged("");
         loginPresenter.registerConfirmChanged("");
         assertTrue(!loginMock.registerEnabled());
-=======
-    private static LoginMock mock;
-
-    @BeforeClass
-    public static void setup() {
-        mock = new LoginMock();
-        loginPresenter = new LoginPresenter(mock);
-    }
-    @Before
-    public void reset() {
-        mock.reset();
-    }
-    @Test
-    public void validLogin() {
-        loginPresenter.loginUsernameChanged("Steve");
-        loginPresenter.loginPasswordChanged("Hi");
-        assertTrue(mock.isLogin());
-    }
-    @Test
-    public void validRegister() {
-        loginPresenter.registerUsernameChanged("Fred");
-        loginPresenter.registerPasswordChanged("Whatwhat");
-        loginPresenter.registerConfirmChanged("Whatwhat");
-        assertTrue(mock.isRegister());
-    }
-    @Test
-    public void registerConfirmOff() {
-        loginPresenter.registerUsernameChanged("Fruit");
-        loginPresenter.registerPasswordChanged("Orange");
-        loginPresenter.registerConfirmChanged("Pineapple");
-        assertTrue(!mock.isRegister());
-        loginPresenter.registerConfirmChanged("Orange");
-        assertTrue(mock.isRegister());
->>>>>>> master
     }
 }

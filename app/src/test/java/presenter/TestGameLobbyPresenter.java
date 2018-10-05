@@ -1,8 +1,5 @@
 package presenter;
 
-<<<<<<< HEAD
-public class TestGameLobbyPresenter {
-=======
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,5 +44,4 @@ public class TestGameLobbyPresenter {
         assertArrayEquals(players.toArray(), lobbyMock.getPlayers().toArray());
         assertEquals(5, lobbyMock.getColors().size());
     }
->>>>>>> master
 }

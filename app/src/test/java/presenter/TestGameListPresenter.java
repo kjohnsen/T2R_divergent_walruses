@@ -1,8 +1,5 @@
 package presenter;
 
-<<<<<<< HEAD
-public class TestGameListPresenter {
-=======
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -74,5 +71,4 @@ public class TestGameListPresenter {
         ClientModel.getInstance().setGameList(games);
         assertEquals(2,listMock.getGames().size());
     }
->>>>>>> master
 }
