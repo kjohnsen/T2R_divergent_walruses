@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
@@ -100,5 +101,15 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
     @Override
     public void setStartGameEnabled(boolean enabled) {
         startGameButton.setEnabled(enabled);
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void startGame() {
+        Toast.makeText(this, "This will eventually go to the next activity", Toast.LENGTH_LONG).show();
     }
 }

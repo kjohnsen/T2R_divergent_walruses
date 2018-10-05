@@ -7,5 +7,6 @@ import modelclasses.GameInfo;
 public interface IGameListActivity {
     void populateGameList(ArrayList<GameInfo> games);
     void setCreateGameEnabled(boolean enabled);
+    void displayErrorMessage(String message);
     void goToGameLobby();
 }

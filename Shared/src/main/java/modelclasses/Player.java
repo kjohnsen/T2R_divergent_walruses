@@ -1,13 +1,16 @@
 package modelclasses;
 
-import java.util.Observable;
-
-public class Player extends Observable {
+public class Player {
     private String username;
     private PlayerColor playerColor;
 
     public Player(String username) {
         this.username = username;
+    }
+    //the following constructor is used for testing
+    public Player(String username, PlayerColor color) {
+        this.username = username;
+        playerColor = color;
     }
 
     public String getUsername() {
@@ -20,7 +23,6 @@ public class Player extends Observable {
 
     public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
-        this.notifyObservers();
     }
 
     @Override
