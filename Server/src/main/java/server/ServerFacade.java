@@ -181,4 +181,9 @@ public class ServerFacade implements IServer {
         return null;
     }
 
+    //these two methods are necessary for the client side, but not the server side
+    @Override
+    public void setHostIP(String hostIP) { }
+    @Override
+    public void setHostPort(String hostPort) { }
 }

@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GameInfo extends Observable implements Observer {
+public class GameInfo {
     private GameName gameName;
     private ArrayList<Player> players;
     private int numPlayers;
@@ -14,20 +14,10 @@ public class GameInfo extends Observable implements Observer {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
-        this.notifyObservers();
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        // observes players and notifies observers (e.g., ClientModel) of changes
-        this.notifyObservers(o);
-    }
-
-    public boolean addPlayer(Player player) {
+    public void addPlayer(Player player) {
         players.add(player);
-        this.notifyObservers();
-        player.addObserver(this);
-        return true;
     }
 
     public GameName getGameName() {
@@ -49,14 +39,14 @@ public class GameInfo extends Observable implements Observer {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
-        for (Player p : players) {
-            p.addObserver(this);
-        }
-        this.notifyObservers();
     }
 
     public int getNumPlayers() {
         return numPlayers;
+    }
+
+    public boolean ready() {
+        return (numPlayers - players.size() == 0);
     }
 
     @Override

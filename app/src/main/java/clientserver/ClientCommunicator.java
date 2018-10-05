@@ -12,6 +12,7 @@ import java.net.URL;
 import data.Command;
 import data.Serializer;
 import model.ClientModel;
+import model.UIFacade;
 import results.LoggedInResults;
 import results.Results;
 
@@ -19,7 +20,6 @@ public class ClientCommunicator {
     private Serializer serializer = new Serializer();
     private String serverHost = "localhost";
     private String serverPort = "8080";
-    private String authToken = null;
     private static final ClientCommunicator ourInstance = new ClientCommunicator();
 
     private ClientCommunicator() {}
@@ -46,35 +46,32 @@ public class ClientCommunicator {
 
     public Results send(Command command) {
         try {
+            //Make the URL...
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/excmd");
+
+            //Get the connection
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            //Send the auth token, ClientModel doesn't have one??
-            if(authToken != null) {
-                connection.addRequestProperty("Authorization", authToken);
+            //Send the auth token if there is one...
+            if(UIFacade.getInstance().getAuthToken() != null) {
+                connection.addRequestProperty("Authorization", UIFacade.getInstance().getAuthToken());
             }
 
+            //Add the command to the request body...
             connection.connect();
             String serializedCommand = serializer.encode(command);
             OutputStream requestBody = connection.getOutputStream();
             serializer.writeString(serializedCommand, requestBody);
             requestBody.close();
 
-            //Should always return a results, possibly with an error
-            //if(connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
-                InputStream responseBody = connection.getInputStream();
-                String serializedResults = serializer.readString(responseBody);
-                Results results = (Results)serializer.decode(serializedResults, Results.class);
-                return results;
-            //} //else if(connection.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-//                //Not sure how to do this since
-//                Results results = new LoggedInResults();
-//                results.setErrorMessage(connection.getResponseMessage());
-//                results.setSuccess(false);
-//                return results;
-//            }
+            //Get back the results. There should always be results unless there was a serious error...
+            InputStream responseBody = connection.getInputStream();
+            String serializedResults = serializer.readString(responseBody);
+            Results results = (Results)serializer.decode(serializedResults, Results.class);
+
+            return results;
         } catch (IOException e) {
             e.printStackTrace();
         }

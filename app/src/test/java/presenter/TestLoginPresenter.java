@@ -1,25 +1,45 @@
 package presenter;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
-import activity.ILoginActivity;
 
 import static org.junit.Assert.*;
 
 public class TestLoginPresenter {
 
-    private LoginPresenter loginPresenter;
+    private static LoginPresenter loginPresenter;
+    private static LoginMock mock;
 
+    @BeforeClass
+    public static void setup() {
+        mock = new LoginMock();
+        loginPresenter = new LoginPresenter(mock);
+    }
     @Before
-    public void setup() {
-        loginPresenter = new LoginPresenter(new LoginMock());
+    public void reset() {
+        mock.reset();
     }
     @Test
-    public void loginTest() {
-        //there should be a test here, but there's no way to test anything in the presenter...
-        //none of the functions return anything, and getters and setters are unnecessary
-        assertEquals(4, 2+2);
-//        assertTrue(false);
+    public void validLogin() {
+        loginPresenter.loginUsernameChanged("Steve");
+        loginPresenter.loginPasswordChanged("Hi");
+        assertTrue(mock.isLogin());
+    }
+    @Test
+    public void validRegister() {
+        loginPresenter.registerUsernameChanged("Fred");
+        loginPresenter.registerPasswordChanged("Whatwhat");
+        loginPresenter.registerConfirmChanged("Whatwhat");
+        assertTrue(mock.isRegister());
+    }
+    @Test
+    public void registerConfirmOff() {
+        loginPresenter.registerUsernameChanged("Fruit");
+        loginPresenter.registerPasswordChanged("Orange");
+        loginPresenter.registerConfirmChanged("Pineapple");
+        assertTrue(!mock.isRegister());
+        loginPresenter.registerConfirmChanged("Orange");
+        assertTrue(mock.isRegister());
     }
 }
