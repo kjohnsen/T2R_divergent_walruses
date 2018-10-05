@@ -164,11 +164,6 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     }
 
     @Override
-    public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void goToGameLobby() {
         Intent intent = new Intent(this, GameLobbyActivity.class);
         startActivity(intent);
