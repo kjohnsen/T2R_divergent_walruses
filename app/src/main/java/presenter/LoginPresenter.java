@@ -80,6 +80,16 @@ public class LoginPresenter implements ILoginPresenter, Observer {
         activity.setRegisterEnabled(allow);
     }
 
+    @Override
+    public void hostIPChanged(String hostIP) {
+        UIFacade.getInstance().setHostIP(hostIP);
+    }
+
+    @Override
+    public void hostPortChanged(String hostPort) {
+        UIFacade.getInstance().setHostPort(hostPort);
+    }
+
     public void update(Observable observable, Object o) {
         observable.deleteObserver(this);
         activity.goToGameList();
