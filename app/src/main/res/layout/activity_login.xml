@@ -20,6 +20,26 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/registerLayout">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hostIP"
+            android:inputType="text"
+            android:hint="@string/host_ip"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hostPort"
+            android:inputType="number"
+            android:hint="@string/host_port"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/loginLayout"
         app:layout_constraintBottom_toTopOf="@id/bottomGuide"

@@ -6,6 +6,7 @@ import java.util.Observer;
 
 import modelclasses.GameName;
 import modelclasses.GameInfo;
+import modelclasses.Player;
 import modelclasses.User;
 
 public class ClientModel extends Observable {
@@ -37,11 +38,20 @@ public class ClientModel extends Observable {
 
     public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
+        this.setChanged();
+        this.notifyObservers(gameList);
     }
 
     public void setCurrentGame(GameInfo currentGame) {
         this.currentGame = currentGame;
-        this.notifyObservers();
+        this.setChanged();
+        this.notifyObservers(currentGame);
+    }
+
+    public void setCurrentGamePlayers(ArrayList<Player> players) {
+        currentGame.setPlayers(players);
+        this.setChanged();
+        this.notifyObservers(players);
     }
 
     public User getCurrentUser() {
@@ -62,5 +72,9 @@ public class ClientModel extends Observable {
 
     public GameInfo getCurrentGame() {
         return currentGame;
+    }
+
+    public boolean currentGameReady() {
+        return currentGame.ready();
     }
 }

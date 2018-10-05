@@ -1,23 +1,23 @@
 package modelclasses;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public enum PlayerColor {
-    MAGENTA(Color.MAGENTA),
-    BLUE(Color.BLUE),
-    RED(Color.RED),
-    GREEN(Color.GREEN),
-    YELLOW(Color.YELLOW),
-    ORANGE(Color.ORANGE),
-    BLACK(Color.BLACK);
+    MAGENTA,
+    BLUE,
+    RED,
+    GREEN,
+    YELLOW,
+    ORANGE,
+    BLACK,
+    UNCHOSEN;
 
-    private Color color;
-    private PlayerColor(Color color) {
-        this.color = color;
-    }
-
-    public Color getColor() {
-        return color;
+    public static ArrayList<String> getColors() {
+        ArrayList<String> colors = new ArrayList<>();
+        for (PlayerColor c : values()) {
+            colors.add(c.name());
+        }
+        colors.remove("UNCHOSEN");
+        return colors;
     }
 }
