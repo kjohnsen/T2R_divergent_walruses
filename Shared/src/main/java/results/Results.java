@@ -8,7 +8,11 @@ public class Results {
 
     private Boolean isSuccess;
     private String errorMessage;
-    ArrayList<Command> clientCommands = new ArrayList();
+    ArrayList<Command> clientCommands = new ArrayList<>();
+
+    public Results() {
+        isSuccess = false;
+    }
 
     public ArrayList<Command> getClientCommands() {
         return clientCommands;
