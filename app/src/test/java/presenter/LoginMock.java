@@ -7,17 +7,17 @@ public class LoginMock implements ILoginActivity {
     private boolean login = false;
     private boolean register = false;
 
-    public boolean isLogin() {
-        return login;
-    }
-
-    public boolean isRegister() {
-        return register;
-    }
-
     public void reset() {
         login = false;
         register = false;
+    }
+
+    public boolean loginEnabled() {
+        return login;
+    }
+
+    public boolean registerEnabled() {
+        return register;
     }
 
     @Override
