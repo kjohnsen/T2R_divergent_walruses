@@ -112,15 +112,8 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        //players are going to be null for now... until they join the game.
-        //this way you can still check the size of the arrayList. -- why do we need this?
-        ArrayList<Player> players = new ArrayList<>();
-//        for(int i = 0; i < numPlayers; i++) {
-//            Player player = null;
-//            players.add(player);
-//        }
-
         //create game info and add to server model.
+        ArrayList<Player> players = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
