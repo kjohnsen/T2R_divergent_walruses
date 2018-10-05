@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class User {
     private String username;
     private String password;
-    private ArrayList<GameName> gameNameList;
+    private ArrayList<GameName> gameNameList = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
@@ -38,6 +38,15 @@ public class User {
 
     public void addGame(GameName gameName) {
         gameNameList.add(gameName);
+    }
+
+    public boolean gameInList(GameName gameName) {
+        for (GameName game : gameNameList) {
+            if (gameName.equals(game)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

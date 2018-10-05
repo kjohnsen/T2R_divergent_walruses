@@ -2,7 +2,6 @@
 
  import static org.junit.Assert.* ;
 
- import org.junit.After;
  import org.junit.Before;
  import org.junit.Test;
 
@@ -16,14 +15,13 @@
  import modelclasses.User;
 
 
- public class TestServerFacade {
+ public class TestServerFacadeUser {
 
      private ServerFacade serverFacade;
 
      @Before
      public void setUp(){
          serverFacade = new ServerFacade();
-         return;
      }
 
      @Before
@@ -88,16 +86,6 @@
         Results results = serverFacade.registerUser("user1", "newPassword");
         assertFalse(results.getSuccess());
         assertEquals("Username already exists!", results.getErrorMessage());
-     }
-
-     @Test
-     public void createGame() {
-
-     }
-
-     @Test
-     public void joinGame() {
-
      }
 
  }

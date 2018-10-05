@@ -100,21 +100,35 @@ public class ServerFacade implements IServer {
         //creating a game doesn't add any players.. going to be all null.
         GameName gameName = new GameName(name);
 
-        //players are going to be null for now... until they join the game.
-        //this way you can still check the size of the arrayList.
-        ArrayList<Player> players = new ArrayList<>();
-        for(int i = 0; i < numPlayers; i++) {
-            Player player = null;
-            players.add(player);
+        // check that the game name is unique
+        if (ServerModel.getInstance().getGames().containsKey(gameName)) {
+            results.setErrorMessage("Game name already exists");
+            return results;
         }
+
+        // check that numPlayers is valid
+        if (numPlayers < 1 || numPlayers > 5) {
+            results.setErrorMessage("Invalid player number");
+            return results;
+        }
+
+        //players are going to be null for now... until they join the game.
+        //this way you can still check the size of the arrayList. -- why do we need this?
+        ArrayList<Player> players = new ArrayList<>();
+//        for(int i = 0; i < numPlayers; i++) {
+//            Player player = null;
+//            players.add(player);
+//        }
 
         //create game info and add to server model.
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
+        // user joins the game they just created
+        Player player = addUserToGame(clientAuthToken, gameInfo);
+
         //create commands for every client in the server model except the one that asked
         //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
-        //TODO: how do I exclude the client that is calling from the command manager?
         for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
@@ -122,10 +136,11 @@ public class ServerFacade implements IServer {
             }
         }
 
-
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+        Command joinGameCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {gameInfo}));
 
         results.getClientCommands().add(createGameCommand);
+        results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
 
         return results;
@@ -143,16 +158,12 @@ public class ServerFacade implements IServer {
         }
 
         ArrayList<Player> gamePlayers = game.getPlayers();
-        if (gamePlayers.size() > 4) {
+        if (gamePlayers.size() == game.getNumPlayers()) {
             results.setErrorMessage("Game is full");
             return results;
         }
 
-        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
-        Player player = new Player(username); // create new player
-        game.addPlayer(player); // add player to game
-        User user = ServerModel.getInstance().getUser(username); // look up user
-        user.addGame(gameName); // add game to user game list
+        Player player = addUserToGame(clientAuthToken, game);
 
         for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
             if (!authToken.equals(clientAuthToken)) {
@@ -169,8 +180,45 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results startGame(GameName gameName, String authToken) {
-        return null;
+    private Player addUserToGame(String clientAuthToken, GameInfo game) {
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
+        Player player = new Player(username); // create new player
+        game.addPlayer(player); // add player to game
+        User user = ServerModel.getInstance().getUser(username);
+        user.addGame(game.getGameName());
+        return player;
+    }
+
+    public Results startGame(GameName gameName, String clientAuthToken) {
+
+        Results results = new Results();
+        results.setSuccess(false);
+
+        GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
+        if (game == null) {
+            results.setErrorMessage("Game does not exist");
+            return results;
+        }
+
+        ArrayList<Player> gamePlayers = game.getPlayers();
+        if (gamePlayers.size() < 2) {
+            results.setErrorMessage("Not enough players to start game");
+            return results;
+        }
+
+        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+            if (!authToken.equals(clientAuthToken)) {
+                Command clientCommand = new Command("CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
+                CommandManager.getInstance().addCommand(authToken, clientCommand);
+            }
+        }
+
+        Command startGameCommand = new Command("CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
+
+        results.getClientCommands().add(startGameCommand);
+        results.setSuccess(true);
+
+        return results;
     }
 
     public Results chooseColor(PlayerColor color, String authToken) {
@@ -178,7 +226,7 @@ public class ServerFacade implements IServer {
     }
 
     public ArrayList<Command> getCommands(String clientID, String authToken) {
-        return null;
+        return CommandManager.getInstance().getCommands(clientID);
     }
 
     //these two methods are necessary for the client side, but not the server side

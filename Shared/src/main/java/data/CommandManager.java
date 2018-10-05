@@ -26,8 +26,10 @@ public class CommandManager {
 
     //gets the array list of commands with the given client ID and adds it.
     public void addCommand(String clientID, Command command) {
-        getCommands(clientID).add(command);
         ArrayList<Command> commands = clientCommands.get(clientID);
+        if (commands == null) {
+            commands = new ArrayList<>();
+        }
         commands.add(command);
     }
 
