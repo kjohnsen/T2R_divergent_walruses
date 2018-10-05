@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Map;
+import java.util.HashMap;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.User;
@@ -9,9 +10,9 @@ public class ServerModel {
 
     private static ServerModel instance = null;
 
-    private Map<String, String> authTokens; // maps authTokens to usernames
-    private Map<String, User> users;
-    private Map<GameName, GameInfo> games;
+    private Map<String, String> authTokens = new HashMap<>(); // maps authTokens to usernames
+    private Map<String, User> users = new HashMap<>();
+    private Map<GameName, GameInfo> games = new HashMap<>();
 
     private ServerModel() { }
 
@@ -27,7 +28,7 @@ public class ServerModel {
     }
 
     public Boolean checkPassword(String username, String password) {
-        return getUsers().get(username).equals(password);
+        return getUsers().get(username).getPassword().equals(password);
     }
 
     public GameInfo getGameInfo(GameName gameName) {

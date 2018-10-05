@@ -22,4 +22,10 @@ public class GameName {
         GameName gameName = (GameName) o;
         return this.name.equals(gameName.name);
     }
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
 }
