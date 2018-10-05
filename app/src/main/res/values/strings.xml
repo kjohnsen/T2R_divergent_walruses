@@ -5,6 +5,8 @@
     <string name="confirm">Confirm Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="host_ip">Host IP Address</string>
+    <string name="host_port">Host Port</string>
     <string name="game_name">Game Name</string>
     <string name="game_players">Players in Game</string>
     <string name="spots_left">Spots Left</string>

@@ -3,6 +3,7 @@ package activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +20,8 @@ import presenter.LoginPresenter;
 
 public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
+    EditText hostIP;
+    EditText hostPort;
     EditText loginUsername;
     EditText loginPassword;
     Button loginButton;
@@ -33,6 +36,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         presenter = new LoginPresenter(this);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String storedUsername = sharedPref.getString("storedUsername","");
+        String storedPassword = sharedPref.getString("storedPassword","");
         loginUsername = findViewById(R.id.loginUsername);
         loginUsername.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,6 +129,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.putString("storedUsername", loginUsername.getText().toString());
+                editor.putString("storedPassword", loginPassword.getText().toString());
+                editor.apply();
                 LoginTask l = new LoginTask();
                 l.execute();
             }
@@ -134,6 +146,45 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
                 Toast.makeText(LoginActivity.this, "Registering...", Toast.LENGTH_SHORT).show();
                 RegisterTask r = new RegisterTask();
                 r.execute();
+        }});
+        if (!storedUsername.equals("") && !storedPassword.equals("")) {
+            loginUsername.setText(storedUsername);
+            presenter.loginUsernameChanged(storedUsername);
+            loginPassword.setText(storedPassword);
+            presenter.loginPasswordChanged(storedPassword);
+        }
+        hostIP = findViewById(R.id.hostIP);
+        hostIP.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.hostIPChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        hostPort = findViewById(R.id.hostPort);
+        hostPort.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.hostPortChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }

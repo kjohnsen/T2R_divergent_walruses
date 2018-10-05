@@ -118,4 +118,10 @@ public class MockServerProxy implements IServer {
     public ArrayList<Command> getCommands(String clientID, String authToken) {
         return null;
     }
+
+    @Override
+    public void setHostIP(String hostIP) { }
+
+    @Override
+    public void setHostPort(String hostPort) { }
 }
