@@ -57,12 +57,15 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             activity.goToGameLobby();
-        } else if (o.getClass().isArray()) {
+        } else {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof GameInfo) {
                 ArrayList<GameInfo> games = new ArrayList<>();
                 for (Object object : array) {
-                    games.add((GameInfo) object);
+                    GameInfo game = (GameInfo) object;
+                    if (game.getNumPlayers() - game.getPlayers().size() != 0) {
+                        games.add(game);
+                    }
                 }
                 activity.populateGameList(games);
             }
