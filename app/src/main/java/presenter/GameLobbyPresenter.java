@@ -25,16 +25,11 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     }
 
     @Override
-<<<<<<< HEAD
     public void chooseColor(String color, GameName gameName) {
-        UIFacade.getInstance().claimColor(PlayerColor.valueOf(color), gameName);
-=======
-    public void chooseColor(String color) {
-        String message = UIFacade.getInstance().claimColor(PlayerColor.valueOf(color));
+        String message = UIFacade.getInstance().claimColor(PlayerColor.valueOf(color), gameName);
         if (message != null) {
             activity.displayErrorMessage(message);
         }
->>>>>>> ea4d6f8ed7acd49b349f645d2b21171ce74ff619
     }
 
     @Override
