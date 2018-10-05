@@ -115,7 +115,7 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public ArrayList<Command> getCommands(String clientID, String authToken) {
+    public Results getCommands(String clientID, String authToken) {
         return null;
     }
 

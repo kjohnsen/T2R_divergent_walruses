@@ -218,8 +218,11 @@ public class ServerFacade implements IServer {
         return null;
     }
 
-    public ArrayList<Command> getCommands(String clientID, String authToken) {
-        return CommandManager.getInstance().getCommands(clientID);
+    public Results getCommands(String clientID, String authToken) {
+        Results results = new Results();
+        results.setClientCommands(CommandManager.getInstance().getCommands(clientID));
+        results.setSuccess(true);
+        return results;
     }
 
     //these two methods are necessary for the client side, but not the server side
