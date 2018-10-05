@@ -8,4 +8,6 @@ public interface IGameLobbyActivity {
     void updatePlayerList(ArrayList<Player> players);
     void updateAvailableColors(ArrayList<String> colors);
     void setStartGameEnabled(boolean enable);
+    void displayErrorMessage(String message);
+    void startGame();
 }
