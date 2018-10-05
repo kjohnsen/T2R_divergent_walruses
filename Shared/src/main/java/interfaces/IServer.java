@@ -9,15 +9,15 @@ import results.LoggedInResults;
 import results.Results;
 
 public interface IServer {
-    LoggedInResults loginUser(String username, String password);
+    Results loginUser(String username, String password);
 
-    LoggedInResults registerUser(String username, String password);
+    Results registerUser(String username, String password);
 
-    GameResults createGame(String name, int numPlayers, String authToken);
+    Results createGame(String name, int numPlayers, String authToken);
 
-    GameResults joinGame(GameName gameName, String authToken);
+    Results joinGame(GameName gameName, String authToken);
 
-    GameResults startGame(GameName gameName, String authToken);
+    Results startGame(GameName gameName, String authToken);
 
     Results chooseColor(PlayerColor color, String authToken);
 

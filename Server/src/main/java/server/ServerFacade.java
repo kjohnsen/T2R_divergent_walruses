@@ -7,8 +7,6 @@ import interfaces.IServer;
 import model.ServerModel;
 import modelclasses.GameInfo;
 import modelclasses.Player;
-import results.LoggedInResults;
-import results.GameResults;
 import results.Results;
 import data.Command;
 import modelclasses.GameName;
@@ -20,22 +18,22 @@ import java.util.UUID;
 
 public class ServerFacade implements IServer {
 
-    public LoggedInResults loginUser(String username, String password) {
+    public Results loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        LoggedInResults loggedInResults = new LoggedInResults();
-        loggedInResults.setSuccess(false);
+        Results results = new Results();
+        results.setSuccess(false);
 
         //************** Check parameters with Model/DB *******************
         ServerModel serverModel = ServerModel.getInstance();
         if(!serverModel.checkUserExists(username)) {
-            loggedInResults.setErrorMessage("Username doesn't exist");
-            return loggedInResults;
+            results.setErrorMessage("Username doesn't exist");
+            return results;
         }
         if(!serverModel.checkPassword(username,password)) {
-            loggedInResults.setErrorMessage("Password incorrect");
-            return loggedInResults;
+            results.setErrorMessage("Password incorrect");
+            return results;
         }
         //*****************************************************************
 
@@ -50,30 +48,29 @@ public class ServerFacade implements IServer {
         //************************************************************
 
         //set results
-        loggedInResults.setAuthToken(authToken);
-        loggedInResults.getClientCommands().add(loginClientCommand);
-        loggedInResults.setSuccess(true);
+        results.getClientCommands().add(loginClientCommand);
+        results.setSuccess(true);
 
 
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
         clientProxy.loginUser(user, authToken);
 
-        return loggedInResults;
+        return results;
     }
 
-    public LoggedInResults registerUser(String username, String password) {
+    public Results registerUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        LoggedInResults loggedInResults = new LoggedInResults();
-        loggedInResults.setSuccess(false);
+        Results results = new Results();
+        results.setSuccess(false);
 
         //first check to see if the username exists.
         ServerModel serverModel = ServerModel.getInstance();
         if(serverModel.checkUserExists(username)) {
-            loggedInResults.setErrorMessage("Username already exists!");
-            return loggedInResults;
+            results.setErrorMessage("Username already exists!");
+            return results;
         }
 
         //once all checks have passed... get an authtoken.
@@ -85,18 +82,20 @@ public class ServerFacade implements IServer {
         Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, authToken}));
 
         //set results
-        loggedInResults.setAuthToken(authToken);
-        loggedInResults.getClientCommands().add(registerUserCommand);
-        loggedInResults.setSuccess(true);
+        results.getClientCommands().add(registerUserCommand);
+        results.setSuccess(true);
 
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
         clientProxy.registerUser(user, password);
 
-        return loggedInResults;
+        return results;
     }
 
-    public GameResults createGame(String name, int numPlayers, String clientAuthToken) {
+    public Results createGame(String name, int numPlayers, String clientAuthToken) {
+
+        Results results = new Results();
+        results.setSuccess(false);
 
         //creating a game doesn't add any players.. going to be all null.
         GameName gameName = new GameName(name);
@@ -126,28 +125,27 @@ public class ServerFacade implements IServer {
 
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
 
-        GameResults gameResults = new GameResults(gameName);
-        gameResults.getClientCommands().add(createGameCommand);
-        gameResults.setSuccess(true);
+        results.getClientCommands().add(createGameCommand);
+        results.setSuccess(true);
 
-        return gameResults;
+        return results;
     }
 
-    public GameResults joinGame(GameName gameName, String clientAuthToken) {
+    public Results joinGame(GameName gameName, String clientAuthToken) {
 
-        GameResults gameResults = new GameResults(gameName);
-        gameResults.setSuccess(false);
+        Results results = new Results();
+        results.setSuccess(false);
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         if (game == null) {
-            gameResults.setErrorMessage("Game does not exist");
-            return gameResults;
+            results.setErrorMessage("Game does not exist");
+            return results;
         }
 
         ArrayList<Player> gamePlayers = game.getPlayers();
         if (gamePlayers.size() > 4) {
-            gameResults.setErrorMessage("Game is full");
-            return gameResults;
+            results.setErrorMessage("Game is full");
+            return results;
         }
 
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
@@ -165,13 +163,13 @@ public class ServerFacade implements IServer {
 
         Command joinGameCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
 
-        gameResults.getClientCommands().add(joinGameCommand);
-        gameResults.setSuccess(true);
+        results.getClientCommands().add(joinGameCommand);
+        results.setSuccess(true);
 
-        return gameResults;
+        return results;
     }
 
-    public GameResults startGame(GameName gameName, String authToken) {
+    public Results startGame(GameName gameName, String authToken) {
         return null;
     }
 

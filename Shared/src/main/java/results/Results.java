@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import data.Command;
 
-abstract public class Results {
+public class Results {
 
     private Boolean isSuccess;
     private String errorMessage;

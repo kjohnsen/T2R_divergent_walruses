@@ -90,5 +90,15 @@
         assertEquals("Username already exists!", results.getErrorMessage());
      }
 
+     @Test
+     public void createGame() {
+
+     }
+
+     @Test
+     public void joinGame() {
+
+     }
+
  }
 
