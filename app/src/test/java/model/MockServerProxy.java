@@ -3,10 +3,13 @@ package model;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
+import modelclasses.GameInfo;
 import modelclasses.GameName;
+import modelclasses.Player;
 import modelclasses.PlayerColor;
 import results.GameResults;
 import results.LoggedInResults;
@@ -50,9 +53,15 @@ public class MockServerProxy implements IServer {
     @Override
     public GameResults createGame(String name, int numPlayers, String authToken) {
         if(name.equals("success")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            GameName gameName = new GameName("success");
+            GameResults gameResults = new GameResults(gameName);
             gameResults.setSuccess(true);
-            gameResults.setClientCommands(new ArrayList<Command>());
+
+            GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), numPlayers);
+            ArrayList<Command> commands = new ArrayList<>();
+            commands.add(new Command("model.CommandFacade", "createGame",
+                            Arrays.asList(new Object[] {gameInfo})));
+            gameResults.setClientCommands(commands);
             return gameResults;
         } else if(name.equals("fail")) {
             GameResults gameResults = new GameResults(new GameName("fake"));
@@ -67,9 +76,15 @@ public class MockServerProxy implements IServer {
     @Override
     public GameResults joinGame(GameName gameName, String authToken) {
         if(gameName.getName().equals("success")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            GameResults gameResults = new GameResults(gameName);
             gameResults.setSuccess(true);
-            gameResults.setClientCommands(new ArrayList<Command>());
+
+            Player player = new Player("billy");
+
+            ArrayList<Command> commands = new ArrayList<>();
+            commands.add(new Command("model.CommandFacade", "joinGame",
+                    Arrays.asList(new Object[] {player, gameName})));
+            gameResults.setClientCommands(commands);
             return gameResults;
         } else if(gameName.getName().equals("fail")) {
             GameResults gameResults = new GameResults(new GameName("fake"));

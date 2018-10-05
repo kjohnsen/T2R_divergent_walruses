@@ -22,4 +22,9 @@ public class GameName {
         GameName gameName = (GameName) o;
         return this.name.equals(gameName.name);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

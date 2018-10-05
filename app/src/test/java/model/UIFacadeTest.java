@@ -46,12 +46,14 @@ public class UIFacadeTest {
     @Test
     public void createGame() {
         String success = uiFacade.createGame("success", 5);
-        String fail = uiFacade.createGame("fail", 5);
-        String nullResults = uiFacade.createGame("null", 5);
-
         assertNull(success);
+
+        String fail = uiFacade.createGame("fail", 5);
         assertTrue(fail.equals("Game already exists"));
+
+        String nullResults = uiFacade.createGame("null", 5);
         assertTrue(nullResults.equals("Cannot reach server"));
+
     }
 
     @Test

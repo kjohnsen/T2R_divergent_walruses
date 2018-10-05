@@ -18,6 +18,9 @@ public class GameListMock implements IGameListActivity {
 
     public void reset() {
         createGameEnabled = false;
+        if (games != null) {
+            games.clear();
+        }
     }
 
     @Override

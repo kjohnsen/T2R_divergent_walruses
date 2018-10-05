@@ -61,4 +61,12 @@ public class GameInfo {
     public int hashCode() {
         return Objects.hash(gameName, players, numPlayers);
     }
+
+    @Override
+    public String toString() {
+        return "GameInfo{" +
+                "gameName=" + gameName.toString() +
+                ", numPlayers=" + numPlayers +
+                '}';
+    }
 }
