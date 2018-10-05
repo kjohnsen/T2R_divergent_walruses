@@ -58,9 +58,9 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results chooseColor(PlayerColor color, String authToken) {
+    public Results chooseColor(PlayerColor color, GameName gameName, String authToken) {
         //Send the command...
-        Command command = new Command("ServerFacade", "chooseColor", Arrays.asList(new Object[] {color, authToken}));
+        Command command = new Command("ServerFacade", "chooseColor", Arrays.asList(new Object[] {color, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 

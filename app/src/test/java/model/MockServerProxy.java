@@ -99,7 +99,7 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public Results chooseColor(PlayerColor color, String authToken) {
+    public Results chooseColor(PlayerColor color, GameName gameName, String authToken) {
         if(authToken.equals("success")) {
             GameResults gameResults = new GameResults(new GameName("fake"));
             gameResults.setSuccess(true);

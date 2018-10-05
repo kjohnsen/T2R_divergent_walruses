@@ -214,8 +214,33 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results chooseColor(PlayerColor color, String authToken) {
-        return null;
+    public Results chooseColor(PlayerColor color, GameName gameName, String clientAuthToken) {
+
+        Results results = new Results();
+        results.setSuccess(false);
+
+        GameInfo gameInfo = ServerModel.getInstance().getGameInfo(gameName);
+        if(!gameInfo.checkColorAvailable(color)) {
+            results.setErrorMessage("Color already taken");
+            return results;
+        }
+
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
+        gameInfo.getPlayer(username).setPlayerColor(color);
+
+
+        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+            if (!authToken.equals(clientAuthToken)) {
+                Command clientCommand = new Command("CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
+                CommandManager.getInstance().addCommand(authToken, clientCommand);
+            }
+        }
+
+        Command chooseColorCommand = new Command("CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
+        results.getClientCommands().add(chooseColorCommand);
+        results.setSuccess(true);
+
+        return results;
     }
 
     public Results getCommands(String clientID, String authToken) {

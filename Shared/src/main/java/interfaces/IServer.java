@@ -19,7 +19,7 @@ public interface IServer {
 
     Results startGame(GameName gameName, String authToken);
 
-    Results chooseColor(PlayerColor color, String authToken);
+    Results chooseColor(PlayerColor color, GameName gameName, String authToken);
 
     Results getCommands(String clientID, String authToken);
 

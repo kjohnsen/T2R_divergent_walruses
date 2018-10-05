@@ -47,6 +47,15 @@ public class GameInfo {
         return (numPlayers - players.size() == 0);
     }
 
+    public boolean checkColorAvailable(PlayerColor color) {
+        for(Player player: getPlayers()){
+            if(player.getPlayerColor().equals(color)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
