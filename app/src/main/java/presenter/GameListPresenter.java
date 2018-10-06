@@ -25,7 +25,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
             activity.setCreateGameEnabled(false);
             return;
         }
-        ArrayList<GameInfo> games = ClientModel.getInstance().getGameList();
+        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
         for (GameInfo g : games) {
             if (g.getGameName().getName().equals(gameName)) {
                 activity.setCreateGameEnabled(false);
