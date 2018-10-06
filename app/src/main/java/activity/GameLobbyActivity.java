@@ -110,6 +110,6 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
 
     @Override
     public void startGame() {
-        Toast.makeText(this, "This will eventually go to the next activity", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "This would go to a new game but we don't have that screen so instead enjoy this lovely joke! There were two muffins in an oven. One said to the other, \"Gee, isn't it hot in here?\" The other one said, \"AAAH! A talking muffin!\"", Toast.LENGTH_SHORT).show();
     }
 }

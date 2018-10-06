@@ -39,7 +39,7 @@ public class UIFacade {
 
     //These should all return strings, or null if there is no error message
     public String loginUser(String username, String password) {
-        LoggedInResults loggedInResults = serverProxy.loginUser(username, password);
+        Results loggedInResults = serverProxy.loginUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
                 loggedInResults.getClientCommands().get(i).execute();
@@ -58,7 +58,7 @@ public class UIFacade {
 
     //returns null if no error, or an error message if there is one
     public String registerUser(String username, String password) {
-        LoggedInResults loggedInResults = serverProxy.registerUser(username, password);
+        Results loggedInResults = serverProxy.registerUser(username, password);
         if(loggedInResults != null && loggedInResults.getSuccess()) {
             for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
                 loggedInResults.getClientCommands().get(i).execute();
@@ -76,7 +76,7 @@ public class UIFacade {
     }
 
     public String joinGame(String gameName) {
-        GameResults gameResults = serverProxy.joinGame(new GameName(gameName), authToken);
+        Results gameResults = serverProxy.joinGame(new GameName(gameName), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -92,7 +92,7 @@ public class UIFacade {
     }
 
     public String createGame(String gameName, int numPlayers) {
-        GameResults gameResults = serverProxy.createGame(gameName, numPlayers, authToken);
+        Results gameResults = serverProxy.createGame(gameName, numPlayers, authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -109,7 +109,7 @@ public class UIFacade {
 
     public String startGame() {
         GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();
-        GameResults gameResults = serverProxy.startGame(gameInfo.getGameName(), authToken);
+        Results gameResults = serverProxy.startGame(gameInfo.getGameName(), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
                 gameResults.getClientCommands().get(i).execute();
@@ -124,8 +124,8 @@ public class UIFacade {
         return null;
     }
 
-    public String claimColor(PlayerColor playerColor) {
-        Results results = serverProxy.chooseColor(playerColor, authToken);
+    public String claimColor(PlayerColor playerColor, GameName gameName) {
+        Results results = serverProxy.chooseColor(playerColor, gameName, authToken);
         if(results != null && results.getSuccess()) {
             for(int i = 0; i < results.getClientCommands().size(); ++i) {
                 results.getClientCommands().get(i).execute();

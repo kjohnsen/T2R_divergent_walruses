@@ -9,6 +9,7 @@ import activity.IGameLobbyActivity;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.GameInfo;
+import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 
@@ -24,13 +25,19 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     }
 
     @Override
-    public void chooseColor(String color) {
-        UIFacade.getInstance().claimColor(PlayerColor.valueOf(color));
+    public void chooseColor(String color, GameName gameName) {
+        String message = UIFacade.getInstance().claimColor(PlayerColor.valueOf(color), gameName);
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override
     public void startGame() {
-        UIFacade.getInstance().startGame();
+        String message = UIFacade.getInstance().startGame();
+        if (message != null) {
+            activity.displayErrorMessage(message);
+        }
     }
 
     @Override

@@ -11,11 +11,11 @@ import model.ClientModel;
 import model.UIFacade;
 
 public class LoginPresenter implements ILoginPresenter, Observer {
-    private String loginUsername = null;
-    private String loginPassword = null;
-    private String registerUsername = null;
-    private String registerPassword = null;
-    private String registerConfirm = null;
+    private String loginUsername = "";
+    private String loginPassword = "";
+    private String registerUsername = "";
+    private String registerPassword = "";
+    private String registerConfirm = "";
     private ILoginActivity activity;
 
     public LoginPresenter(ILoginActivity activity) {
@@ -70,12 +70,12 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     }
 
     private void checkLogin() {
-        boolean allow = (loginUsername != null && loginPassword != null);
+        boolean allow = (!loginUsername.isEmpty() && !loginPassword.isEmpty());
         activity.setLoginEnabled(allow);
     }
 
     private void checkRegister() {
-        boolean allow = (registerUsername != null && registerPassword != null
+        boolean allow = (!registerUsername.isEmpty() && !registerPassword.isEmpty()
                 && registerPassword.equals(registerConfirm));
         activity.setRegisterEnabled(allow);
     }

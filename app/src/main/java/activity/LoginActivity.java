@@ -2,6 +2,7 @@ package activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -127,20 +128,25 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.clear();
                 editor.putString("storedUsername", loginUsername.getText().toString());
                 editor.putString("storedPassword", loginPassword.getText().toString());
                 editor.apply();
-                presenter.login();
+                LoginTask l = new LoginTask();
+                l.execute();
             }
         });
         registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { presenter.register(); }
-        });
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "Registering...", Toast.LENGTH_SHORT).show();
+                RegisterTask r = new RegisterTask();
+                r.execute();
+        }});
         if (!storedUsername.equals("") && !storedPassword.equals("")) {
             loginUsername.setText(storedUsername);
             presenter.loginUsernameChanged(storedUsername);
@@ -199,7 +205,23 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
     @Override
     public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    public class RegisterTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... s) {
+            presenter.register();
+            return null;
+        }
+    }
+
+    public class LoginTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... s) {
+            presenter.login();
+            return null;
+        }
     }
 
     @Override

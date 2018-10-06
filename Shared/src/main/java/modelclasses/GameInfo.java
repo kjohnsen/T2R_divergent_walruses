@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class GameInfo {
     private GameName gameName;
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<>();
     private int numPlayers;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
@@ -45,6 +45,15 @@ public class GameInfo {
 
     public boolean ready() {
         return (numPlayers - players.size() == 0);
+    }
+
+    public boolean checkColorAvailable(PlayerColor color) {
+        for(Player player: getPlayers()){
+            if(player.getPlayerColor().equals(color)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
