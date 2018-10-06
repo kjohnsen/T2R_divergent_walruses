@@ -42,6 +42,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         if (message != null) {
             activity.displayErrorMessage(message);
         }
+        UIFacade.getInstance().joinGame(gameName);
     }
 
     @Override
