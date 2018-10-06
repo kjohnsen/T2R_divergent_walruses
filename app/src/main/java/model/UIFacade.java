@@ -124,7 +124,8 @@ public class UIFacade {
         return null;
     }
 
-    public String claimColor(PlayerColor playerColor, GameName gameName) {
+    public String claimColor(PlayerColor playerColor) {
+        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
         Results results = serverProxy.chooseColor(playerColor, gameName, authToken);
         if(results != null && results.getSuccess()) {
             for(int i = 0; i < results.getClientCommands().size(); ++i) {
