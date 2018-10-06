@@ -26,36 +26,45 @@ public class CommandFacade implements iClient {
     public void loginUser(User user, String authToken) {
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
+        ClientModel.getInstance().notifyObservers(user);
     }
 
     @Override
     public void registerUser(User user, String authToken) {
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
+        ClientModel.getInstance().notifyObservers(user);
     }
 
     @Override
     public void joinGame(Player player, GameName gameName) {
-        ClientModel.getInstance().getGame(gameName).addPlayer(player);
+        GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
+        gameInfo.addPlayer(player);
+        if (player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+            ClientModel.getInstance().setCurrentGame(gameInfo);
+        }
+        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void createGame(GameInfo gameInfo) {
         ArrayList<GameInfo> gameList = ClientModel.getInstance().getGameList();
         gameList.add(gameInfo);
-        // Using setGameList, we allow ClientModel to do the setting (thus notifying observers)
-        // without the proliferation of setters and adders.
         ClientModel.getInstance().setGameList(gameList);
+        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void startGame(GameName gameName) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
+        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void claimColor(String username, PlayerColor playerColor) {
-        ClientModel.getInstance().getCurrentGame().getPlayer(username).setPlayerColor(playerColor);
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        player.setPlayerColor(playerColor);
+        ClientModel.getInstance().notifyObservers(player);
     }
 }

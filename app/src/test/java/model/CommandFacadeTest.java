@@ -49,6 +49,8 @@ public class CommandFacadeTest {
 
     @Test
     public void joinGame() {
+        User user = new User("bobby", "password");
+        ClientModel.getInstance().setCurrentUser(user);
         Player player = new Player("bobby");
         GameName gameName = new GameName("game");
         ArrayList<GameInfo> gameList = new ArrayList<>();

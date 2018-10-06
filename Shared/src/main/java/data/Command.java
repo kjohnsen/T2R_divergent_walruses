@@ -2,6 +2,7 @@ package data;
 
 import results.Results;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,9 @@ public class Command {
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            return (Results) method.invoke(receiver.newInstance(), get_paramValues());
+            Object target = getTargetInstance(receiver);
+
+            return (Results) method.invoke(target, get_paramValues());
         }
         catch (Exception e) {
             e.printStackTrace();
