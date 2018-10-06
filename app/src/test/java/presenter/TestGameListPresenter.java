@@ -34,6 +34,7 @@ public class TestGameListPresenter {
     public void reset() {
         listMock.reset();
         ClientModel.getInstance().reset();
+        ClientModel.getInstance().addObserver(gameListPresenter);
     }
     @Test
     public void validCreateGameNameChange() {
