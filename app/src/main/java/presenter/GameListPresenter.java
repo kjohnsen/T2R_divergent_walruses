@@ -37,19 +37,13 @@ public class GameListPresenter implements IGameListPresenter, Observer {
     }
 
     @Override
-    public void createGame(int numPlayers) {
-        String message = UIFacade.getInstance().createGame(gameName, numPlayers);
-        if (message != null) {
-            activity.displayErrorMessage(message);
-        }
+    public String createGame(int numPlayers) {
+        return UIFacade.getInstance().createGame(gameName, numPlayers);
     }
 
     @Override
-    public void joinGame(String gameName) {
-        String message = UIFacade.getInstance().joinGame(gameName);
-        if (message != null) {
-            activity.displayErrorMessage(message);
-        }
+    public String joinGame(String gameName) {
+        return UIFacade.getInstance().joinGame(gameName);
     }
 
     @Override

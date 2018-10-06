@@ -144,25 +144,30 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         }
     }
 
-    public class CreateGameTask extends AsyncTask<Integer, Void, Void> {
+    public class CreateGameTask extends AsyncTask<Integer, Void, String> {
         @Override
-        protected Void doInBackground(Integer... s) {
-            presenter.createGame(s[0]);
-            return null;
+        protected String doInBackground(Integer... s) {
+            return presenter.createGame(s[0]);
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(GameListActivity.this, param, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-    public class JoinGameTask extends AsyncTask<String, Void, Void> {
+    public class JoinGameTask extends AsyncTask<String, Void, String> {
         @Override
-        protected Void doInBackground(String... s) {
-            presenter.joinGame(s[0]);
-            return null;
+        protected String doInBackground(String... s) {
+            return presenter.joinGame(s[0]);
         }
-    }
-
-    @Override
-    public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(GameListActivity.this, param, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

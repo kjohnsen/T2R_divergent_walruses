@@ -59,6 +59,7 @@ public class ServerFacade implements IServer {
     }
 
     public Results registerUser(String username, String password) {
+        System.out.println("in registerUser");
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
@@ -76,15 +77,16 @@ public class ServerFacade implements IServer {
         User newUser = new User(username, password);
         serverModel.getUsers().put(username, newUser);
         serverModel.getAuthTokens().put(authToken, username);
+        User user = new User(username, password);
 
-        Command registerUserCommand = new Command("CommandFacade", "registerUser", Arrays.asList(new Object[] {username, authToken}));
+        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(new Object[] {user, authToken}));
 
         //set results
         results.getClientCommands().add(registerUserCommand);
         results.setSuccess(true);
 
         ClientProxy clientProxy = new ClientProxy();
-        User user = new User(username, password);
+
         clientProxy.registerUser(user, password);
 
         return results;

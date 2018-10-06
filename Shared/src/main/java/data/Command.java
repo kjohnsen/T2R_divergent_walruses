@@ -68,6 +68,16 @@ public class Command {
         this._paramValues = _paramValues;
     }
 
+    private Object getTargetInstance(Class<?> cls) {
+        try {
+            Method getInstanceMethod = cls.getMethod("getInstance", null);
+            return getInstanceMethod.invoke(null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Results execute() {
 
         try {
@@ -79,19 +89,17 @@ public class Command {
 
             //turn param types from string to Class
             ArrayList<Class<?>> paramTypesList = new ArrayList<>();
-            for(String stringType : get_paramTypes()){
+            for(String stringType : get_paramTypes()) {
                 paramTypesList.add(Class.forName(stringType));
             }
             paramTypesArray = paramTypesList.toArray(new Class[paramTypesList.size()]);
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            return (Results) method.invoke(null, get_paramValues());
+            return (Results) method.invoke(receiver.newInstance(), get_paramValues());
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
             return null;
         }
     }

@@ -69,7 +69,7 @@ public class ClientCommunicator {
             //Get back the results. There should always be results unless there was a serious error...
             InputStream responseBody = connection.getInputStream();
             String serializedResults = serializer.readString(responseBody);
-            Results results = (Results)serializer.decode(serializedResults, Results.class);
+            Results results = (Results)serializer.decode(serializedResults, LoggedInResults.class);
 
             return results;
         } catch (IOException e) {

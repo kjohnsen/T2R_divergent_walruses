@@ -32,7 +32,7 @@ public class ServerProxy implements IServer {
     @Override
     public LoggedInResults registerUser(String username, String password) {
         //Send the command...
-        Command command = new Command("ServerFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
+        Command command = new Command("server.ServerFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
         return (LoggedInResults)ClientCommunicator.getInstance().send(command);
     }
 
