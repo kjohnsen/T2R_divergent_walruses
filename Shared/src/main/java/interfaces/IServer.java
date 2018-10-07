@@ -21,7 +21,7 @@ public interface IServer {
 
     Results chooseColor(PlayerColor color, GameName gameName, String authToken);
 
-    Results getCommands(String clientID, String authToken);
+    Results getCommands(String authToken);
 
     void setHostIP(String hostIP);
 

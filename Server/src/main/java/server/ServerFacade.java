@@ -117,15 +117,11 @@ public class ServerFacade implements IServer {
         // user joins the game they just created
         Player player = addUserToGame(clientAuthToken, gameInfo);
 
-        //create commands for every client in the server model except the one that asked
-        //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
-        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
-            if (!authToken.equals(clientAuthToken)) {
-                Command clientCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
-                CommandManager.getInstance().addCommand(authToken, clientCommand);
-            }
-        }
+        // createGame command sent to all other clients
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.createGame(gameInfo, clientAuthToken);
 
+        // createGame and joinGame commands created to be sent back to current client
         Command createGameCommand = new Command("CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
         Command joinGameCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {gameInfo}));
 
@@ -154,12 +150,8 @@ public class ServerFacade implements IServer {
 
         Player player = addUserToGame(clientAuthToken, game);
 
-        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
-            if (!authToken.equals(clientAuthToken)) {
-                Command clientCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
-                CommandManager.getInstance().addCommand(authToken, clientCommand);
-            }
-        }
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.joinGame(player, gameName, clientAuthToken);
 
         Command joinGameCommand = new Command("CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
 
@@ -194,12 +186,8 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
-            if (!authToken.equals(clientAuthToken)) {
-                Command clientCommand = new Command("CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
-                CommandManager.getInstance().addCommand(authToken, clientCommand);
-            }
-        }
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.startGame(gameName, clientAuthToken);
 
         Command startGameCommand = new Command("CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
 
@@ -223,13 +211,8 @@ public class ServerFacade implements IServer {
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         gameInfo.getPlayer(username).setPlayerColor(color);
 
-
-        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
-            if (!authToken.equals(clientAuthToken)) {
-                Command clientCommand = new Command("CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
-                CommandManager.getInstance().addCommand(authToken, clientCommand);
-            }
-        }
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.claimColor(username, color, clientAuthToken);
 
         Command chooseColorCommand = new Command("CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
         results.getClientCommands().add(chooseColorCommand);
@@ -238,9 +221,9 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results getCommands(String clientID, String authToken) {
+    public Results getCommands(String authToken) {
         Results results = new Results();
-        results.setClientCommands(CommandManager.getInstance().getCommands(clientID));
+        results.setClientCommands(CommandManager.getInstance().getCommands(authToken));
         results.setSuccess(true);
         return results;
     }

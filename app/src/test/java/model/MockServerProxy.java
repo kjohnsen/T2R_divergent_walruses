@@ -130,7 +130,7 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public Results getCommands(String clientID, String authToken) {
+    public Results getCommands(String authToken) {
         return null;
     }
 
