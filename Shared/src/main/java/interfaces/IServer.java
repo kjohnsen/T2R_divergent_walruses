@@ -9,7 +9,7 @@ public interface IServer {
 
     Results registerUser(String username, String password);
 
-    Results createGame(String name, int numPlayers, String authToken);
+    Results createGame(String name, Integer numPlayers, String authToken);
 
     Results joinGame(GameName gameName, String authToken);
 

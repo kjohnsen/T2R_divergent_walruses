@@ -107,6 +107,9 @@ public class Command {
                 if (paramValues[i] instanceof LinkedTreeMap) {
                     Serializer serializer = new Serializer();
                     paramValues[i] = serializer.decodeInnerClass((LinkedTreeMap)paramValues[i], paramTypesArray[i]);
+                } else if (paramValues[i] instanceof Double) {
+                    Double d = (Double)paramValues[i];
+                    paramValues[i] = d.intValue();
                 }
             }
 

@@ -52,8 +52,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
-        Intent intent = new Intent(this, ServerPoller.class);
-        getApplicationContext().startService(intent);
+        //Intent intent = new Intent(this, ServerPoller.class);
+        //getApplicationContext().startService(intent);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
         gameName.addTextChangedListener(new TextWatcher() {

@@ -1,8 +1,5 @@
 package clientserver;
 
-import android.util.Log;
-
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,9 +8,7 @@ import java.net.URL;
 
 import data.Command;
 import data.Serializer;
-import model.ClientModel;
 import model.UIFacade;
-import results.LoggedInResults;
 import results.Results;
 
 public class ClientCommunicator {
@@ -69,7 +64,7 @@ public class ClientCommunicator {
             //Get back the results. There should always be results unless there was a serious error...
             InputStream responseBody = connection.getInputStream();
             String serializedResults = serializer.readString(responseBody);
-            Results results = (Results)serializer.decode(serializedResults, LoggedInResults.class);
+            Results results = (Results)serializer.decode(serializedResults, Results.class);
 
             return results;
         } catch (IOException e) {

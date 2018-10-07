@@ -56,7 +56,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
                 presenter.startGame();
             }
         });
-        playerList = findViewById(R.id.gameList);
+        playerList = findViewById(R.id.playerList);
         RecyclerView.LayoutManager playerListManager = new LinearLayoutManager(this);
         playerList.setLayoutManager(playerListManager);
     }
