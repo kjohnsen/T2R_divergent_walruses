@@ -2,6 +2,7 @@ package data;
 
 import results.Results;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,16 @@ public class Command {
         this._paramValues = _paramValues;
     }
 
+    private Object getTargetInstance(Class<?> cls) {
+        try {
+            Method getInstanceMethod = cls.getMethod("getInstance", null);
+            return getInstanceMethod.invoke(null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Results execute() {
 
         try {
@@ -86,12 +97,12 @@ public class Command {
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            return (Results) method.invoke(null, get_paramValues());
+            Object target = getTargetInstance(receiver);
+
+            return (Results) method.invoke(target, get_paramValues());
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
             return null;
         }
     }

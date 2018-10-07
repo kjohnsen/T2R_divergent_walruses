@@ -24,8 +24,11 @@ public class GameName {
     }
 
     @Override
-    public int hashCode()
-    {
+    public String toString() {
+        return name;
+    }
+    
+    public int hashCode() {
         return name.hashCode();
     }
 }
