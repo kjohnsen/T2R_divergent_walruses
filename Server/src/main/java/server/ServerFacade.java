@@ -18,6 +18,14 @@ import java.util.UUID;
 
 public class ServerFacade implements IServer {
 
+    private static final ServerFacade ourInstance = new ServerFacade();
+
+    private ServerFacade() {}
+
+    public static ServerFacade getInstance() {
+        return ourInstance;
+    }
+
     public Results loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
@@ -79,7 +87,7 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
-        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(new Object[] {user, authToken}));
+        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(user, authToken));
 
         //set results
         results.getClientCommands().add(registerUserCommand);

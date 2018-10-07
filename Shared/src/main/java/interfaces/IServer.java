@@ -1,11 +1,7 @@
 package interfaces;
 
-import java.util.ArrayList;
-import data.Command;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
-import results.GameResults;
-import results.LoggedInResults;
 import results.Results;
 
 public interface IServer {
