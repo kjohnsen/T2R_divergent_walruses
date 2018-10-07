@@ -120,7 +120,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
     public class ChooseColorTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... s) {
-            return presenter.chooseColor(s[0], new GameName("test"));
+            return presenter.chooseColor(s[0]);
         }
         @Override
         protected void onPostExecute(String param) {

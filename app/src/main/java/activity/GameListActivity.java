@@ -52,7 +52,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
-        ServerPoller.getInstance().startService(null);
+        Intent intent = new Intent(this, ServerPoller.class);
+        getApplicationContext().startService(intent);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
         gameName.addTextChangedListener(new TextWatcher() {
@@ -81,7 +82,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             @Override
             public void onClick(View view) {
                 CreateGameTask c = new CreateGameTask();
-                c.doInBackground((Integer)numPlayers.getSelectedItem());
+                c.execute(Integer.parseInt(numPlayers.getSelectedItem().toString()));
             }
         });
         gameList = findViewById(R.id.gameList);

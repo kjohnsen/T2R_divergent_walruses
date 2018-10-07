@@ -32,6 +32,7 @@ public class ClientModel extends Observable {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+        this.setChanged();
         this.notifyObservers();
     }
 
