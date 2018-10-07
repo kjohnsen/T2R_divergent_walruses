@@ -32,7 +32,14 @@ public class ClientModel extends Observable {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+        this.setChanged();
         this.notifyObservers();
+    }
+
+    /* this is so the model won't notify the GameListPresenter or the GameLobbyPresenter during unit
+    tests, which throws an error */
+    public void setCurrentUserTest(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public void setGameList(ArrayList<GameInfo> gameList) {

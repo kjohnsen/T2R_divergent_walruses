@@ -1,8 +1,8 @@
 package presenter;
 
 public interface ILoginPresenter {
-    void login();
-    void register();
+    String login();
+    String register();
     void loginUsernameChanged(String username);
     void loginPasswordChanged(String password);
     void registerUsernameChanged(String username);

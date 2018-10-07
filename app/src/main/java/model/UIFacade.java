@@ -7,8 +7,6 @@ import interfaces.IServer;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
-import results.GameResults;
-import results.LoggedInResults;
 import results.Results;
 
 public class UIFacade {
