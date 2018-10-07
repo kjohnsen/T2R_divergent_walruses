@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import clientserver.ServerProxy;
 import interfaces.IServer;
 import modelclasses.GameInfo;
@@ -124,7 +126,8 @@ public class UIFacade {
         return null;
     }
 
-    public String claimColor(PlayerColor playerColor, GameName gameName) {
+    public String claimColor(PlayerColor playerColor) {
+        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
         Results results = serverProxy.chooseColor(playerColor, gameName, authToken);
         if(results != null && results.getSuccess()) {
             for(int i = 0; i < results.getClientCommands().size(); ++i) {
@@ -138,6 +141,10 @@ public class UIFacade {
             }
         }
         return null;
+    }
+
+    public ArrayList<GameInfo> getGameList() {
+        return ClientModel.getInstance().getGameList();
     }
 
     public void setHostIP(String hostIP) {
