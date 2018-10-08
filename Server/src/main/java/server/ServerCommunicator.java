@@ -60,7 +60,7 @@ public class ServerCommunicator {
         server.start();
 
         // Log message indicating that the server has successfully started.
-        System.out.println("Server started");
+        System.out.println(String.format("Server started on port %s", portNumber));
     }
 
 

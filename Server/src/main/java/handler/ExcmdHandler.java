@@ -26,6 +26,7 @@ public class ExcmdHandler implements HttpHandler {
             //check for post... should be post
             if(exchange.getRequestMethod().toLowerCase().equals("post"))
             {
+                System.out.println("Received request");
                 //*************** GET DATA FROM EXCHANGE ****************
 
                 // Get the request body input stream
@@ -60,6 +61,7 @@ public class ExcmdHandler implements HttpHandler {
                 //SEND DATA
                 respBody.close();
 
+                System.out.println("Response sent");
                 //**************************************************
             }
         }
