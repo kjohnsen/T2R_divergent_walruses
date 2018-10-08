@@ -32,7 +32,7 @@ public class ServerFacade implements IServer {
     public static Results _loginUser(String username, String password) {
         return ourInstance.loginUser(username, password);
     }
-    public static Results _createGame(String name, int numPlayers, String clientAuthToken) {
+    public static Results _createGame(String name, Integer numPlayers, String clientAuthToken) {
         return ourInstance.createGame(name, numPlayers, clientAuthToken);
     }
     public static Results _joinGame(GameName gameName, String clientAuthToken) {
