@@ -1,15 +1,15 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import clientserver.ServerProxy;
+import data.Serializer;
 import interfaces.iClient;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.User;
-import results.Results;
 
 public class CommandFacade implements iClient {
 
@@ -24,7 +24,16 @@ public class CommandFacade implements iClient {
 
 
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
-        ourInstance.registerUser(user, authToken, gameInfos);
+        if (gameInfos.size() == 0) {
+            ourInstance.registerUser(user, authToken, gameInfos);
+        } else {
+            Serializer serializer = new Serializer();
+            ArrayList<GameInfo> games = new ArrayList<>();
+            for (Object o : gameInfos) {
+                games.add((GameInfo)serializer.decodeInnerClass(o, GameInfo.class));
+            }
+            ourInstance.registerUser(user, authToken, games);
+        }
     }
     public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.loginUser(user, authToken, gameInfos);
@@ -53,10 +62,9 @@ public class CommandFacade implements iClient {
 
     @Override
     public void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
-        ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
-        ClientModel.getInstance().notifyObservers(user);
+        ClientModel.getInstance().setGameList(gameInfos);
     }
 
     @Override

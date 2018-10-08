@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 /**
  * Created by Parker on 3/4/18.
@@ -36,7 +37,8 @@ public class Serializer {
         return gson.fromJson(json, toJsonClass);
     }
 
-    public Object decodeInnerClass(LinkedTreeMap l, Class toJsonClass) {
+    public Object decodeInnerClass(Object object, Class toJsonClass) {
+        LinkedTreeMap l = (LinkedTreeMap)object;
         JsonObject obj = gson.toJsonTree(l).getAsJsonObject();
         return decode(gson.toJson(obj), toJsonClass);
     }

@@ -37,14 +37,20 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     private Spinner numPlayers;
     private Button createGameButton;
     private IGameListPresenter presenter;
+    private boolean doneLoading = false;
 
     @Override
     public void populateGameList(final ArrayList<GameInfo> games) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                gameListAdapter = new GameListAdapter(games);
-                gameList.setAdapter(gameListAdapter);
+                if (doneLoading) {
+                    gameList = findViewById(R.id.gameList);
+                    RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(GameListActivity.this);
+                    gameList.setLayoutManager(gameListManager);
+                    gameListAdapter = new GameListAdapter(games);
+                    gameList.setAdapter(gameListAdapter);
+                }
             }
         });
     }
@@ -102,6 +108,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(this);
         gameList.setLayoutManager(gameListManager);
         //initialize the view with current info
+        doneLoading = true;
         presenter.getGameListInfo();
     }
 
@@ -141,9 +148,9 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             private TextView numSpots;
             GameHolder(View view) {
                 super(view);
-                gameName = findViewById(R.id.itemName);
-                gamePlayers = findViewById(R.id.itemPlayers);
-                numSpots = findViewById(R.id.itemNum);
+                gameName = view.findViewById(R.id.itemName);
+                gamePlayers = view.findViewById(R.id.itemPlayers);
+                numSpots = view.findViewById(R.id.itemNum);
                 //if someone taps the game, it should go to GameLobby
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
