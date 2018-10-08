@@ -41,7 +41,8 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                presenter.chooseColor(adapterView.getItemAtPosition(i).toString());
+                ChooseColorTask c = new ChooseColorTask();
+                c.execute(adapterView.getItemAtPosition(i).toString());
             }
 
             @Override
@@ -59,6 +60,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         playerList = findViewById(R.id.playerList);
         RecyclerView.LayoutManager playerListManager = new LinearLayoutManager(this);
         playerList.setLayoutManager(playerListManager);
+        //initialize the view with current game info
         presenter.getGameLobbyInfo();
     }
 
@@ -161,6 +163,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
 
     @Override
     public void startGame() {
+        //currently doesn't do anything-- I'll update it when we start phase 2
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
