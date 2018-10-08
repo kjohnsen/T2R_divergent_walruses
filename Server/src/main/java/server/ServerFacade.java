@@ -42,6 +42,9 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Password incorrect");
             return results;
         }
+
+        ArrayList<GameInfo> gameInfos = new ArrayList<GameInfo>();
+        gameInfos.addAll(ServerModel.getInstance().getGames().values());
         //*****************************************************************
 
         //once all checks have passed... get an authtoken.
@@ -52,10 +55,10 @@ public class ServerFacade implements IServer {
 
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
-        clientProxy.loginUser(user, authToken);
+        clientProxy.loginUser(authToken);
 
         //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken}));
+        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken, gameInfos}));
         //************************************************************
 
         results.getClientCommands().add(loginClientCommand);
@@ -93,8 +96,7 @@ public class ServerFacade implements IServer {
         results.setAuthToken(authToken);
 
         ClientProxy clientProxy = new ClientProxy();
-
-        clientProxy.registerUser(user, password);
+        clientProxy.registerUser(authToken);
 
         return results;
     }

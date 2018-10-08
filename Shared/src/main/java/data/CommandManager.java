@@ -21,7 +21,8 @@ public class CommandManager {
     }
 
     public ArrayList<Command> getCommands(String authToken) {
-        ArrayList<Command> returnCommands = new ArrayList<>(clientCommands.get(authToken));
+        ArrayList<Command> returnCommands = new ArrayList<>();
+        returnCommands.addAll(clientCommands.get(authToken));
 
         //clear commands
         clientCommands.get(authToken).removeAll(returnCommands);
