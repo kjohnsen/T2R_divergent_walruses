@@ -5,13 +5,14 @@ import com.google.gson.internal.LinkedTreeMap;
 import modelclasses.User;
 import results.Results;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Command {
+public class Command implements Serializable {
 
     private String _className;
     private String _methodName;
@@ -19,7 +20,8 @@ public class Command {
     private String[] _paramValues;
     //private Serializer serializer = new Serializer();
 
-    public Command(String className, String methodName, String[] paramTypes, String[] paramValues) {
+    public Command(String className, String methodName, String[] paramTypes, String[] paramValues)
+    {
         _className = className;
         _methodName = methodName;
         _paramTypes = paramTypes;
