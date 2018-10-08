@@ -7,6 +7,7 @@ import results.Results;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,10 @@ public class Command {
     private String _className;
     private String _methodName;
     private String[] _paramTypes;
-    private Object[] _paramValues;
+    private String[] _paramValues;
+    //private Serializer serializer = new Serializer();
 
-    public Command(String className, String methodName, String[] paramTypes, Object[] paramValues) {
+    public Command(String className, String methodName, String[] paramTypes, String[] paramValues) {
         _className = className;
         _methodName = methodName;
         _paramTypes = paramTypes;
@@ -27,17 +29,19 @@ public class Command {
     //another simplified constructor
     public Command(String className, String methodName, List<Object> parameters){
         ArrayList<String> paramTypes = new ArrayList<>();
-        ArrayList<Object> _parameters = new ArrayList<>();
+        ArrayList<String> _parameters = new ArrayList<>();
 
+        Serializer serializer = new Serializer();
         for(Object object : parameters) {
             paramTypes.add(object.getClass().getName());
-            _parameters.add(object);
+            String serializedObject = serializer.encode(object);
+            _parameters.add(serializedObject);
         }
 
         _className = className;
         _methodName = methodName;
         _paramTypes = paramTypes.toArray(new String[0]);
-        _paramValues = _parameters.toArray();
+        _paramValues = _parameters.toArray(new String[0]);
     }
 
     public String get_className() {
@@ -64,11 +68,11 @@ public class Command {
         this._paramTypes = _paramTypes;
     }
 
-    public Object[] get_paramValues() {
+    public String[] get_paramValues() {
         return _paramValues;
     }
 
-    public void set_paramValues(Object[] _paramValues) {
+    public void set_paramValues(String[] _paramValues) {
         this._paramValues = _paramValues;
     }
 
@@ -90,7 +94,7 @@ public class Command {
             //this is a round-about way of using an array of strings for class types because
             //gson cannot serialize an array of type: Class.
             Class<?>[] paramTypesArray;
-            Object[] paramValues;
+            String[] paramValues;
 
             //turn param types from string to Class
             ArrayList<Class<?>> paramTypesList = new ArrayList<>();
@@ -103,19 +107,16 @@ public class Command {
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
+
+            Serializer serializer = new Serializer();
+            ArrayList<Object> realValues = new ArrayList<>();
             for (int i = 0; i < paramValues.length; i++) {
-                if (paramValues[i] instanceof LinkedTreeMap) {
-                    Serializer serializer = new Serializer();
-                    paramValues[i] = serializer.decodeInnerClass((LinkedTreeMap)paramValues[i], paramTypesArray[i]);
-                } else if (paramValues[i] instanceof Double) {
-                    Double d = (Double)paramValues[i];
-                    paramValues[i] = d.intValue();
-                }
+                realValues.add(serializer.decode(paramValues[i], paramTypesArray[i]));
             }
 
-            Object target = getTargetInstance(receiver);
+            //Object target = getTargetInstance(receiver);
 
-            return (Results) method.invoke(target, paramValues);
+            return (Results) method.invoke(null, realValues.toArray());
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -20,22 +20,28 @@ public class CommandManager {
         return instance;
     }
 
-    public ArrayList<Command> getCommands(String clientID) {
-        return clientCommands.get(clientID);
+    public ArrayList<Command> getCommands(String authToken) {
+        ArrayList<Command> returnCommands = new ArrayList<>();
+        returnCommands.addAll(clientCommands.get(authToken));
+
+        //clear commands
+        clientCommands.get(authToken).removeAll(returnCommands);
+
+        return returnCommands;
     }
 
     //gets the array list of commands with the given client ID and adds it.
-    public void addCommand(String clientID, Command command) {
-        ArrayList<Command> commands = clientCommands.get(clientID);
+    public void addCommand(String authToken, Command command) {
+        ArrayList<Command> commands = clientCommands.get(authToken);
         if (commands == null) {
             commands = new ArrayList<>();
         }
         commands.add(command);
     }
 
-    public void addClient(String clientID) {
+    public void addClient(String authToken) {
         ArrayList<Command> commands = new ArrayList<>();
-        clientCommands.put(clientID, commands);
+        clientCommands.put(authToken, commands);
     }
 
 }

@@ -1,5 +1,8 @@
 package results;
 
+import java.util.ArrayList;
+import modelclasses.GameInfo;
+
 public class LoggedInResults extends Results {
 
     private String authToken;

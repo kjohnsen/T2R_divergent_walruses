@@ -163,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 presenter.hostIPChanged(charSequence.toString());
+                presenter.hostIPChanged(charSequence.toString());
             }
 
             @Override
