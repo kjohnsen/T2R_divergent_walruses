@@ -1,7 +1,5 @@
 package model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -51,7 +49,7 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public GameResults createGame(String name, int numPlayers, String authToken) {
+    public GameResults createGame(String name, Integer numPlayers, String authToken) {
         if(name.equals("success")) {
             GameName gameName = new GameName("success");
             GameResults gameResults = new GameResults(gameName);

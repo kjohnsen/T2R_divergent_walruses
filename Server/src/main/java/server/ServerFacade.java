@@ -90,7 +90,7 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results createGame(String name, int numPlayers, String clientAuthToken) {
+    public Results createGame(String name, Integer numPlayers, String clientAuthToken) {
 
         Results results = new Results();
 

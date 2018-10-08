@@ -6,7 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+
+import data.Command;
 import model.ServerModel;
 import modelclasses.Player;
 import results.Results;
@@ -146,5 +149,12 @@ public class TestServerFacadeGame {
         assertEquals("Game does not exist", results.getErrorMessage());
     }
 
+    @Test
+    public void executeCommand() {
+        Command command = new Command("server.ServerFacade", "createGame",
+                Arrays.asList(new Object[]{"gameName", 4, "authToken"}));
+        command.execute();
+        assertEquals(ServerModel.getInstance().getGames().size(), 1);
+    }
 
 }
