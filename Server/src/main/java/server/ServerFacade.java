@@ -43,8 +43,6 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        ArrayList<GameInfo> gameInfos = new ArrayList<GameInfo>();
-        gameInfos.addAll(ServerModel.getInstance().getGames().values());
         //*****************************************************************
 
         //once all checks have passed... get an authtoken.
@@ -60,7 +58,7 @@ public class ServerFacade implements IServer {
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
         //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken, gameInfos}));
+        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken, gameList}));
         //************************************************************
 
         results.getClientCommands().add(loginClientCommand);
@@ -90,9 +88,9 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
-        ArrayList<GameInfo> games = ServerModel.getInstance().getGameList();
+        ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
-        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(user, authToken));
+        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
 
         //set results
         results.getClientCommands().add(registerUserCommand);
