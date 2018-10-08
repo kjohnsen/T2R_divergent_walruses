@@ -7,16 +7,12 @@
 
  import java.util.Arrays;
  import java.util.List;
- import java.util.HashMap;
 
  import data.Command;
  import data.CommandManager;
  import model.ServerModel;
- import results.LoggedInResults;
  import results.Results;
  import modelclasses.User;
- import modelclasses.GameInfo;
- import modelclasses.GameName;
 
 
  public class TestServerFacadeUser {
@@ -24,19 +20,7 @@
 
      @Before
      public void setUp(){
-        GameName game1 = new GameName("game1");
-        GameInfo game1Info = new GameInfo(game1, null, 5);
-        GameName game2 = new GameName("game2");
-        GameInfo game2Info = new GameInfo(game2, null, 3);
-        GameName game3 = new GameName("game3");
-        GameInfo game3Info = new GameInfo(game3, null, 2);
 
-        HashMap<GameName, GameInfo> games = new HashMap<>();
-        games.put(game1, game1Info);
-        games.put(game2, game2Info);
-        games.put(game3, game3Info);
-
-        ServerModel.getInstance().setGames(games);
      }
 
      @Before
@@ -66,12 +50,11 @@
 
      @Test
      public void loginUserTest() {
-         LoggedInResults results = ServerFacade.getInstance().loginUser("user1", "pass");
+         Results results = ServerFacade.getInstance().loginUser("user1", "pass");
          assertTrue(results.getSuccess());
          assertNull(results.getErrorMessage());
          assertEquals(1, results.getClientCommands().size());
          assertNull(CommandManager.getInstance().getCommands("user1"));
-         assertEquals(3, results.getGames().size());
      }
 
      @Test

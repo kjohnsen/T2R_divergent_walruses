@@ -8,7 +8,6 @@ import model.ServerModel;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import results.Results;
-import results.LoggedInResults;
 import data.Command;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -27,11 +26,11 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
-    public LoggedInResults loginUser(String username, String password) {
+    public Results loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        LoggedInResults results = new LoggedInResults();
+        Results results = new Results();
 
         //************** Check parameters with Model/DB *******************
         ServerModel serverModel = ServerModel.getInstance();
@@ -55,6 +54,8 @@ public class ServerFacade implements IServer {
         User user = new User(username, password);
         clientProxy.loginUser(user, authToken);
 
+        ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
+
         //**************** BUILD COMMAND OBJECT  **********************
         Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken}));
         //************************************************************
@@ -62,16 +63,15 @@ public class ServerFacade implements IServer {
         results.getClientCommands().add(loginClientCommand);
         results.setSuccess(true);
         results.setAuthToken(authToken);
-        results.setGames(ServerModel.getInstance().getGameList());
 
         return results;
     }
 
-    public LoggedInResults registerUser(String username, String password) {
+    public Results registerUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        LoggedInResults results = new LoggedInResults();
+        Results results = new Results();
 
         //first check to see if the username exists.
         ServerModel serverModel = ServerModel.getInstance();
@@ -87,13 +87,14 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
+        ArrayList<GameInfo> games = ServerModel.getInstance().getGameList();
+
         Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(user, authToken));
 
         //set results
         results.getClientCommands().add(registerUserCommand);
         results.setSuccess(true);
         results.setAuthToken(authToken);
-        results.setGames(ServerModel.getInstance().getGameList());
 
         ClientProxy clientProxy = new ClientProxy();
 
