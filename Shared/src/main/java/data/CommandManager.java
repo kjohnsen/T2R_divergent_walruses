@@ -22,12 +22,16 @@ public class CommandManager {
 
     public ArrayList<Command> getCommands(String authToken) {
         ArrayList<Command> returnCommands = new ArrayList<>();
-        returnCommands.addAll(clientCommands.get(authToken));
+        ArrayList<Command> commandsToAdd = clientCommands.get(authToken);
+        if (commandsToAdd != null) {
+            returnCommands.addAll(commandsToAdd);
+            //clear commands
+            clientCommands.get(authToken).removeAll(returnCommands);
+            return returnCommands;
+        } else {
+            return null;
+        }
 
-        //clear commands
-        clientCommands.get(authToken).removeAll(returnCommands);
-
-        return returnCommands;
     }
 
     //gets the array list of commands with the given client ID and adds it.
