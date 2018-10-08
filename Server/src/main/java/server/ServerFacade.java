@@ -236,8 +236,7 @@ public class ServerFacade implements IServer {
 
     public Results getCommands(String authToken) {
         Results results = new Results();
-        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
-        results.setClientCommands(CommandManager.getInstance().getCommands(username));
+        results.setClientCommands(CommandManager.getInstance().getCommands(authToken));
         results.setSuccess(true);
         results.setAuthToken(authToken);
         return results;
