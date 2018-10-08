@@ -59,7 +59,7 @@ public class ServerPoller extends Service {
         @Override
         protected ArrayList<Command> doInBackground(Void... voids) {
             //Send the request to the server...
-            Results results = serverProxy.getCommands(UIFacade.getInstance().getAuthToken(), UIFacade.getInstance().getAuthToken());
+            Results results = serverProxy.getCommands(UIFacade.getInstance().getAuthToken());
             if (results != null) {
                 ArrayList<Command> commands = results.getClientCommands();
                 if (commands != null) {
