@@ -49,7 +49,7 @@ public class ServerFacade implements IServer {
 
         //this is where we will call DAO methods in the future
         serverModel.getAuthTokens().put(authToken, username);
-        
+
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
         clientProxy.loginUser(user, authToken);
