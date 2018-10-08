@@ -38,8 +38,8 @@ public class ExcmdHandler implements HttpHandler {
                 //in other words... get the command object and call execute.
                 Serializer serializer = new Serializer();
                 Command command = (Command)serializer.decodeFromStream(reqBody, Command.class);
-                if (command.get_methodName() != "getCommands") {
-                    System.out.println("Received (non-command) request");
+                if (!command.get_methodName().equals("_getCommands")) {
+                    System.out.println("Received (non-poll) request");
                 }
                 Results results = command.execute();
 
