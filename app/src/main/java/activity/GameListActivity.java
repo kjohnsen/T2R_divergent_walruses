@@ -63,6 +63,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
+        //start the ServerPoller
         Intent intent = new Intent(this, ServerPoller.class);
         getApplicationContext().startService(intent);
         presenter = new GameListPresenter(this);
@@ -84,6 +85,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             }
         });
         numPlayers = findViewById(R.id.numPlayers);
+        //set up player number spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.num_players_list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -99,6 +101,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         gameList = findViewById(R.id.gameList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(this);
         gameList.setLayoutManager(gameListManager);
+        //initialize the view with current info
         presenter.getGameListInfo();
     }
 
@@ -141,6 +144,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 gameName = findViewById(R.id.itemName);
                 gamePlayers = findViewById(R.id.itemPlayers);
                 numSpots = findViewById(R.id.itemNum);
+                //if someone taps the game, it should go to GameLobby
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

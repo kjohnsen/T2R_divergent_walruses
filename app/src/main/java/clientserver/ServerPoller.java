@@ -51,6 +51,8 @@ public class ServerPoller extends Service {
         //Start the service...
         handler = new Handler();
         handler.post(runnableService);
+        /* I think it needs to be not sticky because otherwise, it keeps trying to run even after the
+        app is closed */
         return START_NOT_STICKY;
     }
 

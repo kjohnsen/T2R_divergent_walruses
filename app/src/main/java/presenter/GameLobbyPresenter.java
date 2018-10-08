@@ -38,7 +38,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     public void getGameLobbyInfo() {
         GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
         activity.updatePlayerList(gameInfo.getPlayers());
-        //activity.updateAvailableColors();
+        activity.updateAvailableColors(PlayerColor.getColors());
     }
 
     @Override
