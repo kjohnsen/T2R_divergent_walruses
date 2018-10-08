@@ -213,7 +213,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         }
         @Override
         protected void onPostExecute(String message) {
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            if (message != null) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -224,7 +226,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         }
         @Override
         protected void onPostExecute(String message) {
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            if (message != null) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
