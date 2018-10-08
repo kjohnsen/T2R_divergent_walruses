@@ -8,6 +8,7 @@ import model.ServerModel;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import results.Results;
+import results.LoggedInResults;
 import data.Command;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -26,11 +27,11 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
-    public Results loginUser(String username, String password) {
+    public LoggedInResults loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        Results results = new Results();
+        LoggedInResults results = new LoggedInResults();
 
         //************** Check parameters with Model/DB *******************
         ServerModel serverModel = ServerModel.getInstance();
@@ -61,15 +62,16 @@ public class ServerFacade implements IServer {
         results.getClientCommands().add(loginClientCommand);
         results.setSuccess(true);
         results.setAuthToken(authToken);
+        results.setGames(ServerModel.getInstance().getGameList());
 
         return results;
     }
 
-    public Results registerUser(String username, String password) {
+    public LoggedInResults registerUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
-        Results results = new Results();
+        LoggedInResults results = new LoggedInResults();
 
         //first check to see if the username exists.
         ServerModel serverModel = ServerModel.getInstance();
@@ -91,6 +93,7 @@ public class ServerFacade implements IServer {
         results.getClientCommands().add(registerUserCommand);
         results.setSuccess(true);
         results.setAuthToken(authToken);
+        results.setGames(ServerModel.getInstance().getGameList());
 
         ClientProxy clientProxy = new ClientProxy();
 

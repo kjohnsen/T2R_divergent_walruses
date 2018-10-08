@@ -2,6 +2,7 @@ package model;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.User;
@@ -37,6 +38,16 @@ public class ServerModel {
 
     public User getUser(String username) {
         return users.get(username);
+    }
+
+    public ArrayList<GameInfo> getGameList() {
+        Object[] gameList = games.values().toArray();
+        ArrayList<GameInfo> gameListToReturn = new ArrayList<>();
+        for (Object gameObj : gameList) {
+            GameInfo game = (GameInfo) gameObj;
+            gameListToReturn.add(game);
+        }
+        return gameListToReturn;
     }
 
     // ********** getters and setters ***********
