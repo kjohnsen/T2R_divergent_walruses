@@ -59,6 +59,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         playerList = findViewById(R.id.playerList);
         RecyclerView.LayoutManager playerListManager = new LinearLayoutManager(this);
         playerList.setLayoutManager(playerListManager);
+        presenter.getGameLobbyInfo();
     }
 
     public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
@@ -88,8 +89,8 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
             private TextView playerColor;
             PlayerHolder(View view) {
                 super(view);
-                playerName = findViewById(R.id.itemName);
-                playerColor = findViewById(R.id.itemColor);
+                playerName = view.findViewById(R.id.itemName);
+                playerColor = view.findViewById(R.id.itemColor);
             }
             void bind(String name, String color) {
                 playerName.setText(name);
@@ -99,22 +100,37 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
     }
 
     @Override
-    public void updateAvailableColors(ArrayList<String> colors) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, colors);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        colorSpinner.setAdapter(adapter);
+    public void updateAvailableColors(final ArrayList<String> colors) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(GameLobbyActivity.this,
+                        android.R.layout.simple_spinner_item, colors);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                colorSpinner.setAdapter(adapter);
+            }
+        });
     }
 
     @Override
-    public void updatePlayerList(ArrayList<Player> players) {
-        PlayerListAdapter playerListAdapter = new PlayerListAdapter(players);
-        playerList.setAdapter(playerListAdapter);
+    public void updatePlayerList(final ArrayList<Player> players) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                PlayerListAdapter playerListAdapter = new PlayerListAdapter(players);
+                playerList.setAdapter(playerListAdapter);
+            }
+        });
     }
 
     @Override
-    public void setStartGameEnabled(boolean enabled) {
-        startGameButton.setEnabled(enabled);
+    public void setStartGameEnabled(final boolean enabled) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startGameButton.setEnabled(enabled);
+            }
+        });
     }
 
     public class ChooseColorTask extends AsyncTask<String, Void, String> {
@@ -145,6 +161,11 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
 
     @Override
     public void startGame() {
-        Toast.makeText(this, "This would go to a new game but we don't have that screen so instead enjoy this lovely joke! There were two muffins in an oven. One said to the other, \"Gee, isn't it hot in here?\" The other one said, \"AAAH! A talking muffin!\"", Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(GameLobbyActivity.this, "This would go to a new game but we don't have that screen so instead enjoy this lovely joke! There were two muffins in an oven. One said to the other, \"Gee, isn't it hot in here?\" The other one said, \"AAAH! A talking muffin!\"", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

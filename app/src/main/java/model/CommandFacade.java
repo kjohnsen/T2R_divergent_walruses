@@ -51,14 +51,12 @@ public class CommandFacade implements iClient {
         ArrayList<GameInfo> gameList = ClientModel.getInstance().getGameList();
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void startGame(GameName gameName) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override

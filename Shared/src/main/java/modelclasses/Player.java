@@ -6,6 +6,7 @@ public class Player {
 
     public Player(String username) {
         this.username = username;
+        playerColor = PlayerColor.UNCHOSEN;
     }
     //the following constructor is used for testing
     public Player(String username, PlayerColor color) {

@@ -138,10 +138,8 @@ public class ServerFacade implements IServer {
         }
 
         Command createGameCommand = new Command("model.CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
-        Command joinGameCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {gameInfo}));
 
         results.getClientCommands().add(createGameCommand);
-        results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
 
         return results;

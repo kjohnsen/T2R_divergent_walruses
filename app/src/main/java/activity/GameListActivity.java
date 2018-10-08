@@ -32,20 +32,31 @@ import presenter.IGameListPresenter;
 public class GameListActivity extends AppCompatActivity implements IGameListActivity {
 
     private RecyclerView gameList;
+    private GameListAdapter gameListAdapter;
     private EditText gameName;
     private Spinner numPlayers;
     private Button createGameButton;
     private IGameListPresenter presenter;
 
     @Override
-    public void populateGameList(ArrayList<GameInfo> games) {
-        GameListAdapter gameListAdapter = new GameListAdapter(games);
-        gameList.setAdapter(gameListAdapter);
+    public void populateGameList(final ArrayList<GameInfo> games) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameListAdapter = new GameListAdapter(games);
+                gameList.setAdapter(gameListAdapter);
+            }
+        });
     }
 
     @Override
-    public void setCreateGameEnabled(boolean enabled) {
-        createGameButton.setEnabled(enabled);
+    public void setCreateGameEnabled(final boolean enabled) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                createGameButton.setEnabled(enabled);
+            }
+        });
     }
 
     @Override
@@ -138,9 +149,11 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 });
             }
             void bind(String name, String players, String spotsLeft) {
-                gameName.setText(name);
-                gamePlayers.setText(players);
-                numSpots.setText(spotsLeft);
+                if (gameName != null) {
+                    gameName.setText(name);
+                    gamePlayers.setText(players);
+                    numSpots.setText(spotsLeft);
+                }
             }
         }
     }
@@ -154,6 +167,9 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         protected void onPostExecute(String param) {
             if (param != null) {
                 Toast.makeText(GameListActivity.this, param, Toast.LENGTH_LONG).show();
+            } else {
+                JoinGameTask j = new JoinGameTask();
+                j.execute("");
             }
         }
     }
@@ -173,7 +189,12 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
     @Override
     public void goToGameLobby() {
-        Intent intent = new Intent(this, GameLobbyActivity.class);
-        startActivity(intent);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameListActivity.this, GameLobbyActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -29,6 +29,10 @@ public class UIFacade {
         this.authToken = authToken;
     }
 
+    public GameInfo getCurrentGame() {
+        return ClientModel.getInstance().getCurrentGame();
+    }
+
     public IServer getServerProxy() {
         return serverProxy;
     }
@@ -76,6 +80,9 @@ public class UIFacade {
     }
 
     public String joinGame(String gameName) {
+        if (gameName.equals("")) {
+            gameName = ClientModel.getInstance().getCurrentGame().getGameName().getName();
+        }
         Results gameResults = serverProxy.joinGame(new GameName(gameName), authToken);
         if(gameResults != null && gameResults.getSuccess()) {
             for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
