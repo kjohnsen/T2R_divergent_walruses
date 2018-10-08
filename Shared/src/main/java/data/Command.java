@@ -16,6 +16,7 @@ public class Command {
     private String _methodName;
     private String[] _paramTypes;
     private Object[] _paramValues;
+    private Serializer serializer = new Serializer();
 
     public Command(String className, String methodName, String[] paramTypes, Object[] paramValues) {
         _className = className;
@@ -31,7 +32,8 @@ public class Command {
 
         for(Object object : parameters) {
             paramTypes.add(object.getClass().getName());
-            _parameters.add(object);
+            String serializedObject = serializer.encode(object);
+            _parameters.add(serializedObject);
         }
 
         _className = className;
@@ -105,13 +107,7 @@ public class Command {
 
 
             for (int i = 0; i < paramValues.length; i++) {
-                if (paramValues[i] instanceof LinkedTreeMap) {
-                    Serializer serializer = new Serializer();
-                    paramValues[i] = serializer.decodeInnerClass((LinkedTreeMap)paramValues[i], paramTypesArray[i]);
-                } else if (paramValues[i] instanceof Double) {
-                    Double d = (Double)paramValues[i];
-                    paramValues[i] = d.intValue();
-                }
+                paramValues[i] = serializer.decode((String)paramValues[i], paramTypesArray[i]);
             }
 
             //Object target = getTargetInstance(receiver);
