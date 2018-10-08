@@ -61,9 +61,9 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results getCommands(String clientID, String authToken) {
+    public Results getCommands(String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "getCommands", Arrays.asList(new Object[] {clientID, authToken}));
+        Command command = new Command("server.ServerFacade", "getCommands", Arrays.asList(new Object[] {authToken}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results;
     }
