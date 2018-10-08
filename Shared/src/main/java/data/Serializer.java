@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,9 +41,18 @@ public class Serializer {
 
     }
 
-    public Object decode(String json, Class toJsonClass)
+    public Object decode(String serializedObject, Class toJsonClass)
     {
-        return gson.fromJson(json, toJsonClass);
+        ByteArrayInputStream bis = new ByteArrayInputStream(serializedObject.getBytes());
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            return ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
 //    public Object decodeInnerClass(LinkedTreeMap l, Class toJsonClass) {
