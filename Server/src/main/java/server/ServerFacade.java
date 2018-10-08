@@ -80,7 +80,7 @@ public class ServerFacade implements IServer {
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
         //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken, gameList}));
+        Command loginClientCommand = new Command("model.CommandFacade","_loginUser", Arrays.asList(new Object[] {user, authToken, gameList}));
         //************************************************************
 
         results.getClientCommands().add(loginClientCommand);
@@ -112,7 +112,7 @@ public class ServerFacade implements IServer {
 
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
-        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
+        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
 
         //set results
         results.getClientCommands().add(registerUserCommand);
@@ -157,8 +157,8 @@ public class ServerFacade implements IServer {
         clientProxy.createGame(gameInfo, clientAuthToken);
 
         // createGame and joinGame commands created to be sent back to current client
-        Command createGameCommand = new Command("model.CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
-        Command joinGameCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {gameInfo}));
+        Command createGameCommand = new Command("model.CommandFacade", "_createGame", Arrays.asList(new Object[] {gameInfo}));
+        Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {gameInfo}));
 
         results.getClientCommands().add(createGameCommand);
         results.getClientCommands().add(joinGameCommand);
@@ -188,7 +188,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.joinGame(player, gameName, clientAuthToken);
 
-        Command joinGameCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
+        Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
 
         results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
@@ -224,7 +224,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.startGame(gameName, clientAuthToken);
 
-        Command startGameCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
@@ -249,7 +249,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.claimColor(username, color, clientAuthToken);
 
-        Command chooseColorCommand = new Command("model.CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
+        Command chooseColorCommand = new Command("model.CommandFacade", "_claimColor", Arrays.asList(new Object[] {username, color}));
         results.getClientCommands().add(chooseColorCommand);
         results.setSuccess(true);
 

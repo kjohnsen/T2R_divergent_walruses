@@ -103,7 +103,7 @@ public class Command {
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            /*
+
             for (int i = 0; i < paramValues.length; i++) {
                 if (paramValues[i] instanceof LinkedTreeMap) {
                     Serializer serializer = new Serializer();
@@ -114,8 +114,8 @@ public class Command {
                 }
             }
 
-            Object target = getTargetInstance(receiver);
-*/
+            //Object target = getTargetInstance(receiver);
+
             return (Results) method.invoke(null, paramValues);
         }
         catch (Exception e) {

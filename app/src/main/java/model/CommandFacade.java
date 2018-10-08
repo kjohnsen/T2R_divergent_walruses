@@ -9,6 +9,7 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.User;
+import results.Results;
 
 public class CommandFacade implements iClient {
 
@@ -19,6 +20,26 @@ public class CommandFacade implements iClient {
     }
 
     private CommandFacade() {
+    }
+
+
+    public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ourInstance.registerUser(user, authToken, gameInfos);
+    }
+    public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ourInstance.loginUser(user, authToken, gameInfos);
+    }
+    public static void _createGame(GameInfo gameInfo) {
+        ourInstance.createGame(gameInfo);
+    }
+    public static void _joinGame(Player player, GameName gameName) {
+        ourInstance.joinGame(player, gameName);
+    }
+    public static void _claimColor(String username, PlayerColor playerColor) {
+        ourInstance.claimColor(username, playerColor);
+    }
+    public static void _startGame(GameName gameName) {
+        ourInstance.startGame(gameName);
     }
 
 
