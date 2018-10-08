@@ -49,20 +49,18 @@ public class ServerFacade implements IServer {
 
         //this is where we will call DAO methods in the future
         serverModel.getAuthTokens().put(authToken, username);
-
-        //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {username, authToken}));
-        //************************************************************
-
-        //set results
-        results.getClientCommands().add(loginClientCommand);
-        results.setSuccess(true);
-        results.setAuthToken(authToken);
-
-
+        
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
         clientProxy.loginUser(user, authToken);
+
+        //**************** BUILD COMMAND OBJECT  **********************
+        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken}));
+        //************************************************************
+
+        results.getClientCommands().add(loginClientCommand);
+        results.setSuccess(true);
+        results.setAuthToken(authToken);
 
         return results;
     }
