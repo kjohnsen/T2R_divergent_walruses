@@ -31,7 +31,8 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void registerUser(User user, String authToken) {
+    public void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
         ClientModel.getInstance().notifyObservers(user);
