@@ -43,7 +43,6 @@ public class CommandFacade implements iClient {
         if (player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
             ClientModel.getInstance().setCurrentGame(gameInfo);
         }
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override

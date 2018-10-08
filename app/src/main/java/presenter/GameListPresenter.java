@@ -51,6 +51,12 @@ public class GameListPresenter implements IGameListPresenter, Observer {
     }
 
     @Override
+    public void getGameListInfo() {
+        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        activity.populateGameList(games);
+    }
+
+    @Override
     public void update(Observable observable, Object o) {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);

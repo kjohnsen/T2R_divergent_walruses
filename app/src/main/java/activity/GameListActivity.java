@@ -63,8 +63,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
-        //Intent intent = new Intent(this, ServerPoller.class);
-        //getApplicationContext().startService(intent);
+        Intent intent = new Intent(this, ServerPoller.class);
+        getApplicationContext().startService(intent);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
         gameName.addTextChangedListener(new TextWatcher() {
@@ -99,6 +99,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         gameList = findViewById(R.id.gameList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(this);
         gameList.setLayoutManager(gameListManager);
+        presenter.getGameListInfo();
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
@@ -167,9 +168,6 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         protected void onPostExecute(String param) {
             if (param != null) {
                 Toast.makeText(GameListActivity.this, param, Toast.LENGTH_LONG).show();
-            } else {
-                JoinGameTask j = new JoinGameTask();
-                j.execute("");
             }
         }
     }

@@ -51,7 +51,7 @@ public class ServerPoller extends Service {
         //Start the service...
         handler = new Handler();
         handler.post(runnableService);
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     private class GetCommandsTask extends AsyncTask<Void, Void, ArrayList<Command>> {

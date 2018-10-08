@@ -125,12 +125,9 @@ public class ServerFacade implements IServer {
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
-        // user joins the game they just created
-        Player player = addUserToGame(clientAuthToken, gameInfo);
-
         //create commands for every client in the server model except the one that asked
         //TODO: this adds a command for every auth token... we need to clear authtokens at some point.
-        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("model.CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
@@ -163,7 +160,7 @@ public class ServerFacade implements IServer {
 
         Player player = addUserToGame(clientAuthToken, game);
 
-        for(String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+        for(String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
@@ -203,7 +200,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+        for (String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
@@ -233,7 +230,7 @@ public class ServerFacade implements IServer {
         gameInfo.getPlayer(username).setPlayerColor(color);
 
 
-        for (String authToken : ServerModel.getInstance().getAuthTokens().values()) {
+        for (String authToken : ServerModel.getInstance().getAuthTokens().keySet()) {
             if (!authToken.equals(clientAuthToken)) {
                 Command clientCommand = new Command("model.CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
                 CommandManager.getInstance().addCommand(authToken, clientCommand);
