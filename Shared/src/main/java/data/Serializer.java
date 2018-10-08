@@ -1,6 +1,8 @@
 package data;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +34,11 @@ public class Serializer {
     public Object decode(String json, Class toJsonClass)
     {
         return gson.fromJson(json, toJsonClass);
+    }
+
+    public Object decodeInnerClass(LinkedTreeMap l, Class toJsonClass) {
+        JsonObject obj = gson.toJsonTree(l).getAsJsonObject();
+        return decode(gson.toJson(obj), toJsonClass);
     }
 
     public Object decodeFile(String fileName, Class toJsonClass)

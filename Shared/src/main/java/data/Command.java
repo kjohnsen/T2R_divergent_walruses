@@ -1,5 +1,8 @@
 package data;
 
+import com.google.gson.internal.LinkedTreeMap;
+
+import modelclasses.User;
 import results.Results;
 
 import java.lang.reflect.InvocationTargetException;
@@ -87,19 +90,32 @@ public class Command {
             //this is a round-about way of using an array of strings for class types because
             //gson cannot serialize an array of type: Class.
             Class<?>[] paramTypesArray;
+            Object[] paramValues;
 
             //turn param types from string to Class
             ArrayList<Class<?>> paramTypesList = new ArrayList<>();
-            for(String stringType : get_paramTypes()){
+            for(String stringType : get_paramTypes()) {
                 paramTypesList.add(Class.forName(stringType));
             }
+
             paramTypesArray = paramTypesList.toArray(new Class[paramTypesList.size()]);
+            paramValues = get_paramValues();
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
+            for (int i = 0; i < paramValues.length; i++) {
+                if (paramValues[i] instanceof LinkedTreeMap) {
+                    Serializer serializer = new Serializer();
+                    paramValues[i] = serializer.decodeInnerClass((LinkedTreeMap)paramValues[i], paramTypesArray[i]);
+                } else if (paramValues[i] instanceof Double) {
+                    Double d = (Double)paramValues[i];
+                    paramValues[i] = d.intValue();
+                }
+            }
+
             Object target = getTargetInstance(receiver);
 
-            return (Results) method.invoke(target, get_paramValues());
+            return (Results) method.invoke(target, paramValues);
         }
         catch (Exception e) {
             e.printStackTrace();

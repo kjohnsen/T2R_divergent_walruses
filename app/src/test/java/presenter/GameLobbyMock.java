@@ -49,11 +49,6 @@ public class GameLobbyMock implements IGameLobbyActivity {
     }
 
     @Override
-    public void displayErrorMessage(String message) {
-        //just here for mocking purposes
-    }
-
-    @Override
     public void startGame() {
         //just here for mocking purposes
     }

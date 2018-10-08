@@ -105,7 +105,7 @@
         android:id="@+id/gameName"
         android:inputType="text"
         android:hint="@string/game_name"
-        app:layout_constraintStart_toEndOf="@id/leftGuide"
+        app:layout_constraintEnd_toStartOf="@id/menuOne"
         app:layout_constraintTop_toBottomOf="@id/bottomGuide"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <Spinner
@@ -122,7 +122,7 @@
         android:id="@+id/createGame"
         android:text="@string/create_game"
         android:enabled="false"
-        app:layout_constraintEnd_toStartOf="@id/rightGuide"
+        app:layout_constraintStart_toEndOf="@id/menuTwo"
         app:layout_constraintTop_toBottomOf="@id/bottomGuide"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

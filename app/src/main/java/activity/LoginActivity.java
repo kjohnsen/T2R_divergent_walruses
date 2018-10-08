@@ -203,24 +203,25 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         }
     }
 
-    @Override
-    public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    public class RegisterTask extends AsyncTask<String, String, String> {
+    public class RegisterTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... s) {
-            presenter.register();
-            return null;
+            return presenter.register();
+        }
+        @Override
+        protected void onPostExecute(String message) {
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
 
-    public class LoginTask extends AsyncTask<String, String, String> {
+    public class LoginTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... s) {
-            presenter.login();
-            return null;
+            return presenter.login();
+        }
+        @Override
+        protected void onPostExecute(String message) {
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
 

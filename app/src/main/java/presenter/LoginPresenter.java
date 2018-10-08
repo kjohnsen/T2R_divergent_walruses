@@ -24,19 +24,13 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     }
 
     @Override
-    public void login() {
-        String message = UIFacade.getInstance().loginUser(loginUsername, loginPassword);
-        if (message != null) {
-            activity.displayErrorMessage(message);
-        }
+    public String login() {
+        return UIFacade.getInstance().loginUser(loginUsername, loginPassword);
     }
 
     @Override
-    public void register() {
-        String message = UIFacade.getInstance().registerUser(registerUsername, registerPassword);
-        if (message != null) {
-            activity.displayErrorMessage(message);
-        }
+    public String register() {
+        return UIFacade.getInstance().registerUser(registerUsername, registerPassword);
     }
 
     @Override

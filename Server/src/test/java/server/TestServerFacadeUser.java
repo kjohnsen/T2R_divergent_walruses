@@ -17,11 +17,10 @@
 
  public class TestServerFacadeUser {
 
-     private ServerFacade serverFacade;
 
      @Before
      public void setUp(){
-         serverFacade = new ServerFacade();
+
      }
 
      @Before
@@ -51,7 +50,7 @@
 
      @Test
      public void loginUserTest() {
-         Results results = serverFacade.loginUser("user1", "pass");
+         Results results = ServerFacade.getInstance().loginUser("user1", "pass");
          assertTrue(results.getSuccess());
          assertNull(results.getErrorMessage());
          assertEquals(1, results.getClientCommands().size());
@@ -60,19 +59,19 @@
 
      @Test
      public void loginInvalidPassword() {
-        Results results = serverFacade.loginUser("user1", "incorrectPassword");
+        Results results = ServerFacade.getInstance().loginUser("user1", "incorrectPassword");
         assertEquals("Password incorrect", results.getErrorMessage());
      }
 
      @Test
      public void loginNonexistentUser() {
-         Results results = serverFacade.loginUser("notAUser", "password");
+         Results results = ServerFacade.getInstance().loginUser("notAUser", "password");
          assertEquals("Username doesn't exist", results.getErrorMessage());
      }
 
      @Test
      public void registerUserTest() {
-         Results results = serverFacade.registerUser("newUser", "word");
+         Results results = ServerFacade.getInstance().registerUser("newUser", "word");
          assertTrue(results.getSuccess());
          assertNull(results.getErrorMessage());
          assertEquals(1, results.getClientCommands().size());
@@ -83,7 +82,7 @@
 
      @Test
      public void registerRepeatUsername() {
-        Results results = serverFacade.registerUser("user1", "newPassword");
+        Results results = ServerFacade.getInstance().registerUser("user1", "newPassword");
         assertFalse(results.getSuccess());
         assertEquals("Username already exists!", results.getErrorMessage());
      }

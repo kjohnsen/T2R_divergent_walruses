@@ -14,12 +14,12 @@ import data.Command;
 import interfaces.IServer;
 import model.ClientModel;
 import model.UIFacade;
+import results.Results;
 
-public class ServerPoller extends Service{
-    private static final ServerPoller ourInstance = new ServerPoller();
+public class ServerPoller extends Service {
     private static Handler handler = null;
     private static final long DEFAULT_POLL_INTERVAL = 2 * 1000; //2 seconds
-    private  IServer serverProxy = ServerProxy.getInstance();
+    private IServer serverProxy = ServerProxy.getInstance();
 
     private Runnable runnableService = new Runnable() {
         @Override
@@ -31,8 +31,6 @@ public class ServerPoller extends Service{
             handler.postDelayed(runnableService, DEFAULT_POLL_INTERVAL);
         }
     };
-
-    private ServerPoller() {}
 
     public IServer getServerProxy() {
         return serverProxy;
@@ -48,10 +46,6 @@ public class ServerPoller extends Service{
         return null;
     }
 
-    public static ServerPoller getInstance() {
-        return ourInstance;
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Start the service...
@@ -65,13 +59,20 @@ public class ServerPoller extends Service{
         @Override
         protected ArrayList<Command> doInBackground(Void... voids) {
             //Send the request to the server...
-            return serverProxy.getCommands(UIFacade.getInstance().getAuthToken()).getClientCommands();
+            Results results = serverProxy.getCommands(UIFacade.getInstance().getAuthToken());
+            if (results != null) {
+                ArrayList<Command> commands = results.getClientCommands();
+                if (commands != null) {
+                    return commands;
+                }
+            }
+            return new ArrayList<>();
         }
 
         @Override
         protected void onPostExecute(ArrayList<Command> commands) {
             //Execute any commands that we get back...
-            for(int i = 0; i < commands.size(); ++i) {
+            for (int i = 0; i < commands.size(); ++i) {
                 commands.get(i).execute();
             }
         }

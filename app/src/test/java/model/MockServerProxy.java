@@ -11,20 +11,18 @@ import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
-import results.GameResults;
-import results.LoggedInResults;
 import results.Results;
 
 public class MockServerProxy implements IServer {
     @Override
-    public LoggedInResults loginUser(String username, String password) {
+    public Results loginUser(String username, String password) {
         if(username.equals("success")) {
-            LoggedInResults loggedInResults = new LoggedInResults();
+            Results loggedInResults = new Results();
             loggedInResults.setSuccess(true);
             loggedInResults.setClientCommands(new ArrayList<Command>());
             return loggedInResults;
         } else if(username.equals("fail")) {
-            LoggedInResults loggedInResults = new LoggedInResults();
+            Results loggedInResults = new Results();
             loggedInResults.setSuccess(false);
             loggedInResults.setErrorMessage("Password does not match");
             return loggedInResults;
@@ -34,14 +32,14 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public LoggedInResults registerUser(String username, String password) {
+    public Results registerUser(String username, String password) {
         if(username.equals("success")) {
-            LoggedInResults loggedInResults = new LoggedInResults();
+            Results loggedInResults = new Results();
             loggedInResults.setSuccess(true);
             loggedInResults.setClientCommands(new ArrayList<Command>());
             return loggedInResults;
         } else if(username.equals("fail")) {
-            LoggedInResults loggedInResults = new LoggedInResults();
+            Results loggedInResults = new Results();
             loggedInResults.setSuccess(false);
             loggedInResults.setErrorMessage("User already exists");
             return loggedInResults;
@@ -51,10 +49,10 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public GameResults createGame(String name, int numPlayers, String authToken) {
+    public Results createGame(String name, Integer numPlayers, String authToken) {
         if(name.equals("success")) {
             GameName gameName = new GameName("success");
-            GameResults gameResults = new GameResults(gameName);
+            Results gameResults = new Results();
             gameResults.setSuccess(true);
 
             GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), numPlayers);
@@ -64,7 +62,7 @@ public class MockServerProxy implements IServer {
             gameResults.setClientCommands(commands);
             return gameResults;
         } else if(name.equals("fail")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(false);
             gameResults.setErrorMessage("Game already exists");
             return gameResults;
@@ -74,9 +72,9 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public GameResults joinGame(GameName gameName, String authToken) {
+    public Results joinGame(GameName gameName, String authToken) {
         if(gameName.getName().equals("success")) {
-            GameResults gameResults = new GameResults(gameName);
+            Results gameResults = new Results();
             gameResults.setSuccess(true);
 
             Player player = new Player("billy");
@@ -87,7 +85,7 @@ public class MockServerProxy implements IServer {
             gameResults.setClientCommands(commands);
             return gameResults;
         } else if(gameName.getName().equals("fail")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(false);
             gameResults.setErrorMessage("Game is full");
             return gameResults;
@@ -97,14 +95,14 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public GameResults startGame(GameName gameName, String authToken) {
+    public Results startGame(GameName gameName, String authToken) {
         if(gameName.getName().equals("success")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(true);
             gameResults.setClientCommands(new ArrayList<Command>());
             return gameResults;
         } else if(gameName.getName().equals("fail")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(false);
             gameResults.setErrorMessage("Game cannot start");
             return gameResults;
@@ -116,11 +114,11 @@ public class MockServerProxy implements IServer {
     @Override
     public Results chooseColor(PlayerColor color, GameName gameName, String authToken) {
         if(authToken.equals("success")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(true);
             return gameResults;
         } else if(authToken.equals("fail")) {
-            GameResults gameResults = new GameResults(new GameName("fake"));
+            Results gameResults = new Results();
             gameResults.setSuccess(false);
             gameResults.setErrorMessage("Color already taken");
             return gameResults;

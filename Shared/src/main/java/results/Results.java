@@ -9,6 +9,15 @@ public class Results {
     private Boolean isSuccess;
     private String errorMessage;
     ArrayList<Command> clientCommands = new ArrayList<>();
+    private String authToken;
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public Results() {
         isSuccess = false;
