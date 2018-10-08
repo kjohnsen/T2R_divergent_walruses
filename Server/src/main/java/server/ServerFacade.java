@@ -26,6 +26,28 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
+    public static Results _registerUser(String username, String password) {
+        return ourInstance.registerUser(username, password);
+    }
+    public static Results _loginUser(String username, String password) {
+        return ourInstance.loginUser(username, password);
+    }
+    public static Results _createGame(String name, int numPlayers, String clientAuthToken) {
+        return ourInstance.createGame(name, numPlayers, clientAuthToken);
+    }
+    public static Results _joinGame(GameName gameName, String clientAuthToken) {
+        return ourInstance.joinGame(gameName, clientAuthToken);
+    }
+    public static Results _chooseColor(PlayerColor color, GameName gameName, String clientAuthToken) {
+        return ourInstance.chooseColor(color, gameName, clientAuthToken);
+    }
+    public static Results _startGame(GameName gameName, String clientAuthToken) {
+        return ourInstance.startGame(gameName, clientAuthToken);
+    }
+    public static Results _getCommands(String authToken) {
+        return ourInstance.getCommands(authToken);
+    }
+
     public Results loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
