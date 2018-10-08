@@ -1,5 +1,6 @@
 package activity;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -18,6 +20,7 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
+import modelclasses.GameName;
 import modelclasses.Player;
 import presenter.GameLobbyPresenter;
 import presenter.IGameLobbyPresenter;
@@ -35,6 +38,17 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         setContentView(R.layout.activity_game_lobby);
         presenter = new GameLobbyPresenter(this);
         colorSpinner = findViewById(R.id.colorSpinner);
+        colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                presenter.chooseColor(adapterView.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         startGameButton = findViewById(R.id.startGame);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +56,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
                 presenter.startGame();
             }
         });
-        playerList = findViewById(R.id.gameList);
+        playerList = findViewById(R.id.playerList);
         RecyclerView.LayoutManager playerListManager = new LinearLayoutManager(this);
         playerList.setLayoutManager(playerListManager);
     }
@@ -103,9 +117,30 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         startGameButton.setEnabled(enabled);
     }
 
-    @Override
-    public void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public class ChooseColorTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... s) {
+            return presenter.chooseColor(s[0]);
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(GameLobbyActivity.this, param, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public class StartGameTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... s) {
+            return presenter.startGame();
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(GameLobbyActivity.this, param, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

@@ -19,11 +19,9 @@ import modelclasses.GameName;
 
 public class TestServerFacadeGame {
 
-    private ServerFacade serverFacade;
-
     @Before
     public void setUp(){
-        serverFacade = new ServerFacade();
+
     }
 
     @Before
@@ -59,7 +57,7 @@ public class TestServerFacadeGame {
 
     @Test
     public void createGame() {
-        Results results = serverFacade.createGame("new game", 4, "auth1");
+        Results results = ServerFacade.getInstance().createGame("new game", 4, "auth1");
         assertTrue(results.getSuccess());
         assertEquals(2, results.getClientCommands().size());
 
@@ -89,21 +87,21 @@ public class TestServerFacadeGame {
 
     @Test
     public void createRepeatGame() {
-        Results results = serverFacade.createGame("test game", 5, "auth1");
+        Results results = ServerFacade.getInstance().createGame("test game", 5, "auth1");
         assertFalse(results.getSuccess());
         assertEquals("Game name already exists", results.getErrorMessage());
     }
 
     @Test
     public void createGameTooManyPlayers() {
-        Results results = serverFacade.createGame("100 player game", 100, "auth1");
+        Results results = ServerFacade.getInstance().createGame("100 player game", 100, "auth1");
         assertFalse(results.getSuccess());
         assertEquals("Invalid player number", results.getErrorMessage());
     }
 
     @Test
     public void createGameTooFewPlayers() {
-        Results results = serverFacade.createGame("0 player game", 0, "auth1");
+        Results results = ServerFacade.getInstance().createGame("0 player game", 0, "auth1");
         assertFalse(results.getSuccess());
         assertEquals("Invalid player number", results.getErrorMessage());
     }
@@ -116,7 +114,7 @@ public class TestServerFacadeGame {
         GameInfo originalGameInfo = ServerModel.getInstance().getGameInfo(gameName);
         int originalNumPlayers = originalGameInfo.getPlayers().size();
 
-        Results results = serverFacade.joinGame(gameName, "auth1");
+        Results results = ServerFacade.getInstance().joinGame(gameName, "auth1");
         assertTrue(results.getSuccess());
 
         // check that game has one more player than before
@@ -136,7 +134,7 @@ public class TestServerFacadeGame {
     @Test
     public void joinFullGame() {
         GameName name = new GameName("full game");
-        Results results = serverFacade.joinGame(name, "auth1");
+        Results results = ServerFacade.getInstance().joinGame(name, "auth1");
         assertFalse(results.getSuccess());
         assertEquals("Game is full", results.getErrorMessage());
     }
@@ -144,7 +142,7 @@ public class TestServerFacadeGame {
     @Test
     public void joinNonexistentGame() {
         GameName name = new GameName("this game does not exist");
-        Results results = serverFacade.joinGame(name,"auth1");
+        Results results = ServerFacade.getInstance().joinGame(name,"auth1");
         assertFalse(results.getSuccess());
         assertEquals("Game does not exist", results.getErrorMessage());
     }

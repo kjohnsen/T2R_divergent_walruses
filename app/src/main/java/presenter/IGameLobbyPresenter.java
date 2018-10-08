@@ -1,8 +1,6 @@
 package presenter;
 
-import modelclasses.GameName;
-
 public interface IGameLobbyPresenter {
-    void chooseColor(String color, GameName gameName);
-    void startGame();
+    String chooseColor(String color);
+    String startGame();
 }

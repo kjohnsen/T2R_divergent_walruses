@@ -2,6 +2,6 @@ package presenter;
 
 public interface IGameListPresenter {
     void createGameNameChanged(String gameName);
-    void createGame(int numPlayers);
-    void joinGame(String gameName);
+    String createGame(int numPlayers);
+    String joinGame(String gameName);
 }

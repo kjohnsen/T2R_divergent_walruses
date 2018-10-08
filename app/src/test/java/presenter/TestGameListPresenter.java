@@ -59,17 +59,8 @@ public class TestGameListPresenter {
         assertTrue(!listMock.gameEnabled());
     }
     @Test
-    public void createGameSuccess() {
-        ClientModel.getInstance().setCurrentUser(new User("billy", "pw"));
-        gameListPresenter.createGameNameChanged("success");
-        gameListPresenter.createGame(5);
-        GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();
-        assertNotNull(gameInfo);
-        assertEquals("success", gameInfo.getGameName().getName());
-    }
-    @Test
     public void createGameFail() {
-        ClientModel.getInstance().setCurrentUser(new User("billy", "pw"));
+        ClientModel.getInstance().setCurrentUserTest(new User("billy", "pw"));
         gameListPresenter.createGameNameChanged("fail");
         gameListPresenter.createGame(2);
         GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();

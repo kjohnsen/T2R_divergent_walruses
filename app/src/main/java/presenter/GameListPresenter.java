@@ -25,7 +25,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
             activity.setCreateGameEnabled(false);
             return;
         }
-        ArrayList<GameInfo> games = ClientModel.getInstance().getGameList();
+        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
         for (GameInfo g : games) {
             if (g.getGameName().getName().equals(gameName)) {
                 activity.setCreateGameEnabled(false);
@@ -37,20 +37,17 @@ public class GameListPresenter implements IGameListPresenter, Observer {
     }
 
     @Override
-    public void createGame(int numPlayers) {
+    public String createGame(int numPlayers) {
         String message = UIFacade.getInstance().createGame(gameName, numPlayers);
         if (message != null) {
-            activity.displayErrorMessage(message);
+            return message;
         }
-        UIFacade.getInstance().joinGame(gameName);
+        return UIFacade.getInstance().joinGame(gameName);
     }
 
     @Override
-    public void joinGame(String gameName) {
-        String message = UIFacade.getInstance().joinGame(gameName);
-        if (message != null) {
-            activity.displayErrorMessage(message);
-        }
+    public String joinGame(String gameName) {
+        return UIFacade.getInstance().joinGame(gameName);
     }
 
     @Override
