@@ -18,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+
 /**
  * Created by Parker on 3/4/18.
  */
@@ -27,25 +28,22 @@ public class Serializer {
 
     public Serializer(){}
 
-    public String encode(Object objectToEncode) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    public void encodeToStream(Object objectToEncode, OutputStream os) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            ObjectOutputStream oos = new ObjectOutputStream(os);
             oos.writeObject(objectToEncode);
-            return new String(bos.toByteArray());
+            os.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
 
     }
 
-    public Object decode(String serializedObject, Class toJsonClass)
+    public Object decodeFromStream(InputStream inputStream, Class toJsonClass)
     {
-        ByteArrayInputStream bis = new ByteArrayInputStream(serializedObject.getBytes());
         try {
-            ObjectInputStream ois = new ObjectInputStream(bis);
+            ObjectInputStream ois = new ObjectInputStream(inputStream);
             return ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -83,6 +81,22 @@ public class Serializer {
         sw.write(str);
         sw.flush();
     }
+
+    public byte[] istreamToByteArray(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int nRead;
+        byte[] data = new byte[16384];
+
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        buffer.flush();
+
+        return buffer.toByteArray();
+    }
+
 
     public String readString(InputStream is) throws IOException {
         StringBuilder sb = new StringBuilder();

@@ -171,6 +171,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
+        hostIP.setText("10.0.2.2");
         hostPort = findViewById(R.id.hostPort);
         hostPort.addTextChangedListener(new TextWatcher() {
             @Override
@@ -188,6 +189,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
+        hostPort.setText("5000");
     }
 
     @Override
