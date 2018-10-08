@@ -42,6 +42,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         if (message != null) {
             return message;
         }
+        //this is easier than going all the way back to the activity and initiating a JoinGameTask
         return UIFacade.getInstance().joinGame(gameName);
     }
 
@@ -51,11 +52,20 @@ public class GameListPresenter implements IGameListPresenter, Observer {
     }
 
     @Override
+    public void getGameListInfo() {
+        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        activity.populateGameList(games);
+    }
+
+    @Override
     public void update(Observable observable, Object o) {
+        /* If you got a GameInfo object, that means you joined a game and this is the info the
+        GameLobby needs */
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             activity.goToGameLobby();
         } else {
+            /* Otherwise, you got a list of games-- update the list */
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof GameInfo) {
                 ArrayList<GameInfo> games = new ArrayList<>();

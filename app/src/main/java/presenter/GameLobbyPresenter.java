@@ -35,6 +35,13 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     }
 
     @Override
+    public void getGameLobbyInfo() {
+        GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
+        activity.updatePlayerList(gameInfo.getPlayers());
+        activity.updateAvailableColors(PlayerColor.getColors());
+    }
+
+    @Override
     public void update(Observable observable, Object o) {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);

@@ -15,11 +15,12 @@ public class ClientProxy {
 
     public ClientProxy(){}
 
-    public void loginUser(User user, String authToken) {
+    public void loginUser(String authToken) {
         CommandManager.getInstance().addClient(authToken);
     }
 
-    public void registerUser(User user, String authToken) {
+    public void registerUser(String authToken) {
+
         CommandManager.getInstance().addClient(authToken);
     }
 

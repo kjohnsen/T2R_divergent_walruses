@@ -56,15 +56,13 @@ public class ClientCommunicator {
 
             //Add the command to the request body...
             connection.connect();
-            String serializedCommand = serializer.encode(command);
             OutputStream requestBody = connection.getOutputStream();
-            serializer.writeString(serializedCommand, requestBody);
+            serializer.encodeToStream(command, requestBody);
             requestBody.close();
 
             //Get back the results. There should always be results unless there was a serious error...
             InputStream responseBody = connection.getInputStream();
-            String serializedResults = serializer.readString(responseBody);
-            Results results = (Results)serializer.decode(serializedResults, Results.class);
+            Results results = (Results)serializer.decodeFromStream(responseBody, Results.class);
 
             return results;
         } catch (IOException e) {

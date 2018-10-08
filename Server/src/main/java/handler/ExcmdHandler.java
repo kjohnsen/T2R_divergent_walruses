@@ -31,19 +31,18 @@ public class ExcmdHandler implements HttpHandler {
                 // Get the request body input stream
                 InputStream reqBody = exchange.getRequestBody();
 
-                //write request body to string
-                Serializer serializer = new Serializer();
-                String reqData = serializer.readString(reqBody);
 
                 //****************************************************
                 //************** PERFORM SERVICE, ENCODE RESULTS ***************
 
                 //in other words... get the command object and call execute.
-                Command command = (Command)serializer.decode(reqData, Command.class);
+                Serializer serializer = new Serializer();
+                Command command = (Command)serializer.decodeFromStream(reqBody, Command.class);
+                String methodName = command.get_methodName();
+                if (!methodName.equals("_getCommands")) {
+                    System.out.println(String.format("Received %s request",  methodName));
+                }
                 Results results = command.execute();
-
-                //changes result into json to send back.
-                String respData = serializer.encode(results);
 
                 //************************************************
                 //*************** SEND DATA BACK *****************
@@ -55,7 +54,7 @@ public class ExcmdHandler implements HttpHandler {
                 OutputStream respBody = exchange.getResponseBody();
 
                 //WRITE DATA TO RESPBODY
-                serializer.writeString(respData, respBody);
+                serializer.encodeToStream(results, respBody);
 
                 //SEND DATA
                 respBody.close();

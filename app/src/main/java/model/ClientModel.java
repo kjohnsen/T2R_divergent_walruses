@@ -8,6 +8,9 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.User;
 
+/* The ClientModel is the only Observable object. Each of its setter methods will call setChanged()
+and notifyObservers(), but if anything gets changed that isn't related to a setter, you have to do
+it manually */
 public class ClientModel extends Observable {
     private User currentUser;
 

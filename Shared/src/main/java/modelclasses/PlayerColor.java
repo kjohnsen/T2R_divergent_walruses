@@ -1,8 +1,9 @@
 package modelclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public enum PlayerColor {
+public enum PlayerColor implements Serializable {
     MAGENTA,
     BLUE,
     RED,

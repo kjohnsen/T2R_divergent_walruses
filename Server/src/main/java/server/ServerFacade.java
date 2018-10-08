@@ -1,8 +1,10 @@
 package server;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import data.CommandManager;
+import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
 import modelclasses.GameInfo;
@@ -26,6 +28,28 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
+    public static Results _registerUser(String username, String password) {
+        return ourInstance.registerUser(username, password);
+    }
+    public static Results _loginUser(String username, String password) {
+        return ourInstance.loginUser(username, password);
+    }
+    public static Results _createGame(String name, Integer numPlayers, String clientAuthToken) {
+        return ourInstance.createGame(name, numPlayers, clientAuthToken);
+    }
+    public static Results _joinGame(GameName gameName, String clientAuthToken) {
+        return ourInstance.joinGame(gameName, clientAuthToken);
+    }
+    public static Results _chooseColor(PlayerColor color, GameName gameName, String clientAuthToken) {
+        return ourInstance.chooseColor(color, gameName, clientAuthToken);
+    }
+    public static Results _startGame(GameName gameName, String clientAuthToken) {
+        return ourInstance.startGame(gameName, clientAuthToken);
+    }
+    public static Results _getCommands(String authToken) {
+        return ourInstance.getCommands(authToken);
+    }
+
     public Results loginUser(String username, String password) {
 
         //create the logged in results because you have to return something if it fails.
@@ -42,6 +66,7 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Password incorrect");
             return results;
         }
+
         //*****************************************************************
 
         //once all checks have passed... get an authtoken.
@@ -50,19 +75,19 @@ public class ServerFacade implements IServer {
         //this is where we will call DAO methods in the future
         serverModel.getAuthTokens().put(authToken, username);
 
+        ClientProxy clientProxy = new ClientProxy();
+        User user = new User(username, password);
+        clientProxy.loginUser(authToken);
+
+        ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
+
         //**************** BUILD COMMAND OBJECT  **********************
-        Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {username, authToken}));
+        Command loginClientCommand = new Command("model.CommandFacade","_loginUser", Arrays.asList(new Object[] {user, authToken, gameList}));
         //************************************************************
 
-        //set results
         results.getClientCommands().add(loginClientCommand);
         results.setSuccess(true);
         results.setAuthToken(authToken);
-
-
-        ClientProxy clientProxy = new ClientProxy();
-        User user = new User(username, password);
-        clientProxy.loginUser(user, authToken);
 
         return results;
     }
@@ -87,7 +112,9 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
-        Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(user, authToken));
+        ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
+
+        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
 
         //set results
         results.getClientCommands().add(registerUserCommand);
@@ -95,8 +122,7 @@ public class ServerFacade implements IServer {
         results.setAuthToken(authToken);
 
         ClientProxy clientProxy = new ClientProxy();
-
-        clientProxy.registerUser(user, password);
+        clientProxy.registerUser(authToken);
 
         return results;
     }
@@ -133,8 +159,8 @@ public class ServerFacade implements IServer {
         clientProxy.createGame(gameInfo, clientAuthToken);
 
         // createGame and joinGame commands created to be sent back to current client
-        Command createGameCommand = new Command("model.CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
-        Command joinGameCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {gameInfo}));
+        Command createGameCommand = new Command("model.CommandFacade", "_createGame", Arrays.asList(new Object[] {gameInfo}));
+        Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {gameInfo}));
 
         results.getClientCommands().add(createGameCommand);
         results.getClientCommands().add(joinGameCommand);
@@ -164,7 +190,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.joinGame(player, gameName, clientAuthToken);
 
-        Command joinGameCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
+        Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
 
         results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
@@ -200,7 +226,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.startGame(gameName, clientAuthToken);
 
-        Command startGameCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
@@ -225,7 +251,7 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.claimColor(username, color, clientAuthToken);
 
-        Command chooseColorCommand = new Command("model.CommandFacade", "claimColor", Arrays.asList(new Object[] {username, color}));
+        Command chooseColorCommand = new Command("model.CommandFacade", "_claimColor", Arrays.asList(new Object[] {username, color}));
         results.getClientCommands().add(chooseColorCommand);
         results.setSuccess(true);
 
