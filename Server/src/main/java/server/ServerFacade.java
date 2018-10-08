@@ -57,6 +57,8 @@ public class ServerFacade implements IServer {
         User user = new User(username, password);
         clientProxy.loginUser(authToken);
 
+        ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
+
         //**************** BUILD COMMAND OBJECT  **********************
         Command loginClientCommand = new Command("model.CommandFacade","loginUser", Arrays.asList(new Object[] {user, authToken, gameInfos}));
         //************************************************************
@@ -87,6 +89,8 @@ public class ServerFacade implements IServer {
         serverModel.getUsers().put(username, newUser);
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
+
+        ArrayList<GameInfo> games = ServerModel.getInstance().getGameList();
 
         Command registerUserCommand = new Command("model.CommandFacade", "registerUser", Arrays.asList(user, authToken));
 
