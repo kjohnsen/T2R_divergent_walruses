@@ -84,6 +84,18 @@ public class ClientModel extends Observable {
         return null;
     }
 
+    @Override
+    public void notifyObservers() {
+        this.setChanged();
+        super.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        this.setChanged();
+        super.notifyObservers(arg);
+    }
+
     public GameInfo getCurrentGame() {
         return currentGame;
     }
