@@ -185,7 +185,12 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        Player player = addUserToGame(clientAuthToken, game);
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
+
+        Player player = ServerModel.getInstance().getGameInfo(gameName).getPlayer(username);
+        if(player == null || !gamePlayers.contains(player)){
+            player = addUserToGame(clientAuthToken, game);
+        }
 
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.joinGame(player, gameName, clientAuthToken);
