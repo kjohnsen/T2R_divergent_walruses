@@ -20,7 +20,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     public GameLobbyPresenter(IGameLobbyActivity activity) {
         this.activity = activity;
-        availableColors = PlayerColor.getColors();
+//        availableColors = PlayerColor.getColors();
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -38,7 +38,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     public void getGameLobbyInfo() {
         GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
         activity.updatePlayerList(gameInfo.getPlayers());
-        activity.updateAvailableColors(PlayerColor.getColors());
+//        activity.updateAvailableColors(PlayerColor.getColors());
     }
 
     @Override
@@ -53,12 +53,12 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 for (Object object : array) {
                     Player player = (Player) object;
                     players.add(player);
-                    if (!player.getPlayerColor().name().equals("UNCHOSEN")) {
-                        availableColors.remove(player.getPlayerColor().name());
-                    }
+//                    if (!player.getPlayerColor().name().equals("UNCHOSEN")) {
+//                        availableColors.remove(player.getPlayerColor().name());
+//                    }
                 }
                 activity.updatePlayerList(players);
-                activity.updateAvailableColors(availableColors);
+//                activity.updateAvailableColors(availableColors);
                 if (ClientModel.getInstance().currentGameReady()) {
                     activity.setStartGameEnabled(true);
                 }

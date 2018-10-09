@@ -37,19 +37,19 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_lobby);
         presenter = new GameLobbyPresenter(this);
-        colorSpinner = findViewById(R.id.colorSpinner);
-        colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ChooseColorTask c = new ChooseColorTask();
-                c.execute(adapterView.getItemAtPosition(i).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        colorSpinner = findViewById(R.id.colorSpinner);
+//        colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                ChooseColorTask c = new ChooseColorTask();
+//                c.execute(adapterView.getItemAtPosition(i).toString());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
         startGameButton = findViewById(R.id.startGame);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +78,9 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         @Override
         public void onBindViewHolder(@NonNull PlayerListAdapter.PlayerHolder holder, int position) {
             String playerName = players.get(position).getUsername();
-            String playerColor = players.get(position).getPlayerColor().name();
-            holder.bind(playerName, playerColor);
+//            String playerColor = players.get(position).getPlayerColor().name();
+//            holder.bind(playerName, playerColor);
+            holder.bind(playerName);
         }
 
         @Override
@@ -92,11 +93,14 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
             PlayerHolder(View view) {
                 super(view);
                 playerName = view.findViewById(R.id.itemName);
-                playerColor = view.findViewById(R.id.itemColor);
+//                playerColor = view.findViewById(R.id.itemColor);
             }
-            void bind(String name, String color) {
+//            void bind(String name, String color) {
+//                playerName.setText(name);
+//                playerColor.setText(color);
+//            }
+            void bind(String name) {
                 playerName.setText(name);
-                playerColor.setText(color);
             }
         }
     }
