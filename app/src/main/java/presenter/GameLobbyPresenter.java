@@ -53,7 +53,9 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 for (Object object : array) {
                     Player player = (Player) object;
                     players.add(player);
-                    availableColors.remove(player.getPlayerColor().name());
+                    if (!player.getPlayerColor().name().equals("UNCHOSEN")) {
+                        availableColors.remove(player.getPlayerColor().name());
+                    }
                 }
                 activity.updatePlayerList(players);
                 activity.updateAvailableColors(availableColors);
