@@ -152,7 +152,7 @@ public class ServerFacade implements IServer {
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
 
         // user joins the game they just created
-        Player player = addUserToGame(clientAuthToken, gameInfo);
+//        Player player = addUserToGame(clientAuthToken, gameInfo);
 
         // createGame command sent to all other clients
         ClientProxy clientProxy = new ClientProxy();
