@@ -174,6 +174,7 @@ public class ServerFacade implements IServer {
         Results results = new Results();
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
+
         if (game == null) {
             results.setErrorMessage("Game does not exist");
             return results;
@@ -190,6 +191,14 @@ public class ServerFacade implements IServer {
         Player player = ServerModel.getInstance().getGameInfo(gameName).getPlayer(username);
         if(player == null || !gamePlayers.contains(player)){
             player = addUserToGame(clientAuthToken, game);
+        }
+
+        int currentNumPlayers = game.getPlayers().size();
+
+        //loop through enum to get the right color
+        for(PlayerColor color : PlayerColor.values()){
+            if(color.ordinal() == currentNumPlayers)
+                game.getPlayer(username).setPlayerColor(color);
         }
 
         ClientProxy clientProxy = new ClientProxy();
