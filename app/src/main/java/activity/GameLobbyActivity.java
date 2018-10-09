@@ -38,6 +38,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         setContentView(R.layout.activity_game_lobby);
         presenter = new GameLobbyPresenter(this);
         colorSpinner = findViewById(R.id.colorSpinner);
+        colorSpinner.setSelection(0);
         colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
