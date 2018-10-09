@@ -45,6 +45,11 @@ public class ClientModel extends Observable {
         this.currentUser = currentUser;
     }
 
+    public void doChanges(Object o){
+        this.setChanged();
+        this.notifyObservers(o);
+    }
+
     public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
         this.setChanged();
