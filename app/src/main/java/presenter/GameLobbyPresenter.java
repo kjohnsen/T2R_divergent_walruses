@@ -31,7 +31,8 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public String startGame() {
-        return UIFacade.getInstance().startGame();
+        activity.startGame();
+        return null;
     }
 
     @Override
@@ -46,7 +47,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             activity.startGame();
-        } else if (o instanceof ArrayList){
+        } else if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();
@@ -62,6 +63,10 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 if (ClientModel.getInstance().currentGameReady()) {
                     activity.setStartGameEnabled(true);
                 }
+            }
+        } else {
+            if (ClientModel.getInstance().currentGameReady()) {
+                activity.setStartGameEnabled(true);
             }
         }
     }
