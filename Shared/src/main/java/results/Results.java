@@ -1,10 +1,11 @@
 package results;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import data.Command;
 
-public class Results {
+public class Results implements Serializable {
 
     private Boolean isSuccess;
     private String errorMessage;

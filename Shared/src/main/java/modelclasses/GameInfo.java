@@ -1,9 +1,10 @@
 package modelclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GameInfo {
+public class GameInfo implements Serializable {
     private GameName gameName;
     private ArrayList<Player> players = new ArrayList<>();
     private int numPlayers;

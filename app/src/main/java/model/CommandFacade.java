@@ -24,16 +24,7 @@ public class CommandFacade implements iClient {
 
 
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
-        if (gameInfos.size() == 0) {
-            ourInstance.registerUser(user, authToken, gameInfos);
-        } else {
-            Serializer serializer = new Serializer();
-            ArrayList<GameInfo> games = new ArrayList<>();
-            for (Object o : gameInfos) {
-                games.add((GameInfo)serializer.decodeInnerClass(o, GameInfo.class));
-            }
-            ourInstance.registerUser(user, authToken, games);
-        }
+        ourInstance.registerUser(user, authToken, gameInfos);
     }
     public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.loginUser(user, authToken, gameInfos);

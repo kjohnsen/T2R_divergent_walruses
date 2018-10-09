@@ -39,7 +39,7 @@ public class CommandFacadeTest {
     public void registerUser() {
         User user = new User("bobby", "password");
 
-        CommandFacade.getInstance().registerUser(user, "auth");
+        CommandFacade.getInstance().registerUser(user, "auth", null);
         assertEquals(ClientModel.getInstance().getCurrentUser(), user);
     }
 
