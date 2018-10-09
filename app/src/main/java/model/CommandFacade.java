@@ -86,6 +86,6 @@ public class CommandFacade implements iClient {
     public void claimColor(String username, PlayerColor playerColor) {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         player.setPlayerColor(playerColor);
-        ClientModel.getInstance().notifyObservers(player);
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
     }
 }
