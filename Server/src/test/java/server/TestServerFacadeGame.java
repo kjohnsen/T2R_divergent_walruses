@@ -62,24 +62,6 @@ public class TestServerFacadeGame {
         GameName name = new GameName("new game");
         Map<GameName, GameInfo> games = ServerModel.getInstance().getGames();
         assertTrue(games.containsKey(name));
-
-        // check that the game has the user in it
-        GameInfo game = games.get(name);
-        assertTrue(game.getPlayers().size() > 0);
-        Player p = game.getPlayer("user1");
-        assertNotNull(p);
-
-        // check that the user has the game in their game list
-        User u = ServerModel.getInstance().getUser("user1");
-        ArrayList<GameName> userGames = u.getGameNameList();
-        assertTrue(userGames.size() > 0);
-        boolean hasGame = false;
-        for (GameName gameName : userGames) {
-            if (gameName.equals(name)) {
-                hasGame = true;
-            }
-        }
-        assertTrue(hasGame);
     }
 
     @Test
