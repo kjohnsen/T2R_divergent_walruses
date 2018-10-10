@@ -1,11 +1,14 @@
 package modelclasses;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
 
     public Player(String username) {
         this.username = username;
+        playerColor = PlayerColor.UNCHOSEN;
     }
     //the following constructor is used for testing
     public Player(String username, PlayerColor color) {

@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.constraint.Guideline
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:id="@+id/guideLeft"
-        app:layout_constraintGuide_percent=".3"/>
-    <android.support.constraint.Guideline
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:id="@+id/guideRight"
-        app:layout_constraintGuide_percent=".7"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideLeft"/>
+        android:id="@+id/itemName" />
+    <View
+        android:layout_width="4dp"
+        android:layout_height="wrap_content"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemPlayers"
-        app:layout_constraintStart_toEndOf="@id/guideLeft"
-        app:layout_constraintEnd_toStartOf="@id/guideRight"/>
+        android:id="@+id/itemPlayers" />
+    <View
+        android:layout_width="4dp"
+        android:layout_height="wrap_content"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemNum"
-        app:layout_constraintStart_toEndOf="@id/guideRight"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:id="@+id/itemNum" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -30,7 +30,8 @@ public class CommandFacadeTest {
     public void loginUser() {
         User user = new User("bobby", "password");
 
-        CommandFacade.getInstance().loginUser(user, "auth");
+        ArrayList<GameInfo> gameList = new ArrayList<>();
+        CommandFacade.getInstance().loginUser(user, "auth", gameList);
         assertEquals(ClientModel.getInstance().getCurrentUser(), user);
     }
 
@@ -38,7 +39,7 @@ public class CommandFacadeTest {
     public void registerUser() {
         User user = new User("bobby", "password");
 
-        CommandFacade.getInstance().registerUser(user, "auth");
+        CommandFacade.getInstance().registerUser(user, "auth", null);
         assertEquals(ClientModel.getInstance().getCurrentUser(), user);
     }
 

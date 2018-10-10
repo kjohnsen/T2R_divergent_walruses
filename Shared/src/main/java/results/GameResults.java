@@ -1,8 +1,10 @@
 package results;
 
+import java.io.Serializable;
+
 import modelclasses.GameName;
 
-public class GameResults extends Results {
+public class GameResults extends Results implements Serializable {
 
     GameName gameName;
 

@@ -1,6 +1,10 @@
 package results;
 
-public class LoggedInResults extends Results {
+import java.io.Serializable;
+import java.util.ArrayList;
+import modelclasses.GameInfo;
+
+public class LoggedInResults extends Results implements Serializable {
 
     private String authToken;
 

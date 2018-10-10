@@ -32,28 +32,46 @@ import presenter.IGameListPresenter;
 public class GameListActivity extends AppCompatActivity implements IGameListActivity {
 
     private RecyclerView gameList;
+    private GameListAdapter gameListAdapter;
     private EditText gameName;
     private Spinner numPlayers;
     private Button createGameButton;
     private IGameListPresenter presenter;
+    private boolean doneLoading = false;
 
     @Override
-    public void populateGameList(ArrayList<GameInfo> games) {
-        GameListAdapter gameListAdapter = new GameListAdapter(games);
-        gameList.setAdapter(gameListAdapter);
+    public void populateGameList(final ArrayList<GameInfo> games) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (doneLoading) {
+                    gameList = findViewById(R.id.gameList);
+                    RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(GameListActivity.this);
+                    gameList.setLayoutManager(gameListManager);
+                    gameListAdapter = new GameListAdapter(games);
+                    gameList.setAdapter(gameListAdapter);
+                }
+            }
+        });
     }
 
     @Override
-    public void setCreateGameEnabled(boolean enabled) {
-        createGameButton.setEnabled(enabled);
+    public void setCreateGameEnabled(final boolean enabled) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                createGameButton.setEnabled(enabled);
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
-        //Intent intent = new Intent(this, ServerPoller.class);
-        //getApplicationContext().startService(intent);
+        //start the ServerPoller
+        Intent intent = new Intent(this, ServerPoller.class);
+        getApplicationContext().startService(intent);
         presenter = new GameListPresenter(this);
         gameName = findViewById(R.id.gameName);
         gameName.addTextChangedListener(new TextWatcher() {
@@ -73,6 +91,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             }
         });
         numPlayers = findViewById(R.id.numPlayers);
+        //set up player number spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.num_players_list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,6 +107,9 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
         gameList = findViewById(R.id.gameList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(this);
         gameList.setLayoutManager(gameListManager);
+        //initialize the view with current info
+        doneLoading = true;
+        presenter.getGameListInfo();
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
@@ -126,9 +148,10 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
             private TextView numSpots;
             GameHolder(View view) {
                 super(view);
-                gameName = findViewById(R.id.itemName);
-                gamePlayers = findViewById(R.id.itemPlayers);
-                numSpots = findViewById(R.id.itemNum);
+                gameName = view.findViewById(R.id.itemName);
+                gamePlayers = view.findViewById(R.id.itemPlayers);
+                numSpots = view.findViewById(R.id.itemNum);
+                //if someone taps the game, it should go to GameLobby
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -138,9 +161,11 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
                 });
             }
             void bind(String name, String players, String spotsLeft) {
-                gameName.setText(name);
-                gamePlayers.setText(players);
-                numSpots.setText(spotsLeft);
+                if (gameName != null) {
+                    gameName.setText(name);
+                    gamePlayers.setText(players);
+                    numSpots.setText(spotsLeft);
+                }
             }
         }
     }
@@ -173,7 +198,12 @@ public class GameListActivity extends AppCompatActivity implements IGameListActi
 
     @Override
     public void goToGameLobby() {
-        Intent intent = new Intent(this, GameLobbyActivity.class);
-        startActivity(intent);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameListActivity.this, GameLobbyActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -1,8 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import clientserver.ServerProxy;
+import data.Serializer;
 import interfaces.iClient;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -22,28 +23,51 @@ public class CommandFacade implements iClient {
     }
 
 
+    public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ourInstance.registerUser(user, authToken, gameInfos);
+    }
+    public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ourInstance.loginUser(user, authToken, gameInfos);
+    }
+    public static void _createGame(GameInfo gameInfo) {
+        ourInstance.createGame(gameInfo);
+    }
+    public static void _joinGame(Player player, GameName gameName) {
+        ourInstance.joinGame(player, gameName);
+    }
+    public static void _claimColor(String username, PlayerColor playerColor) {
+        ourInstance.claimColor(username, playerColor);
+    }
+    public static void _startGame(GameName gameName) {
+        ourInstance.startGame(gameName);
+    }
+
+
     @Override
-    public void loginUser(User user, String authToken) {
+    public void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+        ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
         ClientModel.getInstance().notifyObservers(user);
     }
 
     @Override
-    public void registerUser(User user, String authToken) {
+    public void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
-        ClientModel.getInstance().notifyObservers(user);
+        ClientModel.getInstance().setGameList(gameInfos);
     }
 
     @Override
     public void joinGame(Player player, GameName gameName) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
-        gameInfo.addPlayer(player);
+        if(!gameInfo.getPlayers().contains(player)) {
+            gameInfo.addPlayer(player);
+            ClientModel.getInstance().doChanges(gameInfo.getPlayers());
+        }
         if (player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
             ClientModel.getInstance().setCurrentGame(gameInfo);
         }
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
@@ -51,20 +75,18 @@ public class CommandFacade implements iClient {
         ArrayList<GameInfo> gameList = ClientModel.getInstance().getGameList();
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void startGame(GameName gameName) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
-        ClientModel.getInstance().notifyObservers(gameInfo);
     }
 
     @Override
     public void claimColor(String username, PlayerColor playerColor) {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         player.setPlayerColor(playerColor);
-        ClientModel.getInstance().notifyObservers(player);
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
     }
 }

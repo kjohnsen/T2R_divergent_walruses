@@ -21,49 +21,49 @@ public class ServerProxy implements IServer {
     @Override
     public Results loginUser(String username, String password) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "loginUser", Arrays.asList(new Object[] {username, password}));
+        Command command = new Command("server.ServerFacade", "_loginUser", Arrays.asList(new Object[] {username, password}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results registerUser(String username, String password) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "registerUser", Arrays.asList(new Object[] {username, password}));
+        Command command = new Command("server.ServerFacade", "_registerUser", Arrays.asList(new Object[] {username, password}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results createGame(String name, Integer numPlayers, String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "createGame", Arrays.asList(new Object[] {name, numPlayers, authToken}));
+        Command command = new Command("server.ServerFacade", "_createGame", Arrays.asList(new Object[] {name, numPlayers, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results joinGame(GameName gameName, String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "joinGame", Arrays.asList(new Object[] {gameName, authToken}));
+        Command command = new Command("server.ServerFacade", "_joinGame", Arrays.asList(new Object[] {gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results startGame(GameName gameName, String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "startGame", Arrays.asList(new Object[] {gameName, authToken}));
+        Command command = new Command("server.ServerFacade", "_startGame", Arrays.asList(new Object[] {gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results chooseColor(PlayerColor color, GameName gameName, String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "chooseColor", Arrays.asList(new Object[] {color, gameName, authToken}));
+        Command command = new Command("server.ServerFacade", "_chooseColor", Arrays.asList(new Object[] {color, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
     @Override
     public Results getCommands(String authToken) {
         //Send the command...
-        Command command = new Command("server.ServerFacade", "getCommands", Arrays.asList(new Object[] {authToken}));
+        Command command = new Command("server.ServerFacade", "_getCommands", Arrays.asList(new Object[] {authToken}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results;
     }

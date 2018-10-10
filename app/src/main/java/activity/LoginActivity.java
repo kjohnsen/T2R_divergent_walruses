@@ -163,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 presenter.hostIPChanged(charSequence.toString());
+                presenter.hostIPChanged(charSequence.toString());
             }
 
             @Override
@@ -170,6 +171,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
+        hostIP.setText("10.0.2.2");
         hostPort = findViewById(R.id.hostPort);
         hostPort.addTextChangedListener(new TextWatcher() {
             @Override
@@ -187,6 +189,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
+        hostPort.setText("5000");
     }
 
     @Override
@@ -210,7 +213,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         }
         @Override
         protected void onPostExecute(String message) {
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            if (message != null) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -221,7 +226,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         }
         @Override
         protected void onPostExecute(String message) {
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            if (message != null) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

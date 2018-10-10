@@ -5,12 +5,14 @@ import com.google.gson.internal.LinkedTreeMap;
 import modelclasses.User;
 import results.Results;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Command {
+public class Command implements Serializable {
 
     private String _className;
     private String _methodName;
@@ -87,8 +89,6 @@ public class Command {
         try {
             Class<?> receiver = Class.forName(get_className());
 
-            //this is a round-about way of using an array of strings for class types because
-            //gson cannot serialize an array of type: Class.
             Class<?>[] paramTypesArray;
             Object[] paramValues;
 
@@ -103,16 +103,6 @@ public class Command {
 
             Method method = receiver.getMethod(get_methodName(), paramTypesArray);
 
-            for (int i = 0; i < paramValues.length; i++) {
-                if (paramValues[i] instanceof LinkedTreeMap) {
-                    Serializer serializer = new Serializer();
-                    paramValues[i] = serializer.decodeInnerClass((LinkedTreeMap)paramValues[i], paramTypesArray[i]);
-                } else if (paramValues[i] instanceof Double) {
-                    Double d = (Double)paramValues[i];
-                    paramValues[i] = d.intValue();
-                }
-            }
-
             Object target = getTargetInstance(receiver);
 
             return (Results) method.invoke(target, paramValues);
@@ -121,5 +111,31 @@ public class Command {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Command command = (Command) o;
+
+        if (get_className() != null ? !get_className().equals(command.get_className()) : command.get_className() != null)
+            return false;
+        if (get_methodName() != null ? !get_methodName().equals(command.get_methodName()) : command.get_methodName() != null)
+            return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(get_paramTypes(), command.get_paramTypes())) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(get_paramValues(), command.get_paramValues());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = get_className() != null ? get_className().hashCode() : 0;
+        result = 31 * result + (get_methodName() != null ? get_methodName().hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(get_paramTypes());
+        result = 31 * result + Arrays.hashCode(get_paramValues());
+        return result;
     }
 }

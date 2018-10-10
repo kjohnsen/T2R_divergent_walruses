@@ -29,6 +29,10 @@ public class UIFacade {
         this.authToken = authToken;
     }
 
+    public GameInfo getCurrentGame() {
+        return ClientModel.getInstance().getCurrentGame();
+    }
+
     public IServer getServerProxy() {
         return serverProxy;
     }

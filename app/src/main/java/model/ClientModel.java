@@ -8,6 +8,9 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.User;
 
+/* The ClientModel is the only Observable object. Each of its setter methods will call setChanged()
+and notifyObservers(), but if anything gets changed that isn't related to a setter, you have to do
+it manually */
 public class ClientModel extends Observable {
     private User currentUser;
 
@@ -42,6 +45,11 @@ public class ClientModel extends Observable {
         this.currentUser = currentUser;
     }
 
+    public void doChanges(Object o){
+        this.setChanged();
+        this.notifyObservers(o);
+    }
+
     public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
         this.setChanged();
@@ -74,6 +82,18 @@ public class ClientModel extends Observable {
             }
         }
         return null;
+    }
+
+    @Override
+    public void notifyObservers() {
+        this.setChanged();
+        super.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        this.setChanged();
+        super.notifyObservers(arg);
     }
 
     public GameInfo getCurrentGame() {
