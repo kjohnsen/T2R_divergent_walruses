@@ -186,16 +186,8 @@ public class ServerFacade implements IServer {
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
 
         Player player = ServerModel.getInstance().getGameInfo(gameName).getPlayer(username);
-        if(player == null || !gamePlayers.contains(player)){
+        if (player == null || !gamePlayers.contains(player)){
             player = addUserToGame(clientAuthToken, game);
-        }
-
-        int currentNumPlayers = game.getPlayers().size();
-
-        //loop through enum to get the right color
-        for(PlayerColor color : PlayerColor.values()){
-            if(color.ordinal() == currentNumPlayers)
-                game.getPlayer(username).setPlayerColor(color);
         }
 
         ClientProxy clientProxy = new ClientProxy();
