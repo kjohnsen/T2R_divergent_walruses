@@ -20,4 +20,14 @@ public enum PlayerColor implements Serializable {
         }
         return colors;
     }
+
+    public static ArrayList<String> getAvailableColors(ArrayList<Player> players) {
+        ArrayList<String> colors = getColors();
+        for (Player player : players) {
+            if (!player.getPlayerColor().name().equals("UNCHOSEN")) {
+                colors.remove(player.getPlayerColor().name());
+            }
+        }
+        return colors;
+    }
 }

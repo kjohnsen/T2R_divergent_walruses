@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/leftGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".222"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/rightGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".833"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemName" />
-    <View
-        android:layout_width="4dp"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/itemName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/leftGuide"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemPlayers" />
-    <View
-        android:layout_width="4dp"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/itemPlayers"
+        app:layout_constraintStart_toEndOf="@id/leftGuide"
+        app:layout_constraintEnd_toStartOf="@id/rightGuide"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemNum" />
+        android:id="@+id/itemNum"
+        app:layout_constraintStart_toEndOf="@id/rightGuide"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
