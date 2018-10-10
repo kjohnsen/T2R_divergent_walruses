@@ -56,13 +56,10 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 ArrayList<String> colors = PlayerColor.getAvailableColors(players);
                 activity.updatePlayerList(players);
                 activity.updateAvailableColors(colors);
+                activity.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
                 if (ClientModel.getInstance().currentGameReady()) {
                     activity.setStartGameEnabled(true);
                 }
-            }
-        } else {
-            if (ClientModel.getInstance().currentGameReady()) {
-                activity.setStartGameEnabled(true);
             }
         }
     }

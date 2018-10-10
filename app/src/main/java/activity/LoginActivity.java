@@ -44,111 +44,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         String prefRegisterConfirm = sharedPref.getString("registerConfirm","");
         String prefIP = sharedPref.getString("IP","");
         String prefPort = sharedPref.getString("port","");
-        loginUsername = findViewById(R.id.loginUsername);
-        if (!prefLoginUsername.equals("")) {
-            loginUsername.setText(prefLoginUsername);
-            presenter.loginUsernameChanged(prefLoginUsername);
-        }
-        loginUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                presenter.loginUsernameChanged(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        loginPassword = findViewById(R.id.loginPassword);
-        if (!prefLoginPassword.equals("")) {
-            loginPassword.setText(prefLoginPassword);
-            presenter.loginPasswordChanged(prefLoginPassword);
-        }
-        loginPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                presenter.loginPasswordChanged(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        registerUsername = findViewById(R.id.registerUsername);
-        if (!prefRegisterUsername.equals("")) {
-            registerUsername.setText(prefRegisterUsername);
-            presenter.registerUsernameChanged(prefRegisterUsername);
-        }
-        registerUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                presenter.registerUsernameChanged(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        registerPassword = findViewById(R.id.registerPassword);
-        if (!prefRegisterPassword.equals("")) {
-            registerPassword.setText(prefRegisterPassword);
-            presenter.registerPasswordChanged(prefRegisterPassword);
-        }
-        registerPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                presenter.registerPasswordChanged(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        registerConfirm = findViewById(R.id.confirm);
-        if (!prefRegisterConfirm.equals("")) {
-            registerConfirm.setText(prefRegisterConfirm);
-            presenter.registerConfirmChanged(prefRegisterConfirm);
-        }
-        registerConfirm.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                presenter.registerConfirmChanged(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,12 +77,108 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
                 editor.apply();
                 RegisterTask r = new RegisterTask();
                 r.execute();
-        }});
-        hostIP = findViewById(R.id.hostIP);
-        if (!prefIP.equals("")) {
-            hostIP.setText(prefIP);
-            presenter.hostIPChanged(prefIP);
+            }});
+        loginUsername = findViewById(R.id.loginUsername);
+        loginUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.loginUsernameChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        if (!prefLoginUsername.equals("")) {
+            loginUsername.setText(prefLoginUsername);
         }
+        loginPassword = findViewById(R.id.loginPassword);
+        loginPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.loginPasswordChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        if (!prefLoginPassword.equals("")) {
+            loginPassword.setText(prefLoginPassword);
+        }
+        registerUsername = findViewById(R.id.registerUsername);
+        registerUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.registerUsernameChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        if (!prefRegisterUsername.equals("")) {
+            registerUsername.setText(prefRegisterUsername);
+        }
+        registerPassword = findViewById(R.id.registerPassword);
+        registerPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.registerPasswordChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        if (!prefRegisterPassword.equals("")) {
+            registerPassword.setText(prefRegisterPassword);
+        }
+        registerConfirm = findViewById(R.id.confirm);
+        registerConfirm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.registerConfirmChanged(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        if (!prefRegisterConfirm.equals("")) {
+            registerConfirm.setText(prefRegisterConfirm);
+        }
+        hostIP = findViewById(R.id.hostIP);
         hostIP.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -204,11 +195,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
-        hostPort = findViewById(R.id.hostPort);
-        if (!prefPort.equals("")) {
-            hostPort.setText(prefPort);
-            presenter.hostPortChanged(prefPort);
+        if (!prefIP.equals("")) {
+            hostIP.setText(prefIP);
         }
+        hostPort = findViewById(R.id.hostPort);
         hostPort.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -225,6 +215,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
+        if (!prefPort.equals("")) {
+            hostPort.setText(prefPort);
+        }
     }
 
     @Override

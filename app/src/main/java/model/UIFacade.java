@@ -145,6 +145,8 @@ public class UIFacade {
         return null;
     }
 
+    public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
+
     public ArrayList<GameInfo> getGameList() {
         return ClientModel.getInstance().getGameList();
     }
