@@ -37,9 +37,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
         setContentView(R.layout.activity_login);
         presenter = new LoginPresenter(this);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        String storedUsername = sharedPref.getString("storedUsername","");
-        String storedPassword = sharedPref.getString("storedPassword","");
+        String prefLoginUsername = sharedPref.getString("loginUsername","");
+        String prefLoginPassword = sharedPref.getString("loginPassword","");
+        String prefRegisterUsername = sharedPref.getString("registerUsername","");
+        String prefRegisterPassword = sharedPref.getString("registerPassword","");
+        String prefRegisterConfirm = sharedPref.getString("registerConfirm","");
+        String prefIP = sharedPref.getString("IP","");
+        String prefPort = sharedPref.getString("port","");
         loginUsername = findViewById(R.id.loginUsername);
+        if (!prefLoginUsername.equals("")) {
+            loginUsername.setText(prefLoginUsername);
+            presenter.loginUsernameChanged(prefLoginUsername);
+        }
         loginUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -57,6 +66,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             }
         });
         loginPassword = findViewById(R.id.loginPassword);
+        if (!prefLoginPassword.equals("")) {
+            loginPassword.setText(prefLoginPassword);
+            presenter.loginPasswordChanged(prefLoginPassword);
+        }
         loginPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -74,6 +87,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             }
         });
         registerUsername = findViewById(R.id.registerUsername);
+        if (!prefRegisterUsername.equals("")) {
+            registerUsername.setText(prefRegisterUsername);
+            presenter.registerUsernameChanged(prefRegisterUsername);
+        }
         registerUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -91,6 +108,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             }
         });
         registerPassword = findViewById(R.id.registerPassword);
+        if (!prefRegisterPassword.equals("")) {
+            registerPassword.setText(prefRegisterPassword);
+            presenter.registerPasswordChanged(prefRegisterPassword);
+        }
         registerPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,6 +129,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             }
         });
         registerConfirm = findViewById(R.id.confirm);
+        if (!prefRegisterConfirm.equals("")) {
+            registerConfirm.setText(prefRegisterConfirm);
+            presenter.registerConfirmChanged(prefRegisterConfirm);
+        }
         registerConfirm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -132,8 +157,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
                 SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.clear();
-                editor.putString("storedUsername", loginUsername.getText().toString());
-                editor.putString("storedPassword", loginPassword.getText().toString());
+                editor.putString("loginUsername", loginUsername.getText().toString());
+                editor.putString("loginPassword", loginPassword.getText().toString());
+                editor.putString("IP", hostIP.getText().toString());
+                editor.putString("port", hostPort.getText().toString());
                 editor.apply();
                 LoginTask l = new LoginTask();
                 l.execute();
@@ -144,16 +171,23 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, "Registering...", Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.putString("registerUsername", registerUsername.getText().toString());
+                editor.putString("registerPassword", registerPassword.getText().toString());
+                editor.putString("registerConfirm", registerConfirm.getText().toString());
+                editor.putString("IP", hostIP.getText().toString());
+                editor.putString("port", hostPort.getText().toString());
+                editor.apply();
                 RegisterTask r = new RegisterTask();
                 r.execute();
         }});
-        if (!storedUsername.equals("") && !storedPassword.equals("")) {
-            loginUsername.setText(storedUsername);
-            presenter.loginUsernameChanged(storedUsername);
-            loginPassword.setText(storedPassword);
-            presenter.loginPasswordChanged(storedPassword);
-        }
         hostIP = findViewById(R.id.hostIP);
+        if (!prefIP.equals("")) {
+            hostIP.setText(prefIP);
+            presenter.hostIPChanged(prefIP);
+        }
         hostIP.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -163,7 +197,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 presenter.hostIPChanged(charSequence.toString());
-                presenter.hostIPChanged(charSequence.toString());
             }
 
             @Override
@@ -171,8 +204,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
-        hostIP.setText("10.0.2.2");
         hostPort = findViewById(R.id.hostPort);
+        if (!prefPort.equals("")) {
+            hostPort.setText(prefPort);
+            presenter.hostPortChanged(prefPort);
+        }
         hostPort.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -189,7 +225,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
             }
         });
-        hostPort.setText("5000");
     }
 
     @Override

@@ -42,8 +42,10 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyAc
         colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ChooseColorTask c = new ChooseColorTask();
-                c.execute(adapterView.getItemAtPosition(i).toString());
+                if (i != 0) {
+                    ChooseColorTask c = new ChooseColorTask();
+                    c.execute(adapterView.getItemAtPosition(i).toString());
+                }
             }
 
             @Override
