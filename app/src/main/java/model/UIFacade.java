@@ -145,6 +145,10 @@ public class UIFacade {
         return null;
     }
 
+    public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }
+
+    public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
+
     public ArrayList<GameInfo> getGameList() {
         return ClientModel.getInstance().getGameList();
     }

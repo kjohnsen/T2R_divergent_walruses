@@ -16,11 +16,9 @@ import modelclasses.PlayerColor;
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     private IGameLobbyActivity activity;
-    private ArrayList<String> availableColors;
 
     public GameLobbyPresenter(IGameLobbyActivity activity) {
         this.activity = activity;
-//        availableColors = PlayerColor.getColors();
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -39,7 +37,9 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     public void getGameLobbyInfo() {
         GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
         activity.updatePlayerList(gameInfo.getPlayers());
-//        activity.updateAvailableColors(PlayerColor.getColors());
+        String username = UIFacade.getInstance().getUsername();
+        activity.updateAvailableColors(PlayerColor.getAvailableColors(gameInfo.getPlayers(), username));
+        activity.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
     }
 
     @Override
@@ -54,19 +54,15 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 for (Object object : array) {
                     Player player = (Player) object;
                     players.add(player);
-//                    if (!player.getPlayerColor().name().equals("UNCHOSEN")) {
-//                        availableColors.remove(player.getPlayerColor().name());
-//                    }
                 }
+                String username = UIFacade.getInstance().getUsername();
+                ArrayList<String> colors = PlayerColor.getAvailableColors(players, username);
                 activity.updatePlayerList(players);
-//                activity.updateAvailableColors(availableColors);
+                activity.updateAvailableColors(colors);
+                activity.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
                 if (ClientModel.getInstance().currentGameReady()) {
                     activity.setStartGameEnabled(true);
                 }
-            }
-        } else {
-            if (ClientModel.getInstance().currentGameReady()) {
-                activity.setStartGameEnabled(true);
             }
         }
     }
