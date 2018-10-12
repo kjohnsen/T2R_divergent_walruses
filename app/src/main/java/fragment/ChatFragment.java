@@ -1,4 +1,6 @@
 package fragment;
 
-public class ChatFragment {
+import android.support.v4.app.Fragment;
+
+public class ChatFragment extends Fragment {
 }
