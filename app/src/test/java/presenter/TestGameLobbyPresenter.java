@@ -11,6 +11,7 @@ import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.User;
 
 import static org.junit.Assert.*;
 
@@ -30,6 +31,7 @@ public class TestGameLobbyPresenter {
     }
     @Test
     public void updateColorsAndPlayers() {
+        ClientModel.getInstance().setCurrentUserTest(new User("Alvin","ii"));
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("Alvin", PlayerColor.BLACK));
         players.add(new Player("Calvin", PlayerColor.BLUE));
@@ -38,10 +40,8 @@ public class TestGameLobbyPresenter {
         ClientModel.getInstance().addObserver(gameLobbyPresenter);
         ClientModel.getInstance().setCurrentGamePlayers(players);
         assertArrayEquals(players.toArray(), lobbyMock.getPlayers().toArray());
-        assertEquals(5, lobbyMock.getColors().size());
         players.add(new Player("Ike", PlayerColor.UNCHOSEN));
         ClientModel.getInstance().setCurrentGamePlayers(players);
         assertArrayEquals(players.toArray(), lobbyMock.getPlayers().toArray());
-        assertEquals(5, lobbyMock.getColors().size());
     }
 }

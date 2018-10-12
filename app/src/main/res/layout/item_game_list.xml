@@ -2,36 +2,37 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <android.support.constraint.Guideline
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/leftGuide"
         android:orientation="vertical"
-        android:id="@+id/guideLeft"
-        app:layout_constraintGuide_percent=".3"/>
+        app:layout_constraintGuide_percent=".222"/>
     <android.support.constraint.Guideline
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/rightGuide"
         android:orientation="vertical"
-        android:id="@+id/guideRight"
-        app:layout_constraintGuide_percent=".7"/>
+        app:layout_constraintGuide_percent=".833"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideLeft"/>
+        app:layout_constraintEnd_toStartOf="@id/leftGuide"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemPlayers"
-        app:layout_constraintStart_toEndOf="@id/guideLeft"
-        app:layout_constraintEnd_toStartOf="@id/guideRight"/>
+        app:layout_constraintStart_toEndOf="@id/leftGuide"
+        app:layout_constraintEnd_toStartOf="@id/rightGuide"/>
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemNum"
-        app:layout_constraintStart_toEndOf="@id/guideRight"
+        app:layout_constraintStart_toEndOf="@id/rightGuide"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

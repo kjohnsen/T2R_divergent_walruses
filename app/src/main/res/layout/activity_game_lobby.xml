@@ -5,14 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="activity.GameLobbyActivity">
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/topGuide"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".3"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/leftGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".3"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/rightGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".7"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/bottomGuide"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7"/>
     <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:id="@+id/playerList"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/topGuide"
+        app:layout_constraintEnd_toEndOf="@id/rightGuide"
+        app:layout_constraintStart_toStartOf="@id/leftGuide"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuide"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
