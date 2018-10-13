@@ -24,12 +24,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap
+        map = googleMap;
         LatLng saltLake = new LatLng(41, -112);
-        map.enablezo
-        map.addMarker(new MarkerOptions().position(saltLake).title("Marker in Sydney"));
+        map.getUiSettings().setZoomControlsEnabled(false);
+        map.getUiSettings().setAllGesturesEnabled(false);
+        map.addMarker(new MarkerOptions().position(saltLake).title("Salt Lake City!!!!"));
         map.moveCamera(CameraUpdateFactory.newLatLng(saltLake));
-
     }
 
 }

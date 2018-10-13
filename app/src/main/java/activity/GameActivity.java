@@ -13,6 +13,7 @@ import com.example.emilyhales.tickettoride.R;
 
 import fragment.ChatFragment;
 import fragment.GameInfoFragment;
+import fragment.MapFragment;
 import fragment.PlayerInfoFragment;
 
 public class GameActivity extends AppCompatActivity {
@@ -20,11 +21,14 @@ public class GameActivity extends AppCompatActivity {
     ViewPager pager;
     MyPagerAdapter adapter;
     TabLayout tabs;
+    Fragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        mapFragment = new MapFragment();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.mapContainer, mapFragment);
         pager = findViewById(R.id.pager);
         tabs = findViewById(R.id.tabLayout);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
