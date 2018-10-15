@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.emilyhales.tickettoride.GameActivity;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
