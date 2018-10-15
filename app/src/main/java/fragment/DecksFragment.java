@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.example.emilyhales.tickettoride.R;
 
-public class DecksFragment extends Fragment {
+public class DecksFragment extends Fragment implements IDecksView{
 
     Button popupButton;
 

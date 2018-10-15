@@ -1,23 +1,21 @@
 package presenter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
-import activity.IGameLobbyActivity;
+import activity.IGameLobbyView;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.GameInfo;
-import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
-    private IGameLobbyActivity activity;
+    private IGameLobbyView activity;
 
-    public GameLobbyPresenter(IGameLobbyActivity activity) {
+    public GameLobbyPresenter(IGameLobbyView activity) {
         this.activity = activity;
         ClientModel.getInstance().addObserver(this);
     }

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
-public class ChooseDestinationsFragment extends DialogFragment {
+public class ChooseDestinationsFragment extends DialogFragment implements IChooseDestinationsView {
     Button popupButton;
 
     @Override

@@ -29,7 +29,7 @@ import modelclasses.Player;
 import presenter.GameListPresenter;
 import presenter.IGameListPresenter;
 
-public class GameListActivity extends AppCompatActivity implements IGameListActivity {
+public class GameListActivity extends AppCompatActivity implements IGameListView {
 
     private RecyclerView gameList;
     private GameListAdapter gameListAdapter;

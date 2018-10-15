@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.emilyhales.tickettoride.R;
 
-public class PlayerInfoFragment extends Fragment {
+public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

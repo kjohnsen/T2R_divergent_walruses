@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 import com.example.emilyhales.tickettoride.R;
 
-public class GameInfoFragment extends Fragment {
+import presenter.IGameListPresenter;
+
+public class GameInfoFragment extends Fragment implements IGameInfoView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
