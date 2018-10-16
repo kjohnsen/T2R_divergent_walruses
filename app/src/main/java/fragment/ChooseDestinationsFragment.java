@@ -15,7 +15,13 @@ import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
+import java.util.ArrayList;
+
+import modelclasses.DestinationCard;
+
 public class ChooseDestinationsFragment extends DialogFragment implements IChooseDestinationsView {
+
+    ArrayList<DestinationCard> tickets;
     Button popupButton;
 
     @Override
