@@ -34,4 +34,6 @@ dependencies {
 
     implementation project(':Shared')
     implementation 'org.mockito:mockito-android:2.22.0'
+    implementation 'com.android.support:design:27.1.1'
+
 }

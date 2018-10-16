@@ -1,12 +1,9 @@
 package presenter;
 
-import android.content.Intent;
-
 import java.util.Observable;
 import java.util.Observer;
 
-import activity.IGameListActivity;
-import activity.ILoginActivity;
+import activity.ILoginView;
 import model.ClientModel;
 import model.UIFacade;
 
@@ -16,9 +13,9 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     private String registerUsername = "";
     private String registerPassword = "";
     private String registerConfirm = "";
-    private ILoginActivity activity;
+    private ILoginView activity;
 
-    public LoginPresenter(ILoginActivity activity) {
+    public LoginPresenter(ILoginView activity) {
         this.activity = activity;
         ClientModel.getInstance().addObserver(this);
     }

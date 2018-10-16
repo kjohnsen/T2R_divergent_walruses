@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import activity.IGameListActivity;
+import activity.IGameListView;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.GameInfo;
 
 public class GameListPresenter implements IGameListPresenter, Observer {
 
-    private IGameListActivity activity;
+    private IGameListView activity;
     private String gameName = null;
 
-    public GameListPresenter(IGameListActivity activity) {
+    public GameListPresenter(IGameListView activity) {
         this.activity = activity;
         ClientModel.getInstance().addObserver(this);
     }
