@@ -11,29 +11,29 @@ import modelclasses.GameInfo;
 
 public class GameListPresenter implements IGameListPresenter, Observer {
 
-    private IGameListView activity;
+    private IGameListView view;
     private String gameName = null;
 
-    public GameListPresenter(IGameListView activity) {
-        this.activity = activity;
+    public GameListPresenter(IGameListView view) {
+        this.view = view;
         ClientModel.getInstance().addObserver(this);
     }
 
     @Override
     public void createGameNameChanged(String gameName) {
         if (gameName.equals("")) {
-            activity.setCreateGameEnabled(false);
+            view.setCreateGameEnabled(false);
             return;
         }
         ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
         for (GameInfo g : games) {
             if (g.getGameName().getName().equals(gameName)) {
-                activity.setCreateGameEnabled(false);
+                view.setCreateGameEnabled(false);
                 return;
             }
         }
         this.gameName = gameName;
-        activity.setCreateGameEnabled(true);
+        view.setCreateGameEnabled(true);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         if (message != null) {
             return message;
         }
-        //this is easier than going all the way back to the activity and initiating a JoinGameTask
+        //this is easier than going all the way back to the view and initiating a JoinGameTask
         return UIFacade.getInstance().joinGame(gameName);
     }
 
@@ -54,7 +54,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
     @Override
     public void getGameListInfo() {
         ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
-        activity.populateGameList(games);
+        view.populateGameList(games);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         GameLobby needs */
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
-            activity.goToGameLobby();
+            view.goToGameLobby();
         } else {
             /* Otherwise, you got a list of games-- update the list */
             ArrayList<Object> array = (ArrayList<Object>) o;
@@ -75,7 +75,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
                         games.add(game);
                     }
                 }
-                activity.populateGameList(games);
+                view.populateGameList(games);
             }
         }
     }
