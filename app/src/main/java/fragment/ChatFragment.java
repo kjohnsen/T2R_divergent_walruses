@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.emilyhales.tickettoride.R;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements IChatView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

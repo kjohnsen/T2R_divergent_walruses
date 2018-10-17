@@ -5,10 +5,12 @@ import java.util.Arrays;
 
 import data.Serializer;
 import interfaces.iClient;
+import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.TrainCard;
 import modelclasses.User;
 
 public class CommandFacade implements iClient {
@@ -22,7 +24,15 @@ public class CommandFacade implements iClient {
     private CommandFacade() {
     }
 
-
+    public static void _replaceTrainCard(TrainCard replacement, int selected, Player player) {
+        ourInstance.replaceTrainCard(replacement, selected, player);
+    }
+    public static void _drawTrainCard(TrainCard card, Player player) {
+        ourInstance.drawTrainCard(card, player);
+    }
+    public static void _displayDestinationCards(DestinationCard tickets[]) {
+        ourInstance.displayDestinationCards(tickets);
+    }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.registerUser(user, authToken, gameInfos);
     }
@@ -42,6 +52,20 @@ public class CommandFacade implements iClient {
         ourInstance.startGame(gameName);
     }
 
+    @Override
+    public void replaceTrainCard(TrainCard replacement, int selected, Player player) {
+
+    }
+
+    @Override
+    public void drawTrainCard(TrainCard card, Player player) {
+
+    }
+
+    @Override
+    public void displayDestinationCards(DestinationCard tickets[]) {
+
+    }
 
     @Override
     public void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -63,7 +87,7 @@ public class CommandFacade implements iClient {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         if(!gameInfo.getPlayers().contains(player)) {
             gameInfo.addPlayer(player);
-            ClientModel.getInstance().doChanges(gameInfo.getPlayers());
+            ClientModel.getInstance().notifyObservers(gameInfo.getPlayers());
         }
         if (player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
             ClientModel.getInstance().setCurrentGame(gameInfo);

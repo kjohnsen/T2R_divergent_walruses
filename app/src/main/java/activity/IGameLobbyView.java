@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import modelclasses.Player;
 
-public interface IGameLobbyActivity {
+public interface IGameLobbyView {
     void updatePlayerList(ArrayList<Player> players);
     void updateAvailableColors(ArrayList<String> colors);
     void setStartGameEnabled(boolean enable);

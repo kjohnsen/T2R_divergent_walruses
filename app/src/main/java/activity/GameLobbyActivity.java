@@ -21,12 +21,11 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
-import modelclasses.GameName;
 import modelclasses.Player;
 import presenter.GameLobbyPresenter;
 import presenter.IGameLobbyPresenter;
 
-public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyActivity {
+public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyView {
 
     private RecyclerView playerList;
     private Spinner colorSpinner;

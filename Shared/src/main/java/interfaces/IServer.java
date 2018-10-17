@@ -17,6 +17,12 @@ public interface IServer {
 
     Results chooseColor(PlayerColor color, GameName gameName, String authToken);
 
+    Results selectTrainCard(int index, GameName gameName, String authToken);
+
+    Results drawTrainCard(GameName gameName, String authToken);
+
+    Results drawDestinationCards(GameName gameName, String authToken);
+
     Results getCommands(String authToken);
 
     void setHostIP(String hostIP);

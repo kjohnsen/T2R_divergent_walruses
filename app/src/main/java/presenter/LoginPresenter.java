@@ -1,12 +1,9 @@
 package presenter;
 
-import android.content.Intent;
-
 import java.util.Observable;
 import java.util.Observer;
 
-import activity.IGameListActivity;
-import activity.ILoginActivity;
+import activity.ILoginView;
 import model.ClientModel;
 import model.UIFacade;
 
@@ -16,10 +13,10 @@ public class LoginPresenter implements ILoginPresenter, Observer {
     private String registerUsername = "";
     private String registerPassword = "";
     private String registerConfirm = "";
-    private ILoginActivity activity;
+    private ILoginView view;
 
-    public LoginPresenter(ILoginActivity activity) {
-        this.activity = activity;
+    public LoginPresenter(ILoginView view) {
+        this.view = view;
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -65,13 +62,13 @@ public class LoginPresenter implements ILoginPresenter, Observer {
 
     private void checkLogin() {
         boolean allow = (!loginUsername.isEmpty() && !loginPassword.isEmpty());
-        activity.setLoginEnabled(allow);
+        view.setLoginEnabled(allow);
     }
 
     private void checkRegister() {
         boolean allow = (!registerUsername.isEmpty() && !registerPassword.isEmpty()
                 && registerPassword.equals(registerConfirm));
-        activity.setRegisterEnabled(allow);
+        view.setRegisterEnabled(allow);
     }
 
     @Override
@@ -86,6 +83,6 @@ public class LoginPresenter implements ILoginPresenter, Observer {
 
     public void update(Observable observable, Object o) {
         observable.deleteObserver(this);
-        activity.goToGameList();
+        view.goToGameList();
     }
 }

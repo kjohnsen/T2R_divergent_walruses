@@ -1,8 +1,8 @@
 package presenter;
 
-import activity.ILoginActivity;
+import activity.ILoginView;
 
-public class LoginMock implements ILoginActivity {
+public class LoginMock implements ILoginView {
 
     private boolean login = false;
     private boolean register = false;
