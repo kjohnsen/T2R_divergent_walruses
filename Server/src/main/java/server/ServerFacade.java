@@ -28,6 +28,18 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
+    public static Results _selectTrainCard(int index, GameName name, String authtoken) {
+        return ourInstance.selectTrainCard(index, name, authtoken);
+    }
+
+    public static Results _drawTrainCard(GameName name, String authtoken) {
+        return ourInstance.drawTrainCard(name, authtoken);
+    }
+
+    public static Results _drawDestinationCards(GameName name, String authtoken) {
+        return ourInstance.drawDestinationCards(name, authtoken);
+    }
+
     public static Results _registerUser(String username, String password) {
         return ourInstance.registerUser(username, password);
     }
@@ -49,6 +61,15 @@ public class ServerFacade implements IServer {
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
     }
+
+    @Override
+    public Results selectTrainCard(int index, GameName name, String authtoken) { return null; }
+
+    @Override
+    public Results drawTrainCard(GameName name, String authtoken) { return null; }
+
+    @Override
+    public Results drawDestinationCards(GameName name, String authtoken) { return null; }
 
     public Results loginUser(String username, String password) {
 

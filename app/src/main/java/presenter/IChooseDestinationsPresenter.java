@@ -1,5 +1,8 @@
 package presenter;
 
+import java.util.ArrayList;
+
 public interface IChooseDestinationsPresenter {
-    String selectDestinationCards(int cards[]);
+    String getDestinationCards();
+    String selectDestinationCards(ArrayList<Integer> cards);
 }
