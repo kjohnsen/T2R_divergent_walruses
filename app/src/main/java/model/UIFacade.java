@@ -1,9 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import clientserver.ServerProxy;
 import interfaces.IServer;
+import modelclasses.ChatMessage;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -145,6 +147,10 @@ public class UIFacade {
         return null;
     }
 
+    public String sendChatMessage(ChatMessage chatMessage) {
+        return null;
+    }
+
     public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }
 
     public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
@@ -153,6 +159,8 @@ public class UIFacade {
         return ClientModel.getInstance().getGameList();
     }
 
+    public List<ChatMessage> getChatMessages() { return null; } //Get from the client model
+
     public void setHostIP(String hostIP) {
         serverProxy.setHostIP(hostIP);
     }
@@ -160,4 +168,6 @@ public class UIFacade {
     public void setHostPort(String hostPort) {
         serverProxy.setHostPort(hostPort);
     }
+
+
 }
