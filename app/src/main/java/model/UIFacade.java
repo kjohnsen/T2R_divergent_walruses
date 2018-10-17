@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import clientserver.ServerProxy;
 import interfaces.IServer;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -41,108 +42,59 @@ public class UIFacade {
         this.serverProxy = serverProxy;
     }
 
-    //These should all return strings, or null if there is no error message
-    public String loginUser(String username, String password) {
-        Results loggedInResults = serverProxy.loginUser(username, password);
-        if(loggedInResults != null && loggedInResults.getSuccess()) {
-            for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
-                loggedInResults.getClientCommands().get(i).execute();
-            }
-        } else {
-            //throw an error and have the presenter catch it and display it in a toast?
-            if(loggedInResults == null) {
-                return "Cannot reach server";
-            } else {
-                return loggedInResults.getErrorMessage();
-            }
-        }
-
-        return null;
-    }
-
-    //returns null if no error, or an error message if there is one
-    public String registerUser(String username, String password) {
-        Results loggedInResults = serverProxy.registerUser(username, password);
-        if(loggedInResults != null && loggedInResults.getSuccess()) {
-            for(int i = 0; i < loggedInResults.getClientCommands().size(); ++i) {
-                loggedInResults.getClientCommands().get(i).execute();
-            }
-        } else {
-            //throw an error and have the presenter catch it and display it in a toast?
-            if(loggedInResults == null) {
-                return "Cannot reach server";
-            } else {
-                return loggedInResults.getErrorMessage();
-            }
-        }
-
-        return null;
-    }
-
-    public String joinGame(String gameName) {
-        Results gameResults = serverProxy.joinGame(new GameName(gameName), authToken);
-        if(gameResults != null && gameResults.getSuccess()) {
-            for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
-                gameResults.getClientCommands().get(i).execute();
-            }
-        } else {
-            if(gameResults == null) {
-                return "Cannot reach server";
-            } else {
-                return gameResults.getErrorMessage();
-            }
-        }
-        return null;
-    }
-
-    public String createGame(String gameName, int numPlayers) {
-        Results gameResults = serverProxy.createGame(gameName, numPlayers, authToken);
-        if(gameResults != null && gameResults.getSuccess()) {
-            for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
-                gameResults.getClientCommands().get(i).execute();
-            }
-        } else {
-            if(gameResults == null) {
-                return "Cannot reach server";
-            } else {
-                return gameResults.getErrorMessage();
-            }
-        }
-        return null;
-    }
-
-    public String startGame() {
-        GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();
-        Results gameResults = serverProxy.startGame(gameInfo.getGameName(), authToken);
-        if(gameResults != null && gameResults.getSuccess()) {
-            for(int i = 0; i < gameResults.getClientCommands().size(); ++i) {
-                gameResults.getClientCommands().get(i).execute();
-            }
-        } else {
-            if(gameResults == null) {
-                return "Cannot reach server";
-            } else {
-                return gameResults.getErrorMessage();
-            }
-        }
-        return null;
-    }
-
-    public String claimColor(PlayerColor playerColor) {
-        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
-        Results results = serverProxy.chooseColor(playerColor, gameName, authToken);
+    //This returns the error message if there is one, or null if there isn't
+    private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
             for(int i = 0; i < results.getClientCommands().size(); ++i) {
                 results.getClientCommands().get(i).execute();
             }
         } else {
-            if(results == null) {
+            if (results == null) {
                 return "Cannot reach server";
             } else {
                 return results.getErrorMessage();
             }
         }
         return null;
+    }
+
+    public String selectTrainCard(int index) {
+        return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
+    }
+
+    public String drawTrainCard() {
+        return processResults(serverProxy.drawTrainCard(getCurrentGame().getGameName(), authToken));
+    }
+
+    public String drawDestinationCards() {
+        return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
+    }
+
+    public String loginUser(String username, String password) {
+        return processResults(serverProxy.loginUser(username, password));
+    }
+
+    //returns null if no error, or an error message if there is one
+    public String registerUser(String username, String password) {
+        return processResults(serverProxy.registerUser(username, password));
+    }
+
+    public String joinGame(String gameName) {
+        return processResults(serverProxy.joinGame(new GameName(gameName), authToken));
+    }
+
+    public String createGame(String gameName, int numPlayers) {
+        return processResults(serverProxy.createGame(gameName, numPlayers, authToken));
+    }
+
+    public String startGame() {
+        GameInfo gameInfo = ClientModel.getInstance().getCurrentGame();
+        return processResults(serverProxy.startGame(gameInfo.getGameName(), authToken));
+    }
+
+    public String claimColor(PlayerColor playerColor) {
+        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        return processResults(serverProxy.chooseColor(playerColor, gameName, authToken));
     }
 
     public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }

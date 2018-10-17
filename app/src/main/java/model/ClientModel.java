@@ -6,6 +6,7 @@ import java.util.Observable;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.TrainCard;
 import modelclasses.User;
 
 /* The ClientModel is the only Observable object. Each of its setter methods will call setChanged()
@@ -17,6 +18,7 @@ public class ClientModel extends Observable {
     private ArrayList<GameInfo> gameList = new ArrayList<>();
 
     private GameInfo currentGame;
+    private ArrayList<TrainCard> faceupCards;
 
     private static final ClientModel ourInstance = new ClientModel();
 
@@ -31,11 +33,21 @@ public class ClientModel extends Observable {
         currentGame = null;
         currentUser = null;
         gameList = new ArrayList<>();
+        faceupCards = new ArrayList<>();
+    }
+
+    public void replaceFaceupCard(TrainCard replacement, int selected) {
+        faceupCards.set(selected, replacement);
+        this.notifyObservers(faceupCards);
+    }
+
+    public void setFaceupCards(ArrayList<TrainCard> cards) {
+        faceupCards = cards;
+        this.notifyObservers(faceupCards);
     }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
-        this.setChanged();
         this.notifyObservers();
     }
 
@@ -45,26 +57,18 @@ public class ClientModel extends Observable {
         this.currentUser = currentUser;
     }
 
-    public void doChanges(Object o){
-        this.setChanged();
-        this.notifyObservers(o);
-    }
-
     public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
-        this.setChanged();
         this.notifyObservers(gameList);
     }
 
     public void setCurrentGame(GameInfo currentGame) {
         this.currentGame = currentGame;
-        this.setChanged();
         this.notifyObservers(currentGame);
     }
 
     public void setCurrentGamePlayers(ArrayList<Player> players) {
         currentGame.setPlayers(players);
-        this.setChanged();
         this.notifyObservers(players);
     }
 

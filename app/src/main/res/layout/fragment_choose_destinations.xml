@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/topGuide"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".3"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/leftGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".3"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/rightGuide"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".7"/>
+    <android.support.constraint.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/bottomGuide"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/ticketList"
+        app:layout_constraintTop_toTopOf="@id/topGuide"
+        app:layout_constraintEnd_toEndOf="@id/rightGuide"
+        app:layout_constraintStart_toStartOf="@id/leftGuide"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuide"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="dialogButton!"
-        android:id="@+id/dialogButton"/>
+        android:id="@+id/selectButton"
+        android:enabled="false"
+        android:text="Keep These"
+        app:layout_constraintTop_toBottomOf="@id/ticketList"/>
 
 </android.support.constraint.ConstraintLayout>
