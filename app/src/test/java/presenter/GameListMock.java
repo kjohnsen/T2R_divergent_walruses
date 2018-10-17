@@ -3,10 +3,10 @@ package presenter;
 
 import java.util.ArrayList;
 
-import activity.IGameListActivity;
+import activity.IGameListView;
 import modelclasses.GameInfo;
 
-public class GameListMock implements IGameListActivity {
+public class GameListMock implements IGameListView {
 
     private boolean createGameEnabled = false;
     private ArrayList<GameInfo> games;

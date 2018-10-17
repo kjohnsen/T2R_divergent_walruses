@@ -2,11 +2,11 @@ package presenter;
 
 import java.util.ArrayList;
 
-import activity.IGameLobbyActivity;
+import activity.IGameLobbyView;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 
-public class GameLobbyMock implements IGameLobbyActivity {
+public class GameLobbyMock implements IGameLobbyView {
 
     private boolean startGameEnabled = false;
     private ArrayList<Player> players;

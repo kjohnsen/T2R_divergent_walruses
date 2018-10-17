@@ -1,24 +1,22 @@
 package presenter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
-import activity.IGameLobbyActivity;
+import activity.IGameLobbyView;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.GameInfo;
-import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
-    private IGameLobbyActivity activity;
+    private IGameLobbyView view;
 
-    public GameLobbyPresenter(IGameLobbyActivity activity) {
-        this.activity = activity;
+    public GameLobbyPresenter(IGameLobbyView view) {
+        this.view = view;
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -29,24 +27,24 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public String startGame() {
-        activity.startGame();
+        view.startGame();
         return null;
     }
 
     @Override
     public void getGameLobbyInfo() {
         GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
-        activity.updatePlayerList(gameInfo.getPlayers());
+        view.updatePlayerList(gameInfo.getPlayers());
         String username = UIFacade.getInstance().getUsername();
-        activity.updateAvailableColors(PlayerColor.getAvailableColors(gameInfo.getPlayers(), username));
-        activity.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
+        view.updateAvailableColors(PlayerColor.getAvailableColors(gameInfo.getPlayers(), username));
+        view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
     }
 
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
-            activity.startGame();
+            view.startGame();
         } else if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof Player) {
@@ -57,11 +55,11 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                 }
                 String username = UIFacade.getInstance().getUsername();
                 ArrayList<String> colors = PlayerColor.getAvailableColors(players, username);
-                activity.updatePlayerList(players);
-                activity.updateAvailableColors(colors);
-                activity.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
+                view.updatePlayerList(players);
+                view.updateAvailableColors(colors);
+                view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
                 if (ClientModel.getInstance().currentGameReady()) {
-                    activity.setStartGameEnabled(true);
+                    view.setStartGameEnabled(true);
                 }
             }
         }

@@ -18,7 +18,7 @@ import com.example.emilyhales.tickettoride.R;
 import presenter.ILoginPresenter;
 import presenter.LoginPresenter;
 
-public class LoginActivity extends AppCompatActivity implements ILoginActivity {
+public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     EditText hostIP;
     EditText hostPort;
