@@ -12,7 +12,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+import model.MapSetup;
+
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, IMapView {
     private GoogleMap map;
 
     @Override
@@ -32,4 +34,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         map.moveCamera(CameraUpdateFactory.newLatLng(saltLake));
     }
 
+    @Override
+    public void initializeMap(MapSetup mapSetup) {
+
+    }
 }

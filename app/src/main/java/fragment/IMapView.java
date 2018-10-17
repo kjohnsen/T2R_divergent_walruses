@@ -1,7 +1,7 @@
 package fragment;
 
-import java.util.ArrayList;
+import model.MapSetup;
 
 public interface IMapView {
-    public void initializeMap(List<Route> routeList);
+    public void initializeMap(MapSetup mapSetup);
 }
