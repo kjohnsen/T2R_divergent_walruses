@@ -128,13 +128,4 @@ public class TestServerFacadeGame {
         assertFalse(results.getSuccess());
         assertEquals("Game does not exist", results.getErrorMessage());
     }
-
-    @Test
-    public void executeCommand() {
-        Command command = new Command("server.ServerFacade", "createGame",
-                Arrays.asList(new Object[]{"gameName", 4, "authToken"}));
-        command.execute();
-        assertEquals(ServerModel.getInstance().getGames().size(), 1);
-    }
-
 }
