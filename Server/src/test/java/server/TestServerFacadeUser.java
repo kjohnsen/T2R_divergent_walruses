@@ -54,7 +54,7 @@
          assertTrue(results.getSuccess());
          assertNull(results.getErrorMessage());
          assertEquals(1, results.getClientCommands().size());
-         assertNull(CommandManager.getInstance().getCommands("user1"));
+         assertEquals(0, CommandManager.getInstance().getCommands("user1").size());
      }
 
      @Test

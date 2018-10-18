@@ -1,10 +1,12 @@
 package modelclasses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
+    private ArrayList<TrainCard> trainCards;
 
     public Player(String username) {
         this.username = username;
@@ -14,6 +16,10 @@ public class Player implements Serializable {
     public Player(String username, PlayerColor color) {
         this.username = username;
         playerColor = color;
+    }
+
+    public void addTrainCardToHand(TrainCard trainCard) {
+        trainCards.add(trainCard);
     }
 
     public String getUsername() {
@@ -26,6 +32,14 @@ public class Player implements Serializable {
 
     public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
+    }
+
+    public ArrayList<TrainCard> getTrainCards() {
+        return trainCards;
+    }
+
+    public void setTrainCards(ArrayList<TrainCard> trainCards) {
+        this.trainCards = trainCards;
     }
 
     @Override
