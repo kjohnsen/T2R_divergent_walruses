@@ -14,6 +14,7 @@ import data.Command;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.User;
+import modelclasses.TrainCard;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -248,6 +249,9 @@ public class ServerFacade implements IServer {
             return results;
         }
 
+        ServerModel.getInstance().initializeTrainCardDeck();
+        givePlayersInitialTrainCards(game);
+
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         clientProxy.startGame(gameName, username);
@@ -258,6 +262,14 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
 
         return results;
+    }
+
+    public void givePlayersInitialTrainCards(GameInfo game) {
+        ArrayList<Player> gamePlayers = game.getPlayers();
+        for (Player player : gamePlayers) {
+            ArrayList<TrainCard> playerCards = ServerModel.getInstance().getPlayerInitialCards();
+            player.setTrainCards(playerCards);
+        }
     }
 
     public Results chooseColor(PlayerColor color, GameName gameName, String clientAuthToken) {
