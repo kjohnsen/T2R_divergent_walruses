@@ -8,6 +8,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
+import modelclasses.TrainCard;
 import results.Results;
 
 public class UIFacade {
@@ -33,6 +34,8 @@ public class UIFacade {
     public GameInfo getCurrentGame() {
         return ClientModel.getInstance().getCurrentGame();
     }
+
+    public ArrayList<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
 
     public IServer getServerProxy() {
         return serverProxy;

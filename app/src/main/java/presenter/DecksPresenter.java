@@ -12,7 +12,6 @@ import modelclasses.TrainCard;
 public class DecksPresenter implements IDecksPresenter, Observer {
 
     private IDecksView view;
-    private String gameName = null;
 
     public DecksPresenter(IDecksView view) {
         this.view = view;
@@ -30,8 +29,9 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
-    public String drawDestinationCards() {
-        return UIFacade.getInstance().drawDestinationCards();
+    public void drawDestinationCards() {
+        onSwitchView();
+        view.drawDestinationCards();
     }
 
     @Override

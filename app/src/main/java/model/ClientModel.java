@@ -46,6 +46,10 @@ public class ClientModel extends Observable {
         this.notifyObservers(faceupCards);
     }
 
+    public ArrayList<TrainCard> getFaceupCards() {
+        return faceupCards;
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         this.notifyObservers();

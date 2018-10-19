@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
+import presenter.DecksPresenter;
 import presenter.IDecksPresenter;
 
 public class DecksFragment extends Fragment implements IDecksView{
@@ -37,6 +38,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_decks, container, false);
+        presenter = new DecksPresenter(this);
         cardZero = v.findViewById(R.id.cardZero);
         cardZero.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +91,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         destinationDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DestinationsTask s = new DestinationsTask();
-                s.execute();
+                presenter.drawDestinationCards();
             }
         });
         return v;
@@ -125,17 +126,9 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
-    public void displayDestinationCards(final ArrayList<DestinationCard> tickets) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("tickets", tickets);
-                ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
-                cd.setArguments(bundle);
-                cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
-            }
-        });
+    public void drawDestinationCards() {
+        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
+        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
     }
 
     public class SelectCardTask extends AsyncTask<Integer, Void, String> {
@@ -154,18 +147,6 @@ public class DecksFragment extends Fragment implements IDecksView{
         @Override
         protected String doInBackground(Integer... s) {
             return presenter.drawTrainCard();
-        }
-        @Override
-        protected void onPostExecute(String param) {
-            if (param != null) {
-                Toast.makeText(DecksFragment.this.getActivity(), param, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-    public class DestinationsTask extends AsyncTask<Integer, Void, String> {
-        @Override
-        protected String doInBackground(Integer... s) {
-            return presenter.drawDestinationCards();
         }
         @Override
         protected void onPostExecute(String param) {

@@ -23,14 +23,15 @@ import com.example.emilyhales.tickettoride.R;
 import java.util.ArrayList;
 
 import modelclasses.DestinationCard;
+import presenter.ChooseDestinationsPresenter;
+import presenter.IChooseDestinationsPresenter;
 
 public class ChooseDestinationsFragment extends DialogFragment implements IChooseDestinationsView {
 
-    ArrayList<DestinationCard> tickets;
-    ArrayList<DestinationCard> selected;
     RecyclerView ticketList;
-    Button popupButton;
+    Button selectButton;
     boolean startingCards;
+    IChooseDestinationsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,12 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_choose_destinations, new ConstraintLayout(getActivity()), false);
+        presenter = new ChooseDestinationsPresenter(this);
         ticketList = view.findViewById(R.id.ticketList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(ChooseDestinationsFragment.this.getActivity());
         ticketList.setLayoutManager(gameListManager);
-        Button button = view.findViewById(R.id.selectButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        selectButton = view.findViewById(R.id.selectButton);
+        selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -60,8 +62,14 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
+    public void setSelectEnabled(boolean enabled) {
+        selectButton.setEnabled(enabled);
+    }
+
+    @Override
     public void displayTickets(ArrayList<DestinationCard> cards) {
-        //TODO: Implement this function
+        TicketListAdapter adapter = new TicketListAdapter(cards);
+        ticketList.setAdapter(adapter);
     }
 
     public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.TicketHolder> {
@@ -95,11 +103,7 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
                 ticketCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if (b) {
-                            selected.add(ticket);
-                        } else {
-                            selected.remove(ticket);
-                        }
+                        presenter.setCardSelected(ticket, b);
                     }
                 });
             }
