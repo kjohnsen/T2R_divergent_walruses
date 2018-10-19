@@ -22,6 +22,7 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
+import modelclasses.City;
 import modelclasses.DestinationCard;
 import presenter.ChooseDestinationsPresenter;
 import presenter.IChooseDestinationsPresenter;
@@ -110,9 +111,9 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
             void bind(DestinationCard card) {
                 ticket = card;
                 StringBuilder description = new StringBuilder();
-                String cities[] = card.getCities();
+                City cities[] = card.getCities();
                 int points = card.getPoints();
-                description.append(cities[0]).append(" to ").append(cities[1]).append(", ").append(points).append(" points");
+                description.append(cities[0].getName()).append(" to ").append(cities[1].getName()).append(", ").append(points).append(" points");
                 ticketDesc.setText(description);
             }
         }
