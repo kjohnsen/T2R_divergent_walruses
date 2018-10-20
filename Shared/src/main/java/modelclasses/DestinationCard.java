@@ -2,8 +2,13 @@ package modelclasses;
 
 public class DestinationCard {
     private int points;
-    private String cities[];
+    private City cities[];
+
+    public DestinationCard(int points, City[] cities) {
+        this.points = points;
+        this.cities = cities;
+    }
 
     public int getPoints() { return points; }
-    public String[] getCities() { return cities; }
+    public City[] getCities() { return cities; }
 }

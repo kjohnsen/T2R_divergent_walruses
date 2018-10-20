@@ -7,6 +7,7 @@ public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
     private ArrayList<TrainCard> trainCards;
+    private ArrayList<DestinationCard> destinationCards;
 
     public Player(String username) {
         this.username = username;
@@ -20,6 +21,10 @@ public class Player implements Serializable {
 
     public void addTrainCardToHand(TrainCard trainCard) {
         trainCards.add(trainCard);
+    }
+
+    public void addDestCardToHand(DestinationCard destinationCard) {
+        destinationCards.add(destinationCard);
     }
 
     public String getUsername() {
@@ -40,6 +45,14 @@ public class Player implements Serializable {
 
     public void setTrainCards(ArrayList<TrainCard> trainCards) {
         this.trainCards = trainCards;
+    }
+
+    public ArrayList<DestinationCard> getDestinationCards() {
+        return destinationCards;
+    }
+
+    public void setDestinationCards(ArrayList<DestinationCard> destinationCards) {
+        this.destinationCards = destinationCards;
     }
 
     @Override
