@@ -2,6 +2,7 @@ package fragment;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -31,7 +32,6 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
 
     RecyclerView ticketList;
     Button selectButton;
-    boolean startingCards;
     IChooseDestinationsPresenter presenter;
 
     @Override
@@ -50,7 +50,8 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SelectTicketsTask s = new SelectTicketsTask();
+                s.execute();
             }
         });
 
@@ -63,8 +64,13 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
-    public void setSelectEnabled(boolean enabled) {
-        selectButton.setEnabled(enabled);
+    public void setSelectEnabled(final boolean enabled) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                selectButton.setEnabled(enabled);
+            }
+        });
     }
 
     @Override
@@ -115,6 +121,22 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
                 int points = card.getPoints();
                 description.append(cities[0].getName()).append(" to ").append(cities[1].getName()).append(", ").append(points).append(" points");
                 ticketDesc.setText(description);
+            }
+        }
+    }
+
+    public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... s) {
+            return presenter.selectCards();
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(ChooseDestinationsFragment.this.getActivity(), param, Toast.LENGTH_LONG).show();
+            } else {
+                presenter.onSwitchView();
+                ChooseDestinationsFragment.this.dismiss();
             }
         }
     }

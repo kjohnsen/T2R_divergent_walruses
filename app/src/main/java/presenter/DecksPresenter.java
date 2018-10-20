@@ -19,6 +19,12 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
+    public void getFaceupCards() {
+        ArrayList<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
+        view.replaceTrainCards(cards);
+    }
+
+    @Override
     public String selectTrainCard(int index) {
         return UIFacade.getInstance().selectTrainCard(index);
     }
@@ -41,13 +47,15 @@ public class DecksPresenter implements IDecksPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        ArrayList<Object> array = (ArrayList<Object>) o;
-        if (array.get(0) instanceof TrainCard) {
-            ArrayList<TrainCard> cards = new ArrayList<>();
-            for (Object object : array) {
-                cards.add((TrainCard) object);
+        if (o instanceof ArrayList) {
+            ArrayList<Object> array = (ArrayList<Object>) o;
+            if (array.get(0) instanceof TrainCard) {
+                ArrayList<TrainCard> cards = new ArrayList<>();
+                for (Object object : array) {
+                    cards.add((TrainCard) object);
+                }
+                view.replaceTrainCards(cards);
             }
-            view.replaceTrainCards(cards);
         }
     }
 }

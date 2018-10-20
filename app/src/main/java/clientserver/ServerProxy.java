@@ -1,9 +1,11 @@
 package clientserver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
+import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import results.Results;
@@ -32,6 +34,12 @@ public class ServerProxy implements IServer {
     @Override
     public Results drawDestinationCards(GameName gameName, String authToken) {
         Command command = new Command("server.ServerFacade", "_drawDestinationCards", Arrays.asList(new Object[] {gameName, authToken}));
+        return ClientCommunicator.getInstance().send(command);
+    }
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken) {
+        Command command = new Command("server.ServerFacade", "_selectDestinationCards", Arrays.asList(new Object[] {tickets, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 
