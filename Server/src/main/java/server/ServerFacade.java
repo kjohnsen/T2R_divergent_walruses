@@ -31,6 +31,10 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
+    public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return ourInstance.selectDestinationCards(tickets, name, authToken);
+    }
+
     public static Results _selectTrainCard(int index, GameName name, String authtoken) {
         return ourInstance.selectTrainCard(index, name, authtoken);
     }
@@ -63,6 +67,11 @@ public class ServerFacade implements IServer {
     }
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
+    }
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return null;
     }
 
     @Override

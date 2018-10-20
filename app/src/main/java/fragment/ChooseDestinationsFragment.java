@@ -2,6 +2,7 @@ package fragment;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -22,15 +23,16 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 
+import modelclasses.City;
 import modelclasses.DestinationCard;
+import presenter.ChooseDestinationsPresenter;
+import presenter.IChooseDestinationsPresenter;
 
 public class ChooseDestinationsFragment extends DialogFragment implements IChooseDestinationsView {
 
-    ArrayList<DestinationCard> tickets;
-    ArrayList<DestinationCard> selected;
     RecyclerView ticketList;
-    Button popupButton;
-    boolean startingCards;
+    Button selectButton;
+    IChooseDestinationsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,16 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_choose_destinations, new ConstraintLayout(getActivity()), false);
+        presenter = new ChooseDestinationsPresenter(this);
         ticketList = view.findViewById(R.id.ticketList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(ChooseDestinationsFragment.this.getActivity());
         ticketList.setLayoutManager(gameListManager);
-        Button button = view.findViewById(R.id.selectButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        selectButton = view.findViewById(R.id.selectButton);
+        selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SelectTicketsTask s = new SelectTicketsTask();
+                s.execute();
             }
         });
 
@@ -60,8 +64,19 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
+    public void setSelectEnabled(final boolean enabled) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                selectButton.setEnabled(enabled);
+            }
+        });
+    }
+
+    @Override
     public void displayTickets(ArrayList<DestinationCard> cards) {
-        //TODO: Implement this function
+        TicketListAdapter adapter = new TicketListAdapter(cards);
+        ticketList.setAdapter(adapter);
     }
 
     public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.TicketHolder> {
@@ -95,21 +110,33 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
                 ticketCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if (b) {
-                            selected.add(ticket);
-                        } else {
-                            selected.remove(ticket);
-                        }
+                        presenter.setCardSelected(ticket, b);
                     }
                 });
             }
             void bind(DestinationCard card) {
                 ticket = card;
                 StringBuilder description = new StringBuilder();
-                String cities[] = card.getCities();
+                City cities[] = card.getCities();
                 int points = card.getPoints();
-                description.append(cities[0]).append(" to ").append(cities[1]).append(", ").append(points).append(" points");
+                description.append(cities[0].getName()).append(" to ").append(cities[1].getName()).append(", ").append(points).append(" points");
                 ticketDesc.setText(description);
+            }
+        }
+    }
+
+    public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... s) {
+            return presenter.selectCards();
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(ChooseDestinationsFragment.this.getActivity(), param, Toast.LENGTH_LONG).show();
+            } else {
+                presenter.onSwitchView();
+                ChooseDestinationsFragment.this.dismiss();
             }
         }
     }
