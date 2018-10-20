@@ -8,6 +8,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
+import modelclasses.TrainCard;
 import results.Results;
 
 public class UIFacade {
@@ -34,6 +35,8 @@ public class UIFacade {
         return ClientModel.getInstance().getCurrentGame();
     }
 
+    public ArrayList<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
+
     public IServer getServerProxy() {
         return serverProxy;
     }
@@ -41,6 +44,8 @@ public class UIFacade {
     public void setServerProxy(IServer serverProxy) {
         this.serverProxy = serverProxy;
     }
+
+    public boolean firstTickets() { return ClientModel.getInstance().firstTickets(); }
 
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
@@ -68,6 +73,10 @@ public class UIFacade {
 
     public String drawDestinationCards() {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
+    }
+
+    public String selectDestinationCards(ArrayList<DestinationCard> tickets) {
+        return processResults(serverProxy.selectDestinationCards(tickets, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {

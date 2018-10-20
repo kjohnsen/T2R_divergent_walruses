@@ -12,11 +12,16 @@ import modelclasses.TrainCard;
 public class DecksPresenter implements IDecksPresenter, Observer {
 
     private IDecksView view;
-    private String gameName = null;
 
     public DecksPresenter(IDecksView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void getFaceupCards() {
+        ArrayList<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
+        view.replaceTrainCards(cards);
     }
 
     @Override
@@ -30,8 +35,9 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
-    public String drawDestinationCards() {
-        return UIFacade.getInstance().drawDestinationCards();
+    public void drawDestinationCards() {
+        onSwitchView();
+        view.drawDestinationCards();
     }
 
     @Override
@@ -41,13 +47,15 @@ public class DecksPresenter implements IDecksPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        ArrayList<Object> array = (ArrayList<Object>) o;
-        if (array.get(0) instanceof TrainCard) {
-            ArrayList<TrainCard> cards = new ArrayList<>();
-            for (Object object : array) {
-                cards.add((TrainCard) object);
+        if (o instanceof ArrayList) {
+            ArrayList<Object> array = (ArrayList<Object>) o;
+            if (array.get(0) instanceof TrainCard) {
+                ArrayList<TrainCard> cards = new ArrayList<>();
+                for (Object object : array) {
+                    cards.add((TrainCard) object);
+                }
+                view.replaceTrainCards(cards);
             }
-            view.replaceTrainCards(cards);
         }
     }
 }

@@ -7,6 +7,7 @@ import data.CommandManager;
 import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import results.Results;
@@ -27,6 +28,10 @@ public class ServerFacade implements IServer {
 
     public static ServerFacade getInstance() {
         return ourInstance;
+    }
+
+    public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return ourInstance.selectDestinationCards(tickets, name, authToken);
     }
 
     public static Results _selectTrainCard(int index, GameName name, String authtoken) {
@@ -61,6 +66,11 @@ public class ServerFacade implements IServer {
     }
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
+    }
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return null;
     }
 
     @Override
