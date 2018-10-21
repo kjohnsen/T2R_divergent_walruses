@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import adapter.DestinationCardListViewAdapter;
 import adapter.PlayerInfoListViewAdapter;
 import model.ClientModel;
 import modelclasses.DestinationCard;
@@ -107,7 +108,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
     @Override
     public void updateDestinationTickets(List<DestinationCard> destinationCards) {
         //this should update the list view.
-        PlayerInfoListViewAdapter listViewAdapter = new PlayerInfoListViewAdapter(this.getContext(), players);
-        listView.setAdapter(listViewAdapter);
+        DestinationCardListViewAdapter listViewAdapter = new DestinationCardListViewAdapter(this.getContext(), destinationCards);
+        destinationCardList.setAdapter(listViewAdapter);
     }
 }
