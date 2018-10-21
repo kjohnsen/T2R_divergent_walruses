@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -16,7 +17,6 @@ public class ClientModel extends Observable {
     private User currentUser;
 
     private ArrayList<GameInfo> gameList = new ArrayList<>();
-
     private GameInfo currentGame;
     private ArrayList<TrainCard> faceupCards;
 
