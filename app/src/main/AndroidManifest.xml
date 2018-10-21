@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="activity.LoginActivity">
+        <activity android:name="activity.GameActivityTest">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,5 +24,7 @@
         <activity android:name="activity.GameListActivity" />
         <activity android:name="activity.GameLobbyActivity"></activity>
     </application>
+
+
 
 </manifest>
