@@ -2,6 +2,7 @@ package fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
     TextView cardWild;
 
     Map<TrainCardColor, TextView> cards_textView;
+
+    private RecyclerView destinationCardList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
                 }
             });
         }
+
 
         return v;
     }

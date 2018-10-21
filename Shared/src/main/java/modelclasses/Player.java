@@ -10,6 +10,8 @@ public class Player implements Serializable {
     private PlayerColor playerColor;
     private ArrayList<TrainCard> trainCards;
     private ArrayList<DestinationCard> destinationCards;
+    private Integer points;
+    private Integer numberOfTrains;
 
     public Player(String username) {
         this.username = username;
@@ -21,11 +23,18 @@ public class Player implements Serializable {
         playerColor = color;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public Integer getNumberOfTrains() {
+        return numberOfTrains;
+    }
+
     public Map<TrainCardColor,Integer> getTrainCardQuantities(){
         Map<TrainCardColor, Integer> trainCard_amount = new HashMap<>();
 
         int red = 0, orange = 0, yellow = 0, green = 0, blue = 0, purple = 0, black = 0, white = 0, wild = 0;
-
         for(TrainCard card: trainCards){
             switch(card.getColor()){
                 case RED:
@@ -48,7 +57,6 @@ public class Player implements Serializable {
                     wild++;
             }
         }
-
         trainCard_amount.put(TrainCardColor.RED, red);
         trainCard_amount.put(TrainCardColor.ORANGE, orange);
         trainCard_amount.put(TrainCardColor.YELLOW, yellow);
@@ -58,16 +66,7 @@ public class Player implements Serializable {
         trainCard_amount.put(TrainCardColor.WHITE, white);
         trainCard_amount.put(TrainCardColor.BLACK, black);
         trainCard_amount.put(TrainCardColor.WILD, wild);
-
         return trainCard_amount;
-    }
-
-    public ArrayList<DestinationCard> getDestinationCards() {
-        return destinationCards;
-    }
-
-    public void setDestinationCards(ArrayList<DestinationCard> destinationCards) {
-        this.destinationCards = destinationCards;
     }
 
     public void addTrainCardToHand(TrainCard trainCard) {
