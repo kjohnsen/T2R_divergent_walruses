@@ -109,7 +109,8 @@ public class UIFacade {
     }
 
     public String sendChatMessage(ChatMessage chatMessage) {
-        return null;
+        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        return processResults(serverProxy.sendChatMessage(chatMessage, gameName));
     }
 
     public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }
@@ -120,7 +121,9 @@ public class UIFacade {
         return ClientModel.getInstance().getGameList();
     }
 
-    public List<ChatMessage> getChatMessages() { return null; } //Get from the client model
+    public List<ChatMessage> getChatMessages() {
+        return ClientModel.getInstance().getChatMessages();
+    }
 
     public void setHostIP(String hostIP) {
         serverProxy.setHostIP(hostIP);

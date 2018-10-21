@@ -38,6 +38,8 @@ public class ChatPresenter implements IChatPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        chatView.chatViewShouldReloadData();
+        if(o == ClientModel.getInstance().getChatMessages()) {
+            chatView.chatViewShouldReloadData();
+        }
     }
 }

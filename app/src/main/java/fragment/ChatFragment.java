@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
@@ -82,16 +83,26 @@ public class ChatFragment extends Fragment implements IChatView {
 
     @Override
     public void chatViewShouldReloadData() {
-        chatRecyclerView.getAdapter().notifyDataSetChanged(); //should reload?
+        ChatAdapter chatAdapter = (ChatAdapter)chatRecyclerView.getAdapter();
+        chatAdapter.setChatMessages(presenter.getChatMessages());
+        chatAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showError(String errorMessage) {
-
+        Toast.makeText(this.getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
     private class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
-        public ChatAdapter() { }
+        private List<ChatMessage> chatMessages;
+
+        public ChatAdapter() {
+            chatMessages = presenter.getChatMessages();
+        }
+
+        public void setChatMessages(List<ChatMessage> chatMessages) {
+            this.chatMessages = chatMessages;
+        }
 
         @NonNull
         @Override
@@ -106,7 +117,6 @@ public class ChatFragment extends Fragment implements IChatView {
 
         @Override
         public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-            List<ChatMessage> chatMessages = presenter.getChatMessages();
             ChatMessage chatMessage = chatMessages.get(position);
 
             holder.setMessageText(chatMessage.getMessage());
@@ -115,7 +125,6 @@ public class ChatFragment extends Fragment implements IChatView {
 
         @Override
         public int getItemCount() {
-            List<ChatMessage> chatMessages = presenter.getChatMessages();
             return chatMessages.size();
         }
 

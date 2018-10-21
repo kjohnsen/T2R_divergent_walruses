@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+
+import modelclasses.ChatMessage;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.User;
@@ -19,6 +21,7 @@ public class ServerModel {
     private Map<String, User> users = new HashMap<>(); // maps usernames to users
     private Map<GameName, GameInfo> games = new HashMap<>();
     private List<TrainCard> trainCardDeck = new ArrayList<>();
+    private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
     private ServerModel() { }
 
@@ -27,6 +30,10 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public Map<GameName, List<ChatMessage>> getChatMessages() {
+        return chatMessages;
     }
 
     public Boolean checkUserExists(String username) {

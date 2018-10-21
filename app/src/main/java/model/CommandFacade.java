@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import data.Serializer;
 import interfaces.iClient;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -51,6 +52,8 @@ public class CommandFacade implements iClient {
     public static void _startGame(GameName gameName) {
         ourInstance.startGame(gameName);
     }
+
+    public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
     @Override
     public void replaceTrainCard(TrainCard replacement, int selected, Player player) {
@@ -112,5 +115,11 @@ public class CommandFacade implements iClient {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         player.setPlayerColor(playerColor);
         ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
+    }
+
+    @Override
+    public void addChatMessage(ChatMessage message) {
+        ClientModel.getInstance().getChatMessages().add(message);
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getChatMessages());
     }
 }
