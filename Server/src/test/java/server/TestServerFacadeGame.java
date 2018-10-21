@@ -83,12 +83,12 @@ public class TestServerFacadeGame {
 
     @Test
     public void createGame() {
-        Results results = ServerFacade.getInstance().createGame("new game", 4, "auth1");
+        Results results = ServerFacade.getInstance().createGame("newly created game", 4, "auth1");
         assertTrue(results.getSuccess());
         assertEquals(2, results.getClientCommands().size());
 
         // check that game is in the games map
-        GameName name = new GameName("new game");
+        GameName name = new GameName("newly created game");
         Map<GameName, GameInfo> games = ServerModel.getInstance().getGames();
         assertTrue(games.containsKey(name));
     }

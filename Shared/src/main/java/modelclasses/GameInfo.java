@@ -89,36 +89,36 @@ public class GameInfo implements Serializable {
     }
 
     public void initializeDestCardDeck() {
-        destCardDeck.add(new DestinationCard(4, new City[] {Atlas.DENVER, Atlas.EL_PASO}));
-        destCardDeck.add(new DestinationCard(5, new City[] {Atlas.KANSAS_CITY, Atlas.HOUSTON}));
-        destCardDeck.add(new DestinationCard(6, new City[] {Atlas.NEW_YORK, Atlas.ATLANTA}));
-        destCardDeck.add(new DestinationCard(7, new City[] {Atlas.CHICAGO, Atlas.NEW_ORLEANS}));
-        destCardDeck.add(new DestinationCard(7, new City[] {Atlas.CALGARY, Atlas.NEW_YORK}));
-        destCardDeck.add(new DestinationCard(8, new City[] {Atlas.HELENA, Atlas.LOS_ANGELES}));
-        destCardDeck.add(new DestinationCard(8, new City[] {Atlas.DULUTH, Atlas.HOUSTON}));
-        destCardDeck.add(new DestinationCard(8, new City[] {Atlas.SAULT_ST_MARIE, Atlas.NASHVILLE}));
-        destCardDeck.add(new DestinationCard(9, new City[] {Atlas.MONTREAL, Atlas.ATLANTA}));
-        destCardDeck.add(new DestinationCard(9, new City[] {Atlas.SAULT_ST_MARIE, Atlas.OK_CITY}));
-        destCardDeck.add(new DestinationCard(9, new City[] {Atlas.SEATTLE, Atlas.LOS_ANGELES}));
-        destCardDeck.add(new DestinationCard(9, new City[] {Atlas.CHICAGO, Atlas.SANTA_FE}));
-        destCardDeck.add(new DestinationCard(10, new City[] {Atlas.DULUTH, Atlas.EL_PASO}));
-        destCardDeck.add(new DestinationCard(10, new City[] {Atlas.TORONTO, Atlas.MIAMI}));
-        destCardDeck.add(new DestinationCard(11, new City[] {Atlas.PORTLAND, Atlas.PHOENIX}));
-        destCardDeck.add(new DestinationCard(11, new City[] {Atlas.DALLAS, Atlas.NEW_YORK}));
-        destCardDeck.add(new DestinationCard(11, new City[] {Atlas.DENVER, Atlas.PITTSBURGH}));
-        destCardDeck.add(new DestinationCard(11, new City[] {Atlas.WINNIPEG, Atlas.LITTLE_ROCK}));
-        destCardDeck.add(new DestinationCard(12, new City[] {Atlas.WINNIPEG, Atlas.HOUSTON}));
-        destCardDeck.add(new DestinationCard(12, new City[] {Atlas.BOSTON, Atlas.MIAMI}));
-        destCardDeck.add(new DestinationCard(13, new City[] {Atlas.VANCOUVER, Atlas.SANTA_FE}));
-        destCardDeck.add(new DestinationCard(13, new City[] {Atlas.CALGARY, Atlas.PHOENIX}));
-        destCardDeck.add(new DestinationCard(13, new City[] {Atlas.MONTREAL, Atlas.NEW_ORLEANS}));
-        destCardDeck.add(new DestinationCard(16, new City[] {Atlas.LOS_ANGELES, Atlas.CHICAGO}));
-        destCardDeck.add(new DestinationCard(17, new City[] {Atlas.SAN_FRANCISCO, Atlas.ATLANTA}));
-        destCardDeck.add(new DestinationCard(17, new City[] {Atlas.PORTLAND, Atlas.NASHVILLE}));
-        destCardDeck.add(new DestinationCard(20, new City[] {Atlas.VANCOUVER, Atlas.MONTREAL}));
-        destCardDeck.add(new DestinationCard(20, new City[] {Atlas.LOS_ANGELES, Atlas.MIAMI}));
-        destCardDeck.add(new DestinationCard(21, new City[] {Atlas.LOS_ANGELES, Atlas.NEW_YORK}));
-        destCardDeck.add(new DestinationCard(22, new City[] {Atlas.SEATTLE, Atlas.NEW_YORK}));
+        destCardDeck.add(new DestinationCard(4, Atlas.DENVER, Atlas.EL_PASO));
+        destCardDeck.add(new DestinationCard(5, Atlas.KANSAS_CITY, Atlas.HOUSTON));
+        destCardDeck.add(new DestinationCard(6, Atlas.NEW_YORK, Atlas.ATLANTA));
+        destCardDeck.add(new DestinationCard(7, Atlas.CHICAGO, Atlas.NEW_ORLEANS));
+        destCardDeck.add(new DestinationCard(7, Atlas.CALGARY, Atlas.NEW_YORK));
+        destCardDeck.add(new DestinationCard(8, Atlas.HELENA, Atlas.LOS_ANGELES));
+        destCardDeck.add(new DestinationCard(8, Atlas.DULUTH, Atlas.HOUSTON));
+        destCardDeck.add(new DestinationCard(8, Atlas.SAULT_ST_MARIE, Atlas.NASHVILLE));
+        destCardDeck.add(new DestinationCard(9, Atlas.MONTREAL, Atlas.ATLANTA));
+        destCardDeck.add(new DestinationCard(9, Atlas.SAULT_ST_MARIE, Atlas.OK_CITY));
+        destCardDeck.add(new DestinationCard(9, Atlas.SEATTLE, Atlas.LOS_ANGELES));
+        destCardDeck.add(new DestinationCard(9, Atlas.CHICAGO, Atlas.SANTA_FE));
+        destCardDeck.add(new DestinationCard(10, Atlas.DULUTH, Atlas.EL_PASO));
+        destCardDeck.add(new DestinationCard(10, Atlas.TORONTO, Atlas.MIAMI));
+        destCardDeck.add(new DestinationCard(11, Atlas.PORTLAND, Atlas.PHOENIX));
+        destCardDeck.add(new DestinationCard(11, Atlas.DALLAS, Atlas.NEW_YORK));
+        destCardDeck.add(new DestinationCard(11, Atlas.DENVER, Atlas.PITTSBURGH));
+        destCardDeck.add(new DestinationCard(11, Atlas.WINNIPEG, Atlas.LITTLE_ROCK));
+        destCardDeck.add(new DestinationCard(12, Atlas.WINNIPEG, Atlas.HOUSTON));
+        destCardDeck.add(new DestinationCard(12, Atlas.BOSTON, Atlas.MIAMI));
+        destCardDeck.add(new DestinationCard(13, Atlas.VANCOUVER, Atlas.SANTA_FE));
+        destCardDeck.add(new DestinationCard(13, Atlas.CALGARY, Atlas.PHOENIX));
+        destCardDeck.add(new DestinationCard(13, Atlas.MONTREAL, Atlas.NEW_ORLEANS));
+        destCardDeck.add(new DestinationCard(16, Atlas.LOS_ANGELES, Atlas.CHICAGO));
+        destCardDeck.add(new DestinationCard(17, Atlas.SAN_FRANCISCO, Atlas.ATLANTA));
+        destCardDeck.add(new DestinationCard(17, Atlas.PORTLAND, Atlas.NASHVILLE));
+        destCardDeck.add(new DestinationCard(20, Atlas.VANCOUVER, Atlas.MONTREAL));
+        destCardDeck.add(new DestinationCard(20, Atlas.LOS_ANGELES, Atlas.MIAMI));
+        destCardDeck.add(new DestinationCard(21, Atlas.LOS_ANGELES, Atlas.NEW_YORK));
+        destCardDeck.add(new DestinationCard(22, Atlas.SEATTLE, Atlas.NEW_YORK));
     }
 
     public TrainCard drawTrainCard() {
