@@ -1,15 +1,18 @@
 package server;
 
 import java.util.Arrays;
+import java.util.List;
 
 import data.Command;
 import data.CommandManager;
 import model.ServerModel;
+import modelclasses.DestinationCard;
 import modelclasses.User;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
+import modelclasses.TrainCard;
 
 public class ClientProxy {
 
@@ -44,9 +47,14 @@ public class ClientProxy {
     }
 
     public void startGame(GameName gameName, String clientUsername) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
-            if (!username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName}));
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayers().contains(username) && !username.equals(clientUsername)) {
+                Player currPlayer = game.getPlayer(username);
+                List<TrainCard> playerTrainCards = currPlayer.getTrainCards();
+                List<DestinationCard> playerDestCards = currPlayer.getDestinationCards();
+                Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }

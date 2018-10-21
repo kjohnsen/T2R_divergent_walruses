@@ -17,7 +17,6 @@ public class ClientModel extends Observable {
     private User currentUser;
 
     private ArrayList<GameInfo> gameList = new ArrayList<>();
-
     private GameInfo currentGame;
     private ArrayList<TrainCard> faceupCards;
     private ArrayList<TrainCard> playerTrainCards;
