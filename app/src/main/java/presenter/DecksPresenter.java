@@ -1,4 +1,61 @@
 package presenter;
 
-public class DecksPresenter implements IDecksPresenter {
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
+import fragment.IDecksView;
+import model.ClientModel;
+import model.UIFacade;
+import modelclasses.TrainCard;
+
+public class DecksPresenter implements IDecksPresenter, Observer {
+
+    private IDecksView view;
+
+    public DecksPresenter(IDecksView view) {
+        this.view = view;
+        ClientModel.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void getFaceupCards() {
+        ArrayList<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
+        view.replaceTrainCards(cards);
+    }
+
+    @Override
+    public String selectTrainCard(int index) {
+        return UIFacade.getInstance().selectTrainCard(index);
+    }
+
+    @Override
+    public String drawTrainCard() {
+        return UIFacade.getInstance().drawTrainCard();
+    }
+
+    @Override
+    public void drawDestinationCards() {
+        onSwitchView();
+        view.drawDestinationCards();
+    }
+
+    @Override
+    public void onSwitchView() {
+        ClientModel.getInstance().deleteObserver(this);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (o instanceof ArrayList) {
+            ArrayList<Object> array = (ArrayList<Object>) o;
+            if (array.get(0) instanceof TrainCard) {
+                ArrayList<TrainCard> cards = new ArrayList<>();
+                for (Object object : array) {
+                    cards.add((TrainCard) object);
+                }
+                view.replaceTrainCards(cards);
+            }
+        }
+    }
 }

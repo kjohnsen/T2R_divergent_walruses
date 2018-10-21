@@ -7,6 +7,7 @@ import data.CommandManager;
 import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import results.Results;
@@ -14,6 +15,7 @@ import data.Command;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.User;
+import modelclasses.TrainCard;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -26,6 +28,22 @@ public class ServerFacade implements IServer {
 
     public static ServerFacade getInstance() {
         return ourInstance;
+    }
+
+    public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return ourInstance.selectDestinationCards(tickets, name, authToken);
+    }
+
+    public static Results _selectTrainCard(int index, GameName name, String authtoken) {
+        return ourInstance.selectTrainCard(index, name, authtoken);
+    }
+
+    public static Results _drawTrainCard(GameName name, String authtoken) {
+        return ourInstance.drawTrainCard(name, authtoken);
+    }
+
+    public static Results _drawDestinationCards(GameName name, String authtoken) {
+        return ourInstance.drawDestinationCards(name, authtoken);
     }
 
     public static Results _registerUser(String username, String password) {
@@ -49,6 +67,20 @@ public class ServerFacade implements IServer {
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
     }
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return null;
+    }
+
+    @Override
+    public Results selectTrainCard(int index, GameName name, String authtoken) { return null; }
+
+    @Override
+    public Results drawTrainCard(GameName name, String authtoken) { return null; }
+
+    @Override
+    public Results drawDestinationCards(GameName name, String authtoken) { return null; }
 
     public Results loginUser(String username, String password) {
 
@@ -77,7 +109,7 @@ public class ServerFacade implements IServer {
 
         ClientProxy clientProxy = new ClientProxy();
         User user = new User(username, password);
-        clientProxy.loginUser(authToken);
+        clientProxy.loginUser(username);
 
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
@@ -122,7 +154,7 @@ public class ServerFacade implements IServer {
         results.setAuthToken(authToken);
 
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.registerUser(authToken);
+        clientProxy.registerUser(username);
 
         return results;
     }
@@ -153,7 +185,8 @@ public class ServerFacade implements IServer {
 
         // createGame command sent to all other clients
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.createGame(gameInfo, clientAuthToken);
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
+        clientProxy.createGame(gameInfo, username);
 
         // createGame and joinGame commands created to be sent back to current client
         Command createGameCommand = new Command("model.CommandFacade", "_createGame", Arrays.asList(new Object[] {gameInfo}));
@@ -191,7 +224,7 @@ public class ServerFacade implements IServer {
         }
 
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.joinGame(player, gameName, clientAuthToken);
+        clientProxy.joinGame(player, gameName, username);
 
         Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
 
@@ -226,8 +259,12 @@ public class ServerFacade implements IServer {
             return results;
         }
 
+        ServerModel.getInstance().initializeTrainCardDeck();
+        givePlayersInitialTrainCards(game);
+
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.startGame(gameName, clientAuthToken);
+        String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
+        clientProxy.startGame(gameName, username);
 
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName}));
 
@@ -235,6 +272,14 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
 
         return results;
+    }
+
+    public void givePlayersInitialTrainCards(GameInfo game) {
+        ArrayList<Player> gamePlayers = game.getPlayers();
+        for (Player player : gamePlayers) {
+            ArrayList<TrainCard> playerCards = ServerModel.getInstance().getPlayerInitialCards();
+            player.setTrainCards(playerCards);
+        }
     }
 
     public Results chooseColor(PlayerColor color, GameName gameName, String clientAuthToken) {
@@ -252,7 +297,7 @@ public class ServerFacade implements IServer {
         gameInfo.getPlayer(username).setPlayerColor(color);
 
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.claimColor(username, color, clientAuthToken);
+        clientProxy.claimColor(username, color);
 
         Command chooseColorCommand = new Command("model.CommandFacade", "_claimColor", Arrays.asList(new Object[] {username, color}));
         results.getClientCommands().add(chooseColorCommand);
@@ -263,7 +308,8 @@ public class ServerFacade implements IServer {
 
     public Results getCommands(String authToken) {
         Results results = new Results();
-        results.setClientCommands(CommandManager.getInstance().getCommands(authToken));
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        results.setClientCommands(CommandManager.getInstance().getCommands(username));
         results.setSuccess(true);
         results.setAuthToken(authToken);
         return results;

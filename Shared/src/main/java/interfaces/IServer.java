@@ -1,5 +1,8 @@
 package interfaces;
 
+import java.util.ArrayList;
+
+import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import results.Results;
@@ -16,6 +19,14 @@ public interface IServer {
     Results startGame(GameName gameName, String authToken);
 
     Results chooseColor(PlayerColor color, GameName gameName, String authToken);
+
+    Results selectTrainCard(int index, GameName gameName, String authToken);
+
+    Results drawTrainCard(GameName gameName, String authToken);
+
+    Results drawDestinationCards(GameName gameName, String authToken);
+
+    Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken);
 
     Results getCommands(String authToken);
 

@@ -6,7 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+
+import data.Command;
 import model.ServerModel;
 import modelclasses.Player;
 import results.Results;
@@ -125,6 +128,4 @@ public class TestServerFacadeGame {
         assertFalse(results.getSuccess());
         assertEquals("Game does not exist", results.getErrorMessage());
     }
-
-
 }
