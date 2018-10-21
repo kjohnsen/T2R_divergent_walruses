@@ -24,12 +24,10 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-
         if(o instanceof GameInfo){
             GameInfo gameInfo = (GameInfo)o;
             view.updatePlayerInfo(gameInfo.getPlayers());
         }
-
     }
 
 }

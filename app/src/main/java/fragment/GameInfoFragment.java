@@ -19,6 +19,7 @@ import presenter.IGameListPresenter;
 public class GameInfoFragment extends Fragment implements IGameInfoView {
 
     View v;
+    ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,15 +30,13 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_game_info, container, false);
+        listView = v.findViewById(R.id.list_view_player_info);
 
-        updatePlayerInfo(ClientModel.getInstance().getCurrentGame().getPlayers());
         return v;
     }
 
     @Override
     public void updatePlayerInfo(List<Player> players) {
-        //create list view of player info
-        ListView listView = v.findViewById(R.id.list_view_player_info);
         PlayerInfoListViewAdapter listViewAdapter = new PlayerInfoListViewAdapter(this.getContext(), players);
         listView.setAdapter(listViewAdapter);
     }

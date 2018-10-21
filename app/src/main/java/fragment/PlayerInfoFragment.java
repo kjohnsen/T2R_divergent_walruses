@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
@@ -15,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import adapter.PlayerInfoListViewAdapter;
+import model.ClientModel;
 import modelclasses.DestinationCard;
+import modelclasses.Player;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
 
@@ -33,7 +37,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
 
     Map<TrainCardColor, TextView> cards_textView;
 
-    private RecyclerView destinationCardList;
+    private ListView destinationCardList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_player_info, container, false);
+
+        destinationCardList = v.findViewById(R.id.destinationCardList);
 
         cardRed = v.findViewById(R.id.cardRed);
         cardOrange = v.findViewById(R.id.cardOrange);
@@ -55,15 +61,15 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         cardWild = v.findViewById(R.id.cardWild);
 
         //set colors of card views
-        cardRed.setBackgroundColor(0xFF0000);
-        cardOrange.setBackgroundColor(0xFFA500);
-        cardYellow.setBackgroundColor(0xFFFF00);
-        cardGreen.setBackgroundColor(0x00FF00);
-        cardBlue.setBackgroundColor(0x0000FF);
-        cardPurple.setBackgroundColor(0x800080);
-        cardWhite.setBackgroundColor(0xFFFFFF);
-        cardBlack.setBackgroundColor(0x000000);
-        cardWild.setBackgroundColor(0xD3D3D3);
+        cardRed.setBackgroundColor(getResources().getColor(R.color.trainRed));
+        cardOrange.setBackgroundColor(getResources().getColor(R.color.trainOrange));
+        cardYellow.setBackgroundColor(getResources().getColor(R.color.trainYellow));
+        cardGreen.setBackgroundColor(getResources().getColor(R.color.trainGreen));
+        cardBlue.setBackgroundColor(getResources().getColor(R.color.trainBlue));
+        cardPurple.setBackgroundColor(getResources().getColor(R.color.trainPurple));
+        cardWhite.setBackgroundColor(getResources().getColor(R.color.trainWhite));
+        cardBlack.setBackgroundColor(getResources().getColor(R.color.trainBlack));
+        cardWild.setBackgroundColor(getResources().getColor(R.color.trainGray));
 
         cards_textView = new HashMap<>();
         cards_textView.put(TrainCardColor.RED, cardRed);
@@ -100,6 +106,8 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
 
     @Override
     public void updateDestinationTickets(List<DestinationCard> destinationCards) {
-
+        //this should update the list view.
+        PlayerInfoListViewAdapter listViewAdapter = new PlayerInfoListViewAdapter(this.getContext(), players);
+        listView.setAdapter(listViewAdapter);
     }
 }
