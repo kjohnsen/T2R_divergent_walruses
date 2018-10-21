@@ -2,11 +2,13 @@ package server;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import data.CommandManager;
 import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import results.Results;
@@ -27,6 +29,10 @@ public class ServerFacade implements IServer {
 
     public static ServerFacade getInstance() {
         return ourInstance;
+    }
+
+    public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return ourInstance.selectDestinationCards(tickets, name, authToken);
     }
 
     public static Results _selectTrainCard(int index, GameName name, String authtoken) {
@@ -61,6 +67,11 @@ public class ServerFacade implements IServer {
     }
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
+    }
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        return null;
     }
 
     @Override
@@ -249,14 +260,19 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        ServerModel.getInstance().initializeTrainCardDeck();
+        game.initializeTrainCardDeck();
+        game.initializeDestCardDeck();
         givePlayersInitialTrainCards(game);
+        givePlayersInitialDestCards(game);
 
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         clientProxy.startGame(gameName, username);
 
-        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName}));
+        Player clientPlayer = game.getPlayer(username);
+        List<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
+        List<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
@@ -267,8 +283,16 @@ public class ServerFacade implements IServer {
     public void givePlayersInitialTrainCards(GameInfo game) {
         ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
-            ArrayList<TrainCard> playerCards = ServerModel.getInstance().getPlayerInitialCards();
+            ArrayList<TrainCard> playerCards = game.getPlayerInitialTrainCards();
             player.setTrainCards(playerCards);
+        }
+    }
+
+    public void givePlayersInitialDestCards(GameInfo game) {
+        ArrayList<Player> gamePlayers = game.getPlayers();
+        for (Player player : gamePlayers) {
+            ArrayList<DestinationCard> playerCards = game.getPlayerInitialDestCards();
+            player.setDestinationCards(playerCards);
         }
     }
 

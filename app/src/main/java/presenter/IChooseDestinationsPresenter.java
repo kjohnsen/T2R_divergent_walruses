@@ -1,8 +1,10 @@
 package presenter;
 
-import java.util.ArrayList;
+import modelclasses.DestinationCard;
 
 public interface IChooseDestinationsPresenter {
     String getDestinationCards();
-    String selectDestinationCards(ArrayList<Integer> cards);
+    void setCardSelected(DestinationCard card, boolean selected);
+    String selectCards();
+    void onSwitchView();
 }

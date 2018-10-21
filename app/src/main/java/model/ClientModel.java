@@ -19,6 +19,8 @@ public class ClientModel extends Observable {
     private ArrayList<GameInfo> gameList = new ArrayList<>();
     private GameInfo currentGame;
     private ArrayList<TrainCard> faceupCards;
+    private ArrayList<TrainCard> playerTrainCards;
+    private ArrayList<DestinationCard> playerTickets;
 
     private static final ClientModel ourInstance = new ClientModel();
 
@@ -27,6 +29,9 @@ public class ClientModel extends Observable {
     }
 
     private ClientModel() {
+        faceupCards = new ArrayList<>();
+        playerTrainCards = new ArrayList<>();
+        playerTickets = new ArrayList<>();
     }
 
     public void reset() {
@@ -45,6 +50,12 @@ public class ClientModel extends Observable {
         faceupCards = cards;
         this.notifyObservers(faceupCards);
     }
+
+    public ArrayList<TrainCard> getFaceupCards() {
+        return faceupCards;
+    }
+
+    public boolean firstTickets() { return playerTickets.isEmpty(); }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;

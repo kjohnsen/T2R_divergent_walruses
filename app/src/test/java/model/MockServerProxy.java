@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
@@ -15,6 +16,12 @@ import modelclasses.TrainCard;
 import results.Results;
 
 public class MockServerProxy implements IServer {
+
+    @Override
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken) {
+        //implement this if you want to
+        return null;
+    }
     @Override
     public Results loginUser(String username, String password) {
         if(username.equals("success")) {
