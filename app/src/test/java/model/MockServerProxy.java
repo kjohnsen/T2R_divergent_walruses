@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
@@ -154,4 +155,9 @@ public class MockServerProxy implements IServer {
 
     @Override
     public void setHostPort(String hostPort) { }
+
+    @Override
+    public Results sendChatMessage(ChatMessage message, GameName gameName) {
+        return null;
+    }
 }

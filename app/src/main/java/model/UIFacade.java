@@ -1,9 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import clientserver.ServerProxy;
 import interfaces.IServer;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
@@ -45,8 +47,6 @@ public class UIFacade {
         this.serverProxy = serverProxy;
     }
 
-    public boolean firstTickets() { return ClientModel.getInstance().firstTickets(); }
-
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
@@ -63,6 +63,12 @@ public class UIFacade {
         return null;
     }
 
+    public boolean isGameStart() { return ClientModel.getInstance().isGameStart(); }
+
+    public void setNotGameStart() {
+        ClientModel.getInstance().setNotGameStart();
+    }
+
     public String selectTrainCard(int index) {
         return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
     }
@@ -75,8 +81,8 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(ArrayList<DestinationCard> tickets) {
-        return processResults(serverProxy.selectDestinationCards(tickets, getCurrentGame().getGameName(), authToken));
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
+        return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {
@@ -106,12 +112,21 @@ public class UIFacade {
         return processResults(serverProxy.chooseColor(playerColor, gameName, authToken));
     }
 
+    public String sendChatMessage(ChatMessage chatMessage) {
+        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        return processResults(serverProxy.sendChatMessage(chatMessage, gameName));
+    }
+
     public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }
 
     public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
 
     public ArrayList<GameInfo> getGameList() {
         return ClientModel.getInstance().getGameList();
+    }
+
+    public List<ChatMessage> getChatMessages() {
+        return ClientModel.getInstance().getChatMessages();
     }
 
     public void setHostIP(String hostIP) {
@@ -121,4 +136,6 @@ public class UIFacade {
     public void setHostPort(String hostPort) {
         serverProxy.setHostPort(hostPort);
     }
+
+
 }

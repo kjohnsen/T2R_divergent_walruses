@@ -8,6 +8,7 @@ import data.CommandManager;
 import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -19,6 +20,8 @@ import modelclasses.User;
 import modelclasses.TrainCard;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ServerFacade implements IServer {
@@ -67,6 +70,10 @@ public class ServerFacade implements IServer {
     }
     public static Results _getCommands(String authToken) {
         return ourInstance.getCommands(authToken);
+    }
+
+    public static Results _sendChatMessage(ChatMessage message, GameName gameName) {
+        return ourInstance.sendChatMessage(message, gameName);
     }
 
     @Override
@@ -260,8 +267,6 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        game.initializeTrainCardDeck();
-        game.initializeDestCardDeck();
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
 
@@ -272,7 +277,8 @@ public class ServerFacade implements IServer {
         Player clientPlayer = game.getPlayer(username);
         List<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
         List<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
-        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards}));
+        List<TrainCard> faceUpCards = game.getFaceUpCards();
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards, faceUpCards}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
@@ -315,6 +321,25 @@ public class ServerFacade implements IServer {
 
         Command chooseColorCommand = new Command("model.CommandFacade", "_claimColor", Arrays.asList(new Object[] {username, color}));
         results.getClientCommands().add(chooseColorCommand);
+        results.setSuccess(true);
+
+        return results;
+    }
+
+    @Override
+    public Results sendChatMessage(ChatMessage message, GameName gameName) {
+        Results results = new Results();
+
+        Map<GameName, List<ChatMessage>> chatMessages = ServerModel.getInstance().getChatMessages();
+        if(chatMessages.get(gameName) == null) {
+            chatMessages.put(gameName, new ArrayList<ChatMessage>());
+        }
+        chatMessages.get(gameName).add(message);
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.addChatMessage(gameName, message);
+
+        Command addChatMessageCmd = new Command("model.CommandFacade", "_addChatMessage", Arrays.asList(new Object[] {message}));
+        results.getClientCommands().add(addChatMessageCmd);
         results.setSuccess(true);
 
         return results;

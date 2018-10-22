@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.ArrayList;
 
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -26,9 +27,11 @@ public interface IServer {
 
     Results drawDestinationCards(GameName gameName, String authToken);
 
-    Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken);
+    Results selectDestinationCards(ArrayList<DestinationCard> rejected, GameName gameName, String authToken);
 
     Results getCommands(String authToken);
+
+    Results sendChatMessage(ChatMessage message, GameName gameName);
 
     void setHostIP(String hostIP);
 
