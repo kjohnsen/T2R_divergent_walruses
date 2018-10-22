@@ -3,6 +3,10 @@ package model;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.List;
+
+import modelclasses.ChatMessage;
 
 import modelclasses.GameInfo;
 import modelclasses.GameName;
@@ -15,6 +19,7 @@ public class ServerModel {
     private Map<String, String> authTokens = new HashMap<>(); // maps authTokens to usernames
     private Map<String, User> users = new HashMap<>(); // maps usernames to users
     private Map<GameName, GameInfo> games = new HashMap<>();
+    private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
     private ServerModel() { }
 
@@ -23,6 +28,10 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public Map<GameName, List<ChatMessage>> getChatMessages() {
+        return chatMessages;
     }
 
     public Boolean checkUserExists(String username) {
