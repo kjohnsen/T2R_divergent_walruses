@@ -49,8 +49,8 @@ public class CommandFacade implements iClient {
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
-        ourInstance.startGame(gameName, trainCards, destCards);
+    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+        ourInstance.startGame(gameName, trainCards, destCards, faceUpCards);
     }
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
@@ -105,10 +105,10 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
+    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
-        // TODO: update ClientModel with player's initial trainCards and destCards
+        // TODO: update ClientModel with player's initial trainCards and destCards, and the faceup cards
     }
 
     @Override
