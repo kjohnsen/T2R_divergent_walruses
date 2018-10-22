@@ -100,7 +100,6 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
     //update texts for each card
     @Override
     public void updateTrainCards(Map<TrainCardColor, Integer> cards_amount) {
-        cardRed.setText(cards_amount.get(TrainCardColor.RED));
         for(TrainCardColor trainCardColor: cards_textView.keySet())
             cards_textView.get(trainCardColor).setText(cards_amount.get(trainCardColor));
     }
