@@ -12,12 +12,12 @@ import modelclasses.DestinationCard;
 public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter, Observer {
 
     private IChooseDestinationsView view;
-    private ArrayList<DestinationCard> selections;
+    private ArrayList<DestinationCard> rejections;
 
     public ChooseDestinationsPresenter(IChooseDestinationsView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
-        selections = new ArrayList<>();
+        rejections = new ArrayList<>();
     }
 
     @Override
@@ -28,24 +28,24 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     @Override
     public void setCardSelected(DestinationCard ticket, boolean selected) {
         if (selected) {
-            selections.add(ticket);
+            rejections.remove(ticket);
         } else {
-            selections.remove(ticket);
+            rejections.add(ticket);
         }
         checkButtonEnable();
     }
 
     private void checkButtonEnable() {
         if (UIFacade.getInstance().firstTickets()) {
-            view.setSelectEnabled(selections.size() > 1);
+            view.setSelectEnabled(rejections.size() < 1);
         } else {
-            view.setSelectEnabled(selections.size() > 0);
+            view.setSelectEnabled(rejections.size() < 2);
         }
     }
 
     @Override
     public String selectCards() {
-        return UIFacade.getInstance().selectDestinationCards(selections);
+        return UIFacade.getInstance().selectDestinationCards(rejections);
     }
 
     @Override

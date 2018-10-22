@@ -38,8 +38,8 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken) {
-        Command command = new Command("server.ServerFacade", "_selectDestinationCards", Arrays.asList(new Object[] {tickets, gameName, authToken}));
+    public Results selectDestinationCards(ArrayList<DestinationCard> rejected, GameName gameName, String authToken) {
+        Command command = new Command("server.ServerFacade", "_selectDestinationCards", Arrays.asList(new Object[] {rejected, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
 

@@ -75,8 +75,8 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(ArrayList<DestinationCard> tickets) {
-        return processResults(serverProxy.selectDestinationCards(tickets, getCurrentGame().getGameName(), authToken));
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
+        return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {
