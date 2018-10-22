@@ -25,8 +25,8 @@
 
      @Before
      public void enterUser() {
-         User user = new User("user1", "pass");
-         ServerModel.getInstance().getUsers().put("user1", user);
+         User user = new User("anotheruser", "pass");
+         ServerModel.getInstance().getUsers().put("anotheruser", user);
      }
 
      @Test
@@ -50,16 +50,16 @@
 
      @Test
      public void loginUserTest() {
-         Results results = ServerFacade.getInstance().loginUser("user1", "pass");
+         Results results = ServerFacade.getInstance().loginUser("anotheruser", "pass");
          assertTrue(results.getSuccess());
          assertNull(results.getErrorMessage());
          assertEquals(1, results.getClientCommands().size());
-         assertNull(CommandManager.getInstance().getCommands("user1"));
+         assertEquals(0, CommandManager.getInstance().getCommands("anotheruser").size());
      }
 
      @Test
      public void loginInvalidPassword() {
-        Results results = ServerFacade.getInstance().loginUser("user1", "incorrectPassword");
+        Results results = ServerFacade.getInstance().loginUser("anotheruser", "incorrectPassword");
         assertEquals("Password incorrect", results.getErrorMessage());
      }
 
@@ -82,7 +82,7 @@
 
      @Test
      public void registerRepeatUsername() {
-        Results results = ServerFacade.getInstance().registerUser("user1", "newPassword");
+        Results results = ServerFacade.getInstance().registerUser("anotheruser", "newPassword");
         assertFalse(results.getSuccess());
         assertEquals("Username already exists!", results.getErrorMessage());
      }

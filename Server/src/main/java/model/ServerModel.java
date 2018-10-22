@@ -3,6 +3,7 @@ package model;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.User;
@@ -12,7 +13,7 @@ public class ServerModel {
     private static ServerModel instance = null;
 
     private Map<String, String> authTokens = new HashMap<>(); // maps authTokens to usernames
-    private Map<String, User> users = new HashMap<>();
+    private Map<String, User> users = new HashMap<>(); // maps usernames to users
     private Map<GameName, GameInfo> games = new HashMap<>();
 
     private ServerModel() { }
@@ -74,5 +75,6 @@ public class ServerModel {
     public void setGames(Map<GameName, GameInfo> games) {
         this.games = games;
     }
+
     //********************************************
 }

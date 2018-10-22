@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import data.Serializer;
 import interfaces.iClient;
@@ -30,7 +30,7 @@ public class CommandFacade implements iClient {
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
-    public static void _displayDestinationCards(DestinationCard tickets[]) {
+    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets) {
         ourInstance.displayDestinationCards(tickets);
     }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -48,8 +48,8 @@ public class CommandFacade implements iClient {
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName) {
-        ourInstance.startGame(gameName);
+    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
+        ourInstance.startGame(gameName, trainCards, destCards);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void displayDestinationCards(DestinationCard tickets[]) {
-
+    public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
+        ClientModel.getInstance().notifyObservers(tickets);
     }
 
     @Override
@@ -102,9 +102,10 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startGame(GameName gameName) {
+    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
+        // TODO: update ClientModel with player's initial trainCards and destCards
     }
 
     @Override

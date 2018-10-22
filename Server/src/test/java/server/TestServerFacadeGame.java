@@ -6,9 +6,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+
+import data.Command;
+import data.CommandManager;
 import model.ServerModel;
+import modelclasses.DestinationCard;
 import modelclasses.Player;
+import modelclasses.PlayerColor;
+import modelclasses.TrainCard;
 import results.Results;
 import modelclasses.User;
 import modelclasses.GameInfo;
@@ -18,7 +25,29 @@ public class TestServerFacadeGame {
 
     @Before
     public void setUp(){
+        // make three test users & give them authTokens
+        ServerModel.getInstance().getUsers().put("user1", new User("user1", "password"));
+        ServerModel.getInstance().getUsers().put("user2", new User("user2", "password"));
+        ServerModel.getInstance().getUsers().put("user3", new User("user3", "password"));
+        ServerModel.getInstance().getAuthTokens().put("auth1", "user1");
+        ServerModel.getInstance().getAuthTokens().put("auth2", "user2");
+        ServerModel.getInstance().getAuthTokens().put("auth3", "user3");
 
+        // make them players
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("user1", PlayerColor.GREEN));
+        players.add(new Player("user2", PlayerColor.BLUE));
+        players.add(new Player("user3", PlayerColor.MAGENTA));
+
+        // put them in the CommandManager
+        CommandManager.getInstance().addClient("user1");
+        CommandManager.getInstance().addClient("user2");
+        CommandManager.getInstance().addClient("user3");
+
+        // put them in a game together
+        GameName gameName = new GameName("my game");
+        GameInfo game = new GameInfo(gameName, players, 3);
+        ServerModel.getInstance().getGames().put(gameName, game);
     }
 
     @Before
@@ -54,12 +83,12 @@ public class TestServerFacadeGame {
 
     @Test
     public void createGame() {
-        Results results = ServerFacade.getInstance().createGame("new game", 4, "auth1");
+        Results results = ServerFacade.getInstance().createGame("newly created game", 4, "auth1");
         assertTrue(results.getSuccess());
         assertEquals(2, results.getClientCommands().size());
 
         // check that game is in the games map
-        GameName name = new GameName("new game");
+        GameName name = new GameName("newly created game");
         Map<GameName, GameInfo> games = ServerModel.getInstance().getGames();
         assertTrue(games.containsKey(name));
     }
@@ -126,5 +155,41 @@ public class TestServerFacadeGame {
         assertEquals("Game does not exist", results.getErrorMessage());
     }
 
+    @Test
+    public void startGame() {
+        GameName name = new GameName("my game");
+        String clientAuthToken = "auth1";
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        for (Player p : game.getPlayers()) {
+            System.out.println(p.getUsername());
+        }
+        Results results = ServerFacade.getInstance().startGame(name, clientAuthToken);
 
+//        assertTrue(results.getSuccess());
+//
+//        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+//        assertEquals(98, game.getTrainCardDeck().size());
+//        assertEquals(21, game.getDestCardDeck().size());
+//
+//        // check player hands
+//        for (Player p : game.getPlayers()) {
+//            ArrayList<TrainCard> playerTrainCards = p.getTrainCards();
+//            assertEquals(4, playerTrainCards.size());
+//
+//            ArrayList<DestinationCard> playerDestCards = p.getDestinationCards();
+//            assertEquals(3, playerDestCards.size());
+//        }
+//
+//        // check player commands
+//        assertEquals(1, results.getClientCommands().size());
+//        for (Player p : game.getPlayers()) {
+//            ArrayList<Command> userCommands = CommandManager.getInstance().getCommands(p.getUsername());
+//            if (p.getUsername().equals("user1")) {
+//                assertEquals(0, userCommands.size());
+//            }
+//            else {
+//                assertEquals(1, userCommands.size());
+//            }
+//        }
+    }
 }

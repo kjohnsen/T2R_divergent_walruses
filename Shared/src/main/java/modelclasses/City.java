@@ -22,4 +22,17 @@ public class City {
     public double getLongitude() {
         return longitude;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return name.equals(city.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }
