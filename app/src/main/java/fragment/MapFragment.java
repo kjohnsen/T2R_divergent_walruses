@@ -18,6 +18,7 @@ import modelclasses.MapSetup;
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, IMapView {
     private GoogleMap map;
 
+
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         View view = super.onCreateView(layoutInflater, viewGroup, bundle);
@@ -25,18 +26,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         return view;
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         LatLng saltLake = new LatLng(41, -112);
         map.getUiSettings().setZoomControlsEnabled(false);
         map.getUiSettings().setAllGesturesEnabled(false);
-        map.addMarker(new MarkerOptions().position(saltLake).title("Salt Lake City!!!!"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(saltLake));
-    }
-
-    private static LatLngBounds getBounds() {
-        return new LatLngBounds(new LatLng(45.67, -68.6), new LatLng(26.9, -124));
+        map.getUiSettings().setMapToolbarEnabled(false);
+        initializeMap(new MapSetup());
     }
 
 
@@ -44,6 +42,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     public void initializeMap(MapSetup mapSetup) {
         LatLng northeast = new LatLng(mapSetup.getNorthBound(), mapSetup.getEastBound());
         LatLng southwest = new LatLng(mapSetup.getSouthBound(), mapSetup.getWestBound());
-        LatLngBounds bounds = new LatLngBounds(northeast, southwest);
+        final LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+                map.setLatLngBoundsForCameraTarget(bounds);
+            }
+        });
     }
+
+
 }

@@ -1,5 +1,6 @@
 package modelclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,12 @@ import modelclasses.Route;
 import static modelclasses.Atlas.*;
 import static modelclasses.TrainCardColor.*;
 
-public class MapSetup {
+public class MapSetup implements Serializable {
 
     private double northBound = 45.67;
     private double eastBound = -68.6;
     private double southBound = 26.9;
-    private double westBound = -124;
+    private double westBound = -125;
 
     public static List<Route> getRoutes() {
         ArrayList<Route> routes = new ArrayList<>();
