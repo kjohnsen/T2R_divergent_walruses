@@ -50,7 +50,7 @@ public class ClientProxy {
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
-            if (game.getPlayers().contains(username) && !username.equals(clientUsername)) {
+            if (game.getPlayer(username) != null && !username.equals(clientUsername)) {
                 Player currPlayer = game.getPlayer(username);
                 List<TrainCard> playerTrainCards = currPlayer.getTrainCards();
                 List<DestinationCard> playerDestCards = currPlayer.getDestinationCards();
