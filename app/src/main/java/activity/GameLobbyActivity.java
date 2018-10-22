@@ -1,5 +1,6 @@
 package activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -169,7 +170,8 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(GameLobbyActivity.this, "This would go to a new game but we don't have that screen so instead enjoy this lovely joke! There were two muffins in an oven. One said to the other, \"Gee, isn't it hot in here?\" The other one said, \"AAAH! A talking muffin!\"", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(GameLobbyActivity.this, GameActivity.class);
+                startActivity(intent);
             }
         });
     }

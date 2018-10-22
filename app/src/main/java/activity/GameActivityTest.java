@@ -11,27 +11,41 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.emilyhales.tickettoride.R;
 
+import java.util.ArrayList;
+
 import fragment.ChatFragment;
 import fragment.DecksFragment;
 import fragment.GameInfoFragment;
-import fragment.MapFragment;
 import fragment.PlayerInfoFragment;
+import model.ClientModel;
+import modelclasses.GameInfo;
+import modelclasses.Player;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivityTest extends AppCompatActivity {
 
     ViewPager pager;
     MyPagerAdapter adapter;
     TabLayout tabs;
-    Fragment mapFragment;
+
+
+    public void setupTest(){
+        //although this violates MVP... it's going to make it easy to test stuff
+        ArrayList<GameInfo> gameInfos = new ArrayList<>();
+        //name, players, number of players
+        ArrayList<Player> players = new ArrayList<>();
+
+        GameInfo gameInfo = GameInfo.makeRandomGameInfo();
+        gameInfos.add(gameInfo);
+        ClientModel.getInstance().setGameList(gameInfos);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setupTest();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        mapFragment = new MapFragment();
-        this.getSupportFragmentManager().beginTransaction()
-                .add(R.id.mapContainer, mapFragment)
-                .commit();
         pager = findViewById(R.id.pager);
         tabs = findViewById(R.id.tabLayout);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
