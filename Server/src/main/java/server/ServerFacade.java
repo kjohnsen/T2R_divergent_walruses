@@ -260,8 +260,6 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        game.initializeTrainCardDeck();
-        game.initializeDestCardDeck();
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
 

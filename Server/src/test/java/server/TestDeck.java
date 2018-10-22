@@ -18,8 +18,6 @@ public class TestDeck {
         GameName gameName = new GameName("new game");
         GameInfo game = new GameInfo(gameName, null, 3);
         ServerModel.getInstance().getGames().put(gameName, game);
-        game.initializeTrainCardDeck();
-        game.initializeDestCardDeck();
     }
 
     @Test
