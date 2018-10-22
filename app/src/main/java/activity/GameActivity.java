@@ -29,7 +29,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mapFragment = new MapFragment();
-        this.getSupportFragmentManager().beginTransaction().replace(R.id.mapContainer, mapFragment);
+        this.getSupportFragmentManager().beginTransaction()
+                .add(R.id.mapContainer, mapFragment)
+                .commit();
         pager = findViewById(R.id.pager);
         tabs = findViewById(R.id.tabLayout);
         adapter = new MyPagerAdapter(getSupportFragmentManager());

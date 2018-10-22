@@ -10,9 +10,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import model.MapSetup;
+import modelclasses.MapSetup;
 
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, IMapView {
     private GoogleMap map;
@@ -34,8 +35,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         map.moveCamera(CameraUpdateFactory.newLatLng(saltLake));
     }
 
+    private static LatLngBounds getBounds() {
+        return new LatLngBounds(new LatLng(45.67, -68.6), new LatLng(26.9, -124));
+    }
+
+
     @Override
     public void initializeMap(MapSetup mapSetup) {
-
+        LatLng northeast = new LatLng(mapSetup.getNorthBound(), mapSetup.getEastBound());
+        LatLng southwest = new LatLng(mapSetup.getSouthBound(), mapSetup.getWestBound());
+        LatLngBounds bounds = new LatLngBounds(northeast, southwest);
     }
 }
