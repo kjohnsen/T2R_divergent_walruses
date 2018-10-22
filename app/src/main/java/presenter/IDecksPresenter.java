@@ -6,4 +6,5 @@ public interface IDecksPresenter {
     String selectTrainCard(int index);
     void drawDestinationCards();
     void onSwitchView();
+    boolean isGameStart();
 }

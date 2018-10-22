@@ -36,9 +36,18 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onSwitchView();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_decks, container, false);
         presenter = new DecksPresenter(this);
+        if (presenter.isGameStart()) {
+            presenter.drawDestinationCards();
+        }
         cardZero = v.findViewById(R.id.cardZero);
         cardZero.setOnClickListener(new View.OnClickListener() {
             @Override

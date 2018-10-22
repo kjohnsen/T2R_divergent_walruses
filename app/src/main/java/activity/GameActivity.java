@@ -52,9 +52,9 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return new PlayerInfoFragment();
+                case 0: return new DecksFragment();
                 case 1: return new GameInfoFragment();
-                case 2: return new DecksFragment();
+                case 2: return new PlayerInfoFragment();
                 case 3: return new ChatFragment();
                 default: return null;
             }
@@ -62,9 +62,9 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: return "Player Info";
+                case 0: return "Decks";
                 case 1: return "Game Info";
-                case 2: return "Decks";
+                case 2: return "Player Info";
                 case 3: return "Chat";
                 default: return null;
             }

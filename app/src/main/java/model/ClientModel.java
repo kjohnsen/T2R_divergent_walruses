@@ -23,6 +23,7 @@ public class ClientModel extends Observable {
     private ArrayList<TrainCard> playerTrainCards;
     private ArrayList<DestinationCard> playerTickets;
     private ArrayList<ChatMessage> chatMessages;
+    private boolean startGame;
 
     private static final ClientModel ourInstance = new ClientModel();
 
@@ -35,6 +36,7 @@ public class ClientModel extends Observable {
         playerTrainCards = new ArrayList<>();
         playerTickets = new ArrayList<>();
         chatMessages = new ArrayList<>();
+        startGame = true;
     }
 
     public void reset() {
@@ -58,7 +60,7 @@ public class ClientModel extends Observable {
         return faceupCards;
     }
 
-    public boolean firstTickets() { return playerTickets.isEmpty(); }
+    public boolean isGameStart() { return startGame; }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -93,6 +95,8 @@ public class ClientModel extends Observable {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public void setNotGameStart() { startGame = false; }
 
     public ArrayList<GameInfo> getGameList() {
         return gameList;
