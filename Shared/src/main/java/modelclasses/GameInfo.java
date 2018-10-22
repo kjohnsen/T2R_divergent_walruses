@@ -14,6 +14,7 @@ public class GameInfo implements Serializable {
     private int numPlayers;
     private List<TrainCard> trainCardDeck = new ArrayList<>();
     private List<DestinationCard> destCardDeck = new ArrayList<>();
+    private List<TrainCard> faceUpCards = new ArrayList<>();
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -21,6 +22,7 @@ public class GameInfo implements Serializable {
         setPlayers(players);
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
+        initializeFaceUpCards();
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -109,6 +111,13 @@ public class GameInfo implements Serializable {
         }
     }
 
+    public void initializeFaceUpCards() {
+        for (int i = 0; i < 5; i++) {
+            TrainCard card = drawTrainCard();
+            faceUpCards.add(card);
+        }
+    }
+
     public TrainCard drawTrainCard() {
         int deckSize = trainCardDeck.size();
         if (deckSize > 0) {
@@ -169,6 +178,13 @@ public class GameInfo implements Serializable {
         this.destCardDeck = destCardDeck;
     }
 
+    public List<TrainCard> getFaceUpCards() {
+        return faceUpCards;
+    }
+
+    public void setFaceUpCards(List<TrainCard> faceUpCards) {
+        this.faceUpCards = faceUpCards;
+    }
 
     @Override
     public boolean equals(Object o) {

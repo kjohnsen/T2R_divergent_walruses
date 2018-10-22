@@ -277,7 +277,8 @@ public class ServerFacade implements IServer {
         Player clientPlayer = game.getPlayer(username);
         List<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
         List<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
-        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards}));
+        List<TrainCard> faceUpCards = game.getFaceUpCards();
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards, faceUpCards}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
