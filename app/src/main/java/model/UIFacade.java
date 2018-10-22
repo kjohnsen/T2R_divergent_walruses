@@ -47,8 +47,6 @@ public class UIFacade {
         this.serverProxy = serverProxy;
     }
 
-    public boolean firstTickets() { return ClientModel.getInstance().firstTickets(); }
-
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
@@ -65,6 +63,12 @@ public class UIFacade {
         return null;
     }
 
+    public boolean isGameStart() { return ClientModel.getInstance().isGameStart(); }
+
+    public void setNotGameStart() {
+        ClientModel.getInstance().setNotGameStart();
+    }
+
     public String selectTrainCard(int index) {
         return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
     }
@@ -77,8 +81,8 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(ArrayList<DestinationCard> tickets) {
-        return processResults(serverProxy.selectDestinationCards(tickets, getCurrentGame().getGameName(), authToken));
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
+        return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {

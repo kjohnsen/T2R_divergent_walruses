@@ -27,7 +27,7 @@ public interface IServer {
 
     Results drawDestinationCards(GameName gameName, String authToken);
 
-    Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken);
+    Results selectDestinationCards(ArrayList<DestinationCard> rejected, GameName gameName, String authToken);
 
     Results getCommands(String authToken);
 
