@@ -6,6 +6,7 @@ import java.util.List;
 import data.Command;
 import data.CommandManager;
 import model.ServerModel;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.User;
 import modelclasses.Player;
@@ -65,6 +66,15 @@ public class ClientProxy {
             if (!username.equals(clientUsername)) {
                 Command clientCommand = new Command("model.CommandFacade", "claimColor", Arrays.asList(new Object[] {clientUsername, playerColor}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void addChatMessage(GameName gameName, ChatMessage message) {
+        for(Player player: ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            if(!player.getUsername().equals(message.getUsername())) {
+                Command clientCommand = new Command("model.CommandFacade", "_addChatMessage", Arrays.asList(new Object[] {message}));
+                CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
             }
         }
     }

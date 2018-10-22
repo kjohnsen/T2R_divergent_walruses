@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import data.Command;
 import interfaces.IServer;
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
@@ -89,6 +90,13 @@ public class ServerProxy implements IServer {
     public Results getCommands(String authToken) {
         //Send the command...
         Command command = new Command("server.ServerFacade", "_getCommands", Arrays.asList(new Object[] {authToken}));
+        Results results = ClientCommunicator.getInstance().send(command);
+        return results;
+    }
+
+    @Override
+    public Results sendChatMessage(ChatMessage message, GameName gameName) {
+        Command command = new Command("server.ServerFacade", "_sendChatMessage", Arrays.asList(new Object[] {message, gameName}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results;
     }
