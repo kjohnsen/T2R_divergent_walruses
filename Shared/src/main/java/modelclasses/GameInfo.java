@@ -1,6 +1,7 @@
 package modelclasses;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,23 @@ public class GameInfo implements Serializable {
         setPlayers(players);
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
+    }
+
+    public static GameInfo makeRandomGameInfo(){
+        ArrayList<Player> players = new ArrayList<>();
+
+        Random r = new Random();
+        int max = 5;
+        int min = 1;
+        int randomNumber = r.nextInt((max - min) + 1) + min;
+
+        for(int i = 0; i < randomNumber; i++){
+            PlayerColor color = PlayerColor.values()[new Random().nextInt(PlayerColor.values().length)];
+            Player testPlayer = new Player("asdf",color);
+            players.add(testPlayer);
+        }
+
+        return new GameInfo(new GameName("game name!"),players, 5);
     }
 
     public void addPlayer(Player player) {
@@ -150,6 +168,7 @@ public class GameInfo implements Serializable {
     public void setDestCardDeck(List<DestinationCard> destCardDeck) {
         this.destCardDeck = destCardDeck;
     }
+
 
     @Override
     public boolean equals(Object o) {
