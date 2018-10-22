@@ -36,7 +36,7 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     }
 
     private void checkButtonEnable() {
-        if (UIFacade.getInstance().firstTickets()) {
+        if (UIFacade.getInstance().isGameStart()) {
             view.setSelectEnabled(rejections.size() < 1);
         } else {
             view.setSelectEnabled(rejections.size() < 2);
