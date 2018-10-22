@@ -80,7 +80,7 @@ public class CommandFacadeTest {
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
 
-        CommandFacade.getInstance().startGame(gameName, null, null); // TODO: make this test more robust
+        CommandFacade.getInstance().startGame(gameName, null, null, null); // TODO: make this test more robust
         assertEquals(ClientModel.getInstance().getCurrentGame(), gameInfo);
     }
 
