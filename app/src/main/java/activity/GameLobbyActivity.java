@@ -22,6 +22,7 @@ import com.example.emilyhales.tickettoride.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.PlayerListAdapter;
 import modelclasses.Player;
 import presenter.GameLobbyPresenter;
 import presenter.IGameLobbyPresenter;
@@ -68,43 +69,6 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
         presenter.getGameLobbyInfo();
     }
 
-    public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
-        private List<Player> players;
-        PlayerListAdapter(List<Player> players) {
-            this.players = players;
-        }
-        @Override
-        @NonNull
-        public PlayerListAdapter.PlayerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(GameLobbyActivity.this);
-            return new PlayerHolder(inflater.inflate(R.layout.item_player_list, parent, false));
-        }
-        @Override
-        public void onBindViewHolder(@NonNull PlayerListAdapter.PlayerHolder holder, int position) {
-            String playerName = players.get(position).getUsername();
-            String playerColor = players.get(position).getPlayerColor().name();
-            holder.bind(playerName, playerColor);
-        }
-
-        @Override
-        public int getItemCount() {
-            return players.size();
-        }
-        class PlayerHolder extends RecyclerView.ViewHolder {
-            private TextView playerName;
-            private TextView playerColor;
-            PlayerHolder(View view) {
-                super(view);
-                playerName = view.findViewById(R.id.itemName);
-                playerColor = view.findViewById(R.id.itemColor);
-            }
-            void bind(String name, String color) {
-                playerName.setText(name);
-                playerColor.setText(color);
-            }
-        }
-    }
-
     @Override
     public void updateAvailableColors(final List<String> colors) {
         runOnUiThread(new Runnable() {
@@ -123,7 +87,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                PlayerListAdapter playerListAdapter = new PlayerListAdapter(players);
+                PlayerListAdapter playerListAdapter = new PlayerListAdapter(players,GameLobbyActivity.this, GameLobbyActivity.this);
                 playerList.setAdapter(playerListAdapter);
             }
         });

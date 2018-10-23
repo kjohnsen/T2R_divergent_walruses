@@ -8,4 +8,5 @@ public interface IGameListView {
     void populateGameList(List<GameInfo> games);
     void setCreateGameEnabled(boolean enabled);
     void goToGameLobby();
+    void joinGame(String name);
 }

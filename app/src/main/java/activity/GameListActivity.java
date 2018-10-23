@@ -24,6 +24,7 @@ import com.example.emilyhales.tickettoride.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.GameListAdapter;
 import clientserver.ServerPoller;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -41,6 +42,12 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
     private boolean doneLoading = false;
 
     @Override
+    public void joinGame(String name) {
+        JoinGameTask j = new JoinGameTask();
+        j.execute(name);
+    }
+
+    @Override
     public void populateGameList(final List<GameInfo> games) {
         runOnUiThread(new Runnable() {
             @Override
@@ -49,7 +56,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
                     gameList = findViewById(R.id.gameList);
                     RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(GameListActivity.this);
                     gameList.setLayoutManager(gameListManager);
-                    gameListAdapter = new GameListAdapter(games);
+                    gameListAdapter = new GameListAdapter(games, GameListActivity.this, GameListActivity.this);
                     gameList.setAdapter(gameListAdapter);
                 }
             }
@@ -111,64 +118,6 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
         //initialize the view with current info
         doneLoading = true;
         presenter.getGameListInfo();
-    }
-
-    public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
-        private List<GameInfo> games;
-        GameListAdapter(List<GameInfo> games) {
-            this.games = games;
-        }
-        @Override
-        @NonNull
-        public GameListAdapter.GameHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(GameListActivity.this);
-            return new GameHolder(inflater.inflate(R.layout.item_game_list, parent, false));
-        }
-        @Override
-        public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
-            String gameName = games.get(position).getGameName().getName();
-            StringBuilder players = new StringBuilder();
-            List<Player> playerList = games.get(position).getPlayers();
-            for (int i = 0; i < playerList.size(); i++) {
-                players.append(playerList.get(i).getUsername());
-                if (i < playerList.size() - 1) {
-                    players.append(", ");
-                }
-            }
-            int spotsLeft = games.get(position).getNumPlayers() - playerList.size();
-            holder.bind(gameName, players.toString(), Integer.toString(spotsLeft));
-        }
-
-        @Override
-        public int getItemCount() {
-            return games.size();
-        }
-        class GameHolder extends RecyclerView.ViewHolder {
-            private TextView gameName;
-            private TextView gamePlayers;
-            private TextView numSpots;
-            GameHolder(View view) {
-                super(view);
-                gameName = view.findViewById(R.id.itemName);
-                gamePlayers = view.findViewById(R.id.itemPlayers);
-                numSpots = view.findViewById(R.id.itemNum);
-                //if someone taps the game, it should go to GameLobby
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        JoinGameTask j = new JoinGameTask();
-                        j.execute(gameName.getText().toString());
-                    }
-                });
-            }
-            void bind(String name, String players, String spotsLeft) {
-                if (gameName != null) {
-                    gameName.setText(name);
-                    gamePlayers.setText(players);
-                    numSpots.setText(spotsLeft);
-                }
-            }
-        }
     }
 
     public class CreateGameTask extends AsyncTask<Integer, Void, String> {
