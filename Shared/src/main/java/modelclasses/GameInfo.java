@@ -10,13 +10,13 @@ import java.util.Arrays;
 
 public class GameInfo implements Serializable {
     private GameName gameName;
-    private ArrayList<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private int numPlayers;
     private List<TrainCard> trainCardDeck = new ArrayList<>();
     private List<DestinationCard> destCardDeck = new ArrayList<>();
     private List<TrainCard> faceUpCards = new ArrayList<>();
 
-    public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
+    public GameInfo(GameName gameName, List<Player> players, int numPlayers) {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
@@ -50,7 +50,7 @@ public class GameInfo implements Serializable {
         return gameName;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -63,7 +63,7 @@ public class GameInfo implements Serializable {
         return null;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

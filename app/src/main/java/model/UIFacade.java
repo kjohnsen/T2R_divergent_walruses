@@ -37,7 +37,7 @@ public class UIFacade {
         return ClientModel.getInstance().getCurrentGame();
     }
 
-    public ArrayList<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
+    public List<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
 
     public IServer getServerProxy() {
         return serverProxy;
@@ -45,6 +45,10 @@ public class UIFacade {
 
     public void setServerProxy(IServer serverProxy) {
         this.serverProxy = serverProxy;
+    }
+
+    public List<DestinationCard> getStartDestinationCards() {
+        return ClientModel.getInstance().getPlayerTickets();
     }
 
     //This returns the error message if there is one, or null if there isn't
@@ -81,7 +85,7 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
+    public String selectDestinationCards(List<DestinationCard> rejected) {
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
@@ -121,7 +125,7 @@ public class UIFacade {
 
     public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
 
-    public ArrayList<GameInfo> getGameList() {
+    public List<GameInfo> getGameList() {
         return ClientModel.getInstance().getGameList();
     }
 

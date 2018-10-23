@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.Player;
 import presenter.GameLobbyPresenter;
@@ -68,8 +69,8 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
     }
 
     public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerHolder> {
-        private ArrayList<Player> players;
-        PlayerListAdapter(ArrayList<Player> players) {
+        private List<Player> players;
+        PlayerListAdapter(List<Player> players) {
             this.players = players;
         }
         @Override
@@ -105,7 +106,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
     }
 
     @Override
-    public void updateAvailableColors(final ArrayList<String> colors) {
+    public void updateAvailableColors(final List<String> colors) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -118,7 +119,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
     }
 
     @Override
-    public void updatePlayerList(final ArrayList<Player> players) {
+    public void updatePlayerList(final List<Player> players) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

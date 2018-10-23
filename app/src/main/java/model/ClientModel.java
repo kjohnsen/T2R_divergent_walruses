@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import modelclasses.ChatMessage;
@@ -17,12 +18,12 @@ it manually */
 public class ClientModel extends Observable {
     private User currentUser;
 
-    private ArrayList<GameInfo> gameList = new ArrayList<>();
+    private List<GameInfo> gameList = new ArrayList<>();
     private GameInfo currentGame;
-    private ArrayList<TrainCard> faceupCards;
-    private ArrayList<TrainCard> playerTrainCards;
-    private ArrayList<DestinationCard> playerTickets;
-    private ArrayList<ChatMessage> chatMessages;
+    private List<TrainCard> faceupCards;
+    private List<TrainCard> playerTrainCards;
+    private List<DestinationCard> playerTickets;
+    private List<ChatMessage> chatMessages;
     private boolean startGame;
 
     private static final ClientModel ourInstance = new ClientModel();
@@ -51,12 +52,14 @@ public class ClientModel extends Observable {
         this.notifyObservers(faceupCards);
     }
 
-    public void setFaceupCards(ArrayList<TrainCard> cards) {
+    public void setFaceupCards(List<TrainCard> cards) {
         faceupCards = cards;
         this.notifyObservers(faceupCards);
     }
 
-    public ArrayList<TrainCard> getFaceupCards() {
+    public List<DestinationCard> getPlayerTickets() { return playerTickets; }
+
+    public List<TrainCard> getFaceupCards() {
         return faceupCards;
     }
 
@@ -67,7 +70,7 @@ public class ClientModel extends Observable {
         this.notifyObservers();
     }
 
-    public ArrayList<ChatMessage> getChatMessages() {
+    public List<ChatMessage> getChatMessages() {
         return chatMessages;
     }
 
@@ -77,7 +80,7 @@ public class ClientModel extends Observable {
         this.currentUser = currentUser;
     }
 
-    public void setGameList(ArrayList<GameInfo> gameList) {
+    public void setGameList(List<GameInfo> gameList) {
         this.gameList = gameList;
         this.notifyObservers(gameList);
     }
@@ -87,7 +90,7 @@ public class ClientModel extends Observable {
         this.notifyObservers(currentGame);
     }
 
-    public void setCurrentGamePlayers(ArrayList<Player> players) {
+    public void setCurrentGamePlayers(List<Player> players) {
         currentGame.setPlayers(players);
         this.notifyObservers(players);
     }
@@ -98,7 +101,7 @@ public class ClientModel extends Observable {
 
     public void setNotGameStart() { startGame = false; }
 
-    public ArrayList<GameInfo> getGameList() {
+    public List<GameInfo> getGameList() {
         return gameList;
     }
     public GameInfo getGame(GameName gameName) {

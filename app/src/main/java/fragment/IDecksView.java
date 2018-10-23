@@ -1,11 +1,10 @@
 package fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
 
 public interface IDecksView {
-    void replaceTrainCards(ArrayList<TrainCard> cards);
+    void replaceTrainCards(List<TrainCard> cards);
     void drawDestinationCards();
 }

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import clientserver.ServerPoller;
 import modelclasses.GameInfo;
@@ -40,7 +41,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
     private boolean doneLoading = false;
 
     @Override
-    public void populateGameList(final ArrayList<GameInfo> games) {
+    public void populateGameList(final List<GameInfo> games) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -113,8 +114,8 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
     }
 
     public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameHolder> {
-        private ArrayList<GameInfo> games;
-        GameListAdapter(ArrayList<GameInfo> games) {
+        private List<GameInfo> games;
+        GameListAdapter(List<GameInfo> games) {
             this.games = games;
         }
         @Override
@@ -127,7 +128,7 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
         public void onBindViewHolder(@NonNull GameListAdapter.GameHolder holder, int position) {
             String gameName = games.get(position).getGameName().getName();
             StringBuilder players = new StringBuilder();
-            ArrayList<Player> playerList = games.get(position).getPlayers();
+            List<Player> playerList = games.get(position).getPlayers();
             for (int i = 0; i < playerList.size(); i++) {
                 players.append(playerList.get(i).getUsername());
                 if (i < playerList.size() - 1) {
