@@ -23,12 +23,9 @@ public class ChatPresenter implements IChatPresenter, Observer {
     }
 
     @Override
-    public void sendMessageButtonWasPressed(String chatMessage) {
+    public String sendMessageButtonWasPressed(String chatMessage) {
         ChatMessage message = new ChatMessage(UIFacade.getInstance().getUsername(), chatMessage);
-        String errorMessage = UIFacade.getInstance().sendChatMessage(message);
-        if(errorMessage != null) {
-            chatView.showError(errorMessage);
-        }
+        return UIFacade.getInstance().sendChatMessage(message);
     }
 
     @Override

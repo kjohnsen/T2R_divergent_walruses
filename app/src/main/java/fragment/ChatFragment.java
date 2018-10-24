@@ -1,6 +1,7 @@
 package fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -68,7 +69,8 @@ public class ChatFragment extends Fragment implements IChatView {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.sendMessageButtonWasPressed(chatEditText.getText().toString());
+                SendChatMessageTask sendChatMessageTask = new SendChatMessageTask();
+                sendChatMessageTask.execute(chatEditText.getText().toString());
             }
         });
 
@@ -91,6 +93,21 @@ public class ChatFragment extends Fragment implements IChatView {
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(this.getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private class SendChatMessageTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return presenter.sendMessageButtonWasPressed(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null) {
+                showError(s);
+            }
+        }
     }
 
     private class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
