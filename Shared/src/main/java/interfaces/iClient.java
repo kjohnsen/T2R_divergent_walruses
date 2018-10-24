@@ -3,6 +3,7 @@ package interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -19,6 +20,7 @@ public interface iClient {
     void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
     void joinGame(Player player, GameName gameName);
     void createGame(GameInfo gameInfo);
-    void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards);
+    void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards);
     void claimColor(String username, PlayerColor playerColor);
+    void addChatMessage(ChatMessage message);
 }

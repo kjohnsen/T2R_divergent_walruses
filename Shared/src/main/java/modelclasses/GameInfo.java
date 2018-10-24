@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Arrays;
 
 public class GameInfo implements Serializable {
     private GameName gameName;
@@ -13,11 +14,15 @@ public class GameInfo implements Serializable {
     private int numPlayers;
     private List<TrainCard> trainCardDeck = new ArrayList<>();
     private List<DestinationCard> destCardDeck = new ArrayList<>();
+    private List<TrainCard> faceUpCards = new ArrayList<>();
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
+        initializeTrainCardDeck();
+        setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
+        initializeFaceUpCards();
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -106,37 +111,11 @@ public class GameInfo implements Serializable {
         }
     }
 
-    public void initializeDestCardDeck() {
-        destCardDeck.add(new DestinationCard(4, Atlas.DENVER, Atlas.EL_PASO));
-        destCardDeck.add(new DestinationCard(5, Atlas.KANSAS_CITY, Atlas.HOUSTON));
-        destCardDeck.add(new DestinationCard(6, Atlas.NEW_YORK, Atlas.ATLANTA));
-        destCardDeck.add(new DestinationCard(7, Atlas.CHICAGO, Atlas.NEW_ORLEANS));
-        destCardDeck.add(new DestinationCard(7, Atlas.CALGARY, Atlas.NEW_YORK));
-        destCardDeck.add(new DestinationCard(8, Atlas.HELENA, Atlas.LOS_ANGELES));
-        destCardDeck.add(new DestinationCard(8, Atlas.DULUTH, Atlas.HOUSTON));
-        destCardDeck.add(new DestinationCard(8, Atlas.SAULT_ST_MARIE, Atlas.NASHVILLE));
-        destCardDeck.add(new DestinationCard(9, Atlas.MONTREAL, Atlas.ATLANTA));
-        destCardDeck.add(new DestinationCard(9, Atlas.SAULT_ST_MARIE, Atlas.OK_CITY));
-        destCardDeck.add(new DestinationCard(9, Atlas.SEATTLE, Atlas.LOS_ANGELES));
-        destCardDeck.add(new DestinationCard(9, Atlas.CHICAGO, Atlas.SANTA_FE));
-        destCardDeck.add(new DestinationCard(10, Atlas.DULUTH, Atlas.EL_PASO));
-        destCardDeck.add(new DestinationCard(10, Atlas.TORONTO, Atlas.MIAMI));
-        destCardDeck.add(new DestinationCard(11, Atlas.PORTLAND, Atlas.PHOENIX));
-        destCardDeck.add(new DestinationCard(11, Atlas.DALLAS, Atlas.NEW_YORK));
-        destCardDeck.add(new DestinationCard(11, Atlas.DENVER, Atlas.PITTSBURGH));
-        destCardDeck.add(new DestinationCard(11, Atlas.WINNIPEG, Atlas.LITTLE_ROCK));
-        destCardDeck.add(new DestinationCard(12, Atlas.WINNIPEG, Atlas.HOUSTON));
-        destCardDeck.add(new DestinationCard(12, Atlas.BOSTON, Atlas.MIAMI));
-        destCardDeck.add(new DestinationCard(13, Atlas.VANCOUVER, Atlas.SANTA_FE));
-        destCardDeck.add(new DestinationCard(13, Atlas.CALGARY, Atlas.PHOENIX));
-        destCardDeck.add(new DestinationCard(13, Atlas.MONTREAL, Atlas.NEW_ORLEANS));
-        destCardDeck.add(new DestinationCard(16, Atlas.LOS_ANGELES, Atlas.CHICAGO));
-        destCardDeck.add(new DestinationCard(17, Atlas.SAN_FRANCISCO, Atlas.ATLANTA));
-        destCardDeck.add(new DestinationCard(17, Atlas.PORTLAND, Atlas.NASHVILLE));
-        destCardDeck.add(new DestinationCard(20, Atlas.VANCOUVER, Atlas.MONTREAL));
-        destCardDeck.add(new DestinationCard(20, Atlas.LOS_ANGELES, Atlas.MIAMI));
-        destCardDeck.add(new DestinationCard(21, Atlas.LOS_ANGELES, Atlas.NEW_YORK));
-        destCardDeck.add(new DestinationCard(22, Atlas.SEATTLE, Atlas.NEW_YORK));
+    public void initializeFaceUpCards() {
+        for (int i = 0; i < 5; i++) {
+            TrainCard card = drawTrainCard();
+            faceUpCards.add(card);
+        }
     }
 
     public TrainCard drawTrainCard() {
@@ -165,6 +144,10 @@ public class GameInfo implements Serializable {
             return drawnCard;
         }
         return null;
+    }
+
+    public void putDestCardInDeck(DestinationCard card) {
+        destCardDeck.add(card);
     }
 
     public ArrayList<TrainCard> getPlayerInitialTrainCards() {
@@ -199,6 +182,13 @@ public class GameInfo implements Serializable {
         this.destCardDeck = destCardDeck;
     }
 
+    public List<TrainCard> getFaceUpCards() {
+        return faceUpCards;
+    }
+
+    public void setFaceUpCards(List<TrainCard> faceUpCards) {
+        this.faceUpCards = faceUpCards;
+    }
 
     @Override
     public boolean equals(Object o) {

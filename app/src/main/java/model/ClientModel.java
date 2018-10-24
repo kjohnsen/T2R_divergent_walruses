@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -21,6 +22,8 @@ public class ClientModel extends Observable {
     private ArrayList<TrainCard> faceupCards;
     private ArrayList<TrainCard> playerTrainCards;
     private ArrayList<DestinationCard> playerTickets;
+    private ArrayList<ChatMessage> chatMessages;
+    private boolean startGame;
 
     private static final ClientModel ourInstance = new ClientModel();
 
@@ -32,6 +35,8 @@ public class ClientModel extends Observable {
         faceupCards = new ArrayList<>();
         playerTrainCards = new ArrayList<>();
         playerTickets = new ArrayList<>();
+        chatMessages = new ArrayList<>();
+        startGame = true;
     }
 
     public void reset() {
@@ -55,11 +60,15 @@ public class ClientModel extends Observable {
         return faceupCards;
     }
 
-    public boolean firstTickets() { return playerTickets.isEmpty(); }
+    public boolean isGameStart() { return startGame; }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         this.notifyObservers();
+    }
+
+    public ArrayList<ChatMessage> getChatMessages() {
+        return chatMessages;
     }
 
     /* this is so the model won't notify the GameListPresenter or the GameLobbyPresenter during unit
@@ -86,6 +95,8 @@ public class ClientModel extends Observable {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public void setNotGameStart() { startGame = false; }
 
     public ArrayList<GameInfo> getGameList() {
         return gameList;

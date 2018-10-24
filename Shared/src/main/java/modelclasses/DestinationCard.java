@@ -1,6 +1,8 @@
 package modelclasses;
 
-public class DestinationCard {
+import java.io.Serializable;
+
+public class DestinationCard implements Serializable {
     private int points;
     private City cities[];
 

@@ -19,6 +19,9 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
+    public boolean isGameStart() { return UIFacade.getInstance().isGameStart(); }
+
+    @Override
     public void getFaceupCards() {
         ArrayList<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
         view.replaceTrainCards(cards);
