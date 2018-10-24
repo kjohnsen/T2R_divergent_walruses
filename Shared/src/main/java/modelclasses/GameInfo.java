@@ -146,6 +146,10 @@ public class GameInfo implements Serializable {
         return null;
     }
 
+    public void putDestCardInDeck(DestinationCard card) {
+        destCardDeck.add(card);
+    }
+
     public ArrayList<TrainCard> getPlayerInitialTrainCards() {
         ArrayList<TrainCard> cards = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
