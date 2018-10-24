@@ -2,6 +2,7 @@ package presenter;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import activity.IGameListView;
 import modelclasses.GameInfo;
@@ -9,13 +10,13 @@ import modelclasses.GameInfo;
 public class GameListMock implements IGameListView {
 
     private boolean createGameEnabled = false;
-    private ArrayList<GameInfo> games;
+    private List<GameInfo> games;
 
     public boolean gameEnabled() {
         return createGameEnabled;
     }
 
-    public ArrayList<GameInfo> getGames() { return games; }
+    public List<GameInfo> getGames() { return games; }
 
     public void reset() {
         createGameEnabled = false;
@@ -25,7 +26,7 @@ public class GameListMock implements IGameListView {
     }
 
     @Override
-    public void populateGameList(ArrayList<GameInfo> games) {
+    public void populateGameList(List<GameInfo> games) {
         this.games = games;
     }
 
@@ -36,6 +37,11 @@ public class GameListMock implements IGameListView {
 
     @Override
     public void goToGameLobby() {
+        //just here for mocking purposes
+    }
+
+    @Override
+    public void joinGame(String name) {
         //just here for mocking purposes
     }
 }

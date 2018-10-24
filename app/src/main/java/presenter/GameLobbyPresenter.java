@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -54,7 +55,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                     players.add(player);
                 }
                 String username = UIFacade.getInstance().getUsername();
-                ArrayList<String> colors = PlayerColor.getAvailableColors(players, username);
+                List<String> colors = PlayerColor.getAvailableColors(players, username);
                 view.updatePlayerList(players);
                 view.updateAvailableColors(colors);
                 view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());

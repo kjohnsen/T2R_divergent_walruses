@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
@@ -27,7 +28,7 @@ public interface IServer {
 
     Results drawDestinationCards(GameName gameName, String authToken);
 
-    Results selectDestinationCards(ArrayList<DestinationCard> rejected, GameName gameName, String authToken);
+    Results selectDestinationCards(List<DestinationCard> rejected, GameName gameName, String authToken);
 
     Results getCommands(String authToken);
 

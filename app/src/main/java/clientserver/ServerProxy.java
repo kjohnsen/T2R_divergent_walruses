@@ -2,6 +2,7 @@ package clientserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import data.Command;
 import interfaces.IServer;
@@ -39,7 +40,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results selectDestinationCards(ArrayList<DestinationCard> rejected, GameName gameName, String authToken) {
+    public Results selectDestinationCards(List<DestinationCard> rejected, GameName gameName, String authToken) {
         Command command = new Command("server.ServerFacade", "_selectDestinationCards", Arrays.asList(new Object[] {rejected, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }

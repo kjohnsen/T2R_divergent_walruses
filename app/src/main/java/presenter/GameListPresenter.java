@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +26,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
             view.setCreateGameEnabled(false);
             return;
         }
-        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        List<GameInfo> games = UIFacade.getInstance().getGameList();
         for (GameInfo g : games) {
             if (g.getGameName().getName().equals(gameName)) {
                 view.setCreateGameEnabled(false);
@@ -53,7 +54,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
 
     @Override
     public void getGameListInfo() {
-        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        List<GameInfo> games = UIFacade.getInstance().getGameList();
         view.populateGameList(games);
     }
 
