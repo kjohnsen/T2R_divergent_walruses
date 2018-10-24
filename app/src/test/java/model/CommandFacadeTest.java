@@ -73,18 +73,6 @@ public class CommandFacadeTest {
     }
 
     @Test
-    public void startGame() {
-        GameName gameName = new GameName("game");
-        ArrayList<GameInfo> gameList = new ArrayList<>();
-        GameInfo gameInfo = new GameInfo(gameName, new ArrayList<Player>(), 5);
-        gameList.add(gameInfo);
-        ClientModel.getInstance().setGameList(gameList);
-
-        CommandFacade.getInstance().startGame(gameName, null, null, null); // TODO: make this test more robust
-        assertEquals(ClientModel.getInstance().getCurrentGame(), gameInfo);
-    }
-
-    @Test
     public void claimColor() {
         Player player = new Player("bobby");
         GameName gameName = new GameName("game");
