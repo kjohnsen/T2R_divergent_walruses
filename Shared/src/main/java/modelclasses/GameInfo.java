@@ -105,6 +105,10 @@ public class GameInfo implements Serializable {
         return null;
     }
 
+    public void putTrainCardInDeck(TrainCard card) {
+        trainCardDeck.add(card);
+    }
+
     public DestinationCard drawDestCard() {
         int deckSize = destCardDeck.size();
         if (deckSize > 0) {
@@ -117,6 +121,10 @@ public class GameInfo implements Serializable {
             return drawnCard;
         }
         return null;
+    }
+
+    public void putDestCardInDeck(DestinationCard card) {
+        destCardDeck.add(card);
     }
 
     public ArrayList<TrainCard> getPlayerInitialTrainCards() {
