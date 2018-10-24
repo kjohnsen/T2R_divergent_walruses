@@ -94,6 +94,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         }
 
 
+
         return v;
     }
 

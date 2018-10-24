@@ -3,6 +3,7 @@ package modelclasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player implements Serializable {
@@ -31,11 +32,11 @@ public class Player implements Serializable {
         return numberOfTrains;
     }
 
-    public Map<TrainCardColor,Integer> getTrainCardQuantities(){
+    public static Map<TrainCardColor,Integer> getTrainCardQuantities(List<TrainCard> trainCardList){
         Map<TrainCardColor, Integer> trainCard_amount = new HashMap<>();
 
         int red = 0, orange = 0, yellow = 0, green = 0, blue = 0, purple = 0, black = 0, white = 0, wild = 0;
-        for(TrainCard card: trainCards){
+        for(TrainCard card: trainCardList){
             switch(card.getColor()){
                 case RED:
                     red++;

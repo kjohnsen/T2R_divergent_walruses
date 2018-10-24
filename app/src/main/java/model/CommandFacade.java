@@ -108,6 +108,8 @@ public class CommandFacade implements iClient {
     public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         ClientModel.getInstance().setCurrentGame(gameInfo);
+        ClientModel.getInstance().setPlayerTickets(destCards);
+        ClientModel.getInstance().setPlayerTrainCards(trainCards);
         // TODO: update ClientModel with player's initial trainCards and destCards, and the faceup cards
     }
 
