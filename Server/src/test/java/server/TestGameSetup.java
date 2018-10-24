@@ -63,7 +63,7 @@ public class TestGameSetup {
         assertTrue(results.getSuccess());
 
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
-        assertEquals(98, game.getTrainCardDeck().size());
+        assertEquals(93, game.getTrainCardDeck().size());
         assertEquals(21, game.getDestCardDeck().size());
 
         // check player hands
