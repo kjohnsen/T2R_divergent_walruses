@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import data.Command;
 import interfaces.IServer;
@@ -19,7 +20,7 @@ import results.Results;
 public class MockServerProxy implements IServer {
 
     @Override
-    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken) {
+    public Results selectDestinationCards(List<DestinationCard> tickets, GameName gameName, String authToken) {
         //implement this if you want to
         return null;
     }
