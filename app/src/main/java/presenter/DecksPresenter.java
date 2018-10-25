@@ -25,7 +25,9 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     @Override
     public void getFaceupCards() {
         List<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
-        view.replaceTrainCards(cards);
+        if (!cards.isEmpty()) {
+            view.replaceTrainCards(cards);
+        }
     }
 
     @Override

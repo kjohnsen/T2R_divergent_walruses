@@ -33,7 +33,7 @@ public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.Ti
     @NonNull
     public TicketListAdapter.TicketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        return new TicketHolder(inflater.inflate(R.layout.item_player_list, parent, false));
+        return new TicketHolder(inflater.inflate(R.layout.item_ticket_list, parent, false));
     }
     @Override
     public void onBindViewHolder(@NonNull TicketListAdapter.TicketHolder holder, int position) {

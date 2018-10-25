@@ -47,6 +47,8 @@ public class UIFacade {
         this.serverProxy = serverProxy;
     }
 
+    public void setGameStart(boolean start) { ClientModel.getInstance().setGameStart(start); }
+
     public List<DestinationCard> getStartDestinationCards() {
         return ClientModel.getInstance().getPlayerTickets();
     }
@@ -85,7 +87,7 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(List<DestinationCard> rejected) {
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 

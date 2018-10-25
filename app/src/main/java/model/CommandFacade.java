@@ -34,7 +34,7 @@ public class CommandFacade implements iClient {
     public static void _displayDestinationCards(List<DestinationCard> tickets) {
         ourInstance.displayDestinationCards(tickets);
     }
-    public static void _registerUser(User user, String authToken, List<GameInfo> gameInfos) {
+    public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.registerUser(user, authToken, gameInfos);
     }
     public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -46,10 +46,13 @@ public class CommandFacade implements iClient {
     public static void _joinGame(Player player, GameName gameName) {
         ourInstance.joinGame(player, gameName);
     }
+    public static void _joinGame(GameInfo gameInfo) {
+        ourInstance.joinGame(null, gameInfo.getGameName());
+    }
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+    public static void _startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
         ourInstance.startGame(gameName, trainCards, destCards, faceUpCards);
     }
 
@@ -88,11 +91,11 @@ public class CommandFacade implements iClient {
     @Override
     public void joinGame(Player player, GameName gameName) {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
-        if(!gameInfo.getPlayers().contains(player)) {
+        if(player != null && !gameInfo.getPlayers().contains(player)) {
             gameInfo.addPlayer(player);
             ClientModel.getInstance().notifyObservers(gameInfo.getPlayers());
         }
-        if (player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+        if (player == null || player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
             ClientModel.getInstance().setCurrentGame(gameInfo);
         }
     }
@@ -106,7 +109,9 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+        ClientModel.getInstance().setPlayerTickets(destCards);
         ClientModel.getInstance().setFaceupCards(faceUpCards);
+        ClientModel.getInstance().setPlayerTrainCards(trainCards);
     }
 
     @Override
