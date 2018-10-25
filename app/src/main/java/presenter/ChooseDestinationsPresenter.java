@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,12 +13,12 @@ import modelclasses.DestinationCard;
 public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter, Observer {
 
     private IChooseDestinationsView view;
-    private ArrayList<DestinationCard> selections;
+    private List<DestinationCard> rejections;
 
     public ChooseDestinationsPresenter(IChooseDestinationsView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
-        selections = new ArrayList<>();
+        rejections = new ArrayList<>();
     }
 
     @Override
@@ -28,24 +29,34 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     @Override
     public void setCardSelected(DestinationCard ticket, boolean selected) {
         if (selected) {
-            selections.add(ticket);
+            rejections.remove(ticket);
         } else {
-            selections.remove(ticket);
+            rejections.add(ticket);
         }
         checkButtonEnable();
     }
 
     private void checkButtonEnable() {
-        if (UIFacade.getInstance().firstTickets()) {
-            view.setSelectEnabled(selections.size() > 1);
+        if (UIFacade.getInstance().isGameStart()) {
+            view.setSelectEnabled(rejections.size() < 1);
         } else {
-            view.setSelectEnabled(selections.size() > 0);
+            view.setSelectEnabled(rejections.size() < 2);
         }
     }
 
     @Override
     public String selectCards() {
-        return UIFacade.getInstance().selectDestinationCards(selections);
+        return UIFacade.getInstance().selectDestinationCards(rejections);
+    }
+
+    @Override
+    public boolean isGameStart() {
+        return UIFacade.getInstance().isGameStart();
+    }
+
+    @Override
+    public List<DestinationCard> getPlayerCards() {
+        return UIFacade.getInstance().getStartDestinationCards();
     }
 
     @Override
@@ -55,10 +66,10 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof ArrayList) {
-            ArrayList<Object> array = (ArrayList<Object>) o;
+        if (o instanceof List) {
+            List<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof DestinationCard) {
-                ArrayList<DestinationCard> tickets = new ArrayList<>();
+                List<DestinationCard> tickets = new ArrayList<>();
                 for (Object object : array) {
                     tickets.add((DestinationCard) object);
                 }

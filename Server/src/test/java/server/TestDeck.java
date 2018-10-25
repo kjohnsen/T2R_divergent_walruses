@@ -24,10 +24,10 @@ public class TestDeck {
     public void drawRandomTrainCards() {
         GameName gameName = new GameName("new game");
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
-        assertEquals(110, game.getTrainCardDeck().size());
+        assertEquals(105, game.getTrainCardDeck().size());
 
         TrainCard drawnCard = game.drawTrainCard();
-        assertEquals(109, game.getTrainCardDeck().size());
+        assertEquals(104, game.getTrainCardDeck().size());
 
         for (int i = 0; i < 109; i++) {
             game.drawTrainCard();

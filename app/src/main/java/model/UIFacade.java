@@ -37,7 +37,7 @@ public class UIFacade {
         return ClientModel.getInstance().getCurrentGame();
     }
 
-    public ArrayList<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
+    public List<TrainCard> getFaceupCards() { return ClientModel.getInstance().getFaceupCards(); }
 
     public IServer getServerProxy() {
         return serverProxy;
@@ -47,7 +47,9 @@ public class UIFacade {
         this.serverProxy = serverProxy;
     }
 
-    public boolean firstTickets() { return ClientModel.getInstance().firstTickets(); }
+    public List<DestinationCard> getStartDestinationCards() {
+        return ClientModel.getInstance().getPlayerTickets();
+    }
 
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
@@ -65,6 +67,12 @@ public class UIFacade {
         return null;
     }
 
+    public boolean isGameStart() { return ClientModel.getInstance().isGameStart(); }
+
+    public void setNotGameStart() {
+        ClientModel.getInstance().setNotGameStart();
+    }
+
     public String selectTrainCard(int index) {
         return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
     }
@@ -77,8 +85,8 @@ public class UIFacade {
         return processResults(serverProxy.drawDestinationCards(getCurrentGame().getGameName(), authToken));
     }
 
-    public String selectDestinationCards(ArrayList<DestinationCard> tickets) {
-        return processResults(serverProxy.selectDestinationCards(tickets, getCurrentGame().getGameName(), authToken));
+    public String selectDestinationCards(List<DestinationCard> rejected) {
+        return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {
@@ -117,7 +125,7 @@ public class UIFacade {
 
     public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
 
-    public ArrayList<GameInfo> getGameList() {
+    public List<GameInfo> getGameList() {
         return ClientModel.getInstance().getGameList();
     }
 

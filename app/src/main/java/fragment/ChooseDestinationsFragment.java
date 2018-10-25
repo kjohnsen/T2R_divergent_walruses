@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import adapter.TicketListAdapter;
 import modelclasses.City;
 import modelclasses.DestinationCard;
 import presenter.ChooseDestinationsPresenter;
@@ -43,6 +45,9 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_choose_destinations, new ConstraintLayout(getActivity()), false);
         presenter = new ChooseDestinationsPresenter(this);
+        if (presenter.isGameStart()) {
+            displayTickets(presenter.getPlayerCards());
+        }
         ticketList = view.findViewById(R.id.ticketList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(ChooseDestinationsFragment.this.getActivity());
         ticketList.setLayoutManager(gameListManager);
@@ -74,55 +79,9 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
-    public void displayTickets(ArrayList<DestinationCard> cards) {
-        TicketListAdapter adapter = new TicketListAdapter(cards);
+    public void displayTickets(List<DestinationCard> cards) {
+        TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
         ticketList.setAdapter(adapter);
-    }
-
-    public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.TicketHolder> {
-        private ArrayList<DestinationCard> tickets;
-        TicketListAdapter(ArrayList<DestinationCard> tickets) {
-            this.tickets = tickets;
-        }
-        @Override
-        @NonNull
-        public TicketListAdapter.TicketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(ChooseDestinationsFragment.this.getActivity());
-            return new TicketHolder(inflater.inflate(R.layout.item_player_list, parent, false));
-        }
-        @Override
-        public void onBindViewHolder(@NonNull TicketListAdapter.TicketHolder holder, int position) {
-            holder.bind(tickets.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return tickets.size();
-        }
-        class TicketHolder extends RecyclerView.ViewHolder {
-            private TextView ticketDesc;
-            private CheckBox ticketCheck;
-            private DestinationCard ticket;
-            TicketHolder(View view) {
-                super(view);
-                ticketDesc = view.findViewById(R.id.itemDesc);
-                ticketCheck = view.findViewById(R.id.itemCheck);
-                ticketCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        presenter.setCardSelected(ticket, b);
-                    }
-                });
-            }
-            void bind(DestinationCard card) {
-                ticket = card;
-                StringBuilder description = new StringBuilder();
-                City cities[] = card.getCities();
-                int points = card.getPoints();
-                description.append(cities[0].getName()).append(" to ").append(cities[1].getName()).append(", ").append(points).append(" points");
-                ticketDesc.setText(description);
-            }
-        }
     }
 
     public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {

@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,8 +20,11 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
+    public boolean isGameStart() { return UIFacade.getInstance().isGameStart(); }
+
+    @Override
     public void getFaceupCards() {
-        ArrayList<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
+        List<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
         view.replaceTrainCards(cards);
     }
 

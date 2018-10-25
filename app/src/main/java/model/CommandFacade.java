@@ -31,10 +31,10 @@ public class CommandFacade implements iClient {
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
-    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets) {
+    public static void _displayDestinationCards(List<DestinationCard> tickets) {
         ourInstance.displayDestinationCards(tickets);
     }
-    public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+    public static void _registerUser(User user, String authToken, List<GameInfo> gameInfos) {
         ourInstance.registerUser(user, authToken, gameInfos);
     }
     public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -49,8 +49,8 @@ public class CommandFacade implements iClient {
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
-        ourInstance.startGame(gameName, trainCards, destCards);
+    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+        ourInstance.startGame(gameName, trainCards, destCards, faceUpCards);
     }
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
@@ -66,12 +66,12 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
+    public void displayDestinationCards(List<DestinationCard> tickets) {
         ClientModel.getInstance().notifyObservers(tickets);
     }
 
     @Override
-    public void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+    public void loginUser(User user, String authToken, List<GameInfo> gameInfos) {
         ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
@@ -79,7 +79,7 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
+    public void registerUser(User user, String authToken, List<GameInfo> gameInfos) {
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
         ClientModel.getInstance().setGameList(gameInfos);
@@ -99,16 +99,14 @@ public class CommandFacade implements iClient {
 
     @Override
     public void createGame(GameInfo gameInfo) {
-        ArrayList<GameInfo> gameList = ClientModel.getInstance().getGameList();
+        List<GameInfo> gameList = ClientModel.getInstance().getGameList();
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
     }
 
     @Override
-    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards) {
-        GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
-        ClientModel.getInstance().setCurrentGame(gameInfo);
-        // TODO: update ClientModel with player's initial trainCards and destCards
+    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+        ClientModel.getInstance().setFaceupCards(faceUpCards);
     }
 
     @Override

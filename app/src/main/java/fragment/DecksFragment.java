@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
@@ -36,9 +37,18 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onSwitchView();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_decks, container, false);
         presenter = new DecksPresenter(this);
+        if (presenter.isGameStart()) {
+            presenter.drawDestinationCards();
+        }
         cardZero = v.findViewById(R.id.cardZero);
         cardZero.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +109,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
-    public void replaceTrainCards(final ArrayList<TrainCard> cards) {
+    public void replaceTrainCards(final List<TrainCard> cards) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

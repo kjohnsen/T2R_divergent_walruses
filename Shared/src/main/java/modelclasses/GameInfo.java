@@ -10,17 +10,19 @@ import java.util.Arrays;
 
 public class GameInfo implements Serializable {
     private GameName gameName;
-    private ArrayList<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private int numPlayers;
     private List<TrainCard> trainCardDeck = new ArrayList<>();
     private List<DestinationCard> destCardDeck = new ArrayList<>();
+    private List<TrainCard> faceUpCards = new ArrayList<>();
 
-    public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
+    public GameInfo(GameName gameName, List<Player> players, int numPlayers) {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
+        initializeFaceUpCards();
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -48,7 +50,7 @@ public class GameInfo implements Serializable {
         return gameName;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -61,7 +63,7 @@ public class GameInfo implements Serializable {
         return null;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
@@ -109,6 +111,13 @@ public class GameInfo implements Serializable {
         }
     }
 
+    public void initializeFaceUpCards() {
+        for (int i = 0; i < 5; i++) {
+            TrainCard card = drawTrainCard();
+            faceUpCards.add(card);
+        }
+    }
+
     public TrainCard drawTrainCard() {
         int deckSize = trainCardDeck.size();
         if (deckSize > 0) {
@@ -135,6 +144,10 @@ public class GameInfo implements Serializable {
             return drawnCard;
         }
         return null;
+    }
+
+    public void putDestCardInDeck(DestinationCard card) {
+        destCardDeck.add(card);
     }
 
     public ArrayList<TrainCard> getPlayerInitialTrainCards() {
@@ -169,6 +182,13 @@ public class GameInfo implements Serializable {
         this.destCardDeck = destCardDeck;
     }
 
+    public List<TrainCard> getFaceUpCards() {
+        return faceUpCards;
+    }
+
+    public void setFaceUpCards(List<TrainCard> faceUpCards) {
+        this.faceUpCards = faceUpCards;
+    }
 
     @Override
     public boolean equals(Object o) {
