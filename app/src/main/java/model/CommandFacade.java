@@ -49,7 +49,7 @@ public class CommandFacade implements iClient {
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+    public static void _startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
         ourInstance.startGame(gameName, trainCards, destCards, faceUpCards);
     }
 
@@ -105,7 +105,7 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
+    public void startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
         ClientModel.getInstance().setFaceupCards(faceUpCards);
     }
 
