@@ -12,18 +12,19 @@ import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import modelclasses.City;
 import modelclasses.DestinationCard;
 import presenter.IChooseDestinationsPresenter;
 
 public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.TicketHolder> {
 
-    private ArrayList<DestinationCard> tickets;
+    private List<DestinationCard> tickets;
     private Context context;
     private IChooseDestinationsPresenter presenter;
 
-    public TicketListAdapter(ArrayList<DestinationCard> tickets, Context context, IChooseDestinationsPresenter presenter) {
+    public TicketListAdapter(List<DestinationCard> tickets, Context context, IChooseDestinationsPresenter presenter) {
         this.tickets = tickets;
         this.context = context;
         this.presenter = presenter;

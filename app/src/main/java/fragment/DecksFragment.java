@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
@@ -108,7 +109,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
-    public void replaceTrainCards(final ArrayList<TrainCard> cards) {
+    public void replaceTrainCards(final List<TrainCard> cards) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

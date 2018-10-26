@@ -21,8 +21,8 @@ public class ClientModel extends Observable {
     private ArrayList<GameInfo> gameList = new ArrayList<>();
     private GameInfo currentGame;
     private ArrayList<TrainCard> faceupCards;
-    private List<TrainCard> playerTrainCards;
-    private List<DestinationCard> playerTickets;
+    private ArrayList<TrainCard> playerTrainCards;
+    private ArrayList<DestinationCard> playerTickets;
     private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
 
@@ -57,19 +57,19 @@ public class ClientModel extends Observable {
         this.notifyObservers(faceupCards);
     }
 
-    public List<TrainCard> getPlayerTrainCards() {
+    public ArrayList<TrainCard> getPlayerTrainCards() {
         return playerTrainCards;
     }
 
-    public void setPlayerTrainCards(List<TrainCard> playerTrainCards) {
+    public void setPlayerTrainCards(ArrayList<TrainCard> playerTrainCards) {
         this.playerTrainCards = playerTrainCards;
     }
 
-    public List<DestinationCard> getPlayerTickets() {
+    public ArrayList<DestinationCard> getPlayerTickets() {
         return playerTickets;
     }
 
-    public void setPlayerTickets(List<DestinationCard> playerTickets) {
+    public void setPlayerTickets(ArrayList<DestinationCard> playerTickets) {
         this.playerTickets = playerTickets;
     }
 

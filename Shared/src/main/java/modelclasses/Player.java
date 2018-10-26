@@ -78,6 +78,10 @@ public class Player implements Serializable {
         destinationCards.add(destinationCard);
     }
 
+    public void removeDestCardFromHand(DestinationCard destinationCard) {
+        destinationCards.remove(destinationCard);
+    }
+
     public String getUsername() {
         return username;
     }

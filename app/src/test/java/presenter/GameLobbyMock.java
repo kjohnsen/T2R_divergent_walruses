@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import activity.IGameLobbyView;
 import modelclasses.Player;
@@ -9,18 +10,18 @@ import modelclasses.PlayerColor;
 public class GameLobbyMock implements IGameLobbyView {
 
     private boolean startGameEnabled = false;
-    private ArrayList<Player> players;
-    private ArrayList<String> colors;
+    private List<Player> players;
+    private List<String> colors;
 
     public boolean gameEnabled() {
         return startGameEnabled;
     }
 
-    public ArrayList<String> getColors() {
+    public List<String> getColors() {
         return colors;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -39,12 +40,12 @@ public class GameLobbyMock implements IGameLobbyView {
     }
 
     @Override
-    public void updateAvailableColors(ArrayList<String> colors) {
+    public void updateAvailableColors(List<String> colors) {
         this.colors = colors;
     }
 
     @Override
-    public void updatePlayerList(ArrayList<Player> players) {
+    public void updatePlayerList(List<Player> players) {
         this.players = players;
     }
 
