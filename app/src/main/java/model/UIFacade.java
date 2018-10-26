@@ -9,6 +9,7 @@ import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
+import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import results.Results;
@@ -118,6 +119,8 @@ public class UIFacade {
 
     public String sendChatMessage(ChatMessage chatMessage) {
         GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(chatMessage.getUsername());
+        chatMessage.setPlayerColor(player.getPlayerColor());
         return processResults(serverProxy.sendChatMessage(chatMessage, gameName));
     }
 

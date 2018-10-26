@@ -81,7 +81,7 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     @Override
     public void displayTickets(List<DestinationCard> cards) {
         TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
-        ticketList.setAdapter(adapter);
+        //ticketList.setAdapter(adapter);
     }
 
     public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {

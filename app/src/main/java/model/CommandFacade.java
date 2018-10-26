@@ -34,7 +34,7 @@ public class CommandFacade implements iClient {
     public static void _displayDestinationCards(List<DestinationCard> tickets) {
         ourInstance.displayDestinationCards(tickets);
     }
-    public static void _registerUser(User user, String authToken, List<GameInfo> gameInfos) {
+    public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.registerUser(user, authToken, gameInfos);
     }
     public static void _loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {

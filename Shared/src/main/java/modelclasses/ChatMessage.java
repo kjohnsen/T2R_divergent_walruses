@@ -5,10 +5,19 @@ import java.io.Serializable;
 public class ChatMessage implements Serializable {
     private String username;
     private String message;
+    private PlayerColor playerColor;
 
     public ChatMessage(String username, String message) {
         this.username = username;
         this.message = message;
+    }
+
+    public PlayerColor getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(PlayerColor playerColor) {
+        this.playerColor = playerColor;
     }
 
     public String getUsername() {
