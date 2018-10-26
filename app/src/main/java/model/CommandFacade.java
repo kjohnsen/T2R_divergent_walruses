@@ -60,7 +60,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void replaceTrainCard(TrainCard replacement, int selected, Player player) {
-
+        ClientModel.getInstance().replaceFaceupCard(replacement, selected);
     }
 
     @Override
@@ -78,7 +78,6 @@ public class CommandFacade implements iClient {
         ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
-        ClientModel.getInstance().notifyObservers(user);
     }
 
     @Override
@@ -110,8 +109,8 @@ public class CommandFacade implements iClient {
     @Override
     public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
         ClientModel.getInstance().setPlayerTickets(destCards);
-        ClientModel.getInstance().setFaceupCards(faceUpCards);
         ClientModel.getInstance().setPlayerTrainCards(trainCards);
+        ClientModel.getInstance().setFaceupCards(faceUpCards);
     }
 
     @Override
