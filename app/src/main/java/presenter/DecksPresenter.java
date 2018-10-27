@@ -42,7 +42,6 @@ public class DecksPresenter implements IDecksPresenter, Observer {
 
     @Override
     public void drawDestinationCards() {
-        onSwitchView();
         view.drawDestinationCards();
     }
 

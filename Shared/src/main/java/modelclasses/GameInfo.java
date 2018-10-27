@@ -63,6 +63,33 @@ public class GameInfo implements Serializable {
         return null;
     }
 
+    public ArrayList<TrainCard> replaceCards(Integer index) {
+        TrainCard card = drawTrainCard();
+        faceUpCards.set(index, card);
+        ArrayList<TrainCard> replacements = new ArrayList<>();
+        while (tooManyWilds()) {
+            for (int i = 0; i < 5; i++) {
+                TrainCard c = drawTrainCard();
+                replacements.add(c);
+                faceUpCards.set(i, c);
+            }
+        }
+        if (replacements.isEmpty()) {
+            replacements.add(card);
+        }
+        return replacements;
+    }
+
+    private boolean tooManyWilds() {
+        int check = 0;
+        for (TrainCard c : faceUpCards) {
+            if (c.getColor().equals(TrainCardColor.WILD)) {
+                check++;
+            }
+        }
+        return check > 2;
+    }
+
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }

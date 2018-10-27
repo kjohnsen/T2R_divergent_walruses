@@ -22,7 +22,7 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results selectTrainCard(int index, GameName gameName, String authToken) {
+    public Results selectTrainCard(Integer index, GameName gameName, String authToken) {
         Command command = new Command("server.ServerFacade", "_selectTrainCard", Arrays.asList(new Object[] {index, gameName, authToken}));
         return ClientCommunicator.getInstance().send(command);
     }
