@@ -10,13 +10,13 @@ import java.util.Arrays;
 
 public class GameInfo implements Serializable {
     private GameName gameName;
-    private List<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     private int numPlayers;
-    private List<TrainCard> trainCardDeck = new ArrayList<>();
-    private List<DestinationCard> destCardDeck = new ArrayList<>();
-    private List<TrainCard> faceUpCards = new ArrayList<>();
+    private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
+    private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
+    private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
 
-    public GameInfo(GameName gameName, List<Player> players, int numPlayers) {
+    public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         setPlayers(players);
@@ -50,7 +50,7 @@ public class GameInfo implements Serializable {
         return gameName;
     }
 
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
@@ -63,7 +63,7 @@ public class GameInfo implements Serializable {
         return null;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -166,27 +166,27 @@ public class GameInfo implements Serializable {
         return cards;
     }
 
-    public List<TrainCard> getTrainCardDeck() {
+    public ArrayList<TrainCard> getTrainCardDeck() {
         return trainCardDeck;
     }
 
-    public void setTrainCardDeck(List<TrainCard> trainCardDeck) {
+    public void setTrainCardDeck(ArrayList<TrainCard> trainCardDeck) {
         this.trainCardDeck = trainCardDeck;
     }
 
-    public List<DestinationCard> getDestCardDeck() {
+    public ArrayList<DestinationCard> getDestCardDeck() {
         return destCardDeck;
     }
 
-    public void setDestCardDeck(List<DestinationCard> destCardDeck) {
+    public void setDestCardDeck(ArrayList<DestinationCard> destCardDeck) {
         this.destCardDeck = destCardDeck;
     }
 
-    public List<TrainCard> getFaceUpCards() {
+    public ArrayList<TrainCard> getFaceUpCards() {
         return faceUpCards;
     }
 
-    public void setFaceUpCards(List<TrainCard> faceUpCards) {
+    public void setFaceUpCards(ArrayList<TrainCard> faceUpCards) {
         this.faceUpCards = faceUpCards;
     }
 

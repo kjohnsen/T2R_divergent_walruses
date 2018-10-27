@@ -48,7 +48,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
             view.startGame();
         } else if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof Player) {
+            if (array.size() != 0 && array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();
                 for (Object object : array) {
                     Player player = (Player) object;

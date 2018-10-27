@@ -144,6 +144,11 @@ public class ClientModel extends Observable {
     }
 
     public boolean currentGameReady() {
-        return currentGame.ready();
+        if(currentGame != null) {
+            return currentGame.ready();
+        } else {
+            return false;
+        }
+
     }
 }
