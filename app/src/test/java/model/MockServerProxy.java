@@ -20,7 +20,7 @@ import results.Results;
 public class MockServerProxy implements IServer {
 
     @Override
-    public Results selectDestinationCards(List<DestinationCard> tickets, GameName gameName, String authToken) {
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName gameName, String authToken) {
         //implement this if you want to
         return null;
     }
