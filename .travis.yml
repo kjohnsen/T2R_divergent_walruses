@@ -30,6 +30,11 @@ android:
 #    # if you need to run emulator(s) during your tests
 #    - sys-img-$ANDROID_ABI-google_apis-$EMULATOR_API_LEVEL
 
+
+#added to fix gradlew problem
+before_install:
+- chmod +x gradlew
+
     # Support library
     # Latest artifacts in local repository
     - extra-android-m2repository
