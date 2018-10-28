@@ -35,16 +35,16 @@ public class GameActivityTest extends AppCompatActivity {
     public void setupTest(){
         //although this violates MVP... it's going to make it easy to test stuff
         ArrayList<GameInfo> gameInfos = new ArrayList<>();
-        //name, players, number of players
-        ArrayList<Player> players = new ArrayList<>();
 
         GameInfo gameInfo = GameInfo.makeRandomGameInfo();
         gameInfos.add(gameInfo);
         ClientModel.getInstance().setGameList(gameInfos);
 
+        ClientModel.getInstance().setCurrentGame(gameInfo);
+
         //setting random trains and tickets so player info can see it
-        ClientModel.getInstance().setPlayerTrainCards(TrainCard.getRandomNumCards());
-        ClientModel.getInstance().setPlayerTickets(new ArrayList<>(Arrays.asList(Atlas.getRandomDestinations(8))));
+        ClientModel.getInstance().setPlayerTrainCards(gameInfo.getPlayer("asdf0").getTrainCards());
+        ClientModel.getInstance().setPlayerTickets(gameInfo.getPlayer("asdf0").getDestinationCards());
     }
 
     @Override
