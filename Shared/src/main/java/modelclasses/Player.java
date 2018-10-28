@@ -39,23 +39,23 @@ public class Player implements Serializable {
         for(TrainCard card: trainCardList){
             switch(card.getColor()){
                 case RED:
-                    red++;
+                    red++; break;
                 case ORANGE:
-                    orange++;
+                    orange++; break;
                 case YELLOW:
-                    yellow++;
+                    yellow++; break;
                 case GREEN:
-                    green++;
+                    green++; break;
                 case BLUE:
-                    blue++;
+                    blue++; break;
                 case PURPLE:
-                    purple++;
+                    purple++; break;
                 case BLACK:
-                    black++;
+                    black++; break;
                 case WHITE:
-                    white++;
+                    white++; break;
                 case WILD:
-                    wild++;
+                    wild++; break;
             }
         }
         trainCard_amount.put(TrainCardColor.RED, red);

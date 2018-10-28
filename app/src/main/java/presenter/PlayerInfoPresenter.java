@@ -18,10 +18,11 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
     public PlayerInfoPresenter(IPlayerInfoView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
+    }
 
+    public void initialUpdate(){
         ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTickets());
         ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTrainCards());
-
     }
 
     @Override
