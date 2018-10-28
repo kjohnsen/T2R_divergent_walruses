@@ -25,7 +25,9 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     @Override
     public void getFaceupCards() {
         List<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
-        view.replaceTrainCards(cards);
+        if (!cards.isEmpty()) {
+            view.replaceTrainCards(cards);
+        }
     }
 
     @Override
@@ -53,7 +55,7 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof TrainCard) {
+            if (array.get(0) instanceof TrainCard && array.size() == 5) {
                 ArrayList<TrainCard> cards = new ArrayList<>();
                 for (Object object : array) {
                     cards.add((TrainCard) object);

@@ -47,6 +47,9 @@ public class ClientModel extends Observable {
         faceupCards = new ArrayList<>();
     }
 
+    //for testing purposes
+    public void setGameStart(boolean start) { startGame = start; }
+
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
         this.notifyObservers(faceupCards);
@@ -55,6 +58,16 @@ public class ClientModel extends Observable {
     public void setFaceupCards(List<TrainCard> cards) {
         faceupCards = cards;
         this.notifyObservers(faceupCards);
+    }
+
+    public void setPlayerTrainCards(List<TrainCard> cards) {
+        playerTrainCards = cards;
+        this.notifyObservers(cards);
+    }
+
+    public void setPlayerTickets(List<DestinationCard> tickets) {
+        playerTickets = tickets;
+        this.notifyObservers(tickets);
     }
 
     public List<DestinationCard> getPlayerTickets() { return playerTickets; }
@@ -90,7 +103,7 @@ public class ClientModel extends Observable {
         this.notifyObservers(currentGame);
     }
 
-    public void setCurrentGamePlayers(List<Player> players) {
+    public void setCurrentGamePlayers(ArrayList<Player> players) {
         currentGame.setPlayers(players);
         this.notifyObservers(players);
     }

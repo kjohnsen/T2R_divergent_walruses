@@ -8,6 +8,7 @@ import java.util.Observer;
 import activity.IGameLobbyView;
 import model.ClientModel;
 import model.UIFacade;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
@@ -28,8 +29,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public String startGame() {
-        view.startGame();
-        return null;
+        return UIFacade.getInstance().startGame();
     }
 
     @Override
@@ -46,9 +46,12 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             view.startGame();
-        } else if (o instanceof ArrayList) {
+        } else if (o instanceof List) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof Player) {
+            if (array.get(0) instanceof DestinationCard) {
+                observable.deleteObserver(this);
+                view.startGame();
+            } else if (array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();
                 for (Object object : array) {
                     Player player = (Player) object;
