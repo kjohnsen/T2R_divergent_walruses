@@ -1,5 +1,7 @@
 package model;
 
+import com.google.android.gms.common.api.Api;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +11,12 @@ import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
+import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import results.Results;
 
-public class UIFacade {
+public class UIFacade implements IUIFacade {
 
     private static final UIFacade ourInstance = new UIFacade();
     private IServer serverProxy = ServerProxy.getInstance();
@@ -119,11 +122,25 @@ public class UIFacade {
     }
 
     public String sendChatMessage(ChatMessage chatMessage) {
-        GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        GameName gameName = null;
+        if(ClientModel.getInstance().getCurrentGame() != null) {
+            gameName = ClientModel.getInstance().getCurrentGame().getGameName();
+        }
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(chatMessage.getUsername());
+        if(player != null) {
+            chatMessage.setPlayerColor(player.getPlayerColor());
+        }
         return processResults(serverProxy.sendChatMessage(chatMessage, gameName));
     }
 
-    public String getUsername() { return ClientModel.getInstance().getCurrentUser().getUsername(); }
+    public String getUsername() {
+        if(ClientModel.getInstance().getCurrentUser() != null) {
+            return ClientModel.getInstance().getCurrentUser().getUsername();
+        } else {
+            //For tests...
+            return "username";
+        }
+    }
 
     public boolean currentGameReady() { return ClientModel.getInstance().currentGameReady(); }
 
