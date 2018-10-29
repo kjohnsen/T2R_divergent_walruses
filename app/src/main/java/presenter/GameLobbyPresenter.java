@@ -45,7 +45,9 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof DestinationCard) {
+            if (array.isEmpty()) {
+                //do nothing-- this is an error with Travis
+            } else if (array.get(0) instanceof DestinationCard) {
                 observable.deleteObserver(this);
                 view.startGame();
             } else if (array.get(0) instanceof Player) {
