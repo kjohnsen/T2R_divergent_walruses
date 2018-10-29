@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class ChatFragment extends Fragment implements IChatView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_chat, container, false);
+        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         presenter = new ChatPresenter(this);
 
         chatRecyclerView = v.findViewById(R.id.chatRecylcerView);
@@ -110,6 +112,7 @@ public class ChatFragment extends Fragment implements IChatView {
         @Override
         protected void onPostExecute(String s) {
             if(s != null) {
+                chatEditText.setText("");
                 showError(s);
             }
         }
