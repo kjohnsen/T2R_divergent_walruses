@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import adapter.TicketListAdapter;
 import modelclasses.City;
@@ -47,6 +48,9 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
         ticketList = view.findViewById(R.id.ticketList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(ChooseDestinationsFragment.this.getActivity());
         ticketList.setLayoutManager(gameListManager);
+        if (presenter.isGameStart()) {
+            displayTickets(presenter.getPlayerCards());
+        }
         selectButton = view.findViewById(R.id.selectButton);
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,9 +79,11 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
-    public void displayTickets(ArrayList<DestinationCard> cards) {
-        TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
-        ticketList.setAdapter(adapter);
+    public void displayTickets(List<DestinationCard> cards) {
+        if (cards != null) {
+            TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
+            ticketList.setAdapter(adapter);
+        }
     }
 
     public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {

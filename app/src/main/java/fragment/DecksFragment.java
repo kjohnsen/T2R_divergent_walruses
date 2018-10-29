@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
@@ -103,20 +104,22 @@ public class DecksFragment extends Fragment implements IDecksView{
                 presenter.drawDestinationCards();
             }
         });
-        presenter.getFaceupCards();
+        //presenter.getFaceupCards();
         return v;
     }
 
     @Override
-    public void replaceTrainCards(final ArrayList<TrainCard> cards) {
+    public void replaceTrainCards(final List<TrainCard> cards) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setColor(cards.get(0), cardZero);
-                setColor(cards.get(1), cardOne);
-                setColor(cards.get(2), cardTwo);
-                setColor(cards.get(3), cardThree);
-                setColor(cards.get(4), cardFour);
+                if(cards.size() == 5){
+                    setColor(cards.get(0), cardZero);
+                    setColor(cards.get(1), cardOne);
+                    setColor(cards.get(2), cardTwo);
+                    setColor(cards.get(3), cardThree);
+                    setColor(cards.get(4), cardFour);
+                }
             }
         });
     }

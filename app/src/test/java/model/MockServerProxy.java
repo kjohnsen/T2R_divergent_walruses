@@ -1,9 +1,11 @@
 package model;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import data.Command;
 import interfaces.IServer;
@@ -158,6 +160,17 @@ public class MockServerProxy implements IServer {
 
     @Override
     public Results sendChatMessage(ChatMessage message, GameName gameName) {
-        return null;
+        if(message.getMessage().equals("Test Message")) {
+            Results results = new Results();
+            results.setSuccess(true);
+            return results;
+        } else if(message.getMessage().equals("Error")) {
+            Results results = new Results();
+            results.setSuccess(false);
+            results.setErrorMessage("Error Message");
+            return results;
+        } else {
+            return null;
+        }
     }
 }

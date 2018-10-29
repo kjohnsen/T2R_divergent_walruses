@@ -6,14 +6,33 @@ import java.util.Observer;
 
 import fragment.IChatView;
 import model.ClientModel;
+import model.IUIFacade;
 import model.UIFacade;
 import modelclasses.ChatMessage;
 
 public class ChatPresenter implements IChatPresenter, Observer {
     private IChatView chatView;
+    private IUIFacade uiFacade;
+
+    public IChatView getChatView() {
+        return chatView;
+    }
+
+    public void setChatView(IChatView chatView) {
+        this.chatView = chatView;
+    }
+
+    public IUIFacade getUiFacade() {
+        return uiFacade;
+    }
+
+    public void setUiFacade(IUIFacade uiFacade) {
+        this.uiFacade = uiFacade;
+    }
 
     public ChatPresenter(IChatView chatView) {
         this.chatView = chatView;
+        this.uiFacade = UIFacade.getInstance();
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -23,12 +42,9 @@ public class ChatPresenter implements IChatPresenter, Observer {
     }
 
     @Override
-    public void sendMessageButtonWasPressed(String chatMessage) {
+    public String sendMessageButtonWasPressed(String chatMessage) {
         ChatMessage message = new ChatMessage(UIFacade.getInstance().getUsername(), chatMessage);
-        String errorMessage = UIFacade.getInstance().sendChatMessage(message);
-        if(errorMessage != null) {
-            chatView.showError(errorMessage);
-        }
+        return uiFacade.sendChatMessage(message);
     }
 
     @Override

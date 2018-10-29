@@ -1,10 +1,10 @@
 package fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import modelclasses.DestinationCard;
 
 public interface IChooseDestinationsView {
-    void displayTickets(ArrayList<DestinationCard> tickets);
+    void displayTickets(List<DestinationCard> tickets);
     void setSelectEnabled(boolean enabled);
 }

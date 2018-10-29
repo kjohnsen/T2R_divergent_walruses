@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +26,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
             view.setCreateGameEnabled(false);
             return;
         }
-        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        List<GameInfo> games = UIFacade.getInstance().getGameList();
         for (GameInfo g : games) {
             if (g.getGameName().getName().equals(gameName)) {
                 view.setCreateGameEnabled(false);
@@ -53,7 +54,7 @@ public class GameListPresenter implements IGameListPresenter, Observer {
 
     @Override
     public void getGameListInfo() {
-        ArrayList<GameInfo> games = UIFacade.getInstance().getGameList();
+        List<GameInfo> games = UIFacade.getInstance().getGameList();
         view.populateGameList(games);
     }
 
@@ -64,10 +65,10 @@ public class GameListPresenter implements IGameListPresenter, Observer {
         if (o instanceof GameInfo) {
             observable.deleteObserver(this);
             view.goToGameLobby();
-        } else {
+        } else if(o instanceof ArrayList) {
             /* Otherwise, you got a list of games-- update the list */
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof GameInfo) {
+            if (array.size() != 0 && array.get(0) instanceof GameInfo) {
                 ArrayList<GameInfo> games = new ArrayList<>();
                 for (Object object : array) {
                     GameInfo game = (GameInfo) object;

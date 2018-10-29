@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import modelclasses.ChatMessage;
@@ -46,6 +47,13 @@ public class ClientModel extends Observable {
         faceupCards = new ArrayList<>();
     }
 
+    //for testing purposes
+    public void setGameStart(boolean start) { startGame = start; }
+
+    public ArrayList<DestinationCard> getPlayerTickets() {
+        return playerTickets;
+    }
+
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
         this.notifyObservers(faceupCards);
@@ -54,6 +62,20 @@ public class ClientModel extends Observable {
     public void setFaceupCards(ArrayList<TrainCard> cards) {
         faceupCards = cards;
         this.notifyObservers(faceupCards);
+    }
+
+    public ArrayList<TrainCard> getPlayerTrainCards() {
+        return playerTrainCards;
+    }
+
+    public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
+        playerTrainCards = cards;
+        this.notifyObservers(cards);
+    }
+
+    public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
+        playerTickets = tickets;
+        this.notifyObservers(tickets);
     }
 
     public ArrayList<TrainCard> getFaceupCards() {
@@ -127,6 +149,11 @@ public class ClientModel extends Observable {
     }
 
     public boolean currentGameReady() {
-        return currentGame.ready();
+        if(currentGame != null) {
+            return currentGame.ready();
+        } else {
+            return false;
+        }
+
     }
 }

@@ -12,18 +12,19 @@ import android.widget.TextView;
 
 import com.example.emilyhales.tickettoride.R;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import modelclasses.City;
 import modelclasses.DestinationCard;
 import presenter.IChooseDestinationsPresenter;
 
 public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.TicketHolder> {
 
-    private ArrayList<DestinationCard> tickets;
+    private List<DestinationCard> tickets;
     private Context context;
     private IChooseDestinationsPresenter presenter;
 
-    public TicketListAdapter(ArrayList<DestinationCard> tickets, Context context, IChooseDestinationsPresenter presenter) {
+    public TicketListAdapter(List<DestinationCard> tickets, Context context, IChooseDestinationsPresenter presenter) {
         this.tickets = tickets;
         this.context = context;
         this.presenter = presenter;
@@ -32,7 +33,7 @@ public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.Ti
     @NonNull
     public TicketListAdapter.TicketHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        return new TicketHolder(inflater.inflate(R.layout.item_player_list, parent, false));
+        return new TicketHolder(inflater.inflate(R.layout.item_ticket_list, parent, false));
     }
     @Override
     public void onBindViewHolder(@NonNull TicketListAdapter.TicketHolder holder, int position) {

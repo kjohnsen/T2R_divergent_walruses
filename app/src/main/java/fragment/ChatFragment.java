@@ -1,6 +1,7 @@
 package fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.example.emilyhales.tickettoride.R;
 import java.util.List;
 
 import modelclasses.ChatMessage;
+import modelclasses.PlayerColor;
 import presenter.ChatPresenter;
 import presenter.IChatPresenter;
 
@@ -43,8 +45,8 @@ public class ChatFragment extends Fragment implements IChatView {
 
         chatRecyclerView = v.findViewById(R.id.chatRecylcerView);
         ChatAdapter chatAdapter = new ChatAdapter();
-        chatRecyclerView.setAdapter(chatAdapter);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        chatRecyclerView.setAdapter(chatAdapter);
 
         chatEditText = v.findViewById(R.id.chatEditText);
         chatEditText.addTextChangedListener(new TextWatcher() {
@@ -68,7 +70,8 @@ public class ChatFragment extends Fragment implements IChatView {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.sendMessageButtonWasPressed(chatEditText.getText().toString());
+                SendChatMessageTask sendChatMessageTask = new SendChatMessageTask();
+                sendChatMessageTask.execute(chatEditText.getText().toString());
             }
         });
 
@@ -83,14 +86,33 @@ public class ChatFragment extends Fragment implements IChatView {
 
     @Override
     public void chatViewShouldReloadData() {
-        ChatAdapter chatAdapter = (ChatAdapter)chatRecyclerView.getAdapter();
-        chatAdapter.setChatMessages(presenter.getChatMessages());
-        chatAdapter.notifyDataSetChanged();
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                chatRecyclerView.setAdapter(new ChatAdapter());
+            }
+        });
     }
 
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(this.getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private class SendChatMessageTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return presenter.sendMessageButtonWasPressed(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null) {
+                showError(s);
+            }
+        }
     }
 
     private class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
@@ -121,6 +143,7 @@ public class ChatFragment extends Fragment implements IChatView {
 
             holder.setMessageText(chatMessage.getMessage());
             holder.setUserNameText(chatMessage.getUsername());
+            holder.setUsernameColor(chatMessage.getPlayerColor());
         }
 
         @Override
@@ -140,7 +163,18 @@ public class ChatFragment extends Fragment implements IChatView {
             }
 
             public void setUserNameText(String username) {
-                usernameTextView.setText(username);
+                usernameTextView.setText(username + ":");
+            }
+
+            public void setUsernameColor(PlayerColor playerColor) {
+                switch (playerColor) {
+                    case RED: usernameTextView.setTextColor(getResources().getColor(R.color.trainRed)); break;
+                    case BLUE: usernameTextView.setTextColor(getResources().getColor(R.color.trainBlue)); break;
+                    case BLACK: usernameTextView.setTextColor(getResources().getColor(R.color.playerBlack)); break;
+                    case GREEN: usernameTextView.setTextColor(getResources().getColor(R.color.trainGreen)); break;
+                    case YELLOW: usernameTextView.setTextColor(getResources().getColor(R.color.trainYellow)); break;
+                    default: break;
+                }
             }
 
             public void setMessageText(String message) {

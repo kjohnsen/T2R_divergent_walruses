@@ -1,6 +1,7 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,9 +38,9 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
 
     private void checkButtonEnable() {
         if (UIFacade.getInstance().isGameStart()) {
-            view.setSelectEnabled(rejections.size() < 1);
-        } else {
             view.setSelectEnabled(rejections.size() < 2);
+        } else {
+            view.setSelectEnabled(rejections.size() < 3);
         }
     }
 
@@ -49,16 +50,26 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     }
 
     @Override
+    public boolean isGameStart() {
+        return UIFacade.getInstance().isGameStart();
+    }
+
+    @Override
+    public List<DestinationCard> getPlayerCards() {
+        return UIFacade.getInstance().getStartDestinationCards();
+    }
+
+    @Override
     public void onSwitchView() {
         ClientModel.getInstance().deleteObserver(this);
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof ArrayList) {
-            ArrayList<Object> array = (ArrayList<Object>) o;
+        if (o instanceof List) {
+            List<Object> array = (ArrayList<Object>) o;
             if (array.get(0) instanceof DestinationCard) {
-                ArrayList<DestinationCard> tickets = new ArrayList<>();
+                List<DestinationCard> tickets = new ArrayList<>();
                 for (Object object : array) {
                     tickets.add((DestinationCard) object);
                 }

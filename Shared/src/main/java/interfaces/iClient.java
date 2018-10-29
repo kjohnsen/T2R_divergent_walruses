@@ -20,7 +20,7 @@ public interface iClient {
     void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
     void joinGame(Player player, GameName gameName);
     void createGame(GameInfo gameInfo);
-    void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards);
+    void startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards);
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
 }
