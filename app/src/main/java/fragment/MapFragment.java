@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,9 @@ import modelclasses.City;
 import modelclasses.MapSetup;
 import modelclasses.Player;
 import modelclasses.Route;
+import presenter.IMapPresenter;
+import presenter.MapPresenter;
+import util.PlayerColorConverter;
 import util.TrainColorConverter;
 
 public class MapFragment extends SupportMapFragment implements
@@ -34,17 +38,19 @@ public class MapFragment extends SupportMapFragment implements
         GoogleMap.OnPolylineClickListener
 {
     private GoogleMap map;
-    private Map<Route, Polyline> routePolylineMap;
+    private Map<Route, Polyline> routePolylineMap = new HashMap<>();
+    private IMapPresenter presenter;
     private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
     private static final int POLYLINE_CLAIMED_WIDTH = 24;
-    private static final int POLYLINE_TRANSLUCENT_OPACITY = 180;
-    private static final int POLYLINE_OPAQUE_OPACITY = 255;
+    private static final int POLYLINE_TRANSLUCENT_OPACITY = 140;
+    private static final int POLYLINE_OPAQUE_OPACITY = 220;
 
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         View view = super.onCreateView(layoutInflater, viewGroup, bundle);
         this.getMapAsync(this);
+        presenter = new MapPresenter(this);
         return view;
     }
 
@@ -61,7 +67,14 @@ public class MapFragment extends SupportMapFragment implements
 
     @Override
     public void updateRoute(Route route) {
-
+        Polyline polyline = routePolylineMap.get(route);
+        Player player = route.getPlayer();
+        if (player != null) {
+            polyline.setWidth(POLYLINE_CLAIMED_WIDTH);
+            polyline.setColor(PlayerColorConverter.convertPlayerColor(player.getPlayerColor()));
+        } else {
+            polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
+        }
     }
 
     @Override
