@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IServer;
@@ -26,7 +27,7 @@ public interface IUIFacade {
     public String selectTrainCard(int index);
     public String drawTrainCard();
     public String drawDestinationCards();
-    public String selectDestinationCards(List<DestinationCard> rejected);
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected);
     public String loginUser(String username, String password);
     public String joinGame(String gameName);
     public String createGame(String gameName, int numPlayers);
