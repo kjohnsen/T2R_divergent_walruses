@@ -13,7 +13,7 @@ import modelclasses.DestinationCard;
 public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter, Observer {
 
     private IChooseDestinationsView view;
-    private List<DestinationCard> rejections;
+    private ArrayList<DestinationCard> rejections;
 
     public ChooseDestinationsPresenter(IChooseDestinationsView view) {
         this.view = view;
@@ -38,9 +38,9 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
 
     private void checkButtonEnable() {
         if (UIFacade.getInstance().isGameStart()) {
-            view.setSelectEnabled(rejections.size() < 1);
-        } else {
             view.setSelectEnabled(rejections.size() < 2);
+        } else {
+            view.setSelectEnabled(rejections.size() < 3);
         }
     }
 
@@ -68,7 +68,7 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     public void update(Observable observable, Object o) {
         if (o instanceof List) {
             List<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof DestinationCard) {
+            if (!array.isEmpty() && array.get(0) instanceof DestinationCard) {
                 List<DestinationCard> tickets = new ArrayList<>();
                 for (Object object : array) {
                     tickets.add((DestinationCard) object);

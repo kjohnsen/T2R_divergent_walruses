@@ -28,9 +28,10 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".7"/>
     <android.support.v7.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/ticketList"
+        android:background="@color/lightGray"
         app:layout_constraintTop_toTopOf="@id/topGuide"
         app:layout_constraintEnd_toEndOf="@id/rightGuide"
         app:layout_constraintStart_toStartOf="@id/leftGuide"
@@ -39,7 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/selectButton"
-        android:enabled="false"
         android:text="Keep These"
         app:layout_constraintTop_toBottomOf="@id/ticketList"
         app:layout_constraintStart_toStartOf="parent"

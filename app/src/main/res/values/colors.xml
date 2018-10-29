@@ -14,6 +14,8 @@
     <color name="trainYellow">#EEEE00</color>
     <color name="trainGreen">#00E800</color>
     <color name="trainBlue">#0000E8</color>
-    <color name="trainPurple">#E000E8</color>
-    <color name="trainGray">#8E8E8E</color>
+    <color name="trainPurple">#D000D0</color>
+    <color name="trainPink">#E6A8E8</color>
+    <color name="deckGray">#8E8E8E</color>
+    <color name="playerBlack">#777777</color>
 </resources>

@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import modelclasses.ChatMessage;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -72,6 +74,7 @@ public class CommandFacadeTest {
         assertThat(ClientModel.getInstance().getGameList(), hasItem(gameInfo));
     }
 
+    //idk
     @Test
     public void claimColor() {
         Player player = new Player("bobby");
@@ -82,5 +85,14 @@ public class CommandFacadeTest {
         CommandFacade.getInstance().claimColor("bobby", PlayerColor.BLUE);
         assertEquals(ClientModel.getInstance().getCurrentGame().getPlayer("bobby").getPlayerColor(),
                 PlayerColor.BLUE);
+    }
+
+    @Test public void addChatMessage() {
+        ChatMessage chatMessage = new ChatMessage("testUser", "testMessage");
+        CommandFacade.getInstance().addChatMessage(chatMessage);
+        List<ChatMessage> chatMessages = ClientModel.getInstance().getChatMessages();
+
+        assertTrue(chatMessages.size() == 1);
+        assertTrue(chatMessages.get(0) == chatMessage);
     }
 }

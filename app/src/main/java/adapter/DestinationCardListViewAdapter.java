@@ -58,11 +58,11 @@ public class DestinationCardListViewAdapter extends BaseAdapter {
         view = layoutInflater.inflate(R.layout.destination_card, null);
 
         TextView cityOrigin = (TextView) view.findViewById(R.id.city_origin);
-        String originString = "Origin: " + destinationCards.get(i).getCities()[0];
+        String originString = "Origin: " + destinationCards.get(i).getCities()[0].getName();
         cityOrigin.setText(originString);
 
         TextView cityDestination = (TextView) view.findViewById(R.id.city_destination);
-        String destinationString = "Destination: " + destinationCards.get(i).getCities()[1];
+        String destinationString = "Destination: " + destinationCards.get(i).getCities()[1].getName();
         cityDestination.setText(destinationString);
 
         TextView pointsText = (TextView) view.findViewById(R.id.points);

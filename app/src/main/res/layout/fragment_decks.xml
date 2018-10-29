@@ -115,18 +115,22 @@
         app:layout_constraintEnd_toStartOf="@id/firstColumnRight"
         app:layout_constraintTop_toBottomOf="@id/thirdRowTop"
         app:layout_constraintBottom_toTopOf="@id/thirdRowBottom"/>
-    <View
+    <ImageButton
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/trainDeck"
+        android:background="@color/deckGray"
+        android:src="@drawable/ic_train_black_24dp"
         app:layout_constraintStart_toEndOf="@id/firstColumnLeft"
         app:layout_constraintEnd_toStartOf="@id/firstColumnRight"
         app:layout_constraintTop_toBottomOf="@id/fourthRowTop"
         app:layout_constraintBottom_toTopOf="@id/fourthRowBottom"/>
-    <View
+    <ImageButton
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/destinationDeck"
+        android:background="@color/deckGray"
+        android:src="@drawable/ic_place_black_24dp"
         app:layout_constraintStart_toEndOf="@id/secondColumnLeft"
         app:layout_constraintEnd_toStartOf="@id/secondColumnRight"
         app:layout_constraintTop_toBottomOf="@id/fourthRowTop"

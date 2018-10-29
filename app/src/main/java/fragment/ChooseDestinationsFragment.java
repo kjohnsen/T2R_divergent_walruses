@@ -45,12 +45,15 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_choose_destinations, new ConstraintLayout(getActivity()), false);
         presenter = new ChooseDestinationsPresenter(this);
-        if (presenter.isGameStart()) {
-            displayTickets(presenter.getPlayerCards());
-        }
         ticketList = view.findViewById(R.id.ticketList);
         RecyclerView.LayoutManager gameListManager = new LinearLayoutManager(ChooseDestinationsFragment.this.getActivity());
         ticketList.setLayoutManager(gameListManager);
+        if (presenter.isGameStart()) {
+            displayTickets(presenter.getPlayerCards());
+        } else {
+            DrawCardsTask d = new DrawCardsTask();
+            d.execute();
+        }
         selectButton = view.findViewById(R.id.selectButton);
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,9 +82,29 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
-    public void displayTickets(List<DestinationCard> cards) {
-        TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
-        ticketList.setAdapter(adapter);
+    public void displayTickets(final List<DestinationCard> cards) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (cards != null) {
+                    TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
+                    ticketList.setAdapter(adapter);
+                }
+            }
+        });
+    }
+
+    public class DrawCardsTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... s) {
+            return presenter.getDestinationCards();
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(ChooseDestinationsFragment.this.getActivity(), param, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public class SelectTicketsTask extends AsyncTask<Integer, Void, String> {

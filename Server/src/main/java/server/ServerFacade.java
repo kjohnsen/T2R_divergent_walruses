@@ -38,8 +38,8 @@ public class ServerFacade implements IServer {
         return ourInstance.selectDestinationCards(tickets, name, authToken);
     }
 
-    public static Results _selectTrainCard(int index, GameName name, String authtoken) {
-        return ourInstance.selectTrainCard(index, name, authtoken);
+    public static Results _selectTrainCard(Integer index, GameName name, String authToken) {
+        return ourInstance.selectTrainCard(index, name, authToken);
     }
 
     public static Results _drawTrainCard(GameName name, String authtoken) {
@@ -76,7 +76,7 @@ public class ServerFacade implements IServer {
         return ourInstance.sendChatMessage(message, gameName);
     }
 
-    public Results selectDestinationCards(List<DestinationCard> tickets, GameName name, String authToken) {
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         if (tickets != null) {
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
             String username = ServerModel.getInstance().getAuthTokens().get(authToken);
@@ -102,13 +102,52 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public Results selectTrainCard(int index, GameName name, String authtoken) { return null; }
+    public Results selectTrainCard(Integer index, GameName name, String authToken) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        Player player = game.getPlayer(username);
+        TrainCard card = game.getFaceUpCards().get(index);
+        ArrayList<TrainCard> replacements = game.replaceCards(index);
+        Results results = new Results();
+        Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
+        results.getClientCommands().add(selectCardCommand);
+        if (replacements.size() == 1) {
+            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index, player}));
+            results.getClientCommands().add(replaceCardCommand);
+        } else {
+            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, player}));
+            results.getClientCommands().add(clearWildsCommand);
+        }
+        results.setSuccess(true);
+        return results;
+    }
 
     @Override
-    public Results drawTrainCard(GameName name, String authtoken) { return null; }
+    public Results drawTrainCard(GameName name, String authToken) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        Player player = game.getPlayer(username);
+        TrainCard card = game.drawTrainCard();
+        Results results = new Results();
+        Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
+        results.getClientCommands().add(selectCardCommand);
+        results.setSuccess(true);
+        return results;
+    }
 
     @Override
-    public Results drawDestinationCards(GameName name, String authtoken) { return null; }
+    public Results drawDestinationCards(GameName name, String authToken) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        Player player = game.getPlayer(username);
+        ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
+        player.addDestinationCards(tickets);
+        Results results = new Results();
+        Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
+        results.getClientCommands().add(selectCardCommand);
+        results.setSuccess(true);
+        return results;
+    }
 
     public Results loginUser(String username, String password) {
 
@@ -238,7 +277,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         if (gamePlayers.size() == game.getNumPlayers()) {
             results.setErrorMessage("Game is full");
             return results;
@@ -281,7 +320,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         if (gamePlayers.size() < 2) {
             results.setErrorMessage("Not enough players to start game");
             return results;
@@ -303,7 +342,7 @@ public class ServerFacade implements IServer {
     }
 
     public void givePlayersInitialTrainCards(GameInfo game) {
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<TrainCard> playerCards = game.getPlayerInitialTrainCards();
             player.setTrainCards(playerCards);
@@ -311,7 +350,7 @@ public class ServerFacade implements IServer {
     }
 
     public void givePlayersInitialDestCards(GameInfo game) {
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<DestinationCard> playerCards = game.getPlayerInitialDestCards();
             player.setDestinationCards(playerCards);

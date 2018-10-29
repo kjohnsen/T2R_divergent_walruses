@@ -200,6 +200,7 @@
 
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardRed"
@@ -211,6 +212,7 @@
     </TextView>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardOrange"
@@ -223,6 +225,7 @@
     </TextView>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardYellow"
@@ -236,6 +239,7 @@
     </TextView>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardGreen"
@@ -245,6 +249,7 @@
         app:layout_constraintBottom_toTopOf="@id/rowThirtyFive"/>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardBlue"
@@ -255,6 +260,7 @@
 
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardPurple"
@@ -264,6 +270,7 @@
         app:layout_constraintBottom_toTopOf="@id/rowForty"/>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardWhite"
@@ -273,6 +280,7 @@
         app:layout_constraintBottom_toTopOf="@id/rowFortyFive"/>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardBlack"
@@ -282,6 +290,7 @@
         app:layout_constraintBottom_toTopOf="@id/rowFifty"/>
 
     <TextView
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardWild"
@@ -297,8 +306,9 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/rowSixtyFive"
         app:layout_constraintBottom_toTopOf="@id/rowNinety"
-        app:layout_constraintStart_toEndOf="@id/columnTwentyFive"
-        app:layout_constraintEnd_toStartOf="@id/columnSeventyFive" />
+        app:layout_constraintStart_toEndOf="@id/columnTen"
+        app:layout_constraintEnd_toStartOf="@id/columnEighty"
+        android:dividerHeight="10.0sp" />
 
 
 

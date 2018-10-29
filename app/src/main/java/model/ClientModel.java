@@ -18,12 +18,12 @@ it manually */
 public class ClientModel extends Observable {
     private User currentUser;
 
-    private List<GameInfo> gameList = new ArrayList<>();
+    private ArrayList<GameInfo> gameList = new ArrayList<>();
     private GameInfo currentGame;
-    private List<TrainCard> faceupCards;
-    private List<TrainCard> playerTrainCards;
-    private List<DestinationCard> playerTickets;
-    private List<ChatMessage> chatMessages;
+    private ArrayList<TrainCard> faceupCards;
+    private ArrayList<TrainCard> playerTrainCards;
+    private ArrayList<DestinationCard> playerTickets;
+    private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
 
     private static final ClientModel ourInstance = new ClientModel();
@@ -47,19 +47,54 @@ public class ClientModel extends Observable {
         faceupCards = new ArrayList<>();
     }
 
+    //for testing purposes
+    public void setGameStart(boolean start) { startGame = start; }
+
+    public void rejectTickets(ArrayList<DestinationCard> rejections) {
+        for (DestinationCard c : rejections) {
+            playerTickets.remove(c);
+        }
+    }
+
+    public void addTrainCard(TrainCard card) {
+        playerTrainCards.add(card);
+        notifyObservers(card);
+    }
+
+    public void addTickets(ArrayList<DestinationCard> cards) {
+        playerTickets.addAll(cards);
+        notifyObservers(cards);
+    }
+
+    public ArrayList<DestinationCard> getPlayerTickets() {
+        return playerTickets;
+    }
+
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
         this.notifyObservers(faceupCards);
     }
 
-    public void setFaceupCards(List<TrainCard> cards) {
+    public void setFaceupCards(ArrayList<TrainCard> cards) {
         faceupCards = cards;
         this.notifyObservers(faceupCards);
     }
 
-    public List<DestinationCard> getPlayerTickets() { return playerTickets; }
+    public ArrayList<TrainCard> getPlayerTrainCards() {
+        return playerTrainCards;
+    }
 
-    public List<TrainCard> getFaceupCards() {
+    public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
+        playerTrainCards = cards;
+        this.notifyObservers(cards);
+    }
+
+    public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
+        playerTickets = tickets;
+        this.notifyObservers(tickets);
+    }
+
+    public ArrayList<TrainCard> getFaceupCards() {
         return faceupCards;
     }
 
@@ -70,7 +105,7 @@ public class ClientModel extends Observable {
         this.notifyObservers();
     }
 
-    public List<ChatMessage> getChatMessages() {
+    public ArrayList<ChatMessage> getChatMessages() {
         return chatMessages;
     }
 
@@ -80,7 +115,7 @@ public class ClientModel extends Observable {
         this.currentUser = currentUser;
     }
 
-    public void setGameList(List<GameInfo> gameList) {
+    public void setGameList(ArrayList<GameInfo> gameList) {
         this.gameList = gameList;
         this.notifyObservers(gameList);
     }
@@ -90,7 +125,7 @@ public class ClientModel extends Observable {
         this.notifyObservers(currentGame);
     }
 
-    public void setCurrentGamePlayers(List<Player> players) {
+    public void setCurrentGamePlayers(ArrayList<Player> players) {
         currentGame.setPlayers(players);
         this.notifyObservers(players);
     }
@@ -101,7 +136,7 @@ public class ClientModel extends Observable {
 
     public void setNotGameStart() { startGame = false; }
 
-    public List<GameInfo> getGameList() {
+    public ArrayList<GameInfo> getGameList() {
         return gameList;
     }
     public GameInfo getGame(GameName gameName) {
@@ -130,6 +165,11 @@ public class ClientModel extends Observable {
     }
 
     public boolean currentGameReady() {
-        return currentGame.ready();
+        if(currentGame != null) {
+            return currentGame.ready();
+        } else {
+            return false;
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 import clientserver.ServerProxy;
+import modelclasses.ChatMessage;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
@@ -82,5 +83,20 @@ public class UIFacadeTest {
         assertNull(success);
         assertTrue(fail.equals("Game cannot start"));
         assertTrue(nullResults.equals("Cannot reach server"));
+    }
+
+    @Test
+    public void sendMessage() {
+        ChatMessage successMessage = new ChatMessage("username", "Test Message");
+        ChatMessage failMessage = new ChatMessage("username", "Error");
+        ChatMessage nullMessage = new ChatMessage("username", "Null");
+
+        String success = uiFacade.sendChatMessage(successMessage);
+        String fail = uiFacade.sendChatMessage(failMessage);
+        String nullString = uiFacade.sendChatMessage(nullMessage);
+
+        assertNull(success);
+        assertTrue(fail.equals("Error Message"));
+        assertTrue(nullString.equals("Cannot reach server"));
     }
 }

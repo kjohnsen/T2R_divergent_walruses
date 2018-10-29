@@ -17,6 +17,10 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
         ClientModel.getInstance().addObserver(this);
     }
 
+    public void initialUpdate(){
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
+    }
+
     @Override
     public void onSwitchView() {
         ClientModel.getInstance().deleteObserver(this);

@@ -3,15 +3,16 @@ package modelclasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
-    private ArrayList<TrainCard> trainCards;
-    private ArrayList<DestinationCard> destinationCards;
-    private Integer points;
-    private Integer numberOfTrains;
+    private ArrayList<TrainCard> trainCards = new ArrayList<>();
+    private ArrayList<DestinationCard> destinationCards = new ArrayList<>();
+    private Integer points = 0;
+    private Integer numberOfTrains = 45;
 
     public Player(String username) {
         this.username = username;
@@ -31,30 +32,30 @@ public class Player implements Serializable {
         return numberOfTrains;
     }
 
-    public Map<TrainCardColor,Integer> getTrainCardQuantities(){
+    public static Map<TrainCardColor,Integer> getTrainCardQuantities(List<TrainCard> trainCardList){
         Map<TrainCardColor, Integer> trainCard_amount = new HashMap<>();
 
         int red = 0, orange = 0, yellow = 0, green = 0, blue = 0, purple = 0, black = 0, white = 0, wild = 0;
-        for(TrainCard card: trainCards){
+        for(TrainCard card: trainCardList){
             switch(card.getColor()){
                 case RED:
-                    red++;
+                    red++; break;
                 case ORANGE:
-                    orange++;
+                    orange++; break;
                 case YELLOW:
-                    yellow++;
+                    yellow++; break;
                 case GREEN:
-                    green++;
+                    green++; break;
                 case BLUE:
-                    blue++;
+                    blue++; break;
                 case PURPLE:
-                    purple++;
+                    purple++; break;
                 case BLACK:
-                    black++;
+                    black++; break;
                 case WHITE:
-                    white++;
+                    white++; break;
                 case WILD:
-                    wild++;
+                    wild++; break;
             }
         }
         trainCard_amount.put(TrainCardColor.RED, red);
@@ -107,6 +108,10 @@ public class Player implements Serializable {
 
     public void setDestinationCards(ArrayList<DestinationCard> destinationCards) {
         this.destinationCards = destinationCards;
+    }
+
+    public void addDestinationCards(ArrayList<DestinationCard> tickets) {
+        destinationCards.addAll(tickets);
     }
 
     @Override
