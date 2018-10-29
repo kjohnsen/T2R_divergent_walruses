@@ -40,7 +40,7 @@ public class CommandFacade implements iClient {
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
-    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets) {
+    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
         ourInstance.displayDestinationCards(tickets);
     }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -89,12 +89,12 @@ public class CommandFacade implements iClient {
 
     @Override
     public void drawTrainCard(TrainCard card, Player player) {
-
+        ClientModel.getInstance().addTrainCard(card);
     }
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
-        ClientModel.getInstance().notifyObservers(tickets);
+        ClientModel.getInstance().addTickets(tickets);
     }
 
     @Override

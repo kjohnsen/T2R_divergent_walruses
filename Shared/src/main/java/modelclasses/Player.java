@@ -110,6 +110,10 @@ public class Player implements Serializable {
         this.destinationCards = destinationCards;
     }
 
+    public void addDestinationCards(ArrayList<DestinationCard> tickets) {
+        destinationCards.addAll(tickets);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

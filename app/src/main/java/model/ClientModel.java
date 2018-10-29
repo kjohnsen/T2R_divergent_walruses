@@ -61,6 +61,11 @@ public class ClientModel extends Observable {
         notifyObservers(card);
     }
 
+    public void addTickets(ArrayList<DestinationCard> cards) {
+        playerTickets.addAll(cards);
+        notifyObservers(cards);
+    }
+
     public ArrayList<DestinationCard> getPlayerTickets() {
         return playerTickets;
     }

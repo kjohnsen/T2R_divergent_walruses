@@ -123,10 +123,31 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public Results drawTrainCard(GameName name, String authtoken) { return null; }
+    public Results drawTrainCard(GameName name, String authToken) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        Player player = game.getPlayer(username);
+        TrainCard card = game.drawTrainCard();
+        Results results = new Results();
+        Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
+        results.getClientCommands().add(selectCardCommand);
+        results.setSuccess(true);
+        return results;
+    }
 
     @Override
-    public Results drawDestinationCards(GameName name, String authtoken) { return null; }
+    public Results drawDestinationCards(GameName name, String authToken) {
+        GameInfo game = ServerModel.getInstance().getGameInfo(name);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
+        Player player = game.getPlayer(username);
+        ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
+        player.addDestinationCards(tickets);
+        Results results = new Results();
+        Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
+        results.getClientCommands().add(selectCardCommand);
+        results.setSuccess(true);
+        return results;
+    }
 
     public Results loginUser(String username, String password) {
 
