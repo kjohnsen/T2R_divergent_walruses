@@ -11,7 +11,7 @@ import modelclasses.TrainCardColor;
 public class TrainColorConverter {
     public static int convertTrainColor(TrainCardColor trainColor) {
         switch (trainColor) {
-            case WILD: return R.color.trainGray;
+            case WILD: return R.color.deckGray;
             case WHITE: return R.color.trainWhite;
             case BLACK: return R.color.trainBlack;
             case RED: return R.color.trainRed;
