@@ -35,7 +35,11 @@ public class GameInfo implements Serializable {
 
         for(int i = 0; i < randomNumber; i++){
             PlayerColor color = PlayerColor.values()[new Random().nextInt(PlayerColor.values().length)];
-            Player testPlayer = new Player("asdf",color);
+            Player testPlayer = new Player("asdf" + String.valueOf(i),color);
+
+            testPlayer.setDestinationCards(new ArrayList<>(Arrays.asList(Atlas.getRandomDestinations(8))));
+            testPlayer.setTrainCards(TrainCard.getRandomNumCards());
+
             players.add(testPlayer);
         }
 
@@ -193,7 +197,7 @@ public class GameInfo implements Serializable {
         return cards;
     }
 
-    public List<TrainCard> getTrainCardDeck() {
+    public ArrayList<TrainCard> getTrainCardDeck() {
         return trainCardDeck;
     }
 

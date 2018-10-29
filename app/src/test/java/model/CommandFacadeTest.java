@@ -74,6 +74,7 @@ public class CommandFacadeTest {
         assertThat(ClientModel.getInstance().getGameList(), hasItem(gameInfo));
     }
 
+    //idk
     @Test
     public void claimColor() {
         Player player = new Player("bobby");

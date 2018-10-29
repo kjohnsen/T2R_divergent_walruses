@@ -18,12 +18,12 @@ public interface iClient {
     void clearWilds(ArrayList<TrainCard> replacements);
     void replaceTrainCard(TrainCard replacement, Integer index, Player player);
     void drawTrainCard(TrainCard card, Player player);
-    void displayDestinationCards(List<DestinationCard> tickets);
-    void loginUser(User user, String authToken, List<GameInfo> gameInfos);
-    void registerUser(User user, String authToken, List<GameInfo> gameInfos);
+    void displayDestinationCards(ArrayList<DestinationCard> tickets);
+    void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
+    void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
     void joinGame(Player player, GameName gameName);
     void createGame(GameInfo gameInfo);
-    void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards);
+    void startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards);
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
 }

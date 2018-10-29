@@ -107,11 +107,13 @@ public class DecksFragment extends Fragment implements IDecksView{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setColor(cards.get(0), cardZero);
-                setColor(cards.get(1), cardOne);
-                setColor(cards.get(2), cardTwo);
-                setColor(cards.get(3), cardThree);
-                setColor(cards.get(4), cardFour);
+                if(cards.size() == 5){
+                    setColor(cards.get(0), cardZero);
+                    setColor(cards.get(1), cardOne);
+                    setColor(cards.get(2), cardTwo);
+                    setColor(cards.get(3), cardThree);
+                    setColor(cards.get(4), cardFour);
+                }
             }
         });
     }
