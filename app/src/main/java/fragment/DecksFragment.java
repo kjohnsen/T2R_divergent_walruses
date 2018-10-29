@@ -104,7 +104,7 @@ public class DecksFragment extends Fragment implements IDecksView{
                 presenter.drawDestinationCards();
             }
         });
-        presenter.getFaceupCards();
+        //presenter.getFaceupCards();
         return v;
     }
 

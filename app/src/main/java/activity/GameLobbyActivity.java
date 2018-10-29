@@ -59,7 +59,8 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.startGame();
+                StartGameTask s = new StartGameTask();
+                s.execute();
             }
         });
         playerList = findViewById(R.id.playerList);

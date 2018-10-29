@@ -76,7 +76,7 @@ public class ServerFacade implements IServer {
         return ourInstance.sendChatMessage(message, gameName);
     }
 
-    public Results selectDestinationCards(List<DestinationCard> tickets, GameName name, String authToken) {
+    public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         if (tickets != null) {
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
             String username = ServerModel.getInstance().getAuthTokens().get(authToken);
@@ -238,7 +238,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         if (gamePlayers.size() == game.getNumPlayers()) {
             results.setErrorMessage("Game is full");
             return results;
@@ -281,7 +281,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         if (gamePlayers.size() < 2) {
             results.setErrorMessage("Not enough players to start game");
             return results;
@@ -295,9 +295,9 @@ public class ServerFacade implements IServer {
         clientProxy.startGame(gameName, username);
 
         Player clientPlayer = game.getPlayer(username);
-        List<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
-        List<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
-        List<TrainCard> faceUpCards = game.getFaceUpCards();
+        ArrayList<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
+        ArrayList<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
+        ArrayList<TrainCard> faceUpCards = game.getFaceUpCards();
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards, faceUpCards}));
 
         results.getClientCommands().add(startGameCommand);
@@ -307,7 +307,7 @@ public class ServerFacade implements IServer {
     }
 
     public void givePlayersInitialTrainCards(GameInfo game) {
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<TrainCard> playerCards = game.getPlayerInitialTrainCards();
             player.setTrainCards(playerCards);
@@ -315,7 +315,7 @@ public class ServerFacade implements IServer {
     }
 
     public void givePlayersInitialDestCards(GameInfo game) {
-        List<Player> gamePlayers = game.getPlayers();
+        ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<DestinationCard> playerCards = game.getPlayerInitialDestCards();
             player.setDestinationCards(playerCards);
