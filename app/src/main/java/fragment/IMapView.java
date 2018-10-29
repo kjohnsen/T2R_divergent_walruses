@@ -9,8 +9,8 @@ import modelclasses.Route;
 public interface IMapView {
     public void initializeMap(MapSetup mapSetup);
 
-    public void updateClaimedRoute(Player player, Route route);
+    public void updateRoute(Route route);
 
-    public void highlightRoutes(List<Route> routes);
+    public void setRouteEnabled(Route route, boolean enabled);
 
 }

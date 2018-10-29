@@ -4,16 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.graphics.ColorUtils;
 
+import com.example.emilyhales.tickettoride.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +26,19 @@ import modelclasses.City;
 import modelclasses.MapSetup;
 import modelclasses.Player;
 import modelclasses.Route;
+import util.TrainColorConverter;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, IMapView {
+public class MapFragment extends SupportMapFragment implements
+        OnMapReadyCallback,
+        IMapView,
+        GoogleMap.OnPolylineClickListener
+{
     private GoogleMap map;
     private Map<Route, Polyline> routePolylineMap;
+    private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
+    private static final int POLYLINE_CLAIMED_WIDTH = 24;
+    private static final int POLYLINE_TRANSLUCENT_OPACITY = 180;
+    private static final int POLYLINE_OPAQUE_OPACITY = 255;
 
 
     @Override
@@ -46,13 +60,20 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
 
     @Override
-    public void updateClaimedRoute(Player player, Route route) {
+    public void updateRoute(Route route) {
 
     }
 
     @Override
-    public void highlightRoutes(List<Route> routes) {
-
+    public void setRouteEnabled(Route route, boolean enabled) {
+        Polyline polyline = routePolylineMap.get(route);
+        if (enabled) {
+            polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_OPAQUE_OPACITY));
+            polyline.setClickable(true);
+        } else {
+            polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_TRANSLUCENT_OPACITY));
+            polyline.setClickable(false);
+        }
     }
 
     @Override
@@ -68,6 +89,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 map.setLatLngBoundsForCameraTarget(bounds);
             }
         });
+
+        for (Route route : mapSetup.getRoutes()) {
+            drawPolylineForRoute(route);
+        }
+        drawMarkersForRoutes(mapSetup.getRoutes());
     }
 
     private void drawPolylineForRoute(Route route) {
@@ -75,15 +101,32 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 .clickable(true)
                 .add(cityToLatLng(route.getOrigin()))
                 .add(cityToLatLng(route.getDestination())));
+        polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
+        polyline.setColor(TrainColorConverter.convertTrainColor(route.getColor()));
+
         polyline.setTag(route);
+        routePolylineMap.put(route, polyline);
     }
 
-    private void drawMarkersForRoutes() {
-
+    private void drawMarkersForRoutes(List<Route> routes) {
+        HashSet<City> cities = new HashSet<>();
+        for (Route route : routes) {
+            cities.add(route.getDestination());
+            cities.add(route.getOrigin());
+        }
+        for (City city : cities) {
+            map.addMarker(new MarkerOptions()
+                    .position(cityToLatLng(city))
+                    .title(city.getName()));
+        }
     }
 
     private LatLng cityToLatLng(City city) {
         return new LatLng(city.getLatitude(), city.getLongitude());
     }
 
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+
+    }
 }
