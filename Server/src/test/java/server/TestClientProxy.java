@@ -30,7 +30,7 @@ public class TestClientProxy {
         Player player2 = new Player("Not User");
         Player player3 = new Player("Other User");
         Player player4 = new Player("Fake User");
-        List<Player> players = new ArrayList<>();
+        ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
         players.add(player2);
         players.add(player3);
