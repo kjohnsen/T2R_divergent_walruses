@@ -1,5 +1,6 @@
 package presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IServer;
@@ -72,7 +73,7 @@ public class MockUIFacade implements IUIFacade {
     }
 
     @Override
-    public String selectDestinationCards(List<DestinationCard> rejected) {
+    public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
         return null;
     }
 

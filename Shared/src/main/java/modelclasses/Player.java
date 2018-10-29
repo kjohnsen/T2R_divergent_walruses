@@ -9,10 +9,10 @@ import java.util.Map;
 public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
-    private ArrayList<TrainCard> trainCards;
-    private ArrayList<DestinationCard> destinationCards;
-    private Integer points;
-    private Integer numberOfTrains;
+    private ArrayList<TrainCard> trainCards = new ArrayList<>();
+    private ArrayList<DestinationCard> destinationCards = new ArrayList<>();
+    private Integer points = 0;
+    private Integer numberOfTrains = 45;
 
     public Player(String username) {
         this.username = username;
@@ -108,6 +108,10 @@ public class Player implements Serializable {
 
     public void setDestinationCards(ArrayList<DestinationCard> destinationCards) {
         this.destinationCards = destinationCards;
+    }
+
+    public void addDestinationCards(ArrayList<DestinationCard> tickets) {
+        destinationCards.addAll(tickets);
     }
 
     @Override

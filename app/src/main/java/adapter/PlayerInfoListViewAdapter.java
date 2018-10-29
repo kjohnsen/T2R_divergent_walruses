@@ -64,25 +64,29 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
         //ImageView imageView = (ImageView)view.findViewById(R.id.image_avatar);
         //imageView.setImageResource(R.drawable.map_marker);
 
-        TextView playerName = (TextView) view.findViewById(R.id.player_name);
+        TextView playerName = view.findViewById(R.id.player_name);
         playerName.setText(players.get(i).getUsername());
 
         //TODO: getPoints() is in player right now... somehow have to calculate points still.
-        TextView points = (TextView)view.findViewById(R.id.points);
+        TextView points = view.findViewById(R.id.points);
         String pointsString = "Points: " + players.get(i).getPoints();
         points.setText(pointsString);
 
-        TextView trainNumber = (TextView)view.findViewById(R.id.train_number);
+        TextView trainNumber = view.findViewById(R.id.train_number);
         String trainNumberString = "Trains Left: " + players.get(i).getNumberOfTrains();
         trainNumber.setText(trainNumberString);
 
-        TextView trainCardNumber = (TextView)view.findViewById(R.id.trainCard_number);
-        String trainCardString = "Train Cards: " + players.get(i).getTrainCards().size();
-        trainCardNumber.setText(trainCardString);
+        TextView trainCardNumber = view.findViewById(R.id.trainCard_number);
+        if (players.get(i).getTrainCards() != null) {
+            String trainCardString = "Train Cards: " + players.get(i).getTrainCards().size();
+            trainCardNumber.setText(trainCardString);
+        }
 
-        TextView destinationCardNumber = (TextView)view.findViewById(R.id.destinationCard_number);
-        String destinationCardString = "Destination Cards: " + players.get(i).getDestinationCards().size();
-        destinationCardNumber.setText(destinationCardString);
+        TextView destinationCardNumber = view.findViewById(R.id.destinationCard_number);
+        if (players.get(i).getDestinationCards() != null) {
+            String destinationCardString = "Destination Cards: " + players.get(i).getDestinationCards().size();
+            destinationCardNumber.setText(destinationCardString);
+        }
 
         return view;
     }

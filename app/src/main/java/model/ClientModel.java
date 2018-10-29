@@ -50,6 +50,22 @@ public class ClientModel extends Observable {
     //for testing purposes
     public void setGameStart(boolean start) { startGame = start; }
 
+    public void rejectTickets(ArrayList<DestinationCard> rejections) {
+        for (DestinationCard c : rejections) {
+            playerTickets.remove(c);
+        }
+    }
+
+    public void addTrainCard(TrainCard card) {
+        playerTrainCards.add(card);
+        notifyObservers(card);
+    }
+
+    public void addTickets(ArrayList<DestinationCard> cards) {
+        playerTickets.addAll(cards);
+        notifyObservers(cards);
+    }
+
     public ArrayList<DestinationCard> getPlayerTickets() {
         return playerTickets;
     }

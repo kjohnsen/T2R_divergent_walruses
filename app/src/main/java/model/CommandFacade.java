@@ -25,13 +25,22 @@ public class CommandFacade implements iClient {
     private CommandFacade() {
     }
 
-    public static void _replaceTrainCard(TrainCard replacement, int selected, Player player) {
+    public static void _selectDestinationCards(GameName gameName, ArrayList<DestinationCard> rejections) {
+        ourInstance.selectDestinationCards(rejections);
+    }
+    public static void _selectTrainCard(TrainCard card, Player player) {
+        ourInstance.selectTrainCard(card);
+    }
+    public static void _clearWilds(ArrayList<TrainCard> replacements, Player player) {
+        ourInstance.clearWilds(replacements);
+    }
+    public static void _replaceTrainCard(TrainCard replacement, Integer selected, Player player) {
         ourInstance.replaceTrainCard(replacement, selected, player);
     }
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
-    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets) {
+    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
         ourInstance.displayDestinationCards(tickets);
     }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -59,18 +68,33 @@ public class CommandFacade implements iClient {
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
     @Override
-    public void replaceTrainCard(TrainCard replacement, int selected, Player player) {
+    public void selectDestinationCards(ArrayList<DestinationCard> rejections) {
+        ClientModel.getInstance().rejectTickets(rejections);
+    }
+
+    @Override
+    public void selectTrainCard(TrainCard card) {
+        ClientModel.getInstance().addTrainCard(card);
+    }
+
+    @Override
+    public void replaceTrainCard(TrainCard replacement, Integer selected, Player player) {
         ClientModel.getInstance().replaceFaceupCard(replacement, selected);
     }
 
     @Override
-    public void drawTrainCard(TrainCard card, Player player) {
+    public void clearWilds(ArrayList<TrainCard> replacements) {
+        ClientModel.getInstance().setFaceupCards(replacements);
+    }
 
+    @Override
+    public void drawTrainCard(TrainCard card, Player player) {
+        ClientModel.getInstance().addTrainCard(card);
     }
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
-        ClientModel.getInstance().notifyObservers(tickets);
+        ClientModel.getInstance().addTickets(tickets);
     }
 
     @Override

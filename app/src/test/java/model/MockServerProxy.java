@@ -139,7 +139,7 @@ public class MockServerProxy implements IServer {
     }
 
     @Override
-    public Results selectTrainCard(int index, GameName name, String authtoken) { return null; }
+    public Results selectTrainCard(Integer index, GameName name, String authToken) { return null; }
 
     @Override
     public Results drawTrainCard(GameName name, String authtoken) { return null; }
