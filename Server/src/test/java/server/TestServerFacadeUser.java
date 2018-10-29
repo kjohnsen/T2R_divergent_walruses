@@ -101,7 +101,7 @@
      public void addChatMessage() {
          GameName gameName = new GameName("game");
          Player player = new Player("User");
-         List<Player> players = new ArrayList<>();
+         ArrayList<Player> players = new ArrayList<>();
          players.add(player);
 
          GameInfo gameInfo = new GameInfo(gameName, players, 2);

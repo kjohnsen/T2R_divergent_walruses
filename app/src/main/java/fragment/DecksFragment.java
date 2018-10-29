@@ -37,12 +37,6 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        presenter.onSwitchView();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_decks, container, false);
         presenter = new DecksPresenter(this);
@@ -53,6 +47,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         cardZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have selected a card", Toast.LENGTH_SHORT).show();
                 SelectCardTask s = new SelectCardTask();
                 s.execute(0);
             }
@@ -61,6 +56,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         cardOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have selected a card", Toast.LENGTH_SHORT).show();
                 SelectCardTask s = new SelectCardTask();
                 s.execute(1);
             }
@@ -69,6 +65,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         cardTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have selected a card", Toast.LENGTH_SHORT).show();
                 SelectCardTask s = new SelectCardTask();
                 s.execute(2);
             }
@@ -77,6 +74,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         cardThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have selected a card", Toast.LENGTH_SHORT).show();
                 SelectCardTask s = new SelectCardTask();
                 s.execute(3);
             }
@@ -85,6 +83,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         cardFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have selected a card", Toast.LENGTH_SHORT).show();
                 SelectCardTask s = new SelectCardTask();
                 s.execute(4);
             }
@@ -93,6 +92,7 @@ public class DecksFragment extends Fragment implements IDecksView{
         trainDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "You have drawn a card", Toast.LENGTH_SHORT).show();
                 DrawCardTask s = new DrawCardTask();
                 s.execute();
             }
@@ -104,7 +104,7 @@ public class DecksFragment extends Fragment implements IDecksView{
                 presenter.drawDestinationCards();
             }
         });
-        //presenter.getFaceupCards();
+        presenter.getFaceupCards();
         return v;
     }
 
@@ -126,7 +126,7 @@ public class DecksFragment extends Fragment implements IDecksView{
 
     private void setColor(TrainCard card, View view) {
         switch (card.getColor()) {
-            case WILD: view.setBackgroundColor(getResources().getColor(R.color.trainGray)); break;
+            case WILD: view.setBackgroundColor(getResources().getColor(R.color.trainPink)); break;
             case WHITE: view.setBackgroundColor(getResources().getColor(R.color.trainWhite)); break;
             case BLACK: view.setBackgroundColor(getResources().getColor(R.color.trainBlack)); break;
             case RED: view.setBackgroundColor(getResources().getColor(R.color.trainRed)); break;

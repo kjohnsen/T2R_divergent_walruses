@@ -46,7 +46,6 @@ public class DecksPresenter implements IDecksPresenter, Observer {
 
     @Override
     public String drawDestinationCards() {
-        onSwitchView();
         view.drawDestinationCards();
         //this is in preparation for the stateful modification-- just ignore it for now
         return null;
@@ -61,7 +60,7 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.get(0) instanceof TrainCard && array.size() == 5) {
+            if (array.size() == 5 && array.get(0) instanceof TrainCard) {
                 ArrayList<TrainCard> cards = new ArrayList<>();
                 for (Object object : array) {
                     cards.add((TrainCard) object);

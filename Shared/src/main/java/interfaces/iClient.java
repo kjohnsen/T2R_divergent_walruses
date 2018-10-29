@@ -13,7 +13,10 @@ import modelclasses.TrainCard;
 import modelclasses.User;
 
 public interface iClient {
-    void replaceTrainCard(TrainCard replacement, int index, Player player);
+    void selectDestinationCards(ArrayList<DestinationCard> rejections);
+    void selectTrainCard(TrainCard card);
+    void clearWilds(ArrayList<TrainCard> replacements);
+    void replaceTrainCard(TrainCard replacement, Integer index, Player player);
     void drawTrainCard(TrainCard card, Player player);
     void displayDestinationCards(ArrayList<DestinationCard> tickets);
     void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
