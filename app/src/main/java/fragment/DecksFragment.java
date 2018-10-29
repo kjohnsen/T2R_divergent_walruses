@@ -18,6 +18,7 @@ import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
 import presenter.DecksPresenter;
 import presenter.IDecksPresenter;
+import util.TrainColorConverter;
 
 public class DecksFragment extends Fragment implements IDecksView{
 
@@ -125,17 +126,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     }
 
     private void setColor(TrainCard card, View view) {
-        switch (card.getColor()) {
-            case WILD: view.setBackgroundColor(getResources().getColor(R.color.trainGray)); break;
-            case WHITE: view.setBackgroundColor(getResources().getColor(R.color.trainWhite)); break;
-            case BLACK: view.setBackgroundColor(getResources().getColor(R.color.trainBlack)); break;
-            case RED: view.setBackgroundColor(getResources().getColor(R.color.trainRed)); break;
-            case ORANGE: view.setBackgroundColor(getResources().getColor(R.color.trainOrange)); break;
-            case YELLOW: view.setBackgroundColor(getResources().getColor(R.color.trainYellow)); break;
-            case GREEN: view.setBackgroundColor(getResources().getColor(R.color.trainGreen)); break;
-            case BLUE: view.setBackgroundColor(getResources().getColor(R.color.trainBlue)); break;
-            case PURPLE: view.setBackgroundColor(getResources().getColor(R.color.trainPurple)); break;
-        }
+        view.setBackgroundColor(TrainColorConverter.convertTrainColor(card.getColor()));
     }
 
     @Override
