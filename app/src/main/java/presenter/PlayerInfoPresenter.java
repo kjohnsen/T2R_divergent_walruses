@@ -6,8 +6,10 @@ import java.util.Observer;
 
 import fragment.IPlayerInfoView;
 import model.ClientModel;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.TrainCard;
 
 public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
 
@@ -18,6 +20,11 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
         ClientModel.getInstance().addObserver(this);
     }
 
+    public void initialUpdate(){
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTickets());
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTrainCards());
+    }
+
     @Override
     public void onSwitchView() {
         ClientModel.getInstance().deleteObserver(this);
@@ -26,18 +33,23 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
     @Override
     public void update(Observable observable, Object o) {
 
-        //i'm only interested in the player playing.. not everyone else!
-        //getting the current game from the client model
-        if(o instanceof GameInfo){
-            GameInfo gameInfo = (GameInfo)o;
+        if (o instanceof ArrayList) {
+            ArrayList<Object> array = (ArrayList<Object>) o;
 
-            //get the current player from the game info
-            Player currentPlayer = gameInfo.getPlayer(ClientModel.getInstance().getCurrentUser().getUsername());
+            if (array.get(0) instanceof TrainCard) {
+                ArrayList<TrainCard> trainCards = new ArrayList<>();
+                for (Object object : array) {
+                    trainCards.add((TrainCard) object);
+                }
+                view.updateTrainCards(Player.getTrainCardQuantities(trainCards));
 
-            //we don't know if the player's destination tickets changed
-            //or if his train cards changed... update them all!
-            view.updateTrainCards(currentPlayer.getTrainCardQuantities());
-            view.updateDestinationTickets(currentPlayer.getDestinationCards());
+            } else if (array.get(0) instanceof DestinationCard) {
+                ArrayList<DestinationCard> destCards = new ArrayList<>();
+                for (Object object : array) {
+                    destCards.add((DestinationCard) object);
+                }
+                view.updateDestinationTickets(destCards);
+            }
 
         }
 

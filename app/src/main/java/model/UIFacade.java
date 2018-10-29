@@ -56,6 +56,11 @@ public class UIFacade implements IUIFacade {
         return ClientModel.getInstance().getPlayerTickets();
     }
 
+    @Override
+    public String selectDestinationCards(List<DestinationCard> rejected) {
+        return null;
+    }
+
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {

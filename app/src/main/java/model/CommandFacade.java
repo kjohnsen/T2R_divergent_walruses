@@ -31,7 +31,7 @@ public class CommandFacade implements iClient {
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
-    public static void _displayDestinationCards(List<DestinationCard> tickets) {
+    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets) {
         ourInstance.displayDestinationCards(tickets);
     }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
@@ -69,19 +69,20 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void displayDestinationCards(List<DestinationCard> tickets) {
+    public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
         ClientModel.getInstance().notifyObservers(tickets);
     }
 
     @Override
-    public void loginUser(User user, String authToken, List<GameInfo> gameInfos) {
+    public void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ClientModel.getInstance().setGameList(gameInfos);
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
+        ClientModel.getInstance().notifyObservers(user);
     }
 
     @Override
-    public void registerUser(User user, String authToken, List<GameInfo> gameInfos) {
+    public void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ClientModel.getInstance().setCurrentUser(user);
         UIFacade.getInstance().setAuthToken(authToken);
         ClientModel.getInstance().setGameList(gameInfos);
@@ -101,13 +102,13 @@ public class CommandFacade implements iClient {
 
     @Override
     public void createGame(GameInfo gameInfo) {
-        List<GameInfo> gameList = ClientModel.getInstance().getGameList();
+        ArrayList<GameInfo> gameList = ClientModel.getInstance().getGameList();
         gameList.add(gameInfo);
         ClientModel.getInstance().setGameList(gameList);
     }
 
     @Override
-    public void startGame(GameName gameName, List<TrainCard> trainCards, List<DestinationCard> destCards, List<TrainCard> faceUpCards) {
+    public void startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
         ClientModel.getInstance().setPlayerTickets(destCards);
         ClientModel.getInstance().setPlayerTrainCards(trainCards);
         ClientModel.getInstance().setFaceupCards(faceUpCards);

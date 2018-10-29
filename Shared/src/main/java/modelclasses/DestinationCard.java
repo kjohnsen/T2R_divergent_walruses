@@ -1,6 +1,8 @@
 package modelclasses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class DestinationCard implements Serializable {
     private int points;
