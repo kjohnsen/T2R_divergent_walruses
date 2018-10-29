@@ -19,7 +19,7 @@ public class MapSetup implements Serializable {
     private static ArrayList<Route> routes;
 
     public MapSetup() {
-        ArrayList<Route> routes = new ArrayList<>();
+        routes = new ArrayList<>();
         // wild routes
         routes.add(new Route(VANCOUVER, CALGARY, WILD, 3));
         routes.add(new Route(WINNIPEG, SAULT_ST_MARIE, WILD, 6));
@@ -73,6 +73,75 @@ public class MapSetup implements Serializable {
         routes.add(new Route(LITTLE_ROCK, NASHVILLE, WHITE, 3));
         routes.add(new Route(PHOENIX, DENVER, WHITE, 5));
         routes.add(new Route(SAN_FRANCISCO, SLC, WHITE, 5));
+
+        // black routes
+        routes.add(new Route(WINNIPEG, DULUTH, BLACK, 4));
+        routes.add(new Route(SAULT_ST_MARIE, MONTREAL, BLACK, 5));
+        routes.add(new Route(NEW_YORK, WASHINGTON, BLACK, 2));
+        routes.add(new Route(CHICAGO, PITTSBURGH, BLACK, 3));
+        routes.add(new Route(NASHVILLE, RALEIGH, BLACK, 3));
+        routes.add(new Route(KANSAS_CITY, DENVER, BLACK, 4));
+        routes.add(new Route(LOS_ANGELES, EL_PASO, BLACK, 6));
+
+        // yellow routes
+        routes.add(new Route(SEATTLE, HELENA, YELLOW, 6));
+        routes.add(new Route(BOSTON, NEW_YORK, YELLOW, 2));
+        routes.add(new Route(PITTSBURGH, NASHVILLE, YELLOW, 4));
+        routes.add(new Route(NEW_ORLEANS, ATLANTA, YELLOW, 4));
+        routes.add(new Route(OK_CITY, EL_PASO, YELLOW, 5));
+        routes.add(new Route(SLC, DENVER, YELLOW, 3));
+        routes.add(new Route(LOS_ANGELES, SAN_FRANCISCO, YELLOW, 3));
+
+        // blue routes
+        routes.add(new Route(PORTLAND, SLC, BLUE, 6));
+        routes.add(new Route(HELENA, WINNIPEG, BLUE, 4));
+        routes.add(new Route(OMAHA, CHICAGO, BLUE, 4));
+        routes.add(new Route(MONTREAL, NEW_YORK, BLUE, 3));
+        routes.add(new Route(KANSAS_CITY, SAINT_LOUIS, BLUE, 2));
+        routes.add(new Route(ATLANTA, MIAMI, BLUE, 5));
+        routes.add(new Route(SANTA_FE, OK_CITY, BLUE, 3));
+
+        // red routes
+        routes.add(new Route(HELENA, OMAHA, RED, 5));
+        routes.add(new Route(DULUTH, CHICAGO, RED, 3));
+        routes.add(new Route(BOSTON, NEW_YORK, RED, 2));
+        routes.add(new Route(NEW_ORLEANS, MIAMI, RED, 6));
+        routes.add(new Route(DALLAS, EL_PASO, RED, 4));
+        routes.add(new Route(OK_CITY, DENVER, RED, 4));
+        routes.add(new Route(SLC, DENVER, RED, 3));
+
+        // orange routes
+        routes.add(new Route(HELENA, DULUTH, ORANGE, 6));
+        routes.add(new Route(CHICAGO, PITTSBURGH, ORANGE, 3));
+        routes.add(new Route(NEW_YORK, WASHINGTON, ORANGE, 2));
+        routes.add(new Route(NEW_ORLEANS, ATLANTA, ORANGE, 4));
+        routes.add(new Route(DENVER, KANSAS_CITY, ORANGE, 4));
+        routes.add(new Route(LAS_VEGAS, SLC, ORANGE, 3));
+        routes.add(new Route(SAN_FRANCISCO, SLC, ORANGE, 5));
+
+        // purple routes
+        routes.add(new Route(HELENA, SLC, PURPLE, 3));
+        routes.add(new Route(DENVER, OMAHA, PURPLE, 4));
+        routes.add(new Route(KANSAS_CITY, SAINT_LOUIS, PURPLE, 2));
+        routes.add(new Route(DULUTH, TORONTO, PURPLE, 6));
+        routes.add(new Route(CHARLESTON, MIAMI, PURPLE, 4));
+        routes.add(new Route(LOS_ANGELES, SAN_FRANCISCO, PURPLE, 3));
+        routes.add(new Route(SAN_FRANCISCO, PORTLAND, PURPLE, 5));
+
+        // green routes
+        routes.add(new Route(NEW_YORK, PITTSBURGH, GREEN, 2));
+        routes.add(new Route(SAINT_LOUIS, PITTSBURGH, GREEN, 5));
+        routes.add(new Route(SAINT_LOUIS, CHICAGO, GREEN, 2));
+        routes.add(new Route(LITTLE_ROCK, NEW_ORLEANS, GREEN, 3));
+        routes.add(new Route(EL_PASO, HOUSTON, GREEN, 6));
+        routes.add(new Route(DENVER, HELENA, GREEN, 4));
+        routes.add(new Route(SAN_FRANCISCO, PORTLAND, GREEN, 5));
+
+        createCityGraph();
+    }
+
+    private void createCityGraph() {
+
     }
 
     public static List<Route> getRoutes() {

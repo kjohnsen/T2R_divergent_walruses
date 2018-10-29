@@ -11,12 +11,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.List;
+import java.util.Map;
+
+import modelclasses.City;
 import modelclasses.MapSetup;
+import modelclasses.Player;
+import modelclasses.Route;
 
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, IMapView {
     private GoogleMap map;
+    private Map<Route, Polyline> routePolylineMap;
 
 
     @Override
@@ -30,13 +38,22 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng saltLake = new LatLng(41, -112);
         map.getUiSettings().setZoomControlsEnabled(false);
         map.getUiSettings().setAllGesturesEnabled(false);
         map.getUiSettings().setMapToolbarEnabled(false);
         initializeMap(new MapSetup());
     }
 
+
+    @Override
+    public void updateClaimedRoute(Player player, Route route) {
+
+    }
+
+    @Override
+    public void highlightRoutes(List<Route> routes) {
+
+    }
 
     @Override
     public void initializeMap(MapSetup mapSetup) {
@@ -53,5 +70,20 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         });
     }
 
+    private void drawPolylineForRoute(Route route) {
+        Polyline polyline = map.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .add(cityToLatLng(route.getOrigin()))
+                .add(cityToLatLng(route.getDestination())));
+        polyline.setTag(route);
+    }
+
+    private void drawMarkersForRoutes() {
+
+    }
+
+    private LatLng cityToLatLng(City city) {
+        return new LatLng(city.getLatitude(), city.getLongitude());
+    }
 
 }
