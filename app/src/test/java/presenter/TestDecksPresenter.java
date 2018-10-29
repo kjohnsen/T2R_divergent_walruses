@@ -30,8 +30,6 @@ public class TestDecksPresenter {
 
     @BeforeClass
     public static void prep() {
-        view.replaceTrainCards(firstCards);
-        presenter = new DecksPresenter(view);
         firstCards.add(card0);
         firstCards.add(card1);
         firstCards.add(card2);
@@ -42,6 +40,8 @@ public class TestDecksPresenter {
         secondCards.add(card7);
         secondCards.add(card8);
         secondCards.add(card9);
+        view.replaceTrainCards(firstCards);
+        presenter = new DecksPresenter(view);
     }
 
     @Test
@@ -55,15 +55,5 @@ public class TestDecksPresenter {
         ClientModel.getInstance().notifyObservers(firstCards);
         assertEquals(view.getTrainCards().get(0), card0);
         assertEquals(view.getTrainCards().get(3), card3);
-    }
-
-    @Test
-    public void testSwitchView() {
-        assertEquals(view.getTrainCards().get(0), card0);
-        presenter.drawDestinationCards();
-        assertTrue(view.getCalled());
-        ClientModel.getInstance().notifyObservers(secondCards);
-        assertEquals(view.getTrainCards().get(0), card0);
-        presenter = new DecksPresenter(view);
     }
 }

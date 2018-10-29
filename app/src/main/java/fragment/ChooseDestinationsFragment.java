@@ -50,6 +50,9 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
         ticketList.setLayoutManager(gameListManager);
         if (presenter.isGameStart()) {
             displayTickets(presenter.getPlayerCards());
+        } else {
+            DrawCardsTask d = new DrawCardsTask();
+            d.execute();
         }
         selectButton = view.findViewById(R.id.selectButton);
         selectButton.setOnClickListener(new View.OnClickListener() {
@@ -79,10 +82,28 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     }
 
     @Override
-    public void displayTickets(List<DestinationCard> cards) {
-        if (cards != null) {
-            TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
-            ticketList.setAdapter(adapter);
+    public void displayTickets(final List<DestinationCard> cards) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (cards != null) {
+                    TicketListAdapter adapter = new TicketListAdapter(cards, getContext(), presenter);
+                    ticketList.setAdapter(adapter);
+                }
+            }
+        });
+    }
+
+    public class DrawCardsTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... s) {
+            return presenter.getDestinationCards();
+        }
+        @Override
+        protected void onPostExecute(String param) {
+            if (param != null) {
+                Toast.makeText(ChooseDestinationsFragment.this.getActivity(), param, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

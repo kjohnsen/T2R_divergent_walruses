@@ -43,29 +43,26 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof GameInfo) {
-            observable.deleteObserver(this);
-            view.startGame();
-        } else if (o instanceof ArrayList) {
+        if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.size() != 0 && array.get(0) instanceof Player) {
-                if (array.get(0) instanceof DestinationCard) {
-                    observable.deleteObserver(this);
-                    view.startGame();
-                } else if (array.get(0) instanceof Player) {
-                    ArrayList<Player> players = new ArrayList<>();
-                    for (Object object : array) {
-                        Player player = (Player) object;
-                        players.add(player);
-                    }
-                    String username = UIFacade.getInstance().getUsername();
-                    List<String> colors = PlayerColor.getAvailableColors(players, username);
-                    view.updatePlayerList(players);
-                    view.updateAvailableColors(colors);
-                    view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
-                    if (ClientModel.getInstance().currentGameReady()) {
-                        view.setStartGameEnabled(true);
-                    }
+            if (array.isEmpty()) {
+                //do nothing-- this is an error with Travis
+            } else if (array.get(0) instanceof DestinationCard) {
+                observable.deleteObserver(this);
+                view.startGame();
+            } else if (array.get(0) instanceof Player) {
+                ArrayList<Player> players = new ArrayList<>();
+                for (Object object : array) {
+                    Player player = (Player) object;
+                    players.add(player);
+                }
+                String username = UIFacade.getInstance().getUsername();
+                List<String> colors = PlayerColor.getAvailableColors(players, username);
+                view.updatePlayerList(players);
+                view.updateAvailableColors(colors);
+                view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
+                if (ClientModel.getInstance().currentGameReady()) {
+                    view.setStartGameEnabled(true);
                 }
             }
         }

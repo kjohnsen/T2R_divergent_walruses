@@ -21,7 +21,7 @@ public interface IServer {
 
     Results chooseColor(PlayerColor color, GameName gameName, String authToken);
 
-    Results selectTrainCard(int index, GameName gameName, String authToken);
+    Results selectTrainCard(Integer index, GameName gameName, String authToken);
 
     Results drawTrainCard(GameName gameName, String authToken);
 
