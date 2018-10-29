@@ -19,6 +19,10 @@ public class DecksPresenter implements IDecksPresenter, Observer {
         ClientModel.getInstance().addObserver(this);
     }
 
+    public IDecksView getView() {
+        return view;
+    }
+
     @Override
     public boolean isGameStart() { return UIFacade.getInstance().isGameStart(); }
 
@@ -41,9 +45,11 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     }
 
     @Override
-    public void drawDestinationCards() {
+    public String drawDestinationCards() {
         onSwitchView();
         view.drawDestinationCards();
+        //this is in preparation for the stateful modification-- just ignore it for now
+        return null;
     }
 
     @Override
