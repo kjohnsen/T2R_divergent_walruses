@@ -52,10 +52,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(clientUsername)) {
-                Player currPlayer = game.getPlayer(username);
-                List<TrainCard> playerTrainCards = currPlayer.getTrainCards();
-                List<DestinationCard> playerDestCards = currPlayer.getDestinationCards();
-                Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards}));
+                Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {game}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }

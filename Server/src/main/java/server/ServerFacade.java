@@ -333,11 +333,7 @@ public class ServerFacade implements IServer {
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         clientProxy.startGame(gameName, username);
 
-        Player clientPlayer = game.getPlayer(username);
-        ArrayList<TrainCard> playerTrainCards = clientPlayer.getTrainCards();
-        ArrayList<DestinationCard> playerDestCards = clientPlayer.getDestinationCards();
-        ArrayList<TrainCard> faceUpCards = game.getFaceUpCards();
-        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {gameName, playerTrainCards, playerDestCards, faceUpCards}));
+        Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
 
         results.getClientCommands().add(startGameCommand);
         results.setSuccess(true);
