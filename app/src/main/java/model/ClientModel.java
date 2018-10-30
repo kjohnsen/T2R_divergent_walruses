@@ -50,20 +50,32 @@ public class ClientModel extends Observable {
     //for testing purposes
     public void setGameStart(boolean start) { startGame = start; }
 
-    public void rejectTickets(ArrayList<DestinationCard> rejections) {
-        for (DestinationCard c : rejections) {
-            playerTickets.remove(c);
+    public void rejectTickets(ArrayList<DestinationCard> rejections, Player player) {
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            for (DestinationCard c : rejections) {
+                playerTickets.remove(c);
+            }
         }
+        currentGame.getPlayer(player.getUsername()).removeDestinationCards(rejections);
+        notifyObservers(currentGame.getPlayers());
     }
 
-    public void addTrainCard(TrainCard card) {
-        playerTrainCards.add(card);
-        notifyObservers(card);
+    public void addTrainCard(TrainCard card, Player player) {
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            playerTrainCards.add(card);
+            notifyObservers(card);
+        }
+        currentGame.getPlayer(player.getUsername()).addTrainCardToHand(card);
+        notifyObservers(currentGame.getPlayers());
     }
 
-    public void addTickets(ArrayList<DestinationCard> cards) {
-        playerTickets.addAll(cards);
-        notifyObservers(cards);
+    public void addTickets(ArrayList<DestinationCard> cards, Player player) {
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            playerTickets.addAll(cards);
+            notifyObservers(cards);
+        }
+        currentGame.getPlayer(player.getUsername()).addDestinationCards(cards);
+        notifyObservers(currentGame.getPlayers());
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {

@@ -1,5 +1,6 @@
 package presenter;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,7 +19,7 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
     }
 
     public void initialUpdate(){
-        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
+        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
     }
 
     @Override
@@ -28,9 +29,15 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if(o instanceof GameInfo){
-            GameInfo gameInfo = (GameInfo)o;
-            view.updatePlayerInfo(gameInfo.getPlayers());
+        if (o instanceof ArrayList) {
+            ArrayList<Object> array = (ArrayList<Object>) o;
+            if (!array.isEmpty() && array.get(0) instanceof Player) {
+                ArrayList<Player> players = new ArrayList<>();
+                for (Object object : array) {
+                    players.add((Player) object);
+                }
+                view.updatePlayerInfo(players);
+            }
         }
     }
 

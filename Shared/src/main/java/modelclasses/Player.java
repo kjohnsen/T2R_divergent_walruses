@@ -114,6 +114,10 @@ public class Player implements Serializable {
         destinationCards.addAll(tickets);
     }
 
+    public void removeDestinationCards(ArrayList<DestinationCard> tickets) {
+        destinationCards.removeAll(tickets);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
