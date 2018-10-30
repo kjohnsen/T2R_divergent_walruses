@@ -90,15 +90,20 @@ public class ServerFacade implements IServer {
                     Results results = new Results();
                     results.setSuccess(false);
                     results.setErrorMessage("Destination card not in player's hand");
+                    return results;
                 }
             }
+            Results results = new Results();
+            Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
+            results.getClientCommands().add(selectDestCardsCommand);
+            results.setSuccess(true);
+            return results;
+        } else {
+            Results results = new Results();
+            results.setSuccess(false);
+            results.setErrorMessage("Destination card not in player's hand");
+            return results;
         }
-
-        Results results = new Results();
-        Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets}));
-        results.getClientCommands().add(selectDestCardsCommand);
-        results.setSuccess(true);
-        return results;
     }
 
     @Override
@@ -112,10 +117,10 @@ public class ServerFacade implements IServer {
         Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
-            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index, player}));
+            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
             results.getClientCommands().add(replaceCardCommand);
         } else {
-            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, player}));
+            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
             results.getClientCommands().add(clearWildsCommand);
         }
         results.setSuccess(true);
