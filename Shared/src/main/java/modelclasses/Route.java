@@ -33,4 +33,8 @@ public class Route {
     public Integer getLength() {
         return length;
     }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

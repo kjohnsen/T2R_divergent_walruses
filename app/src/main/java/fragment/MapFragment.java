@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.graphics.ColorUtils;
 
+import com.example.emilyhales.tickettoride.BuildConfig;
 import com.example.emilyhales.tickettoride.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,18 +15,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import modelclasses.City;
+import modelclasses.DefaultHashMap;
 import modelclasses.MapSetup;
 import modelclasses.Player;
+import modelclasses.PlayerColor;
 import modelclasses.Route;
 import presenter.IMapPresenter;
 import presenter.MapPresenter;
@@ -42,8 +48,8 @@ public class MapFragment extends SupportMapFragment implements
     private IMapPresenter presenter;
     private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
     private static final int POLYLINE_CLAIMED_WIDTH = 24;
-    private static final int POLYLINE_TRANSLUCENT_OPACITY = 140;
-    private static final int POLYLINE_OPAQUE_OPACITY = 220;
+    private static final int POLYLINE_TRANSLUCENT_OPACITY = 60;
+    private static final int POLYLINE_OPAQUE_OPACITY = 140;
 
 
     @Override
@@ -59,8 +65,10 @@ public class MapFragment extends SupportMapFragment implements
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(false);
-        map.getUiSettings().setAllGesturesEnabled(false);
+//        map.getUiSettings().setAllGesturesEnabled(false);
         map.getUiSettings().setMapToolbarEnabled(false);
+
+
         initializeMap(new MapSetup());
     }
 
@@ -100,25 +108,61 @@ public class MapFragment extends SupportMapFragment implements
             public void onMapLoaded() {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
                 map.setLatLngBoundsForCameraTarget(bounds);
+                map.setMinZoomPreference(map.getCameraPosition().zoom);
+                map.setMaxZoomPreference(6.0f);
             }
         });
 
-        for (Route route : mapSetup.getRoutes()) {
-            drawPolylineForRoute(route);
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
+
+        // draw polylines by groups (i.e., either one or two between the same two cities)
+        for (Map.Entry<City, DefaultHashMap<City, ArrayList<Route>>> entry1 : mapSetup.getCityConnectionMap().entrySet()) {
+            City cityOne = entry1.getKey();
+            Map<City, ArrayList<Route>> neighborCityRouteMap = entry1.getValue();
+            for (Map.Entry<City, ArrayList<Route>> entry2 : neighborCityRouteMap.entrySet()) {
+                City cityTwo = entry2.getKey();
+                ArrayList<Route> routes = entry2.getValue();
+                drawPolylinesForParallelRoutes(routes);
+            }
         }
+        map.setOnPolylineClickListener(this);
         drawMarkersForRoutes(mapSetup.getRoutes());
+
+
     }
 
-    private void drawPolylineForRoute(Route route) {
+    private void drawPolylinesForParallelRoutes(ArrayList<Route> routes) {
+        // if already done, return
+        if (routePolylineMap.keySet().contains(routes.get(0))) {
+            return;
+        }
+
+        int numRoutes = routes.size();
+        if (numRoutes == 1) drawPolylineForRoute(routes.get(0));
+        else {
+            assert numRoutes == 2;
+
+        }
+    }
+
+    private void drawPLForRouteAtCoords(Route route, LatLng ll1, LatLng ll2) {
         Polyline polyline = map.addPolyline(new PolylineOptions()
                 .clickable(true)
-                .add(cityToLatLng(route.getOrigin()))
-                .add(cityToLatLng(route.getDestination())));
+                .add(ll1)
+                .add(ll2));
         polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
-        polyline.setColor(TrainColorConverter.convertTrainColor(route.getColor()));
+        int color = TrainColorConverter.convertTrainColor(route.getColor(), this.getContext());
+        color = ColorUtils.setAlphaComponent(color, POLYLINE_OPAQUE_OPACITY);
+        polyline.setColor(color);
 
         polyline.setTag(route);
         routePolylineMap.put(route, polyline);
+    }
+
+    private void drawPolylineForRoute(Route route) {
+        LatLng ll1 = cityToLatLng(route.getOrigin());
+        LatLng ll2 = cityToLatLng(route.getDestination());
+        drawPLForRouteAtCoords(route, ll1, ll2);
     }
 
     private void drawMarkersForRoutes(List<Route> routes) {
@@ -128,10 +172,24 @@ public class MapFragment extends SupportMapFragment implements
             cities.add(route.getOrigin());
         }
         for (City city : cities) {
-            map.addMarker(new MarkerOptions()
+            Marker marker = map.addMarker(new MarkerOptions()
                     .position(cityToLatLng(city))
-                    .title(city.getName()));
+                    .title(city.getName())
+                    .alpha(0.8f)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.baseline_location_on_black_18)));
+            marker.setInfoWindowAnchor(0.5f, 1f);
         }
+
+        map.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick ( Marker marker )
+            {
+                marker.showInfoWindow();
+                // do nothing
+                return true;
+            }
+        });
     }
 
     private LatLng cityToLatLng(City city) {
@@ -140,6 +198,9 @@ public class MapFragment extends SupportMapFragment implements
 
     @Override
     public void onPolylineClick(Polyline polyline) {
-
+        Route route = (Route) polyline.getTag();
+//        route.setPlayer(new Player("player", PlayerColor.BLUE));
+//        updateRoute(route);
+        setRouteEnabled(route, false);
     }
 }
