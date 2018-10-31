@@ -13,12 +13,12 @@ import modelclasses.TrainCard;
 import modelclasses.User;
 
 public interface iClient {
-    void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player);
-    void selectTrainCard(TrainCard card, Player player);
-    void clearWilds(ArrayList<TrainCard> replacements);
-    void replaceTrainCard(TrainCard replacement, Integer index);
-    void drawTrainCard(TrainCard card, Player player);
-    void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player);
+    void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player, GameInfo game);
+    void selectTrainCard(TrainCard card, Player player, GameInfo game);
+    void clearWilds(ArrayList<TrainCard> replacements, GameInfo game);
+    void replaceTrainCard(TrainCard replacement, Integer index, GameInfo game);
+    void drawTrainCard(TrainCard card, Player player, GameInfo game);
+    void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player, GameInfo game);
     void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
     void registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
     void joinGame(Player player, GameName gameName);
