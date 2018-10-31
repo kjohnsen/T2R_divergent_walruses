@@ -12,6 +12,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.TrainCard;
 
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
@@ -47,7 +48,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
             ArrayList<Object> array = (ArrayList<Object>) o;
             if (array.isEmpty()) {
                 //do nothing-- this is an error with Travis
-            } else if (array.get(0) instanceof DestinationCard) {
+            } else if (array.get(0) instanceof TrainCard) {
                 observable.deleteObserver(this);
                 view.startGame();
             } else if (array.get(0) instanceof Player) {

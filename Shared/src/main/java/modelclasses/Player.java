@@ -119,6 +119,10 @@ public class Player implements Serializable {
         destinationCards.addAll(tickets);
     }
 
+    public void removeDestinationCards(ArrayList<DestinationCard> tickets) {
+        destinationCards.removeAll(tickets);
+    }
+
     public ArrayList<Route> getRoutes() {
         return routes;
     }

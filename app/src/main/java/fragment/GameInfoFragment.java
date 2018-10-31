@@ -41,8 +41,13 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
     }
 
     @Override
-    public void updatePlayerInfo(List<Player> players) {
-        PlayerInfoListViewAdapter listViewAdapter = new PlayerInfoListViewAdapter(this.getContext(), players);
-        listView.setAdapter(listViewAdapter);
+    public void updatePlayerInfo(final List<Player> players) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                PlayerInfoListViewAdapter listViewAdapter = new PlayerInfoListViewAdapter(getContext(), players);
+                listView.setAdapter(listViewAdapter);
+            }
+        });
     }
 }
