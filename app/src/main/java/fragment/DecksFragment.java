@@ -106,19 +106,7 @@ public class DecksFragment extends Fragment implements IDecksView{
             }
         });
         presenter.getFaceupCards();
-
-        demoButton = v.findViewById(R.id.demoButton);
-        demoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(getActivity(), "Updating # of cards in Train Deck", Toast.LENGTH_SHORT).show();
-                //update the number of cards in train deck
-
-                Toast.makeText(getActivity(), "Updating # of cards in Dest. Deck", Toast.LENGTH_SHORT).show();
-                //update the number of cards in destination deck
-            }
-        });
+        
         return v;
     }
 
