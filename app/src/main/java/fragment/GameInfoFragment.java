@@ -28,6 +28,8 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
 
     View v;
     ListView listView;
+    TextView destDeck;
+    TextView trainDeck;
     GameInfoPresenter presenter;
     private int buttonIndex = 0;
     private String[] toastMessages = {"Updating opponent train cards",
@@ -50,6 +52,8 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         presenter = new GameInfoPresenter(this);
 
         listView = v.findViewById(R.id.list_view_player_info);
+        destDeck = v.findViewById(R.id.destinationDeck);
+        trainDeck = v.findViewById(R.id.trainDeck);
 
         testButton = v.findViewById(R.id.testButton);
         testButton.setText(String.valueOf("Test Model Button"));
@@ -87,6 +91,19 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         presenter.initialUpdate();
 
         return v;
+    }
+
+    @Override
+    public void updateDecksInfo(final int destDeckSize, final int trainDeckSize) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String destString = "Destination cards left: " + destDeckSize;
+                String trainString = "Train cards left: " + trainDeckSize;
+                destDeck.setText(destString);
+                trainDeck.setText(trainString);
+            }
+        });
     }
 
     @Override

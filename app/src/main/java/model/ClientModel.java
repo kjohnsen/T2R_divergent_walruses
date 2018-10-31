@@ -56,8 +56,6 @@ public class ClientModel extends Observable {
                 playerTickets.remove(c);
             }
         }
-        currentGame.getPlayer(player.getUsername()).removeDestinationCards(rejections);
-        notifyObservers(currentGame.getPlayers());
     }
 
     public void addTrainCard(TrainCard card, Player player) {
@@ -65,8 +63,6 @@ public class ClientModel extends Observable {
             playerTrainCards.add(card);
             notifyObservers(card);
         }
-        currentGame.getPlayer(player.getUsername()).addTrainCardToHand(card);
-        notifyObservers(currentGame.getPlayers());
     }
 
     public void addTickets(ArrayList<DestinationCard> cards, Player player) {
@@ -74,8 +70,6 @@ public class ClientModel extends Observable {
             playerTickets.addAll(cards);
             notifyObservers(cards);
         }
-        currentGame.getPlayer(player.getUsername()).addDestinationCards(cards);
-        notifyObservers(currentGame.getPlayers());
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
