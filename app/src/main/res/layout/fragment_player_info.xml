@@ -310,6 +310,31 @@
         app:layout_constraintEnd_toStartOf="@id/columnEighty"
         android:dividerHeight="10.0sp" />
 
+    <LinearLayout
+        android:id="@+id/removeCardButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/destinationCardList"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/removeDestCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Dest Card"/>
+
+        <Button
+            android:id="@+id/removeTrainCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Train Card"/>
+
+    </LinearLayout>
+
 
 
 </android.support.constraint.ConstraintLayout>
