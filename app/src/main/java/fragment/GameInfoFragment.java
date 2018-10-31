@@ -36,7 +36,8 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
     private String[] toastMessages = {"Updating opponent train cards",
                                       "Updating opponent train car pieces",
                                       "Updating opponent destination cards",
-                                      "Updating player scores"};
+                                      "Updating player scores",
+                                      "Changing turns"};
 
 
 
@@ -69,28 +70,28 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
                     switch (buttonIndex) {
                         case 0:
                             ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addTrainCardToHand(new TrainCard(TrainCardColor.WHITE));
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
+                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
                             break;
                         case 1:
                             ClientModel.getInstance().getCurrentGame().getPlayers().get(1).setNumberOfTrains(12);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
+                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
                             break;
                         case 2:
                             ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addDestCardToHand(Atlas.getDestinations()[0]);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
+                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
                             break;
                         case 3:
                             ClientModel.getInstance().getCurrentGame().getPlayers().get(0).addPoints(35);
                             ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addPoints(23);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers());
+                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
+                            break;
                         case 4:
                             ClientModel.getInstance().getCurrentGame().changeTurn();
                             ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
+                            break;
                     }
 
                     buttonIndex += 1;
-                    if(buttonIndex == 4)
-                        buttonIndex = 0;
                 }
             }
         });
