@@ -46,18 +46,18 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
 
         testButton = v.findViewById(R.id.testButton);
         testButton.setText(String.valueOf("Test Model Button"));
-        v.setOnClickListener(new View.OnClickListener() {
+        testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"Updating opponent train cards", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(),"Updating opponent train cards", Toast.LENGTH_LONG).show();
                 ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addTrainCardToHand(new TrainCard(TrainCardColor.WHITE));
                 ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers().get(1));
 
-                Toast.makeText(getActivity(),"Updating opponent train car pieces", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(),"Updating opponent train car pieces", Toast.LENGTH_LONG).show();
                 ClientModel.getInstance().getCurrentGame().getPlayers().get(1).setNumberOfTrains(12);
                 ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers().get(1));
 
-                Toast.makeText(getActivity(),"Updating opponent destination cards", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(),"Updating opponent destination cards", Toast.LENGTH_LONG).show();
                 ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addDestCardToHand(Atlas.getDestinations()[0]);
                 ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers().get(1));
 
