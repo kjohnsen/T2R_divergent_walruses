@@ -24,7 +24,6 @@ public class GameInfo implements Serializable {
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
         initializeFaceUpCards();
-        currentPlayer = players.get(0);
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -98,6 +97,27 @@ public class GameInfo implements Serializable {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public boolean setCurrentPlayer() {
+        if (players.size() > 0) {
+            currentPlayer = players.get(0);
+            return true;
+        }
+        return false;
+    }
+
+    public void changeTurn() {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).equals(currentPlayer)) {
+                if (i < players.size()-1) {
+                    currentPlayer = players.get(i+1);
+                }
+                else {
+                    currentPlayer = players.get(0);
+                }
+            }
+        }
     }
 
     public int getNumPlayers() {

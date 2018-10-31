@@ -33,6 +33,7 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
             GameInfo g = (GameInfo) o;
             view.updatePlayerInfo(g.getPlayers());
             view.updateDecksInfo(g.getDestCardDeck().size(), g.getTrainCardDeck().size());
+            view.updateCurrentPlayer(g.getCurrentPlayer());
         }
     }
 }
