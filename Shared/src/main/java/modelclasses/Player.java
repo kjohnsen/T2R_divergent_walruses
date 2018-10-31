@@ -32,6 +32,10 @@ public class Player implements Serializable {
         return points;
     }
 
+    public void addPoints(int pointsToAdd) {
+        points += pointsToAdd;
+    }
+
     public Integer getNumberOfTrains() {
         return numberOfTrains;
     }
