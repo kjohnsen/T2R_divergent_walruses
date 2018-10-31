@@ -120,6 +120,7 @@ public class ServerFacade implements IServer {
         if (replacements.size() == 1) {
             Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index, game}));
             results.getClientCommands().add(replaceCardCommand);
+
         } else {
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, game}));
             results.getClientCommands().add(clearWildsCommand);
