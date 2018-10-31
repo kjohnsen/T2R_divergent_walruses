@@ -171,7 +171,7 @@ public class ChatFragment extends Fragment implements IChatView {
             }
 
             public void setUsernameColor(PlayerColor playerColor) {
-                usernameTextView.setTextColor(PlayerColorConverter.convertPlayerColor(playerColor));
+                usernameTextView.setTextColor(PlayerColorConverter.convertPlayerColor(playerColor, getContext()));
             }
 
             public void setMessageText(String message) {
