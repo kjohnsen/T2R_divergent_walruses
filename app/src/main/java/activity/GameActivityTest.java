@@ -24,6 +24,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCard;
+import modelclasses.User;
 
 public class GameActivityTest extends GameActivity {
 
@@ -41,6 +42,7 @@ public class GameActivityTest extends GameActivity {
         ClientModel.getInstance().setGameList(gameInfos);
 
         ClientModel.getInstance().setCurrentGame(gameInfo);
+        ClientModel.getInstance().setCurrentUser(new User("asdf0", "asdf0"));
 
         //setting random trains and tickets so player info can see it
         ClientModel.getInstance().setPlayerTrainCards(gameInfo.getPlayer("asdf0").getTrainCards());

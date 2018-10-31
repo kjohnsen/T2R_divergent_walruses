@@ -11,6 +11,7 @@ public class Player implements Serializable {
     private PlayerColor playerColor;
     private ArrayList<TrainCard> trainCards = new ArrayList<>();
     private ArrayList<DestinationCard> destinationCards = new ArrayList<>();
+    private ArrayList<Route> routes = new ArrayList<>();
     private Integer points = 0;
     private Integer numberOfTrains = 45;
 
@@ -78,6 +79,10 @@ public class Player implements Serializable {
         destinationCards.add(destinationCard);
     }
 
+    public void addRoute(Route route) {
+        routes.add(route);
+    }
+
     public void removeDestCardFromHand(DestinationCard destinationCard) {
         destinationCards.remove(destinationCard);
     }
@@ -112,6 +117,10 @@ public class Player implements Serializable {
 
     public void addDestinationCards(ArrayList<DestinationCard> tickets) {
         destinationCards.addAll(tickets);
+    }
+
+    public ArrayList<Route> getRoutes() {
+        return routes;
     }
 
     @Override

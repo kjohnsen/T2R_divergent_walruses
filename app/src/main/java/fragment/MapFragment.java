@@ -26,7 +26,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import model.ClientModel;
 import modelclasses.City;
 import modelclasses.DefaultHashMap;
 import modelclasses.MapSetup;
@@ -49,7 +51,7 @@ public class MapFragment extends SupportMapFragment implements
     private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
     private static final int POLYLINE_CLAIMED_WIDTH = 24;
     private static final int POLYLINE_TRANSLUCENT_OPACITY = 60;
-    private static final int POLYLINE_OPAQUE_OPACITY = 140;
+    private static final int POLYLINE_OPAQUE_OPACITY = 160;
 
 
     @Override
@@ -125,6 +127,9 @@ public class MapFragment extends SupportMapFragment implements
                 drawPolylinesForParallelRoutes(routes);
             }
         }
+        for (Route route : mapSetup.getRoutes()) {
+            drawPolylineForRoute(route);
+        }
         map.setOnPolylineClickListener(this);
         drawMarkersForRoutes(mapSetup.getRoutes());
 
@@ -160,8 +165,8 @@ public class MapFragment extends SupportMapFragment implements
     }
 
     private void drawPolylineForRoute(Route route) {
-        LatLng ll1 = cityToLatLng(route.getOrigin());
-        LatLng ll2 = cityToLatLng(route.getDestination());
+        LatLng ll1 = cityToOffsetLatLng(route.getOrigin());
+        LatLng ll2 = cityToOffsetLatLng(route.getDestination());
         drawPLForRouteAtCoords(route, ll1, ll2);
     }
 
@@ -196,11 +201,28 @@ public class MapFragment extends SupportMapFragment implements
         return new LatLng(city.getLatitude(), city.getLongitude());
     }
 
+    private LatLng cityToOffsetLatLng(City city) {
+        final double RADIUS = 0.5;
+        double lat = city.getLatitude() + randDouble(-RADIUS, RADIUS);
+        double lng = city.getLongitude() + randDouble(-RADIUS, RADIUS);
+        return new LatLng(lat, lng);
+    }
+
+    private double randDouble(double rangeMin, double rangeMax) {
+        Random r = new Random();
+        return rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+    }
+
     @Override
     public void onPolylineClick(Polyline polyline) {
         Route route = (Route) polyline.getTag();
 //        route.setPlayer(new Player("player", PlayerColor.BLUE));
 //        updateRoute(route);
-        setRouteEnabled(route, false);
+//        setRouteEnabled(route, false);
+        ClientModel cm = ClientModel.getInstance();
+        String username = cm.getCurrentUser().getUsername();
+        Player player = cm.getCurrentGame().getPlayer(username);
+        player.addRoute(route);
+        cm.notifyObservers(route);
     }
 }
