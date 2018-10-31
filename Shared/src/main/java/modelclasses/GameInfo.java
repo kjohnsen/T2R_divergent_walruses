@@ -112,9 +112,11 @@ public class GameInfo implements Serializable {
             if (players.get(i).equals(currentPlayer)) {
                 if (i < players.size()-1) {
                     currentPlayer = players.get(i+1);
+                    break;
                 }
                 else {
                     currentPlayer = players.get(0);
+                    break;
                 }
             }
         }
