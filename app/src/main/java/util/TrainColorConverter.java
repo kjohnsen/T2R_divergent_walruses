@@ -1,5 +1,7 @@
 package util;
 
+import android.content.Context;
+
 import com.example.emilyhales.tickettoride.R;
 
 import modelclasses.TrainCardColor;
@@ -9,17 +11,17 @@ import modelclasses.TrainCardColor;
  */
 
 public class TrainColorConverter {
-    public static int convertTrainColor(TrainCardColor trainColor) {
+    public static int convertTrainColor(TrainCardColor trainColor, Context context) {
         switch (trainColor) {
-            case WILD: return R.color.deckGray;
-            case WHITE: return R.color.trainWhite;
-            case BLACK: return R.color.trainBlack;
-            case RED: return R.color.trainRed;
-            case ORANGE: return R.color.trainOrange;
-            case YELLOW: return R.color.trainYellow;
-            case GREEN: return R.color.trainGreen;
-            case BLUE: return R.color.trainBlue;
-            case PURPLE: return R.color.trainPurple;
+            case WILD: return context.getResources().getColor(R.color.trainPink);
+            case WHITE: return context.getResources().getColor(R.color.trainWhite);
+            case BLACK: return context.getResources().getColor(R.color.trainBlack);
+            case RED: return context.getResources().getColor(R.color.trainRed);
+            case ORANGE: return context.getResources().getColor(R.color.trainOrange);
+            case YELLOW: return context.getResources().getColor(R.color.trainYellow);
+            case GREEN: return context.getResources().getColor(R.color.trainGreen);
+            case BLUE: return context.getResources().getColor(R.color.trainBlue);
+            case PURPLE: return context.getResources().getColor(R.color.trainPurple);
         }
         return -1;
     }
