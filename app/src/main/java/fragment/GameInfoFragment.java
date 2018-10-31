@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
@@ -44,10 +45,11 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         listView = v.findViewById(R.id.list_view_player_info);
 
         testButton = v.findViewById(R.id.testButton);
+        testButton.setText(String.valueOf("Test Model Button"));
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"Updating oponent train cards", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(),"Updating opponent train cards", Toast.LENGTH_LONG);
                 ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addTrainCardToHand(new TrainCard(TrainCardColor.WHITE));
                 ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame().getPlayers().get(1));
 

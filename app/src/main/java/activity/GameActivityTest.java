@@ -74,7 +74,7 @@ public class GameActivityTest extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return new PlayerInfoFragment();
+                case 0: return new GameInfoFragment();
                 case 1: return new GameInfoFragment();
                 case 2: return new DecksFragment();
                 case 3: return new ChatFragment();
