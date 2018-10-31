@@ -58,7 +58,8 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         if (viewGroup != null && viewGroup.getChildAt(i) != null) {
-            viewGroup.getChildAt(i).setBackgroundColor(PlayerColorConverter.convertPlayerColor(players.get(i).getPlayerColor()));
+            viewGroup.getChildAt(i).setBackgroundColor(
+                    PlayerColorConverter.convertPlayerColor(players.get(i).getPlayerColor(), mContext));
         }
 
         LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

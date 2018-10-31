@@ -51,6 +51,8 @@ import modelclasses.MapSetup;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
+import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 import presenter.IMapPresenter;
 import presenter.MapPresenter;
 import util.PlayerColorConverter;
@@ -97,7 +99,7 @@ public class MapFragment extends SupportMapFragment implements
         Player player = route.getPlayer();
         if (player != null) {
             polyline.setWidth(POLYLINE_CLAIMED_WIDTH);
-            polyline.setColor(PlayerColorConverter.convertPlayerColor(player.getPlayerColor()));
+            polyline.setColor(getColorWithOpacity(route.getPlayer().getPlayerColor(), POLYLINE_OPAQUE_OPACITY));
         } else {
             polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
         }
@@ -205,11 +207,19 @@ public class MapFragment extends SupportMapFragment implements
         }
     }
 
-//    private int getColorWithOpacity(PlayerColor playerColor, int opacity) {
-//        int color = TrainColorConverter.convertTrainColor(playerColor, this.getContext());
-//        color = ColorUtils.setAlphaComponent(color, POLYLINE_OPAQUE_OPACITY);
-//
-//    }
+    private int getColorWithOpacity(int color, int opacity) {
+        return ColorUtils.setAlphaComponent(color, opacity);
+    }
+
+    private int getColorWithOpacity(TrainCardColor trainCardColor, int opacity) {
+        int color = TrainColorConverter.convertTrainColor(trainCardColor, this.getContext());
+        return getColorWithOpacity(color, opacity);
+    }
+
+    private int getColorWithOpacity(PlayerColor playerColor, int opacity) {
+        int color = PlayerColorConverter.convertPlayerColor(playerColor, this.getContext());
+        return getColorWithOpacity(color, opacity);
+    }
 
     private void drawPLForRouteAtCoords(Route route, LatLng ll1, LatLng ll2) {
         Polyline polyline = map.addPolyline(new PolylineOptions()
@@ -217,9 +227,7 @@ public class MapFragment extends SupportMapFragment implements
                 .add(ll1)
                 .add(ll2));
         polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
-        int color = TrainColorConverter.convertTrainColor(route.getColor(), this.getContext());
-        color = ColorUtils.setAlphaComponent(color, POLYLINE_OPAQUE_OPACITY);
-        polyline.setColor(color);
+        polyline.setColor(getColorWithOpacity(route.getColor(), POLYLINE_OPAQUE_OPACITY));
         List<PatternItem> pattern = Arrays.<PatternItem>asList(
                 new Dash(80), new Gap(10));
         polyline.setPattern(pattern);
