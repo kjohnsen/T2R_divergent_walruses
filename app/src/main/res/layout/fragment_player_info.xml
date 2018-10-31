@@ -314,24 +314,20 @@
         android:id="@+id/removeCardButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/destinationCardList"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/removeDestCardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remove Dest Card"/>
+            android:text="D"/>
 
         <Button
             android:id="@+id/removeTrainCardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remove Train Card"/>
+            android:text="T"/>
 
     </LinearLayout>
 
