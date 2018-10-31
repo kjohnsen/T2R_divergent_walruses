@@ -25,8 +25,16 @@ public class Player implements Serializable {
         playerColor = color;
     }
 
+    public void setNumberOfTrains(Integer numberOfTrains) {
+        this.numberOfTrains = numberOfTrains;
+    }
+
     public Integer getPoints() {
         return points;
+    }
+
+    public void addPoints(int pointsToAdd) {
+        points += pointsToAdd;
     }
 
     public Integer getNumberOfTrains() {

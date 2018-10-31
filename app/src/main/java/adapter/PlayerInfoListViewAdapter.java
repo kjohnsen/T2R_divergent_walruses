@@ -72,6 +72,9 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
         TextView playerName = view.findViewById(R.id.player_name);
         playerName.setText(players.get(i).getUsername());
 
+        TextView playerOrder = view.findViewById(R.id.player_order);
+        playerOrder.setText(String.valueOf("Player Order: " + (i+1)));
+
         //TODO: getPoints() is in player right now... somehow have to calculate points still.
         TextView points = view.findViewById(R.id.points);
         String pointsString = "Points: " + players.get(i).getPoints();

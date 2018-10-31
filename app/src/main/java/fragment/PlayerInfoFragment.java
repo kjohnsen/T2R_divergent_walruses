@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
 
     private ListView destinationCardList;
     PlayerInfoPresenter presenter;
+    private Button destCards;
+    private Button trainCards;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,21 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         View v = inflater.inflate(R.layout.fragment_player_info, container, false);
 
         presenter = new PlayerInfoPresenter(this);
+
+        destCards = v.findViewById(R.id.removeDestCardButton);
+        destCards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClientModel.getInstance().removeDestCard();
+            }
+        });
+        trainCards = v.findViewById(R.id.removeTrainCardButton);
+        trainCards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClientModel.getInstance().removeTrainCard();
+            }
+        });
 
         destinationCardList = v.findViewById(R.id.destinationCardList);
 
