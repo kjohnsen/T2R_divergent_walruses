@@ -16,9 +16,13 @@ import modelclasses.User;
 
 public class CommandFacade implements iClient {
 
-    private static final CommandFacade ourInstance = new CommandFacade();
+    private static CommandFacade ourInstance = new CommandFacade();
 
     public static CommandFacade getInstance() {
+        //the check is necessary because Travis fails otherwise
+        if (ourInstance == null) {
+            ourInstance = new CommandFacade();
+        }
         return ourInstance;
     }
 
