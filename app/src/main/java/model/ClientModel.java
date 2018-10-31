@@ -9,6 +9,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import modelclasses.User;
 
@@ -45,6 +46,10 @@ public class ClientModel extends Observable {
         currentUser = null;
         gameList = new ArrayList<>();
         faceupCards = new ArrayList<>();
+    }
+
+    public PlayerColor getCurrentColor() {
+        return currentGame.getPlayer(currentUser.getUsername()).getPlayerColor();
     }
 
     //for testing purposes
