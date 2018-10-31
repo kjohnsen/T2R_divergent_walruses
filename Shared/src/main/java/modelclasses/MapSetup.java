@@ -16,11 +16,8 @@ public class MapSetup implements Serializable {
     private double westBound = -125;
 
     private ArrayList<Route> routes = new ArrayList<>();
-    // map of a map of city to routes. This is the most logical way I
-    // could think of to keep track of double routes between two cities,
-    // which is necessary to draw them right.
-    private Map<City, DefaultHashMap<City, ArrayList<Route>>> cityConnectionMap =
-            new DefaultHashMap<>(new DefaultHashMap<City, ArrayList<Route>>(new ArrayList<Route>()));
+    private Map<City, ArrayList<City>> cityConnectionMap =
+            new DefaultHashMap<>(new ArrayList<City>());
 
     // Adds routes to list and manages map of connection between cities.
     // This map will be necessary for calculating things like longest
@@ -28,8 +25,8 @@ public class MapSetup implements Serializable {
     private void addRoute(City one, City two, TrainCardColor color, int length) {
         Route route = new Route(one, two, color, length);
         routes.add(route);
-        cityConnectionMap.get(one).get(two).add(route);
-        cityConnectionMap.get(two).get(one).add(route);
+        cityConnectionMap.get(one).add(two);
+        cityConnectionMap.get(two).add(one);
     }
 
     public MapSetup() {
@@ -171,7 +168,7 @@ public class MapSetup implements Serializable {
         return westBound;
     }
 
-    public Map<City, DefaultHashMap<City, ArrayList<Route>>> getCityConnectionMap() {
+    public Map<City, ArrayList<City>> getCityConnectionMap() {
         return cityConnectionMap;
     }
 }

@@ -10,7 +10,7 @@ import modelclasses.Route;
 public class MapPresenter implements IMapPresenter, Observer {
     IMapView mapView;
     public MapPresenter(IMapView mapView) {
-        mapView = mapView;
+        this.mapView = mapView;
         ClientModel.getInstance().addObserver(this);
     }
 

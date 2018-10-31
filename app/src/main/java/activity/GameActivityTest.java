@@ -23,6 +23,7 @@ import modelclasses.Atlas;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import modelclasses.User;
 
@@ -45,7 +46,9 @@ public class GameActivityTest extends GameActivity {
         ClientModel.getInstance().setCurrentUser(new User("asdf0", "asdf0"));
 
         //setting random trains and tickets so player info can see it
-        ClientModel.getInstance().setPlayerTrainCards(gameInfo.getPlayer("asdf0").getTrainCards());
+        Player asdf0 = gameInfo.getPlayer("asdf0");
+        asdf0.setPlayerColor(PlayerColor.GREEN);
+        ClientModel.getInstance().setPlayerTrainCards(asdf0.getTrainCards());
         ClientModel.getInstance().setPlayerTickets(gameInfo.getPlayer("asdf0").getDestinationCards());
     }
 

@@ -1,6 +1,13 @@
 package fragment;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,25 +15,34 @@ import android.support.v4.graphics.ColorUtils;
 
 import com.example.emilyhales.tickettoride.BuildConfig;
 import com.example.emilyhales.tickettoride.R;
+import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import model.ClientModel;
 import modelclasses.City;
@@ -88,7 +104,7 @@ public class MapFragment extends SupportMapFragment implements
     }
 
     @Override
-    public void setRouteEnabled(Route route, boolean enabled) {
+    public void setRouteEmphasized(Route route, boolean enabled) {
         Polyline polyline = routePolylineMap.get(route);
         if (enabled) {
             polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_OPAQUE_OPACITY));
@@ -117,23 +133,62 @@ public class MapFragment extends SupportMapFragment implements
 
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
 
-        // draw polylines by groups (i.e., either one or two between the same two cities)
-        for (Map.Entry<City, DefaultHashMap<City, ArrayList<Route>>> entry1 : mapSetup.getCityConnectionMap().entrySet()) {
-            City cityOne = entry1.getKey();
-            Map<City, ArrayList<Route>> neighborCityRouteMap = entry1.getValue();
-            for (Map.Entry<City, ArrayList<Route>> entry2 : neighborCityRouteMap.entrySet()) {
-                City cityTwo = entry2.getKey();
-                ArrayList<Route> routes = entry2.getValue();
-                drawPolylinesForParallelRoutes(routes);
-            }
-        }
+//        // draw polylines by groups (i.e., either one or two between the same two cities)
+//        for (Map.Entry<City, DefaultHashMap<City, ArrayList<Route>>> entry1 : mapSetup.getCityConnectionMap().entrySet()) {
+//            City cityOne = entry1.getKey();
+//            Map<City, ArrayList<Route>> neighborCityRouteMap = entry1.getValue();
+//            for (Map.Entry<City, ArrayList<Route>> entry2 : neighborCityRouteMap.entrySet()) {
+//                City cityTwo = entry2.getKey();
+//                ArrayList<Route> routes = entry2.getValue();
+//                drawPolylinesForParallelRoutes(routes);
+//            }
+//        }
+
+//        Set<Set<City>> labeledDistances = new HashSet<>()
         for (Route route : mapSetup.getRoutes()) {
             drawPolylineForRoute(route);
+            addLengthLabelForRoute(route);
         }
         map.setOnPolylineClickListener(this);
         drawMarkersForRoutes(mapSetup.getRoutes());
+    }
 
+    private void addLengthLabelForRoute(Route route) {
+        map.addGroundOverlay(new GroundOverlayOptions()
+                .image(bitmapDescriptorForRouteLength(route.getLength()))
+                .position(midpoint(route.getOrigin(), route.getDestination()), 100000f)
+                .zIndex(100));
+    }
 
+    private BitmapDescriptor bitmapDescriptorForRouteLength(int length) {
+        int resource;
+        switch (length) {
+            case 1: resource = R.drawable.ic_one; break;
+            case 2: resource = R.drawable.ic_two; break;
+            case 3: resource = R.drawable.ic_three; break;
+            case 4: resource = R.drawable.ic_four; break;
+            case 5: resource = R.drawable.ic_five; break;
+            case 6: resource = R.drawable.ic_six; break;
+            default: resource = R.drawable.baseline_location_on_black_18;
+        }
+        return generateBitmapDescriptorFromRes(this.getContext(), resource);
+    }
+
+    private static BitmapDescriptor generateBitmapDescriptorFromRes(
+            Context context, int resId) {
+        Drawable drawable = ContextCompat.getDrawable(context, resId);
+        drawable.setBounds(
+                0,
+                0,
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void drawPolylinesForParallelRoutes(ArrayList<Route> routes) {
@@ -150,6 +205,12 @@ public class MapFragment extends SupportMapFragment implements
         }
     }
 
+//    private int getColorWithOpacity(PlayerColor playerColor, int opacity) {
+//        int color = TrainColorConverter.convertTrainColor(playerColor, this.getContext());
+//        color = ColorUtils.setAlphaComponent(color, POLYLINE_OPAQUE_OPACITY);
+//
+//    }
+
     private void drawPLForRouteAtCoords(Route route, LatLng ll1, LatLng ll2) {
         Polyline polyline = map.addPolyline(new PolylineOptions()
                 .clickable(true)
@@ -159,6 +220,9 @@ public class MapFragment extends SupportMapFragment implements
         int color = TrainColorConverter.convertTrainColor(route.getColor(), this.getContext());
         color = ColorUtils.setAlphaComponent(color, POLYLINE_OPAQUE_OPACITY);
         polyline.setColor(color);
+        List<PatternItem> pattern = Arrays.<PatternItem>asList(
+                new Dash(80), new Gap(10));
+        polyline.setPattern(pattern);
 
         polyline.setTag(route);
         routePolylineMap.put(route, polyline);
@@ -169,6 +233,7 @@ public class MapFragment extends SupportMapFragment implements
         LatLng ll2 = cityToOffsetLatLng(route.getDestination());
         drawPLForRouteAtCoords(route, ll1, ll2);
     }
+
 
     private void drawMarkersForRoutes(List<Route> routes) {
         HashSet<City> cities = new HashSet<>();
@@ -208,6 +273,12 @@ public class MapFragment extends SupportMapFragment implements
         return new LatLng(lat, lng);
     }
 
+    private LatLng midpoint(City one, City two) {
+        double lat = (one.getLatitude() + two.getLatitude()) / 2;
+        double lng = (one.getLongitude() + two.getLongitude()) / 2;
+        return new LatLng(lat, lng);
+    }
+
     private double randDouble(double rangeMin, double rangeMax) {
         Random r = new Random();
         return rangeMin + (rangeMax - rangeMin) * r.nextDouble();
@@ -223,6 +294,7 @@ public class MapFragment extends SupportMapFragment implements
         String username = cm.getCurrentUser().getUsername();
         Player player = cm.getCurrentGame().getPlayer(username);
         player.addRoute(route);
+        route.setPlayer(player);
         cm.notifyObservers(route);
     }
 }

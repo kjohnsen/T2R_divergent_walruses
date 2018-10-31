@@ -11,6 +11,6 @@ public interface IMapView {
 
     public void updateRoute(Route route);
 
-    public void setRouteEnabled(Route route, boolean enabled);
+    public void setRouteEmphasized(Route route, boolean enabled);
 
 }
