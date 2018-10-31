@@ -112,8 +112,8 @@ public class ChatFragment extends Fragment implements IChatView {
 
         @Override
         protected void onPostExecute(String s) {
+            chatEditText.setText("");
             if(s != null) {
-                chatEditText.setText("");
                 showError(s);
             }
         }
