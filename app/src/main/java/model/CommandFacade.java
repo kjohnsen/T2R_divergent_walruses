@@ -25,23 +25,23 @@ public class CommandFacade implements iClient {
     private CommandFacade() {
     }
 
-    public static void _selectDestinationCards(GameName gameName, ArrayList<DestinationCard> rejections) {
-        ourInstance.selectDestinationCards(rejections);
+    public static void _selectDestinationCards(GameName gameName, ArrayList<DestinationCard> rejections, Player player, GameInfo game) {
+        ourInstance.selectDestinationCards(rejections, player, game);
     }
-    public static void _selectTrainCard(TrainCard card, Player player) {
-        ourInstance.selectTrainCard(card);
+    public static void _selectTrainCard(TrainCard card, Player player, GameInfo game) {
+        ourInstance.selectTrainCard(card, player, game);
     }
-    public static void _clearWilds(ArrayList<TrainCard> replacements, Player player) {
-        ourInstance.clearWilds(replacements);
+    public static void _clearWilds(ArrayList<TrainCard> replacements, GameInfo game) {
+        ourInstance.clearWilds(replacements, game);
     }
-    public static void _replaceTrainCard(TrainCard replacement, Integer selected, Player player) {
-        ourInstance.replaceTrainCard(replacement, selected, player);
+    public static void _replaceTrainCard(TrainCard replacement, Integer selected, GameInfo game) {
+        ourInstance.replaceTrainCard(replacement, selected, game);
     }
-    public static void _drawTrainCard(TrainCard card, Player player) {
-        ourInstance.drawTrainCard(card, player);
+    public static void _drawTrainCard(TrainCard card, Player player, GameInfo game) {
+        ourInstance.drawTrainCard(card, player, game);
     }
-    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
-        ourInstance.displayDestinationCards(tickets);
+    public static void _displayDestinationCards(ArrayList<DestinationCard> tickets, Player player, GameInfo game) {
+        ourInstance.displayDestinationCards(tickets, player, game);
     }
     public static void _registerUser(User user, String authToken, ArrayList<GameInfo> gameInfos) {
         ourInstance.registerUser(user, authToken, gameInfos);
@@ -61,40 +61,46 @@ public class CommandFacade implements iClient {
     public static void _claimColor(String username, PlayerColor playerColor) {
         ourInstance.claimColor(username, playerColor);
     }
-    public static void _startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
-        ourInstance.startGame(gameName, trainCards, destCards, faceUpCards);
+    public static void _startGame(GameInfo game) {
+        ourInstance.startGame(game);
     }
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
     @Override
-    public void selectDestinationCards(ArrayList<DestinationCard> rejections) {
-        ClientModel.getInstance().rejectTickets(rejections);
+    public void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player, GameInfo game) {
+        ClientModel.getInstance().rejectTickets(rejections, player);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
-    public void selectTrainCard(TrainCard card) {
-        ClientModel.getInstance().addTrainCard(card);
+    public void selectTrainCard(TrainCard card, Player player, GameInfo game) {
+        ClientModel.getInstance().addTrainCard(card, player);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
-    public void replaceTrainCard(TrainCard replacement, Integer selected, Player player) {
+    public void replaceTrainCard(TrainCard replacement, Integer selected, GameInfo game) {
         ClientModel.getInstance().replaceFaceupCard(replacement, selected);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
-    public void clearWilds(ArrayList<TrainCard> replacements) {
+    public void clearWilds(ArrayList<TrainCard> replacements, GameInfo game) {
         ClientModel.getInstance().setFaceupCards(replacements);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
-    public void drawTrainCard(TrainCard card, Player player) {
-        ClientModel.getInstance().addTrainCard(card);
+    public void drawTrainCard(TrainCard card, Player player, GameInfo game) {
+        ClientModel.getInstance().addTrainCard(card, player);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
-    public void displayDestinationCards(ArrayList<DestinationCard> tickets) {
-        ClientModel.getInstance().addTickets(tickets);
+    public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player, GameInfo game) {
+        ClientModel.getInstance().addTickets(tickets, player);
+        ClientModel.getInstance().setCurrentGame(game);
     }
 
     @Override
@@ -132,10 +138,14 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startGame(GameName gameName, ArrayList<TrainCard> trainCards, ArrayList<DestinationCard> destCards, ArrayList<TrainCard> faceUpCards) {
-        ClientModel.getInstance().setPlayerTickets(destCards);
-        ClientModel.getInstance().setPlayerTrainCards(trainCards);
-        ClientModel.getInstance().setFaceupCards(faceUpCards);
+    public void startGame(GameInfo game) {
+        ClientModel.getInstance().setFaceupCards(game.getFaceUpCards());
+        ClientModel.getInstance().setCurrentGamePlayers(game.getPlayers());
+
+        String username = ClientModel.getInstance().getCurrentUser().getUsername();
+        Player player = game.getPlayer(username);
+        ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
+        ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
     }
 
     @Override

@@ -5,6 +5,7 @@ public class Route {
     private City destination;
     private TrainCardColor color;
     private Integer length;
+    private Player player;
 
     public Route(City origin, City destination, TrainCardColor color, Integer length) {
         this.origin = origin;
@@ -21,11 +22,19 @@ public class Route {
         return destination;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public TrainCardColor getColor() {
         return color;
     }
 
     public Integer getLength() {
         return length;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

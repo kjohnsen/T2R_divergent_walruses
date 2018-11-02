@@ -29,6 +29,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     View trainDeck;
     View destinationDeck;
     IDecksPresenter presenter;
+    Button demoButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class DecksFragment extends Fragment implements IDecksView{
             }
         });
         presenter.getFaceupCards();
+
         return v;
     }
 

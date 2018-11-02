@@ -15,6 +15,7 @@ public class GameInfo implements Serializable {
     private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
     private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
     private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
+    private Player currentPlayer;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -96,6 +97,29 @@ public class GameInfo implements Serializable {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public boolean setCurrentPlayer() {
+        if (players.size() > 0) {
+            currentPlayer = players.get(0);
+            return true;
+        }
+        return false;
+    }
+
+    public void changeTurn() {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).equals(currentPlayer)) {
+                if (i < players.size()-1) {
+                    currentPlayer = players.get(i+1);
+                    break;
+                }
+                else {
+                    currentPlayer = players.get(0);
+                    break;
+                }
+            }
+        }
     }
 
     public int getNumPlayers() {
@@ -219,6 +243,14 @@ public class GameInfo implements Serializable {
 
     public void setFaceUpCards(ArrayList<TrainCard> faceUpCards) {
         this.faceUpCards = faceUpCards;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     @Override

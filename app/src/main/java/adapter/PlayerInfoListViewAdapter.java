@@ -16,6 +16,7 @@ import java.util.List;
 
 import modelclasses.DestinationCard;
 import modelclasses.Player;
+import util.PlayerColorConverter;
 
 
 /**
@@ -56,6 +57,11 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
+        if (viewGroup != null && viewGroup.getChildAt(i) != null) {
+            viewGroup.getChildAt(i).setBackgroundColor(
+                    PlayerColorConverter.convertPlayerColor(players.get(i).getPlayerColor(), mContext));
+        }
+
         LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         view = layoutInflater.inflate(R.layout.player_info, null);
@@ -66,6 +72,9 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
 
         TextView playerName = view.findViewById(R.id.player_name);
         playerName.setText(players.get(i).getUsername());
+
+        TextView playerOrder = view.findViewById(R.id.player_order);
+        playerOrder.setText(String.valueOf("Player Order: " + (i+1)));
 
         //TODO: getPoints() is in player right now... somehow have to calculate points still.
         TextView points = view.findViewById(R.id.points);

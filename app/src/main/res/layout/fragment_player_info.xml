@@ -253,10 +253,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardBlue"
-        app:layout_constraintStart_toEndOf="@id/columnTwentyFive"
-        app:layout_constraintEnd_toStartOf="@id/columnFiftyFive"
-        app:layout_constraintTop_toBottomOf="@id/rowTwenty"
-        app:layout_constraintBottom_toTopOf="@id/rowThirtyFive"/>
+        app:layout_constraintStart_toEndOf="@id/columnThirty"
+        app:layout_constraintEnd_toStartOf="@id/columnSixty"
+        app:layout_constraintTop_toBottomOf="@id/rowTwentyFive"
+        app:layout_constraintBottom_toTopOf="@id/rowForty"/>
 
 
     <TextView
@@ -264,16 +264,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/cardPurple"
-        app:layout_constraintStart_toEndOf="@id/columnThirty"
-        app:layout_constraintEnd_toStartOf="@id/columnSixty"
-        app:layout_constraintTop_toBottomOf="@id/rowTwentyFive"
-        app:layout_constraintBottom_toTopOf="@id/rowForty"/>
-
-    <TextView
-        android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/cardWhite"
         app:layout_constraintStart_toEndOf="@id/columnThirtyFive"
         app:layout_constraintEnd_toStartOf="@id/columnSixtyFive"
         app:layout_constraintTop_toBottomOf="@id/rowThirty"
@@ -283,7 +273,7 @@
         android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/cardBlack"
+        android:id="@+id/cardWhite"
         app:layout_constraintStart_toEndOf="@id/columnForty"
         app:layout_constraintEnd_toStartOf="@id/columnSeventy"
         app:layout_constraintTop_toBottomOf="@id/rowThirtyFive"
@@ -293,11 +283,21 @@
         android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/cardWild"
+        android:id="@+id/cardBlack"
         app:layout_constraintStart_toEndOf="@id/columnFortyFive"
         app:layout_constraintEnd_toStartOf="@id/columnSeventyFive"
         app:layout_constraintTop_toBottomOf="@id/rowForty"
         app:layout_constraintBottom_toTopOf="@id/rowFiftyFive"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cardWild"
+        app:layout_constraintStart_toEndOf="@id/columnFifty"
+        app:layout_constraintEnd_toStartOf="@id/columnEighty"
+        app:layout_constraintTop_toBottomOf="@id/rowFortyFive"
+        app:layout_constraintBottom_toTopOf="@id/rowSixty"/>
 
 
     <ListView
@@ -309,6 +309,27 @@
         app:layout_constraintStart_toEndOf="@id/columnTen"
         app:layout_constraintEnd_toStartOf="@id/columnEighty"
         android:dividerHeight="10.0sp" />
+
+    <LinearLayout
+        android:id="@+id/removeCardButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/removeDestCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D"/>
+
+        <Button
+            android:id="@+id/removeTrainCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T"/>
+
+    </LinearLayout>
 
 
 
