@@ -1,4 +1,4 @@
-package presenter;
+package presenter.decks;
 
 import java.util.List;
 

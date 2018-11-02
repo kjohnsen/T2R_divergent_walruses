@@ -1,60 +1,51 @@
-package presenter;
+package presenter.decks;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import fragment.IDecksView;
 import model.ClientModel;
-import model.UIFacade;
 import modelclasses.TrainCard;
+import presenter.IDecksPresenter;
 
 public class DecksPresenter implements IDecksPresenter, Observer {
 
     private IDecksView view;
+    private DecksState state;
 
     public DecksPresenter(IDecksView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
+        setState(DecksNoCardsDrawn.getInstance());
     }
 
     public IDecksView getView() {
         return view;
     }
 
-    @Override
-    public boolean isGameStart() { return UIFacade.getInstance().isGameStart(); }
+    public void setState(DecksState newState) {
+        state = newState;
+    }
 
     @Override
-    public void getFaceupCards() {
-        List<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
-        if (!cards.isEmpty()) {
-            view.replaceTrainCards(cards);
-        }
-    }
+    public boolean isGameStart() { return state.isGameStart(this); }
+
+    @Override
+    public void getFaceupCards() { state.getFaceupCards(this); }
 
     @Override
     public String selectTrainCard(int index) {
-        return UIFacade.getInstance().selectTrainCard(index);
-    }
+        return state.selectTrainCard(this, index); }
 
     @Override
-    public String drawTrainCard() {
-        return UIFacade.getInstance().drawTrainCard();
-    }
+    public String drawTrainCard() { return state.drawTrainCard(this); }
 
     @Override
-    public String drawDestinationCards() {
-        view.drawDestinationCards();
-        //this is in preparation for the stateful modification-- just ignore it for now
-        return null;
-    }
+    public String drawDestinationCards() { return state.drawDestinationCards(this); }
 
     @Override
-    public void onSwitchView() {
-        ClientModel.getInstance().deleteObserver(this);
-    }
+    public void onSwitchView() { state.onSwitchView(this); }
 
     @Override
     public void update(Observable observable, Object o) {

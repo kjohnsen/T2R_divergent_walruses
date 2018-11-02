@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import modelclasses.DestinationCard;
 import modelclasses.TrainCard;
-import presenter.DecksPresenter;
+import presenter.decks.DecksPresenter;
 import presenter.IDecksPresenter;
 
 public class DecksFragment extends Fragment implements IDecksView{

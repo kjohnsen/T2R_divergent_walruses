@@ -1,4 +1,4 @@
-package presenter;
+package presenter.decks;
 
 import model.UIFacade;
 import modelclasses.TrainCard;
@@ -13,25 +13,15 @@ public class DecksOneCardDrawn extends DecksState {
     public String drawDestinationCards(DecksPresenter presenter) {
         return "You've already drawn a train card-- draw another one to finish your turn";
     }
-    
-    public String drawTrainCard(DecksPresenter presenter) {
-        return super.drawTrainCard(presenter);
-    }
-    
-    public boolean isGameStart(DecksPresenter presenter) {
-        return super.isGameStart(presenter);
-    }
-    
+
+    @Override
     public String selectTrainCard(DecksPresenter presenter, int index) {
         TrainCard card = UIFacade.getInstance().getFaceupCards().get(index);
         if (card.getColor().equals(TrainCardColor.WILD)) {
             return "You've already drawn one card-- you can't pick a wild";
         } else {
+            presenter.setState(DecksWaiting.getInstance());
             return super.selectTrainCard(presenter, index);
         }
-    }
-    
-    public void onSwitchView(DecksPresenter presenter) {
-        super.onSwitchView(presenter);
     }
 }
