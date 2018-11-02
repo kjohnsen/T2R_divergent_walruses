@@ -40,7 +40,7 @@ public class GameLobbyMock implements IGameLobbyView {
     }
 
     @Override
-    public void updateAvailableColors(List<String> colors) {
+    public void updateAvailableColors(List<String> colors, int position) {
         this.colors = colors;
     }
 
