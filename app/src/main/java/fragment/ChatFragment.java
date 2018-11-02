@@ -26,6 +26,7 @@ import modelclasses.ChatMessage;
 import modelclasses.PlayerColor;
 import presenter.ChatPresenter;
 import presenter.IChatPresenter;
+import util.PlayerColorConverter;
 
 public class ChatFragment extends Fragment implements IChatView {
     private RecyclerView chatRecyclerView;
@@ -111,8 +112,8 @@ public class ChatFragment extends Fragment implements IChatView {
 
         @Override
         protected void onPostExecute(String s) {
+            chatEditText.setText("");
             if(s != null) {
-                chatEditText.setText("");
                 showError(s);
             }
         }
@@ -170,14 +171,7 @@ public class ChatFragment extends Fragment implements IChatView {
             }
 
             public void setUsernameColor(PlayerColor playerColor) {
-                switch (playerColor) {
-                    case RED: usernameTextView.setTextColor(getResources().getColor(R.color.trainRed)); break;
-                    case BLUE: usernameTextView.setTextColor(getResources().getColor(R.color.trainBlue)); break;
-                    case BLACK: usernameTextView.setTextColor(getResources().getColor(R.color.playerBlack)); break;
-                    case GREEN: usernameTextView.setTextColor(getResources().getColor(R.color.trainGreen)); break;
-                    case YELLOW: usernameTextView.setTextColor(getResources().getColor(R.color.trainYellow)); break;
-                    default: break;
-                }
+                usernameTextView.setTextColor(PlayerColorConverter.convertPlayerColor(playerColor, getContext()));
             }
 
             public void setMessageText(String message) {

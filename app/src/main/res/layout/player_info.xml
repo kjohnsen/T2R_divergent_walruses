@@ -23,6 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/player_order"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
             android:id="@+id/points"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

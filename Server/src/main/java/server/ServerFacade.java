@@ -125,6 +125,7 @@ public class ServerFacade implements IServer {
             clientProxy.replaceTrainCard(replacements.get(0), index, game, username);
             Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index, game}));
             results.getClientCommands().add(replaceCardCommand);
+
         } else {
             clientProxy.clearWilds(replacements, game, username);
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, game}));
@@ -345,6 +346,7 @@ public class ServerFacade implements IServer {
 
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
+        game.setCurrentPlayer();
 
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);

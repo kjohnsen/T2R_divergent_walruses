@@ -16,7 +16,8 @@ import data.Serializer;
  * Represents the clear handler object instantiated when the /clear api is called
  */
 
-public class ExcmdHandler implements HttpHandler {
+public class
+ExcmdHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange)
