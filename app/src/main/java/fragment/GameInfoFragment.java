@@ -41,8 +41,6 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
 
 
 
-    Button testButton;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,44 +55,6 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         listView = v.findViewById(R.id.list_view_player_info);
         destDeck = v.findViewById(R.id.destinationDeck);
         trainDeck = v.findViewById(R.id.trainDeck);
-
-        testButton = v.findViewById(R.id.testButton);
-        testButton.setText(String.valueOf("Test Model Button"));
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(buttonIndex < toastMessages.length) {
-                    Toast.makeText(getActivity(), toastMessages[buttonIndex], Toast.LENGTH_LONG).show();
-
-                    switch (buttonIndex) {
-                        case 0:
-                            ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addTrainCardToHand(new TrainCard(TrainCardColor.WHITE));
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
-                            break;
-                        case 1:
-                            ClientModel.getInstance().getCurrentGame().getPlayers().get(1).setNumberOfTrains(12);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
-                            break;
-                        case 2:
-                            ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addDestCardToHand(Atlas.getDestinations()[0]);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
-                            break;
-                        case 3:
-                            ClientModel.getInstance().getCurrentGame().getPlayers().get(0).addPoints(35);
-                            ClientModel.getInstance().getCurrentGame().getPlayers().get(1).addPoints(23);
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
-                            break;
-                        case 4:
-                            ClientModel.getInstance().getCurrentGame().changeTurn();
-                            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getCurrentGame());
-                            break;
-                    }
-
-                    buttonIndex += 1;
-                }
-            }
-        });
 
         presenter.initialUpdate();
 
