@@ -38,7 +38,9 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
         GameInfo gameInfo = UIFacade.getInstance().getCurrentGame();
         view.updatePlayerList(gameInfo.getPlayers());
         String username = UIFacade.getInstance().getUsername();
-        view.updateAvailableColors(PlayerColor.getAvailableColors(gameInfo.getPlayers(), username));
+        PlayerColor color = UIFacade.getInstance().getCurrentColor();
+        int position = PlayerColor.getColorIndex(gameInfo.getPlayers(), username, color);
+        view.updateAvailableColors(PlayerColor.getAvailableColors(gameInfo.getPlayers(), username), position);
         view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
     }
 
@@ -58,9 +60,11 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                     players.add(player);
                 }
                 String username = UIFacade.getInstance().getUsername();
+                PlayerColor color = UIFacade.getInstance().getCurrentColor();
+                int position = PlayerColor.getColorIndex(players, username, color);
                 List<String> colors = PlayerColor.getAvailableColors(players, username);
                 view.updatePlayerList(players);
-                view.updateAvailableColors(colors);
+                view.updateAvailableColors(colors, position);
                 view.setStartGameEnabled(UIFacade.getInstance().currentGameReady());
                 if (ClientModel.getInstance().currentGameReady()) {
                     view.setStartGameEnabled(true);

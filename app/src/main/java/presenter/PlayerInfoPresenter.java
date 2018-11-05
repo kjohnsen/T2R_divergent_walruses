@@ -36,7 +36,9 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
         if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
 
-            if (array.get(0) instanceof TrainCard) {
+            if (array.isEmpty()) {
+                //do nothing-- this is an error with Travis
+            } else if (array.get(0) instanceof TrainCard) {
                 ArrayList<TrainCard> trainCards = new ArrayList<>();
                 for (Object object : array) {
                     trainCards.add((TrainCard) object);
