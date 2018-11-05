@@ -15,7 +15,7 @@ import java.util.List;
 
 import modelclasses.TrainCard;
 import presenter.decks.DecksPresenter;
-import presenter.IDecksPresenter;
+import presenter.decks.IDecksPresenter;
 
 public class DecksFragment extends Fragment implements IDecksView{
 

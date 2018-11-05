@@ -7,7 +7,6 @@ import java.util.Observer;
 import fragment.IDecksView;
 import model.ClientModel;
 import modelclasses.TrainCard;
-import presenter.IDecksPresenter;
 
 public class DecksPresenter implements IDecksPresenter, Observer {
 

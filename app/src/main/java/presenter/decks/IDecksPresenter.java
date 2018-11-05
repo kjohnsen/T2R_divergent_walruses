@@ -1,4 +1,4 @@
-package presenter;
+package presenter.decks;
 
 public interface IDecksPresenter {
 
