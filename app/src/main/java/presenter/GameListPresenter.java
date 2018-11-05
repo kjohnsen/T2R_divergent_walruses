@@ -54,10 +54,10 @@ public class GameListPresenter implements IGameListPresenter, Observer {
 
     @Override
     public void getGameListInfo() {
-        List<GameInfo> games = UIFacade.getInstance().getGameList();
-        for (GameInfo g : games) {
-            if (g.getNumPlayers() - g.getPlayers().size() == 0) {
-                games.remove(g);
+        List<GameInfo> games = new ArrayList<>();
+        for (GameInfo g : UIFacade.getInstance().getGameList()) {
+            if (g.getNumPlayers() - g.getPlayers().size() != 0) {
+                games.add(g);
             }
         }
         view.populateGameList(games);

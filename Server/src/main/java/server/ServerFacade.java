@@ -94,7 +94,7 @@ public class ServerFacade implements IServer {
                 }
             }
             Results results = new Results();
-            Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player, game}));
+            Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
             results.getClientCommands().add(selectDestCardsCommand);
             results.setSuccess(true);
             return results;
@@ -115,14 +115,14 @@ public class ServerFacade implements IServer {
         player.addTrainCardToHand(card);
         ArrayList<TrainCard> replacements = game.replaceCards(index);
         Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player, game}));
+        Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
-            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index, game}));
+            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
             results.getClientCommands().add(replaceCardCommand);
 
         } else {
-            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, game}));
+            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
             results.getClientCommands().add(clearWildsCommand);
         }
         results.setSuccess(true);
@@ -137,7 +137,7 @@ public class ServerFacade implements IServer {
         TrainCard card = game.drawTrainCard();
         player.addTrainCardToHand(card);
         Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player, game}));
+        Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
         return results;
@@ -151,7 +151,7 @@ public class ServerFacade implements IServer {
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
         player.addDestinationCards(tickets);
         Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player, game}));
+        Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
         return results;
