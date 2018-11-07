@@ -32,4 +32,8 @@ public enum PlayerColor implements Serializable {
         }
         return colors;
     }
+
+    public static int getColorIndex(List<Player> players, String username, PlayerColor color) {
+        return getAvailableColors(players, username).indexOf(color.name());
+    }
 }
