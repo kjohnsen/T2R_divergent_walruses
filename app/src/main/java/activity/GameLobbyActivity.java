@@ -71,7 +71,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
     }
 
     @Override
-    public void updateAvailableColors(final List<String> colors) {
+    public void updateAvailableColors(final List<String> colors, final int position) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -79,6 +79,7 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
                         android.R.layout.simple_spinner_item, colors);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 colorSpinner.setAdapter(adapter);
+                colorSpinner.setSelection(position);
             }
         });
     }

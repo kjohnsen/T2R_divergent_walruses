@@ -117,9 +117,18 @@ public class UIFacade implements IUIFacade {
         return processResults(serverProxy.startGame(gameInfo.getGameName(), authToken));
     }
 
+    public PlayerColor getCurrentColor() {
+        return ClientModel.getInstance().getCurrentColor();
+    }
+
     public String claimColor(PlayerColor playerColor) {
         GameName gameName = ClientModel.getInstance().getCurrentGame().getGameName();
-        return processResults(serverProxy.chooseColor(playerColor, gameName, authToken));
+        PlayerColor currentColor = getCurrentColor();
+        if (!currentColor.equals(playerColor)) {
+            return processResults(serverProxy.chooseColor(playerColor, gameName, authToken));
+        } else {
+            return null;
+        }
     }
 
     public String sendChatMessage(ChatMessage chatMessage) {

@@ -1,7 +1,9 @@
 package model;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -94,5 +96,10 @@ public class CommandFacadeTest {
 
         assertTrue(chatMessages.size() == 1);
         assertTrue(chatMessages.get(0) == chatMessage);
+    }
+
+    @BeforeClass
+    public static void deregister() {
+        ClientModel.getInstance().deleteObservers();
     }
 }
