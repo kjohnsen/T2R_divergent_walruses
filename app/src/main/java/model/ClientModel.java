@@ -90,6 +90,8 @@ public class ClientModel extends Observable {
 
     public void drawTrainCardToHand(TrainCard card, Player player) {
         currentGame.addTrainCardToHand(card, player);
+        // we don't actually care about the deck, just the size of it, so just remove a random
+        //card for ease
         currentGame.getTrainCardDeck().remove(0);
         if (currentUser.getUsername().equals(player.getUsername())) {
             playerTrainCards.add(card);
@@ -117,6 +119,7 @@ public class ClientModel extends Observable {
 
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
+        //again, just remove a random card
         currentGame.getTrainCardDeck().remove(0);
         notifyObservers(faceupCards);
         if (currentGame.getTrainCardDeck().size() != 5) {
@@ -126,6 +129,7 @@ public class ClientModel extends Observable {
 
     public void setFaceupCards(ArrayList<TrainCard> cards) {
         faceupCards = cards;
+        //just remove six random cards
         for (int i = 0; i < 6; i++) {
             currentGame.getTrainCardDeck().remove(0);
         }

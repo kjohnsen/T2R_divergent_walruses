@@ -22,8 +22,8 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
     }
 
     public void initialUpdate(){
-        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTickets());
-        ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getPlayerTrainCards());
+        view.updateDestinationTickets(UIFacade.getInstance().getPlayerTickets());
+        view.updateTrainCards(Player.getTrainCardQuantities(UIFacade.getInstance().getPlayerTrainCards()));
     }
 
     @Override

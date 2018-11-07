@@ -68,7 +68,7 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     public void update(Observable observable, Object o) {
         if (o instanceof List) {
             List<Object> array = (ArrayList<Object>) o;
-            if (!array.isEmpty() && array.get(0) instanceof DestinationCard) {
+            if (array.size() == 3 && array.get(0) instanceof DestinationCard) {
                 List<DestinationCard> tickets = new ArrayList<>();
                 for (Object object : array) {
                     tickets.add((DestinationCard) object);
