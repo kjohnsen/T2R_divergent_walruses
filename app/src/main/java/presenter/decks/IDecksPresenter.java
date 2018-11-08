@@ -1,4 +1,4 @@
-package presenter;
+package presenter.decks;
 
 public interface IDecksPresenter {
 
@@ -30,8 +30,9 @@ public interface IDecksPresenter {
 
     /**
      * Goes to the destination cards view.
+     * @return an error message if there is one, or null otherwise
      */
-    void drawDestinationCards();
+    String drawDestinationCards();
 
     /**
      * Unregisters the DecksPresenter as an observer of the ClientModel.
