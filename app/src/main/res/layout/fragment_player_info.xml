@@ -310,27 +310,4 @@
         app:layout_constraintEnd_toStartOf="@id/columnEighty"
         android:dividerHeight="10.0sp" />
 
-    <LinearLayout
-        android:id="@+id/removeCardButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/removeDestCardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="D"/>
-
-        <Button
-            android:id="@+id/removeTrainCardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="T"/>
-
-    </LinearLayout>
-
-
-
 </android.support.constraint.ConstraintLayout>
