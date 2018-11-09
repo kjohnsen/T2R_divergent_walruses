@@ -44,8 +44,9 @@ public class CommandTranslator {
         String authToken = (String)params[2];
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         String numCardsKept = Integer.toString(3 - cards.size());
+        String cardOrCards = Integer.valueOf(numCardsKept) > 1 ? "Cards" : "Card";
 
-        return username + " kept " + numCardsKept + " Destination Cards.";
+        return username + " kept " + numCardsKept + " Destination " + cardOrCards + ".";
     }
 
     private static String translateSelectTrainCard(Command command) {
