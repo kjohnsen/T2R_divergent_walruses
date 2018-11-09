@@ -10,6 +10,7 @@ public class Player implements Serializable {
     private String username;
     private PlayerColor playerColor;
     private ArrayList<TrainCard> trainCards = new ArrayList<>();
+    private ArrayList<DestinationCard> preSelectionDestCards = new ArrayList<>();
     private ArrayList<DestinationCard> destinationCards = new ArrayList<>();
     private ArrayList<Route> routes = new ArrayList<>();
     private Integer points = 0;
@@ -91,10 +92,6 @@ public class Player implements Serializable {
         routes.add(route);
     }
 
-    public void removeDestCardFromHand(DestinationCard destinationCard) {
-        destinationCards.remove(destinationCard);
-    }
-
     public String getUsername() {
         return username;
     }
@@ -113,6 +110,22 @@ public class Player implements Serializable {
 
     public void setTrainCards(ArrayList<TrainCard> trainCards) {
         this.trainCards = trainCards;
+    }
+
+    public ArrayList<DestinationCard> getPreSelectionDestCards() {
+        return preSelectionDestCards;
+    }
+
+    public void setPreSelectionDestCards(ArrayList<DestinationCard> preSelectionDestCards) {
+        this.preSelectionDestCards = preSelectionDestCards;
+    }
+
+    public void removeDestCardFromList(DestinationCard destinationCard) {
+        preSelectionDestCards.remove(destinationCard);
+    }
+
+    public void clearPreSelectionDestCards() {
+        preSelectionDestCards.clear();
     }
 
     public ArrayList<DestinationCard> getDestinationCards() {

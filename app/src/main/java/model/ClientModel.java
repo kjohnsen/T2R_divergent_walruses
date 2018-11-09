@@ -24,6 +24,7 @@ public class ClientModel extends Observable {
     private ArrayList<TrainCard> faceupCards;
     private ArrayList<TrainCard> playerTrainCards;
     private ArrayList<DestinationCard> playerTickets;
+    private ArrayList<DestinationCard> playerPreSelectionTickets;
     private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
 
@@ -91,6 +92,10 @@ public class ClientModel extends Observable {
     public ArrayList<DestinationCard> getPlayerTickets() {
         return playerTickets;
     }
+    
+    public ArrayList<DestinationCard> getPlayerPreSelectionTickets() {
+        return playerPreSelectionTickets;
+    }
 
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
@@ -109,6 +114,11 @@ public class ClientModel extends Observable {
     public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
         playerTrainCards = cards;
         this.notifyObservers(cards);
+    }
+
+    public void setPlayerPreSelectionTickets(ArrayList<DestinationCard> preSelectionTickets) {
+        playerPreSelectionTickets = preSelectionTickets;
+        this.notifyObservers(preSelectionTickets);
     }
 
     public void setPlayerTickets(ArrayList<DestinationCard> tickets) {

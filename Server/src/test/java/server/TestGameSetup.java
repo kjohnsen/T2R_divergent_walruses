@@ -72,7 +72,10 @@ public class TestGameSetup {
             assertEquals(4, playerTrainCards.size());
 
             ArrayList<DestinationCard> playerDestCards = p.getDestinationCards();
-            assertEquals(3, playerDestCards.size());
+            assertEquals(0, playerDestCards.size());
+
+            ArrayList<DestinationCard> preSelectionDestCards = p.getPreSelectionDestCards();
+            assertEquals(3, preSelectionDestCards.size());
         }
 
         // check player commands
