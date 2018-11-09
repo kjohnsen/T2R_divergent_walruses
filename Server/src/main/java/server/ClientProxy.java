@@ -75,4 +75,11 @@ public class ClientProxy {
             }
         }
     }
+
+    public void addGameHistory(GameName gameName, ChatMessage message) {
+        Command clientCommand = new Command("model.CommandFacade", "_addGameHistory", Arrays.asList(new Object[] {message}));
+        for(Player player: ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
+        }
+    }
 }

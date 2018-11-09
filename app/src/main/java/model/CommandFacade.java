@@ -71,6 +71,8 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
+    public static void _addGameHistory(ChatMessage message) { ourInstance.addChatMessage(message); }
+
     @Override
     public void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player, GameInfo game) {
         ClientModel.getInstance().rejectTickets(rejections, player);

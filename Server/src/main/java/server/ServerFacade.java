@@ -418,6 +418,38 @@ public class ServerFacade implements IServer {
         return results;
     }
 
+    public void makeGameHistory(Command command) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            GameName gameName = null;
+            switch(command.get_methodName()) {
+                case CommandMethodNames.claimRoute: gameName = (GameName)command.get_paramValues()[0];  break;
+                case CommandMethodNames.clearWilds:
+                    GameInfo game = (GameInfo)command.get_paramValues()[0];
+                    gameName = game.getGameName();
+                    break;
+                case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0];    break;
+                case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1];  break;
+                case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0];   break;
+                case CommandMethodNames.selectTrainCard: gameName = (GameName)command.get_paramValues()[1]; break;
+                case CommandMethodNames.replaceTrainCard:
+                    GameInfo gameInfo = (GameInfo)command.get_paramValues()[2];
+                    gameName = gameInfo.getGameName();
+                    break;
+            }
+
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
+    public void addGameHistory(GameName gameName, ChatMessage message) {
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.addGameHistory(gameName, message);
+    }
+
     //these two methods are necessary for the client side, but not the server side
     @Override
     public void setHostIP(String hostIP) { }
