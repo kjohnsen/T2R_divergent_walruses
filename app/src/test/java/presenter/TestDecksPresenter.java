@@ -1,6 +1,5 @@
 package presenter;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,6 +10,7 @@ import java.util.List;
 import model.ClientModel;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
+import presenter.decks.DecksPresenter;
 
 public class TestDecksPresenter {
     private static DecksPresenter presenter;

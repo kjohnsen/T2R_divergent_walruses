@@ -54,17 +54,6 @@ public class ClientModel extends Observable {
     //for testing purposes
     public void setGameStart(boolean start) { startGame = start; }
 
-    //for demo purposes
-    public void removeDestCard() {
-        playerTickets.remove(0);
-        notifyObservers(playerTickets);
-    }
-
-    public void removeTrainCard() {
-        playerTrainCards.remove(0);
-        notifyObservers(playerTrainCards);
-    }
-
     public void rejectTickets(ArrayList<DestinationCard> rejections, Player player) {
         for (DestinationCard c : rejections) {
             currentGame.putDestCardInDeck(c);

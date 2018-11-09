@@ -1,18 +1,17 @@
-package presenter;
+package presenter.decks;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import fragment.IDecksView;
 import model.ClientModel;
-import model.UIFacade;
 import modelclasses.TrainCard;
 
 public class DecksPresenter implements IDecksPresenter, Observer {
 
     private IDecksView view;
+    private DecksState state;
 
     /**
      * Register as an observer of the ClientModel, and set the view.
@@ -21,6 +20,15 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     public DecksPresenter(IDecksView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
+        setState(DecksNoCardsDrawn.getInstance());
+    }
+
+    public IDecksView getView() {
+        return view;
+    }
+
+    public void setState(DecksState newState) {
+        state = newState;
     }
 
     /**
@@ -28,18 +36,13 @@ public class DecksPresenter implements IDecksPresenter, Observer {
      * @return whether it's the start of the game
      */
     @Override
-    public boolean isGameStart() { return UIFacade.getInstance().isGameStart(); }
+    public boolean isGameStart() { return state.isGameStart(this); }
 
     /**
      * Retrieves the faceup cards for the view.
      */
     @Override
-    public void getFaceupCards() {
-        List<TrainCard> cards = UIFacade.getInstance().getFaceupCards();
-        if (!cards.isEmpty()) {
-            view.replaceTrainCards(cards);
-        }
-    }
+    public void getFaceupCards() { state.getFaceupCards(this); }
 
     /**
      * Select a faceup card to put in the player's hand.
@@ -53,8 +56,7 @@ public class DecksPresenter implements IDecksPresenter, Observer {
      */
     @Override
     public String selectTrainCard(int index) {
-        return UIFacade.getInstance().selectTrainCard(index);
-    }
+        return state.selectTrainCard(this, index); }
 
     /**
      * Draws a card from the train card deck.
@@ -64,25 +66,19 @@ public class DecksPresenter implements IDecksPresenter, Observer {
      * @return an error message if there is one, or null otherwise
      */
     @Override
-    public String drawTrainCard() {
-        return UIFacade.getInstance().drawTrainCard();
-    }
+    public String drawTrainCard() { return state.drawTrainCard(this); }
 
     /**
      * Goes to the destination cards view.
      */
     @Override
-    public void drawDestinationCards() {
-        view.drawDestinationCards();
-    }
+    public String drawDestinationCards() { return state.drawDestinationCards(this); }
 
     /**
      * Unregisters the DecksPresenter as an observer of the ClientModel.
      */
     @Override
-    public void onSwitchView() {
-        ClientModel.getInstance().deleteObserver(this);
-    }
+    public void onSwitchView() { state.onSwitchView(this); }
 
     /**
      * Checks to see if the update the ClientModel sent out concerns the decks view. The only

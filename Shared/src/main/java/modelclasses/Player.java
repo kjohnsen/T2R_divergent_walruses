@@ -6,41 +6,105 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a player in the game
+ * Stores all of the data associated with a specific player,
+ * as well has methods for updating and accessing this data
+ */
 public class Player implements Serializable {
+
+    /**
+     * stores the player's username
+     */
     private String username;
+
+    /**
+     * stores the player's color
+     */
     private PlayerColor playerColor;
+
+    /**
+     * stores a list of the train cards in the player's hand
+     */
     private ArrayList<TrainCard> trainCards = new ArrayList<>();
+
+    /**
+     * stores a list of the destination cards in the player's hand
+     */
     private ArrayList<DestinationCard> destinationCards = new ArrayList<>();
+
+    /**
+     * stores a list of the routes a player has claimed
+     */
     private ArrayList<Route> routes = new ArrayList<>();
+
+    /**
+     * stores the player's current number of points
+     */
     private Integer points = 0;
+
+    /**
+     * stores the number of trains the player has remaining
+     */
     private Integer numberOfTrains = 45;
 
+    /**
+     * creates a Player object with given username
+     * @pre username is unique and not null
+     * @post Player's color is UNCHOSEN
+     */
     public Player(String username) {
         this.username = username;
         playerColor = PlayerColor.UNCHOSEN;
     }
-    //the following constructor is used for testing
+
+
+    /**
+     * this constructor is used for testing
+     * @pre username is unique and not null
+     * @pre color != null
+     */
     public Player(String username, PlayerColor color) {
         this.username = username;
         playerColor = color;
     }
 
+    /**
+     * sets Player's number of trains
+     * @pre 0 <= numberOfTrains <= 45
+     */
     public void setNumberOfTrains(Integer numberOfTrains) {
         this.numberOfTrains = numberOfTrains;
     }
 
+    /**
+     * @return player's current number of points
+     */
     public Integer getPoints() {
         return points;
     }
 
+    /**
+     * increments the player's points by the given amount
+     * @pre pointsToAdd > 0
+     * @pre points != null
+     * @post pointsToAdd increases
+     */
     public void addPoints(int pointsToAdd) {
         points += pointsToAdd;
     }
 
+    /**
+     * @return player's current number of trains
+     */
     public Integer getNumberOfTrains() {
         return numberOfTrains;
     }
 
+    /**
+     * @pre trainCardList.size() >= 0
+     * @post returns a map which maps TrainCardColors to the amount of that color in the player's hand
+     */
     public static Map<TrainCardColor,Integer> getTrainCardQuantities(List<TrainCard> trainCardList){
         Map<TrainCardColor, Integer> trainCard_amount = new HashMap<>();
 
@@ -79,62 +143,134 @@ public class Player implements Serializable {
         return trainCard_amount;
     }
 
+    /**
+     * adds a train card to the player's hand
+     * @pre trainCard != null
+     * @pre trainCards != null
+     * @post trainCards.size() increased by 1
+     */
     public void addTrainCardToHand(TrainCard trainCard) {
         trainCards.add(trainCard);
     }
 
+    /**
+     * adds a destination card to the player's hand
+     * @pre destinationCard != null
+     * @pre destinationCards != null
+     * @post destinationCards.size() increased by 1
+     */
     public void addDestCardToHand(DestinationCard destinationCard) {
         destinationCards.add(destinationCard);
     }
 
+    /**
+     * adds a route to the list of player's claimed routes
+     * @pre route != null
+     * @pre route is not claimed by another player
+     * @pre routes != null
+     * @ost routes.size() increased by 1
+     */
     public void addRoute(Route route) {
         routes.add(route);
     }
 
+    /**
+     * removes the given destination card from the player's hand
+     * @pre destinationCards.size() > 0
+     * @pre destinationCard is in destinationCards
+     * @pre destinationCard != null
+     * @post destinationCards.size() decreased by 1
+     */
     public void removeDestCardFromHand(DestinationCard destinationCard) {
         destinationCards.remove(destinationCard);
     }
 
+    /**
+     * @pre username != null
+     * @post returns the player's username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @pre playerColor != null
+     * @post returns the player's color
+     */
     public PlayerColor getPlayerColor() {
         return playerColor;
     }
 
+    /**
+     * sets the player's color to the given color
+     * @pre playerColor != null
+     * @pre playerColor != UNCHOSEN
+     */
     public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
     }
 
+    /**
+     * @post returns list of player's train cards
+     */
     public ArrayList<TrainCard> getTrainCards() {
         return trainCards;
     }
 
+    /**
+     * sets the player's train cards to the given list of train cards
+     * @pre trainCards != null
+     * @pre trainCards.size() < 5
+     */
     public void setTrainCards(ArrayList<TrainCard> trainCards) {
         this.trainCards = trainCards;
     }
 
+    /**
+     * @post returns list of player's destination cards
+     */
     public ArrayList<DestinationCard> getDestinationCards() {
         return destinationCards;
     }
 
+    /**
+     * sets the player's destination cards to the given list of destination cards
+     * @pre destinationCards != null
+     */
     public void setDestinationCards(ArrayList<DestinationCard> destinationCards) {
         this.destinationCards = destinationCards;
     }
 
+    /**
+     * adds a list of destination cards to the player's current list of destination cards
+     * @pre tickets != null
+     * @pre destinationCards != null
+     */
     public void addDestinationCards(ArrayList<DestinationCard> tickets) {
         destinationCards.addAll(tickets);
     }
 
+    /**
+     * removes a list of destination cards from the player's current list of destination cards
+     * @pre tickets != null
+     * @pre tickets.size() <= destinationCards.size()
+     * @pre every ticket in tickets is in destinationCards
+     * @post destinationCards.size() decreased by tickets.size()
+     */
     public void removeDestinationCards(ArrayList<DestinationCard> tickets) {
         destinationCards.removeAll(tickets);
     }
 
+    /**
+     * @post returns a list of player's claimed routes
+     */
     public ArrayList<Route> getRoutes() {
         return routes;
     }
 
+    /**
+     * @post returns true if objects are equal, returns false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
