@@ -124,7 +124,8 @@ public class ServerFacade implements IServer {
 
         } else {
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements, game}));
-            makeGameHistory(clearWildsCommand);
+            makeGameHistory(clearWildsCommand)
+            ;
             results.getClientCommands().add(clearWildsCommand);
         }
         results.setSuccess(true);

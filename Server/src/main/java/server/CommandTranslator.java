@@ -13,17 +13,24 @@ import modelclasses.TrainCardColor;
 
 public class CommandTranslator {
 
+    private static final String selectTrainCard = "_selectTrainCard";
+    private static final String drawTrainCard = "_drawTrainCard";
+    private static final String drawDestinationCards = "_drawDestinationCards";
+    private static final String selectDestinationCards = "_selectDestinationCards";
+    private static final String claimRoute = "_claimRoute";
+    private static final String replaceTrainCard = "_replaceTrainCard";
+    private static final String clearWilds = "_clearWilds";
 
     public static String translateCommand(Command command) {
         String commandMessage = "";
         switch(command.get_methodName()) {
-            case CommandMethodNames.drawDestinationCards: commandMessage = translateDrawDestinationCards(command);  break;
-            case CommandMethodNames.claimRoute: commandMessage = translateClaimRoute(command);  break;
-            case CommandMethodNames.clearWilds: commandMessage = translateClearWilds(command);  break;
-            case CommandMethodNames.drawTrainCard: commandMessage = translateDrawTrainCard(command);    break;
-            case CommandMethodNames.replaceTrainCard: commandMessage = translateReplaceTrainCard(command);  break;
-            case CommandMethodNames.selectDestinationCards: commandMessage = translateSelectDestinationCards(command);  break;
-            case CommandMethodNames.selectTrainCard: commandMessage = translateSelectTrainCard(command);    break;
+            case CommandTranslator.drawDestinationCards: commandMessage = translateDrawDestinationCards(command);  break;
+            case CommandTranslator.claimRoute: commandMessage = translateClaimRoute(command);  break;
+            case CommandTranslator.clearWilds: commandMessage = translateClearWilds(command);  break;
+            case CommandTranslator.drawTrainCard: commandMessage = translateDrawTrainCard(command);    break;
+            case CommandTranslator.replaceTrainCard: commandMessage = translateReplaceTrainCard(command);  break;
+            case CommandTranslator.selectDestinationCards: commandMessage = translateSelectDestinationCards(command);  break;
+            case CommandTranslator.selectTrainCard: commandMessage = translateSelectTrainCard(command);    break;
             default:    break;
         }
 
