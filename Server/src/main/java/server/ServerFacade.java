@@ -119,12 +119,12 @@ public class ServerFacade implements IServer {
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
             Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
-            makeGameHistory(replaceCardCommand);
+            makeGameHistory(replaceCardCommand, game.getGameName());
             results.getClientCommands().add(replaceCardCommand);
 
         } else {
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
-            makeGameHistory(clearWildsCommand)
+            makeGameHistory(clearWildsCommand, game.getGameName())
             ;
             results.getClientCommands().add(clearWildsCommand);
         }
@@ -421,6 +421,16 @@ public class ServerFacade implements IServer {
         return results;
     }
 
+    public void makeGameHistory(Command command, GameName gameName) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
     public void makeGameHistory(Command command) {
         String commandMessage = CommandTranslator.translateCommand(command);
         if(!commandMessage.isEmpty()) {
@@ -428,18 +438,12 @@ public class ServerFacade implements IServer {
             GameName gameName = null;
             switch(command.get_methodName()) {
                 case CommandMethodNames.claimRoute: gameName = (GameName)command.get_paramValues()[0];  break;
-                case CommandMethodNames.clearWilds:
-                    GameInfo game = (GameInfo)command.get_paramValues()[0];
-                    gameName = game.getGameName();
-                    break;
+                case CommandMethodNames.clearWilds: return;
                 case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0];    break;
                 case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1];  break;
                 case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0];   break;
                 case CommandMethodNames.selectTrainCard: gameName = (GameName)command.get_paramValues()[1]; break;
-                case CommandMethodNames.replaceTrainCard:
-                    GameInfo gameInfo = (GameInfo)command.get_paramValues()[2];
-                    gameName = gameInfo.getGameName();
-                    break;
+                case CommandMethodNames.replaceTrainCard: return;
             }
 
             if(gameName != null) {
