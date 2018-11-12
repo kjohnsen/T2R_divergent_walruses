@@ -82,17 +82,24 @@ public class ServerFacade implements IServer {
             String username = ServerModel.getInstance().getAuthTokens().get(authToken);
             Player player = game.getPlayer(username);
             for (DestinationCard card : tickets) {
-                if (player.getDestinationCards().contains(card)) {
-                    player.removeDestCardFromHand(card); // remove ticket from player hand
+                if (player.getPreSelectionDestCards().contains(card)) {
+                    player.removeDestCardFromList(card);
                     game.putDestCardInDeck(card); // put ticket back in dest card deck
                 }
                 else {
                     Results results = new Results();
                     results.setSuccess(false);
-                    results.setErrorMessage("Destination card not in player's hand");
+                    results.setErrorMessage("Destination card not in player's list");
                     return results;
                 }
             }
+
+            // put remaining cards in player's hand
+            for (DestinationCard card : player.getPreSelectionDestCards()) {
+                player.addDestCardToHand(card);
+            }
+            player.clearPreSelectionDestCards();
+
             Results results = new Results();
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
             results.getClientCommands().add(selectDestCardsCommand);
@@ -149,7 +156,7 @@ public class ServerFacade implements IServer {
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
-        player.addDestinationCards(tickets);
+        player.setPreSelectionDestCards(tickets);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
@@ -362,7 +369,7 @@ public class ServerFacade implements IServer {
         ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<DestinationCard> playerCards = game.getPlayerInitialDestCards();
-            player.setDestinationCards(playerCards);
+            player.setPreSelectionDestCards(playerCards);
         }
     }
 
