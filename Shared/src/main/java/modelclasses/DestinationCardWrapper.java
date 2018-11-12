@@ -19,7 +19,7 @@ public class DestinationCardWrapper {
         this.destinationCards = destinationCards;
     }
 
-    public Boolean getDeck() {
+    public Boolean isDeck() {
         return isDeck;
     }
 
