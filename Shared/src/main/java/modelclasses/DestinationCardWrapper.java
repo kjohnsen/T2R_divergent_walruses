@@ -6,9 +6,9 @@ public class DestinationCardWrapper {
     ArrayList<DestinationCard> destinationCards;
     Boolean isDeck;
 
-    DestinationCardWrapper(){
-        destinationCards = new ArrayList<>();
-        isDeck = false;
+    public DestinationCardWrapper(ArrayList<DestinationCard> _tickets, Boolean _isDeck){
+        isDeck = _isDeck;
+        destinationCards = _tickets;
     }
 
     public ArrayList<DestinationCard> getDestinationCards() {
