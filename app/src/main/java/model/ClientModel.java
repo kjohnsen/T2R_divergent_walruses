@@ -1,11 +1,11 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -24,6 +24,7 @@ public class ClientModel extends Observable {
     private ArrayList<TrainCard> faceupCards;
     private ArrayList<TrainCard> playerTrainCards;
     private ArrayList<DestinationCard> playerTickets;
+    private ArrayList<DestinationCard> playerPreSelectionTickets;
     private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
 
@@ -56,39 +57,81 @@ public class ClientModel extends Observable {
     public void setGameStart(boolean start) { startGame = start; }
 
     public void rejectTickets(ArrayList<DestinationCard> rejections, Player player) {
-        if (currentUser.getUsername().equals(player.getUsername())) {
-            for (DestinationCard c : rejections) {
+        for (DestinationCard c : rejections) {
+            currentGame.putDestCardInDeck(c);
+            if (currentUser.getUsername().equals(player.getUsername())) {
                 playerTickets.remove(c);
             }
         }
+        notifyObservers(player);
+        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), true));
     }
 
-    public void addTrainCard(TrainCard card, Player player) {
+    public void selectTrainCardToHand(TrainCard card, Player player) {
+        currentGame.addTrainCardToHand(card, player);
         if (currentUser.getUsername().equals(player.getUsername())) {
             playerTrainCards.add(card);
             notifyObservers(card);
         }
+        notifyObservers(player);
+        if (currentGame.getTrainCardDeck().size() != 5) {
+            notifyObservers(currentGame.getTrainCardDeck());
+        }
+    }
+
+    public void drawTrainCardToHand(TrainCard card, Player player) {
+        currentGame.addTrainCardToHand(card, player);
+        // we don't actually care about the deck, just the size of it, so just remove a random
+        //card for ease
+        currentGame.getTrainCardDeck().remove(0);
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            playerTrainCards.add(card);
+            notifyObservers(card);
+        }
+        notifyObservers(player);
+        if (currentGame.getTrainCardDeck().size() != 5) {
+            notifyObservers(currentGame.getTrainCardDeck());
+        }
     }
 
     public void addTickets(ArrayList<DestinationCard> cards, Player player) {
+        currentGame.addTicketsToHand(cards, player);
         if (currentUser.getUsername().equals(player.getUsername())) {
             playerTickets.addAll(cards);
             notifyObservers(cards);
         }
+        notifyObservers(player);
+        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(),true));
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
         return playerTickets;
     }
+    
+    public ArrayList<DestinationCard> getPlayerPreSelectionTickets() {
+        return playerPreSelectionTickets;
+    }
 
     public void replaceFaceupCard(TrainCard replacement, int selected) {
         faceupCards.set(selected, replacement);
-        this.notifyObservers(faceupCards);
+        //again, just remove a random card
+        currentGame.getTrainCardDeck().remove(0);
+        notifyObservers(faceupCards);
+        if (currentGame.getTrainCardDeck().size() != 5) {
+            notifyObservers(currentGame.getTrainCardDeck());
+        }
     }
 
     public void setFaceupCards(ArrayList<TrainCard> cards) {
         faceupCards = cards;
-        this.notifyObservers(faceupCards);
+        //just remove six random cards
+        for (int i = 0; i < 6; i++) {
+            currentGame.getTrainCardDeck().remove(0);
+        }
+        notifyObservers(faceupCards);
+        if (currentGame.getTrainCardDeck().size() != 5) {
+            notifyObservers(currentGame.getTrainCardDeck());
+        }
     }
 
     public ArrayList<TrainCard> getPlayerTrainCards() {
@@ -100,9 +143,14 @@ public class ClientModel extends Observable {
         this.notifyObservers(cards);
     }
 
+    public void setPlayerPreSelectionTickets(ArrayList<DestinationCard> preSelectionTickets) {
+        playerPreSelectionTickets = preSelectionTickets;
+        this.notifyObservers(new DestinationCardWrapper(preSelectionTickets, false));
+    }
+
     public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
         playerTickets = tickets;
-        this.notifyObservers(tickets);
+        this.notifyObservers(new DestinationCardWrapper(tickets, false));
     }
 
     public ArrayList<TrainCard> getFaceupCards() {

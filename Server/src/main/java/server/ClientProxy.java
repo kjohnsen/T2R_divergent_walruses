@@ -8,8 +8,6 @@ import data.Command;
 import data.CommandManager;
 import model.ServerModel;
 import modelclasses.ChatMessage;
-import modelclasses.DestinationCard;
-import modelclasses.User;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;

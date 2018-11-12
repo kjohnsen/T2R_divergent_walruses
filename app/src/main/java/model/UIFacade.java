@@ -52,8 +52,12 @@ public class UIFacade implements IUIFacade {
 
     public void setGameStart(boolean start) { ClientModel.getInstance().setGameStart(start); }
 
+    public ArrayList<TrainCard> getPlayerTrainCards() { return ClientModel.getInstance().getPlayerTrainCards(); }
+
+    public ArrayList<DestinationCard> getPlayerTickets() { return ClientModel.getInstance().getPlayerTickets(); }
+
     public List<DestinationCard> getStartDestinationCards() {
-        return ClientModel.getInstance().getPlayerTickets();
+        return ClientModel.getInstance().getPlayerPreSelectionTickets();
     }
 
     //This returns the error message if there is one, or null if there isn't

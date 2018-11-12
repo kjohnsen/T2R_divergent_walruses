@@ -51,6 +51,25 @@ public class GameInfo implements Serializable {
         players.add(player);
     }
 
+    public void addTrainCardToHand(TrainCard card, Player player) {
+        for (Player p : players) {
+            if (p.getUsername().equals(player.getUsername())) {
+                p.addTrainCardToHand(card);
+                return;
+            }
+        }
+    }
+
+    public void addTicketsToHand(ArrayList<DestinationCard> cards, Player player) {
+        destCardDeck.removeAll(cards);
+        for (Player p : players) {
+            if (p.getUsername().equals(player.getUsername())) {
+                p.addDestinationCards(cards);
+                return;
+            }
+        }
+    }
+
     public GameName getGameName() {
         return gameName;
     }
