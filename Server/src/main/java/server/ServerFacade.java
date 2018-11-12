@@ -18,6 +18,7 @@ import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.User;
 import modelclasses.TrainCard;
+import modelclasses.Route;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +75,10 @@ public class ServerFacade implements IServer {
 
     public static Results _sendChatMessage(ChatMessage message, GameName gameName) {
         return ourInstance.sendChatMessage(message, gameName);
+    }
+
+    public static Results _claimRoute(GameName gameName, Route route, String username) {
+        return ourInstance.claimRoute(gameName, route, username);
     }
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
@@ -414,6 +419,11 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
 
         return results;
+    }
+
+    public Results claimRoute(GameName gameName, Route route, String username) {
+        GamePlay gamePlay = new GamePlay();
+        return gamePlay.claimRoute(gameName, route, username);
     }
 
     public Results getCommands(String authToken) {

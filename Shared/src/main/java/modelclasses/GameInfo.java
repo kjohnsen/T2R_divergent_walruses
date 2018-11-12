@@ -15,7 +15,9 @@ public class GameInfo implements Serializable {
     private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
     private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
     private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
+    private ArrayList<Route> unclaimedRoutes = new ArrayList<>(); // TODO: initialize this
     private Player currentPlayer;
+    private boolean lastRound;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -24,6 +26,7 @@ public class GameInfo implements Serializable {
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
         initializeFaceUpCards();
+        lastRound = false;
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -264,12 +267,32 @@ public class GameInfo implements Serializable {
         this.faceUpCards = faceUpCards;
     }
 
+    public ArrayList<Route> getUnclaimedRoutes() {
+        return unclaimedRoutes;
+    }
+
+    public void setUnclaimedRoutes(ArrayList<Route> unclaimedRoutes) {
+        this.unclaimedRoutes = unclaimedRoutes;
+    }
+
+    public void removeFromUnclaimedRoutes(Route route) {
+        unclaimedRoutes.remove(route);
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    public void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 
     @Override

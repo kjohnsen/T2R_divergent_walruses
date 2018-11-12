@@ -10,6 +10,7 @@ import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import results.Results;
 
 public class ServerProxy implements IServer {
@@ -98,6 +99,13 @@ public class ServerProxy implements IServer {
     @Override
     public Results sendChatMessage(ChatMessage message, GameName gameName) {
         Command command = new Command("server.ServerFacade", "_sendChatMessage", Arrays.asList(new Object[] {message, gameName}));
+        Results results = ClientCommunicator.getInstance().send(command);
+        return results;
+    }
+
+    @Override
+    public Results claimRoute(GameName gameName, Route route, String username) {
+        Command command = new Command("server.ServerFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results;
     }
