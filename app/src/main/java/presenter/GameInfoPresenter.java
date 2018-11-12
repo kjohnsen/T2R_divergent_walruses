@@ -8,6 +8,7 @@ import fragment.IGameInfoView;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCard;
@@ -48,6 +49,13 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
             if (objects.size() == 0) {
                 //to catch Travis errors
             } else {
+                int destDeckSize = UIFacade.getInstance().getCurrentGame().getDestCardDeck().size();
+                int trainDeckSize = UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size();
+                view.updateDecksInfo(destDeckSize, trainDeckSize);
+            }
+        } else if (o instanceof DestinationCardWrapper) {
+            DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
+            if(wrapper.isDeck()){
                 int destDeckSize = UIFacade.getInstance().getCurrentGame().getDestCardDeck().size();
                 int trainDeckSize = UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size();
                 view.updateDecksInfo(destDeckSize, trainDeckSize);

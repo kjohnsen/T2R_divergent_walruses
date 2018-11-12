@@ -8,6 +8,7 @@ import fragment.IPlayerInfoView;
 import model.ClientModel;
 import model.UIFacade;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCard;
@@ -40,7 +41,12 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
             } else if (array.get(0) instanceof TrainCard) {
                 ArrayList<TrainCard> trainCards = UIFacade.getInstance().getPlayerTrainCards();
                 view.updateTrainCards(Player.getTrainCardQuantities(trainCards));
-            } else if (array.get(0) instanceof DestinationCard) {
+            }
+        } else if (o instanceof DestinationCardWrapper) {
+            DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
+            if(!wrapper.isDeck()){
+                //this is kinda dumb... sending the tickets through the update function,
+                //and then querying the client model or UIFacade?
                 ArrayList<DestinationCard> destCards = UIFacade.getInstance().getPlayerTickets();
                 view.updateDestinationTickets(destCards);
             }
