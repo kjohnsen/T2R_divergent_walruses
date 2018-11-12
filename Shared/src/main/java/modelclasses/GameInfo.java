@@ -15,7 +15,7 @@ public class GameInfo implements Serializable {
     private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
     private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
     private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
-    private ArrayList<Route> unclaimedRoutes = new ArrayList<>(); // TODO: initialize this
+    private ArrayList<Route> unclaimedRoutes = new ArrayList<>();
     private Player currentPlayer;
     private boolean lastRound;
 
@@ -26,6 +26,7 @@ public class GameInfo implements Serializable {
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
         initializeFaceUpCards();
+        initializeUnclaimedRoutes();
         lastRound = false;
     }
 
@@ -159,6 +160,12 @@ public class GameInfo implements Serializable {
             }
         }
         return true;
+    }
+
+    public void initializeUnclaimedRoutes() {
+        // TODO: is there a better way to handle this?
+        MapSetup mapSetup = new MapSetup();
+        unclaimedRoutes = new ArrayList<>(mapSetup.getRoutes());
     }
 
     public void initializeTrainCardDeck() {
