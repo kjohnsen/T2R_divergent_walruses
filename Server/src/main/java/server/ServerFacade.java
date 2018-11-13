@@ -8,10 +8,12 @@ import data.CommandManager;
 import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import model.ServerState;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.TrainCardColor;
 import results.Results;
 import data.Command;
 import modelclasses.GameName;
@@ -78,6 +80,7 @@ public class ServerFacade implements IServer {
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         if (tickets != null) {
+            ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS);
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
             String username = ServerModel.getInstance().getAuthTokens().get(authToken);
             Player player = game.getPlayer(username);
@@ -120,6 +123,16 @@ public class ServerFacade implements IServer {
         Player player = game.getPlayer(username);
         TrainCard card = game.getFaceUpCards().get(index);
         player.addTrainCardToHand(card);
+        if(card.getColor().equals(TrainCardColor.WILD)) {
+            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
+        } else {
+            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+            } else {
+                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+            }
+        }
+
         ArrayList<TrainCard> replacements = game.replaceCards(index);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
@@ -146,6 +159,13 @@ public class ServerFacade implements IServer {
         Player player = game.getPlayer(username);
         TrainCard card = game.drawTrainCard();
         player.addTrainCardToHand(card);
+
+        if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+        } else {
+            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+        }
+
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
@@ -160,6 +180,9 @@ public class ServerFacade implements IServer {
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
         player.setPreSelectionDestCards(tickets);
+
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+        
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);

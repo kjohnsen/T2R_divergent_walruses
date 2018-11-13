@@ -44,6 +44,8 @@ public class ServerModel {
      */
     private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
+    private ServerState state = ServerState.TURNSTART;
+
     /**
      * private empty constructor.
      * @pre None
@@ -65,6 +67,14 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public ServerState getState() {
+        return state;
+    }
+
+    public void setState(ServerState state) {
+        this.state = state;
     }
 
     /**
