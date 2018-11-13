@@ -72,15 +72,25 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         });
     }
 
+
     @Override
-    public void updateDecksInfo(final int destDeckSize, final int trainDeckSize) {
+    public void updateTrainDeckInfo(final int trainDeckSize) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String trainString = "Train cards left: " + trainDeckSize;
+                trainDeck.setText(trainString);
+            }
+        });
+    }
+
+    @Override
+    public void updateDestDeckInfo(final int destDeckSize) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String destString = "Destination cards left: " + destDeckSize;
-                String trainString = "Train cards left: " + trainDeckSize;
                 destDeck.setText(destString);
-                trainDeck.setText(trainString);
             }
         });
     }

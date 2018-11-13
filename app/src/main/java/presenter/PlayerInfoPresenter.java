@@ -12,6 +12,7 @@ import modelclasses.DestinationCardWrapper;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 
 public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
 
@@ -34,21 +35,16 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof ArrayList) {
-            ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.isEmpty()) {
-                //do nothing-- this is an error with Travis
-            } else if (array.get(0) instanceof TrainCard) {
-                ArrayList<TrainCard> trainCards = UIFacade.getInstance().getPlayerTrainCards();
-                view.updateTrainCards(Player.getTrainCardQuantities(trainCards));
-            }
+
+        if(o instanceof TrainCardWrapper) {
+            TrainCardWrapper wrapper = (TrainCardWrapper)o;
+            if(wrapper.getDeckType() == TrainCardWrapper.DeckType.PlayerCards)
+                view.updateTrainCards(Player.getTrainCardQuantities(wrapper.getCards()));
+
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
-            if(!wrapper.isDeck()){
-                //this is kinda dumb... sending the tickets through the update function,
-                //and then querying the client model or UIFacade?
-                ArrayList<DestinationCard> destCards = UIFacade.getInstance().getPlayerTickets();
-                view.updateDestinationTickets(destCards);
+            if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.PlayerTickets){
+                view.updateDestinationTickets(wrapper.getDestinationCards());
             }
         }
     }
