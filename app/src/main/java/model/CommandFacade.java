@@ -98,7 +98,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
-        ClientModel.getInstance().addTickets(tickets, player);
+        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets);
     }
 
     @Override

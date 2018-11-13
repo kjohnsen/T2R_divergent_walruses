@@ -61,8 +61,13 @@ public class ClientModel extends Observable {
         for (DestinationCard c : rejections) {
             currentGame.putDestCardInDeck(c);
             if (currentUser.getUsername().equals(player.getUsername())) {
-                playerTickets.remove(c);
+                playerPreSelectionTickets.remove(c);
             }
+        }
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            playerTickets.addAll(playerPreSelectionTickets);
+            playerPreSelectionTickets.clear();
+            notifyObservers(new DestinationCardWrapper(playerTickets, DestinationCardWrapper.DeckType.PlayerTickets));
         }
         notifyObservers(player);
         notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck));
@@ -93,16 +98,6 @@ public class ClientModel extends Observable {
         if (currentGame.getTrainCardDeck().size() != 5) {
             notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
         }
-    }
-
-    public void addTickets(ArrayList<DestinationCard> cards, Player player) {
-        currentGame.addTicketsToHand(cards, player);
-        if (currentUser.getUsername().equals(player.getUsername())) {
-            playerTickets.addAll(cards);
-            notifyObservers(new DestinationCardWrapper(cards, DestinationCardWrapper.DeckType.PlayerTickets));
-        }
-        notifyObservers(player);
-        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(),DestinationCardWrapper.DeckType.DrawDeck));
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
