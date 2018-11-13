@@ -63,6 +63,9 @@ public class ClientModel extends Observable {
                 playerTickets.remove(c);
             }
         }
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            notifyObservers(new DestinationCardWrapper(playerTickets, false));
+        }
         notifyObservers(player);
         notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), true));
     }
@@ -98,7 +101,7 @@ public class ClientModel extends Observable {
         currentGame.addTicketsToHand(cards, player);
         if (currentUser.getUsername().equals(player.getUsername())) {
             playerTickets.addAll(cards);
-            notifyObservers(cards);
+            notifyObservers(new DestinationCardWrapper(cards, false));
         }
         notifyObservers(player);
         notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(),true));

@@ -68,6 +68,7 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
         builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         builder.setContentView(view);
+        builder.setCanceledOnTouchOutside(false);
         return builder;
     }
 

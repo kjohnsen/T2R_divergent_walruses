@@ -44,11 +44,8 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
             }
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
-            if(!wrapper.isDeck()){
-                //this is kinda dumb... sending the tickets through the update function,
-                //and then querying the client model or UIFacade?
-                ArrayList<DestinationCard> destCards = UIFacade.getInstance().getPlayerTickets();
-                view.updateDestinationTickets(destCards);
+            if (!wrapper.isDeck()) {
+                view.updateDestinationTickets(wrapper.getDestinationCards());
             }
         }
     }
