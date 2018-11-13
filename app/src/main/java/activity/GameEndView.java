@@ -17,6 +17,7 @@ import java.util.List;
 
 import modelclasses.PlayerSummary;
 import presenter.IGameEndPresenter;
+import presenter.GameEndPresenter;
 
 public class GameEndView extends AppCompatActivity implements IGameEndView {
 
@@ -26,6 +27,7 @@ public class GameEndView extends AppCompatActivity implements IGameEndView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new GameEndPresenter(this);
         setContentView(R.layout.activity_game_end_view);
         endGameInfoRecyclerView = findViewById(R.id.endGameInfoRecyclerView);
         endGameInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -34,10 +36,16 @@ public class GameEndView extends AppCompatActivity implements IGameEndView {
         endGameInfoRecyclerView.setAdapter(endGameAdapter);
     }
 
-    @Override
-    public void updateGameEndInfo() {
-
+    public IGameEndPresenter getPresenter() {
+        return presenter;
     }
+
+    public void setPresenter(IGameEndPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void updateGameEndInfo() {}
 
     private class EndGameAdapter extends RecyclerView.Adapter<EndGameAdapter.EndGameInfoViewHolder> {
 
