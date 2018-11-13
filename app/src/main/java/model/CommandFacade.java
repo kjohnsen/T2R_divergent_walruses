@@ -144,6 +144,7 @@ public class CommandFacade implements iClient {
 
         String username = ClientModel.getInstance().getCurrentUser().getUsername();
         Player player = game.getPlayer(username);
+        ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards());
         ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
         ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
     }

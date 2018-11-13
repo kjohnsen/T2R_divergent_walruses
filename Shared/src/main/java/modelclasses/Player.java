@@ -27,6 +27,7 @@ public class Player implements Serializable {
      * stores a list of the train cards in the player's hand
      */
     private ArrayList<TrainCard> trainCards = new ArrayList<>();
+    private ArrayList<DestinationCard> preSelectionDestCards = new ArrayList<>();
 
     /**
      * stores a list of the destination cards in the player's hand
@@ -174,21 +175,6 @@ public class Player implements Serializable {
         routes.add(route);
     }
 
-    /**
-     * removes the given destination card from the player's hand
-     * @pre destinationCards.size() > 0
-     * @pre destinationCard is in destinationCards
-     * @pre destinationCard != null
-     * @post destinationCards.size() decreased by 1
-     */
-    public void removeDestCardFromHand(DestinationCard destinationCard) {
-        destinationCards.remove(destinationCard);
-    }
-
-    /**
-     * @pre username != null
-     * @post returns the player's username
-     */
     public String getUsername() {
         return username;
     }
@@ -224,6 +210,22 @@ public class Player implements Serializable {
      */
     public void setTrainCards(ArrayList<TrainCard> trainCards) {
         this.trainCards = trainCards;
+    }
+
+    public ArrayList<DestinationCard> getPreSelectionDestCards() {
+        return preSelectionDestCards;
+    }
+
+    public void setPreSelectionDestCards(ArrayList<DestinationCard> preSelectionDestCards) {
+        this.preSelectionDestCards = preSelectionDestCards;
+    }
+
+    public void removeDestCardFromList(DestinationCard destinationCard) {
+        preSelectionDestCards.remove(destinationCard);
+    }
+
+    public void clearPreSelectionDestCards() {
+        preSelectionDestCards.clear();
     }
 
     /**
