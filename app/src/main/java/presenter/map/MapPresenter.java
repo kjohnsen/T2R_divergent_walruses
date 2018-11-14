@@ -5,7 +5,10 @@ import java.util.Observer;
 
 import fragment.IMapView;
 import model.ClientModel;
+import modelclasses.DestinationCardWrapper;
+import modelclasses.Player;
 import modelclasses.Route;
+import modelclasses.TrainCardWrapper;
 
 public class MapPresenter implements IMapPresenter, Observer {
     IMapView mapView;
@@ -34,6 +37,14 @@ public class MapPresenter implements IMapPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof Route) {
             mapView.updateRoute((Route) o);
+        } else if (o instanceof Player){ // turn change
+            if (((Player) o).getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+                this.setState(ClaimingEnabledState.getInstance());
+            } else {
+                this.setState(ClaimingDisabledState.getInstance());
+            }
+        } else if (o instanceof DestinationCardWrapper || o instanceof TrainCardWrapper) {
+            this.setState(ClaimingDisabledState.getInstance());
         }
     }
 }

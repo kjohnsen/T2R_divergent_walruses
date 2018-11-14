@@ -113,9 +113,11 @@ public class MapFragment extends SupportMapFragment implements
     public void emphasizeSelectRoutes(ArrayList<Route> routes) {
         for (Route r : this.routePolylineMap.keySet()) {
             setRouteEmphasized(r, false);
+            routePolylineMap.get(r).setClickable(false);
         }
         for (Route r : routes) {
             setRouteEmphasized(r, true);
+            routePolylineMap.get(r).setClickable(true);
         }
     }
 

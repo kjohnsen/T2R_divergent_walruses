@@ -101,7 +101,11 @@ public class UIFacade implements IUIFacade {
     }
 
     public String claimRoute(Route route) {
-        return processResults(serverProxy.claimRoute(route, getCurrentGame().getGameName(), authToken));
+        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken));
+    }
+
+    public ArrayList<Route> getAvailableRoutes() {
+        return ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
     }
 
     public String loginUser(String username, String password) {
