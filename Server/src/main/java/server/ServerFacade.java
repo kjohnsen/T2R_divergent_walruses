@@ -1,5 +1,7 @@
 package server;
 
+import com.sun.corba.se.spi.activation.Server;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +92,17 @@ public class ServerFacade implements IServer {
 
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
-
+        GameInfo gameInfo = ServerModel.getInstance().getGameInfo(name);
+        boolean isWild = gameInfo.getFaceUpCards().get(index).getColor().equals(TrainCardColor.WILD);
+        if(isWild) {
+            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
+        } else {
+            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+            } else {
+                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+            }
+        }
         return GamePlay.selectTrainCard(index, name, authToken);
     }
 
