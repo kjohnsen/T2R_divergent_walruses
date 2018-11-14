@@ -60,6 +60,14 @@ public class UIFacade implements IUIFacade {
         return ClientModel.getInstance().getPlayerPreSelectionTickets();
     }
 
+    public int getTrainDeckSize() {
+        return ClientModel.getInstance().getTrainDeckSize();
+    }
+
+    public int getDestDeckSize() {
+        return ClientModel.getInstance().getDestDeckSize();
+    }
+
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
