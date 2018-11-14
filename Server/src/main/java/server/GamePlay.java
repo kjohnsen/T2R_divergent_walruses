@@ -1,6 +1,7 @@
 package server;
 
 import model.ServerModel;
+import modelclasses.TrainCardColor;
 import results.Results;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -23,7 +24,8 @@ public class GamePlay {
         Results results = new Results();
 
         // verify that player can claim route
-        if (!playerCanClaimRoute(route, player)) {
+        ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
+        if (cardsForClaimingRoute == null) {
             results.setErrorMessage("Player unable to claim route");
             results.setSuccess(false);
             return results;
@@ -32,6 +34,10 @@ public class GamePlay {
         // claim the route for the specified player
         game.removeFromUnclaimedRoutes(route);
         player.addRoute(route);
+        route.setPlayer(player);
+        player.setNumberOfTrains(player.getNumberOfTrains() - route.getLength());
+        player.removeTrainCardsFromHand(cardsForClaimingRoute);
+        game.addCardsToTrainDiscarded(cardsForClaimingRoute);
 
         // send claimRoute command to the clients
         ClientProxy clientProxy = new ClientProxy();
@@ -48,30 +54,46 @@ public class GamePlay {
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
         results.getClientCommands().add(claimRouteCommand);
         results.setSuccess(true);
-        return null;
+        return results;
     }
 
-    private boolean playerCanClaimRoute(Route route, Player player) {
-        // verify that player has correct color and number of train cards
+    private ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player) {
         int routeLength = route.getLength();
-        int cardCount = 0;
+        ArrayList<TrainCard> cardsForClaimingRoute = new ArrayList<>();
 
         ArrayList<TrainCard> playerTrainCards = player.getTrainCards();
+        ArrayList<TrainCard> wildCards = new ArrayList<>();
         for (TrainCard card : playerTrainCards) {
-            if (card.getColor().equals(route.getColor())) {
-                cardCount++;
+            if (card.getColor().equals(TrainCardColor.WILD)) {
+                wildCards.add(card);
+            }
+            boolean matchingColor = card.getColor().equals(route.getColor());
+            boolean needMoreCards = cardsForClaimingRoute.size() < routeLength;
+            if (matchingColor && needMoreCards) {
+                cardsForClaimingRoute.add(card);
             }
         }
 
-        if (cardCount < routeLength) {
-            return false;
+        // verify that player has sufficient number of train cards
+        //      and check to see if there are enough wilds to make up for it
+        int neededCards = routeLength - cardsForClaimingRoute.size();
+
+        // this is the case in which there are not enough cards of one color, and not enough wilds
+        if (wildCards.size() < neededCards) {
+            return null;
+        }
+        // this is the case in which there are not enough cards of one color, but there ARE enough wilds
+        else if (neededCards > 0) {
+            for (int i = 0; i < neededCards; i++) {
+                cardsForClaimingRoute.add(wildCards.get(0));
+            }
         }
 
         // verify that player has enough trains
         if (player.getNumberOfTrains() < routeLength) {
-            return false;
+            return null;
         }
 
-        return true;
+        return cardsForClaimingRoute;
     }
 }

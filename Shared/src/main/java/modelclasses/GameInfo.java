@@ -15,6 +15,7 @@ public class GameInfo implements Serializable {
     private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
     private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
     private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
+    private ArrayList<TrainCard> discardedTrainCards = new ArrayList<>();
     private ArrayList<Route> unclaimedRoutes = new ArrayList<>();
     private Player currentPlayer;
     private boolean lastRound;
@@ -163,7 +164,6 @@ public class GameInfo implements Serializable {
     }
 
     public void initializeUnclaimedRoutes() {
-        // TODO: is there a better way to handle this?
         MapSetup mapSetup = new MapSetup();
         unclaimedRoutes = new ArrayList<>(mapSetup.getRoutes());
     }
@@ -272,6 +272,18 @@ public class GameInfo implements Serializable {
 
     public void setFaceUpCards(ArrayList<TrainCard> faceUpCards) {
         this.faceUpCards = faceUpCards;
+    }
+
+    public ArrayList<TrainCard> getDiscardedTrainCards() {
+        return discardedTrainCards;
+    }
+
+    public void setDiscardedTrainCards(ArrayList<TrainCard> discardedTrainCards) {
+        this.discardedTrainCards = discardedTrainCards;
+    }
+
+    public void addCardsToTrainDiscarded(ArrayList<TrainCard> cardsToDiscard) {
+        discardedTrainCards.addAll(cardsToDiscard);
     }
 
     public ArrayList<Route> getUnclaimedRoutes() {

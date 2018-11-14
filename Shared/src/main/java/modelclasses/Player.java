@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 
 /**
  * Represents a player in the game
@@ -38,6 +39,11 @@ public class Player implements Serializable {
      * stores a list of the routes a player has claimed
      */
     private ArrayList<Route> routes = new ArrayList<>();
+
+    /**
+     * stores a list of sets of connected cities, used to determine if destination cards were satisfied
+     */
+    private ArrayList<HashSet<City>> connectedCities = new ArrayList<>();
 
     /**
      * stores the player's current number of points
@@ -154,6 +160,12 @@ public class Player implements Serializable {
         trainCards.add(trainCard);
     }
 
+    public void removeTrainCardsFromHand(ArrayList<TrainCard> cards) {
+        for (TrainCard cardToRemove : cards) {
+            trainCards.remove(cardToRemove);
+        }
+    }
+
     /**
      * adds a destination card to the player's hand
      * @pre destinationCard != null
@@ -173,6 +185,11 @@ public class Player implements Serializable {
      */
     public void addRoute(Route route) {
         routes.add(route);
+        addToConnectedCities(route);
+    }
+
+    public void addToConnectedCities(Route route) {
+        // TODO: implement
     }
 
     public String getUsername() {
@@ -268,6 +285,10 @@ public class Player implements Serializable {
      */
     public ArrayList<Route> getRoutes() {
         return routes;
+    }
+
+    public ArrayList<HashSet<City>> getConnectedCities() {
+        return connectedCities;
     }
 
     /**
