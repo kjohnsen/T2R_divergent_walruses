@@ -208,13 +208,16 @@ public class GameInfo implements Serializable {
             trainCardDeck = discardedTrainCards;
             discardedTrainCards.clear();
         }
-        Random rand = new Random();
-        int cardIndex = rand.nextInt(deckSize);
+        if (deckSize > 0) {
+            Random rand = new Random();
+            int cardIndex = rand.nextInt(deckSize);
 
-        TrainCard drawnCard = trainCardDeck.get(cardIndex);
-        trainCardDeck.remove(cardIndex);
+            TrainCard drawnCard = trainCardDeck.get(cardIndex);
+            trainCardDeck.remove(cardIndex);
 
-        return drawnCard;
+            return drawnCard;
+        }
+        return null;
     }
 
     public DestinationCard drawDestCard() {
