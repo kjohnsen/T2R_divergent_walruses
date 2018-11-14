@@ -13,6 +13,7 @@ import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 import results.Results;
 
@@ -97,6 +98,10 @@ public class UIFacade implements IUIFacade {
     public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
         ClientModel.getInstance().setGameStart(false);
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
+    }
+
+    public String claimRoute(Route route) {
+        return processResults(serverProxy.claimRoute(route, getCurrentGame().getGameName(), authToken));
     }
 
     public String loginUser(String username, String password) {

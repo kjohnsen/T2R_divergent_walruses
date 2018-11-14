@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -13,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.graphics.ColorUtils;
 
-import com.example.emilyhales.tickettoride.BuildConfig;
 import com.example.emilyhales.tickettoride.R;
-import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,7 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,19 +37,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import model.ClientModel;
 import modelclasses.City;
-import modelclasses.DefaultHashMap;
 import modelclasses.MapSetup;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
-import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
-import presenter.IMapPresenter;
-import presenter.MapPresenter;
+import presenter.map.IMapPresenter;
+import presenter.map.MapPresenter;
 import util.PlayerColorConverter;
 import util.TrainColorConverter;
 
@@ -114,6 +106,23 @@ public class MapFragment extends SupportMapFragment implements
         } else {
             polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_TRANSLUCENT_OPACITY));
             polyline.setClickable(false);
+        }
+    }
+
+    @Override
+    public void emphasizeSelectRoutes(ArrayList<Route> routes) {
+        for (Route r : this.routePolylineMap.keySet()) {
+            setRouteEmphasized(r, false);
+        }
+        for (Route r : routes) {
+            setRouteEmphasized(r, true);
+        }
+    }
+
+    @Override
+    public void resetRouteEmphasis() {
+        for (Route r : this.routePolylineMap.keySet()) {
+            setRouteEmphasized(r, true);
         }
     }
 

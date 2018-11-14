@@ -1,4 +1,4 @@
-package presenter;
+package presenter.map;
 
 import modelclasses.Route;
 
