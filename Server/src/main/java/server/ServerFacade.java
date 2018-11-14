@@ -182,7 +182,7 @@ public class ServerFacade implements IServer {
         player.setPreSelectionDestCards(tickets);
 
         ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
-        
+
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
