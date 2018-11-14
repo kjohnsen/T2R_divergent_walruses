@@ -9,7 +9,10 @@ public class ClaimingEnabledState extends MapPresenterState {
     @Override
     public void routeClicked(Route route) {
         super.routeClicked(route);
-        UIFacade.getInstance().claimRoute(route);
+        String result = UIFacade.getInstance().claimRoute(route);
+        if (result != null) {
+            this.view.displayMessage(result);
+        }
     }
 
     @Override

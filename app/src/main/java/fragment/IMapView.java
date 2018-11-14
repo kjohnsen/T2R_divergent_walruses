@@ -53,4 +53,6 @@ public interface IMapView {
 
     public void resetRouteEmphasis();
 
+    public void displayMessage(String message);
+
 }

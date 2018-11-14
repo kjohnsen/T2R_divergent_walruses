@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.graphics.ColorUtils;
+import android.widget.Toast;
 
 import com.example.emilyhales.tickettoride.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -126,6 +127,11 @@ public class MapFragment extends SupportMapFragment implements
         for (Route r : this.routePolylineMap.keySet()) {
             setRouteEmphasized(r, true);
         }
+    }
+
+    @Override
+    public void displayMessage(String message) {
+        Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
