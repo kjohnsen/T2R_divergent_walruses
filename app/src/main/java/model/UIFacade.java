@@ -13,6 +13,7 @@ import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 import results.Results;
 
@@ -60,6 +61,14 @@ public class UIFacade implements IUIFacade {
         return ClientModel.getInstance().getPlayerPreSelectionTickets();
     }
 
+    public int getTrainDeckSize() {
+        return ClientModel.getInstance().getTrainDeckSize();
+    }
+
+    public int getDestDeckSize() {
+        return ClientModel.getInstance().getDestDeckSize();
+    }
+
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
@@ -97,6 +106,14 @@ public class UIFacade implements IUIFacade {
     public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
         ClientModel.getInstance().setGameStart(false);
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
+    }
+
+    public String claimRoute(Route route) {
+        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken));
+    }
+
+    public ArrayList<Route> getAvailableRoutes() {
+        return ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
     }
 
     public String loginUser(String username, String password) {

@@ -54,6 +54,14 @@ public class ClientModel extends Observable {
         return currentGame.getPlayer(currentUser.getUsername()).getPlayerColor();
     }
 
+    public int getTrainDeckSize() {
+        return currentGame.getTrainCardDeck().size();
+    }
+
+    public int getDestDeckSize() {
+        return currentGame.getDestCardDeck().size();
+    }
+
     //for testing purposes
     public void setGameStart(boolean start) { startGame = start; }
 

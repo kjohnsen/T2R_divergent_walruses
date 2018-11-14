@@ -25,8 +25,13 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
     }
 
     public void initialUpdate(){
-        playersInfo = ClientModel.getInstance().getCurrentGame().getPlayers();
-        ClientModel.getInstance().notifyObservers(playersInfo);
+        int trainDeckSize = UIFacade.getInstance().getTrainDeckSize();
+        int destDeckSize = UIFacade.getInstance().getDestDeckSize();
+        playersInfo = UIFacade.getInstance().getCurrentGame().getPlayers();
+        view.updateTrainDeckInfo(trainDeckSize);
+        view.updateDestDeckInfo(destDeckSize);
+        view.updatePlayerInfo(playersInfo);
+
     }
 
     @Override

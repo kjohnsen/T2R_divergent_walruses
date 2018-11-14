@@ -32,14 +32,6 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
     TextView destDeck;
     TextView trainDeck;
     GameInfoPresenter presenter;
-    private int buttonIndex = 0;
-    private String[] toastMessages = {"Updating opponent train cards",
-                                      "Updating opponent train car pieces",
-                                      "Updating opponent destination cards",
-                                      "Updating player scores",
-                                      "Changing turns"};
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
