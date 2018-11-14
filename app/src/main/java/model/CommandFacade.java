@@ -171,7 +171,15 @@ public class CommandFacade implements iClient {
 
     @Override
     public void claimRoute(GameName gameName, Route route, String username) {
-        // TODO: implement this
+        ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        for (Route r : routes) {
+            if (r.equals(route)) {
+                r.setPlayer(player);
+                ClientModel.getInstance().notifyObservers(r);
+                break;
+            }
+        }
     }
 
     @Override
