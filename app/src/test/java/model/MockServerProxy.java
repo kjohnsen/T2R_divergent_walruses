@@ -16,6 +16,7 @@ import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
+import modelclasses.Route;
 import results.Results;
 
 public class MockServerProxy implements IServer {
@@ -146,6 +147,9 @@ public class MockServerProxy implements IServer {
 
     @Override
     public Results drawDestinationCards(GameName name, String authtoken) { return null; }
+
+    @Override
+    public Results claimRoute(GameName name, Route route, String username) { return null; }
 
     @Override
     public Results getCommands(String authToken) {
