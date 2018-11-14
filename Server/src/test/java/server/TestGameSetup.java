@@ -6,7 +6,6 @@ import org.junit.Before;
 import java.util.ArrayList;
 
 import data.Command;
-import data.CommandManager;
 import model.ServerModel;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;

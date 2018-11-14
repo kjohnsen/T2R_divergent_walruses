@@ -1,8 +1,10 @@
-package data;
+package server;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+
+import data.Command;
 
 public class CommandManager {
 
