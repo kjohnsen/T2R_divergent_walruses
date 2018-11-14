@@ -6,11 +6,13 @@ import java.util.Arrays;
 import data.Command;
 import model.ServerModel;
 import modelclasses.ChatMessage;
+import modelclasses.DestinationCard;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Route;
+import modelclasses.TrainCard;
 
 public class ClientProxy {
 
