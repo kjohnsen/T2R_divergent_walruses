@@ -70,6 +70,8 @@ public class CommandFacade implements iClient {
         ourInstance.startGame(game);
     }
 
+    public static void _addGameHistory(ChatMessage message) { ourInstance.addChatMessage(message); }
+
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
     public static void _claimRoute(GameName gameName, Route route, String username) {

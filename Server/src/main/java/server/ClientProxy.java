@@ -2,17 +2,14 @@ package server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import data.Command;
-import data.CommandManager;
 import model.ServerModel;
 import modelclasses.ChatMessage;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
-import modelclasses.TrainCard;
 import modelclasses.Route;
 
 public class ClientProxy {
@@ -133,6 +130,13 @@ public class ClientProxy {
                 Command clientCommand = new Command("model.CommandFacade", "_addChatMessage", Arrays.asList(new Object[] {message}));
                 CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
             }
+        }
+    }
+
+    public void addGameHistory(GameName gameName, ChatMessage message) {
+        Command clientCommand = new Command("model.CommandFacade", "_addGameHistory", Arrays.asList(new Object[] {message}));
+        for(Player player: ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
         }
     }
 

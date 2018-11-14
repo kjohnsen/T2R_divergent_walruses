@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import data.Command;
 import results.Results;
 import data.Serializer;
+import server.ServerFacade;
 
 
 /**
@@ -39,6 +40,7 @@ ExcmdHandler implements HttpHandler {
                 //in other words... get the command object and call execute.
                 Serializer serializer = new Serializer();
                 Command command = (Command)serializer.decodeFromStream(reqBody, Command.class);
+                ServerFacade.getInstance().makeGameHistory(command);
                 String methodName = command.get_methodName();
                 if (!methodName.equals("_getCommands")) {
                     System.out.println(String.format("Received %s request",  methodName));
