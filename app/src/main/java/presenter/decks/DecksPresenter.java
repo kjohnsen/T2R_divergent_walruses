@@ -7,6 +7,7 @@ import java.util.Observer;
 import fragment.IDecksView;
 import model.ClientModel;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 
 public class DecksPresenter implements IDecksPresenter, Observer {
 
@@ -83,21 +84,17 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     /**
      * Checks to see if the update the ClientModel sent out concerns the decks view. The only
      * updates we care about (at least for now) are whether the faceup cards changed, so we check
-     * to see if the object is an array of TrainCards of size five; if it is, we need to update
+     * to see if the object is a TrainCardWrapper of type FaceUp; if it is, we need to update
      * the view with the new cards.
      * @param observable the ClientModel
      * @param o the object the ClientModel passed
      */
     @Override
     public void update(Observable observable, Object o) {
-        if (o instanceof ArrayList) {
-            ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.size() == 5 && array.get(0) instanceof TrainCard) {
-                ArrayList<TrainCard> cards = new ArrayList<>();
-                for (Object object : array) {
-                    cards.add((TrainCard) object);
-                }
-                view.replaceTrainCards(cards);
+        if (o instanceof TrainCardWrapper) {
+            TrainCardWrapper wrapper = (TrainCardWrapper) o;
+            if (wrapper.getDeckType().equals(TrainCardWrapper.DeckType.FaceUp)) {
+                view.replaceTrainCards(wrapper.getCards());
             }
         }
     }

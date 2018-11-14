@@ -18,6 +18,7 @@ import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.User;
 import modelclasses.TrainCard;
+import modelclasses.Route;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,92 +77,27 @@ public class ServerFacade implements IServer {
         return ourInstance.sendChatMessage(message, gameName);
     }
 
+    public static Results _claimRoute(GameName gameName, Route route, String username) {
+        return ourInstance.claimRoute(gameName, route, username);
+    }
+
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
-        if (tickets != null) {
-            GameInfo game = ServerModel.getInstance().getGameInfo(name);
-            String username = ServerModel.getInstance().getAuthTokens().get(authToken);
-            Player player = game.getPlayer(username);
-            for (DestinationCard card : tickets) {
-                if (player.getPreSelectionDestCards().contains(card)) {
-                    player.removeDestCardFromList(card);
-                    game.putDestCardInDeck(card); // put ticket back in dest card deck
-                }
-                else {
-                    Results results = new Results();
-                    results.setSuccess(false);
-                    results.setErrorMessage("Destination card not in player's list");
-                    return results;
-                }
-            }
-
-            // put remaining cards in player's hand
-            for (DestinationCard card : player.getPreSelectionDestCards()) {
-                player.addDestCardToHand(card);
-            }
-            player.clearPreSelectionDestCards();
-
-            Results results = new Results();
-            Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
-            results.getClientCommands().add(selectDestCardsCommand);
-            results.setSuccess(true);
-            return results;
-        } else {
-            Results results = new Results();
-            results.setSuccess(false);
-            results.setErrorMessage("Destination card not in player's hand");
-            return results;
-        }
+        return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
 
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
-        GameInfo game = ServerModel.getInstance().getGameInfo(name);
-        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
-        Player player = game.getPlayer(username);
-        TrainCard card = game.getFaceUpCards().get(index);
-        player.addTrainCardToHand(card);
-        ArrayList<TrainCard> replacements = game.replaceCards(index);
-        Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
-        results.getClientCommands().add(selectCardCommand);
-        if (replacements.size() == 1) {
-            Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
-            results.getClientCommands().add(replaceCardCommand);
-
-        } else {
-            Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
-            results.getClientCommands().add(clearWildsCommand);
-        }
-        results.setSuccess(true);
-        return results;
+        return GamePlay.selectTrainCard(index, name, authToken);
     }
 
     @Override
     public Results drawTrainCard(GameName name, String authToken) {
-        GameInfo game = ServerModel.getInstance().getGameInfo(name);
-        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
-        Player player = game.getPlayer(username);
-        TrainCard card = game.drawTrainCard();
-        player.addTrainCardToHand(card);
-        Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
-        results.getClientCommands().add(selectCardCommand);
-        results.setSuccess(true);
-        return results;
+        return GamePlay.drawTrainCard(name, authToken);
     }
 
     @Override
     public Results drawDestinationCards(GameName name, String authToken) {
-        GameInfo game = ServerModel.getInstance().getGameInfo(name);
-        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
-        Player player = game.getPlayer(username);
-        ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
-        player.setPreSelectionDestCards(tickets);
-        Results results = new Results();
-        Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
-        results.getClientCommands().add(selectCardCommand);
-        results.setSuccess(true);
-        return results;
+        return GamePlay.drawDestinationCard(name, authToken);
     }
 
     public Results loginUser(String username, String password) {
@@ -357,7 +293,7 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public void givePlayersInitialTrainCards(GameInfo game) {
+    private void givePlayersInitialTrainCards(GameInfo game) {
         ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<TrainCard> playerCards = game.getPlayerInitialTrainCards();
@@ -365,7 +301,7 @@ public class ServerFacade implements IServer {
         }
     }
 
-    public void givePlayersInitialDestCards(GameInfo game) {
+    private void givePlayersInitialDestCards(GameInfo game) {
         ArrayList<Player> gamePlayers = game.getPlayers();
         for (Player player : gamePlayers) {
             ArrayList<DestinationCard> playerCards = game.getPlayerInitialDestCards();
@@ -414,6 +350,10 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
 
         return results;
+    }
+
+    public Results claimRoute(GameName gameName, Route route, String username) {
+        return GamePlay.claimRoute(gameName, route, username);
     }
 
     public Results getCommands(String authToken) {

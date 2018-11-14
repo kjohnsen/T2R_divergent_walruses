@@ -10,6 +10,7 @@ import java.util.List;
 import model.ClientModel;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
+import modelclasses.TrainCardWrapper;
 import presenter.decks.DecksPresenter;
 
 public class TestDecksPresenter {
@@ -25,8 +26,8 @@ public class TestDecksPresenter {
     private static TrainCard card7 = new TrainCard(TrainCardColor.BLUE);
     private static TrainCard card8 = new TrainCard(TrainCardColor.GREEN);
     private static TrainCard card9 = new TrainCard(TrainCardColor.WILD);
-    private static List<TrainCard> firstCards = new ArrayList<>();
-    private static List<TrainCard> secondCards = new ArrayList<>();
+    private static ArrayList<TrainCard> firstCards = new ArrayList<>();
+    private static ArrayList<TrainCard> secondCards = new ArrayList<>();
 
     @BeforeClass
     public static void prep() {
@@ -48,11 +49,11 @@ public class TestDecksPresenter {
     public void testReplaceCards() {
         assertEquals(view.getTrainCards().size(), 5);
         assertEquals(view.getTrainCards().get(4), card4);
-        ClientModel.getInstance().notifyObservers(secondCards);
+        ClientModel.getInstance().notifyObservers(new TrainCardWrapper(secondCards, TrainCardWrapper.DeckType.FaceUp));
         assertEquals(view.getTrainCards().size(), 5);
         assertEquals(view.getTrainCards().get(0), card5);
         assertEquals(view.getTrainCards().get(2), card7);
-        ClientModel.getInstance().notifyObservers(firstCards);
+        ClientModel.getInstance().notifyObservers(new TrainCardWrapper(firstCards, TrainCardWrapper.DeckType.FaceUp));
         assertEquals(view.getTrainCards().get(0), card0);
         assertEquals(view.getTrainCards().get(3), card3);
     }
