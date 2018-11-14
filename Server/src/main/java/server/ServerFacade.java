@@ -1,11 +1,8 @@
 package server;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.CommandManager;
-import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
 import modelclasses.ChatMessage;
@@ -21,7 +18,6 @@ import modelclasses.TrainCard;
 import modelclasses.Route;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 

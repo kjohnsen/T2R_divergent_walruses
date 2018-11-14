@@ -1,8 +1,5 @@
  package server;
 
- import com.sun.corba.se.spi.activation.Server;
- import com.sun.corba.se.spi.activation.ServerManagerOperations;
-
  import static org.junit.Assert.* ;
 
  import org.junit.Before;
@@ -15,7 +12,6 @@
  import java.util.Map;
 
  import data.Command;
- import data.CommandManager;
  import model.ServerModel;
  import modelclasses.ChatMessage;
  import modelclasses.GameInfo;
