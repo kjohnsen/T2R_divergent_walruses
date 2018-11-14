@@ -11,6 +11,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import modelclasses.User;
+import modelclasses.Route;
 
 public interface iClient {
     void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player);
@@ -26,4 +27,6 @@ public interface iClient {
     void startGame(GameInfo gameInfo);
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
+    void claimRoute(GameName gameName, Route route, String username);
+    void startLastRound();
 }

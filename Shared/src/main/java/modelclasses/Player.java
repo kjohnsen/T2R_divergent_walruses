@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 
 /**
  * Represents a player in the game
@@ -38,6 +39,11 @@ public class Player implements Serializable {
      * stores a list of the routes a player has claimed
      */
     private ArrayList<Route> routes = new ArrayList<>();
+
+    /**
+     * stores a list of sets of connected cities, used to determine if destination cards were satisfied
+     */
+    private ArrayList<HashSet<City>> connectedCities = new ArrayList<>();
 
     /**
      * stores the player's current number of points
@@ -154,6 +160,12 @@ public class Player implements Serializable {
         trainCards.add(trainCard);
     }
 
+    public void removeTrainCardsFromHand(ArrayList<TrainCard> cards) {
+        for (TrainCard cardToRemove : cards) {
+            trainCards.remove(cardToRemove);
+        }
+    }
+
     /**
      * adds a destination card to the player's hand
      * @pre destinationCard != null
@@ -173,6 +185,37 @@ public class Player implements Serializable {
      */
     public void addRoute(Route route) {
         routes.add(route);
+        addToConnectedCities(route);
+    }
+
+    public void addToConnectedCities(Route route) {
+        HashSet unionedSet = null;
+        boolean removeUnionedSet = false;
+        for (HashSet currCities : connectedCities) {
+            boolean connected = currCities.contains(route.getOrigin()) || currCities.contains(route.getDestination());
+            // if you find a set that contains one of the cities, add the cities to that set
+            if (connected && unionedSet == null) {
+                currCities.add(route.getOrigin());
+                currCities.add(route.getDestination());
+                unionedSet = currCities;
+            }
+            // if you find another set that contains one of the cities, union the two sets together
+            else if (connected && unionedSet != null) {
+                currCities.addAll(unionedSet);
+                removeUnionedSet = true;
+            }
+        }
+        // if none of the current sets contain either city, add a new set with the route's two cities
+        if (unionedSet == null) {
+            HashSet<City> newSet = new HashSet<>();
+            newSet.add(route.getOrigin());
+            newSet.add(route.getDestination());
+            connectedCities.add(newSet);
+        }
+        // since we added unionedSet to another set, we can remove it from the list
+        else if (removeUnionedSet){
+            connectedCities.remove(unionedSet);
+        }
     }
 
     public String getUsername() {
@@ -268,6 +311,10 @@ public class Player implements Serializable {
      */
     public ArrayList<Route> getRoutes() {
         return routes;
+    }
+
+    public ArrayList<HashSet<City>> getConnectedCities() {
+        return connectedCities;
     }
 
     /**
