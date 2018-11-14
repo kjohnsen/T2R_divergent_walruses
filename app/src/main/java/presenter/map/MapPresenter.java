@@ -21,7 +21,7 @@ public class MapPresenter implements IMapPresenter, Observer {
     }
 
     public void setState(MapPresenterState state) {
-        this.state.exit();
+        if (this.state != null) this.state.exit();
         this.state = state;
         state.setPresenter(this);
         state.setView(this.mapView);
