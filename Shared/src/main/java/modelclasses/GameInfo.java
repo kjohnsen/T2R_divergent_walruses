@@ -15,7 +15,10 @@ public class GameInfo implements Serializable {
     private ArrayList<TrainCard> trainCardDeck = new ArrayList<>();
     private ArrayList<DestinationCard> destCardDeck = new ArrayList<>();
     private ArrayList<TrainCard> faceUpCards = new ArrayList<>();
+    private ArrayList<TrainCard> discardedTrainCards = new ArrayList<>();
+    private ArrayList<Route> unclaimedRoutes = new ArrayList<>();
     private Player currentPlayer;
+    private boolean lastRound;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -24,6 +27,8 @@ public class GameInfo implements Serializable {
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
         initializeFaceUpCards();
+        initializeUnclaimedRoutes();
+        lastRound = false;
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -158,6 +163,11 @@ public class GameInfo implements Serializable {
         return true;
     }
 
+    public void initializeUnclaimedRoutes() {
+        MapSetup mapSetup = new MapSetup();
+        unclaimedRoutes = new ArrayList<>(mapSetup.getRoutes());
+    }
+
     public void initializeTrainCardDeck() {
         for (int i = 0; i < 12; i++) {
             TrainCard redTrainCard = new TrainCard(TrainCardColor.RED);
@@ -194,6 +204,10 @@ public class GameInfo implements Serializable {
 
     public TrainCard drawTrainCard() {
         int deckSize = trainCardDeck.size();
+        if (deckSize == 0) {
+            trainCardDeck = discardedTrainCards;
+            discardedTrainCards.clear();
+        }
         if (deckSize > 0) {
             Random rand = new Random();
             int cardIndex = rand.nextInt(deckSize);
@@ -264,12 +278,44 @@ public class GameInfo implements Serializable {
         this.faceUpCards = faceUpCards;
     }
 
+    public ArrayList<TrainCard> getDiscardedTrainCards() {
+        return discardedTrainCards;
+    }
+
+    public void setDiscardedTrainCards(ArrayList<TrainCard> discardedTrainCards) {
+        this.discardedTrainCards = discardedTrainCards;
+    }
+
+    public void addCardsToTrainDiscarded(ArrayList<TrainCard> cardsToDiscard) {
+        discardedTrainCards.addAll(cardsToDiscard);
+    }
+
+    public ArrayList<Route> getUnclaimedRoutes() {
+        return unclaimedRoutes;
+    }
+
+    public void setUnclaimedRoutes(ArrayList<Route> unclaimedRoutes) {
+        this.unclaimedRoutes = unclaimedRoutes;
+    }
+
+    public void removeFromUnclaimedRoutes(Route route) {
+        unclaimedRoutes.remove(route);
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    public void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 
     @Override

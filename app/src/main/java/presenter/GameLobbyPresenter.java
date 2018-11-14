@@ -13,6 +13,7 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 
 public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
 
@@ -48,12 +49,7 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof ArrayList) {
             ArrayList<Object> array = (ArrayList<Object>) o;
-            if (array.isEmpty()) {
-                //do nothing-- this is an error with Travis
-            } else if (array.get(0) instanceof TrainCard) {
-                observable.deleteObserver(this);
-                view.startGame();
-            } else if (array.get(0) instanceof Player) {
+            if (!array.isEmpty() && array.get(0) instanceof Player) {
                 ArrayList<Player> players = new ArrayList<>();
                 for (Object object : array) {
                     Player player = (Player) object;
@@ -70,6 +66,9 @@ public class GameLobbyPresenter implements IGameLobbyPresenter, Observer {
                     view.setStartGameEnabled(true);
                 }
             }
+        } else if (o instanceof TrainCardWrapper) {
+            observable.deleteObserver(this);
+            view.startGame();
         }
     }
 }

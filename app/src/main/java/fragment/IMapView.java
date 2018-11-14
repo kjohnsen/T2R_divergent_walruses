@@ -1,5 +1,7 @@
 package fragment;
 
+import java.util.ArrayList;
+
 import modelclasses.MapSetup;
 import modelclasses.Route;
 
@@ -38,12 +40,19 @@ public interface IMapView {
     /**
      * Emphasizes or de-emphasizes a route in the view. Could be used to indicate routes which
      * are available for claiming, for example.
-     * @param route the Route whose display is to be modified
+     *
+     * @param route   the Route whose display is to be modified
      * @param enabled a boolean indicated whether emphasis or deemphasis is desired.
      * @pre route != null
      * @pre IMapView has been initialized with MapSetup object containing route
      * @post route is (de)emphasized visually
      */
     public void setRouteEmphasized(Route route, boolean enabled);
+
+    public void emphasizeSelectRoutes(ArrayList<Route> routes);
+
+    public void resetRouteEmphasis();
+
+    public void displayMessage(String message);
 
 }

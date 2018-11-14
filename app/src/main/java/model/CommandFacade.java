@@ -13,6 +13,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
 import modelclasses.User;
+import modelclasses.Route;
 
 public class CommandFacade implements iClient {
 
@@ -69,9 +70,17 @@ public class CommandFacade implements iClient {
         ourInstance.startGame(game);
     }
 
+    public static void _addGameHistory(ChatMessage message) { ourInstance.addChatMessage(message); }
+
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _addGameHistory(ChatMessage message) { ourInstance.addChatMessage(message); }
+    public static void _claimRoute(GameName gameName, Route route, String username) {
+        ourInstance.claimRoute(gameName, route, username);
+    }
+
+    public static void _startLastRound() {
+        ourInstance.startLastRound();
+    }
 
     @Override
     public void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player) {
@@ -100,7 +109,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
-        ClientModel.getInstance().addTickets(tickets, player);
+        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets);
     }
 
     @Override
@@ -160,5 +169,23 @@ public class CommandFacade implements iClient {
     public void addChatMessage(ChatMessage message) {
         ClientModel.getInstance().getChatMessages().add(message);
         ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getChatMessages());
+    }
+
+    @Override
+    public void claimRoute(GameName gameName, Route route, String username) {
+        ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        for (Route r : routes) {
+            if (r.equals(route)) {
+                r.setPlayer(player);
+                ClientModel.getInstance().notifyObservers(r);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void startLastRound() {
+        // TODO: implement this
     }
 }

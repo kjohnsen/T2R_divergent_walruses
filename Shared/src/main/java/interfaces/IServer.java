@@ -6,6 +6,7 @@ import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import results.Results;
 
 public interface IServer {
@@ -32,6 +33,8 @@ public interface IServer {
     Results getCommands(String authToken);
 
     Results sendChatMessage(ChatMessage message, GameName gameName);
+
+    Results claimRoute(GameName gameName, Route route, String username);
 
     void setHostIP(String hostIP);
 

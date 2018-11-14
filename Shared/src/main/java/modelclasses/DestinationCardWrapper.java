@@ -1,14 +1,22 @@
 package modelclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DestinationCardWrapper {
+public class DestinationCardWrapper implements Serializable {
     ArrayList<DestinationCard> destinationCards;
-    Boolean isDeck;
+    DeckType deckType;
 
-    public DestinationCardWrapper(ArrayList<DestinationCard> _tickets, Boolean _isDeck){
-        isDeck = _isDeck;
-        destinationCards = _tickets;
+    public enum DeckType implements Serializable {
+        DrawDeck,
+        DiscardDeck,
+        PlayerTickets,
+        PreSelectionTickets,
+    }
+
+    public DestinationCardWrapper(ArrayList<DestinationCard> destinationCards, DeckType deckType) {
+        this.destinationCards = destinationCards;
+        this.deckType = deckType;
     }
 
     public ArrayList<DestinationCard> getDestinationCards() {
@@ -19,11 +27,11 @@ public class DestinationCardWrapper {
         this.destinationCards = destinationCards;
     }
 
-    public Boolean isDeck() {
-        return isDeck;
+    public DeckType getDeckType() {
+        return deckType;
     }
 
-    public void setDeck(Boolean deck) {
-        isDeck = deck;
+    public void setDeckType(DeckType deckType) {
+        this.deckType = deckType;
     }
 }

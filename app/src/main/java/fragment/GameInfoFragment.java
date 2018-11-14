@@ -32,14 +32,6 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
     TextView destDeck;
     TextView trainDeck;
     GameInfoPresenter presenter;
-    private int buttonIndex = 0;
-    private String[] toastMessages = {"Updating opponent train cards",
-                                      "Updating opponent train car pieces",
-                                      "Updating opponent destination cards",
-                                      "Updating player scores",
-                                      "Changing turns"};
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,15 +64,25 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         });
     }
 
+
     @Override
-    public void updateDecksInfo(final int destDeckSize, final int trainDeckSize) {
+    public void updateTrainDeckInfo(final int trainDeckSize) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String trainString = "Train cards left: " + trainDeckSize;
+                trainDeck.setText(trainString);
+            }
+        });
+    }
+
+    @Override
+    public void updateDestDeckInfo(final int destDeckSize) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String destString = "Destination cards left: " + destDeckSize;
-                String trainString = "Train cards left: " + trainDeckSize;
                 destDeck.setText(destString);
-                trainDeck.setText(trainString);
             }
         });
     }
