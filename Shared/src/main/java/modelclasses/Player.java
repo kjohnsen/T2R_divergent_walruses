@@ -189,7 +189,33 @@ public class Player implements Serializable {
     }
 
     public void addToConnectedCities(Route route) {
-        // TODO: implement
+        HashSet unionedSet = null;
+        boolean removeUnionedSet = false;
+        for (HashSet currCities : connectedCities) {
+            boolean connected = currCities.contains(route.getOrigin()) || currCities.contains(route.getDestination());
+            // if you find a set that contains one of the cities, add the cities to that set
+            if (connected && unionedSet == null) {
+                currCities.add(route.getOrigin());
+                currCities.add(route.getDestination());
+                unionedSet = currCities;
+            }
+            // if you find another set that contains one of the cities, union the two sets together
+            else if (connected && unionedSet != null) {
+                currCities.addAll(unionedSet);
+                removeUnionedSet = true;
+            }
+        }
+        // if none of the current sets contain either city, add a new set with the route's two cities
+        if (unionedSet == null) {
+            HashSet<City> newSet = new HashSet<>();
+            newSet.add(route.getOrigin());
+            newSet.add(route.getDestination());
+            connectedCities.add(newSet);
+        }
+        // since we added unionedSet to another set, we can remove it from the list
+        else if (removeUnionedSet){
+            connectedCities.remove(unionedSet);
+        }
     }
 
     public String getUsername() {

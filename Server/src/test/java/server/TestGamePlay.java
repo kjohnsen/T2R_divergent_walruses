@@ -5,8 +5,14 @@ import static modelclasses.Atlas.PORTLAND;
 import static modelclasses.Atlas.SAN_FRANCISCO;
 import static modelclasses.Atlas.SLC;
 import static modelclasses.Atlas.WINNIPEG;
+import static modelclasses.Atlas.DULUTH;
+import static modelclasses.Atlas.CALGARY;
+import static modelclasses.Atlas.VANCOUVER;
 import static modelclasses.TrainCardColor.BLUE;
 import static modelclasses.TrainCardColor.PURPLE;
+import static modelclasses.TrainCardColor.ORANGE;
+import static modelclasses.TrainCardColor.WHITE;
+import static modelclasses.TrainCardColor.WILD;
 
 import static org.junit.Assert.* ;
 
@@ -14,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import model.ServerModel;
 import modelclasses.PlayerColor;
@@ -23,6 +30,7 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCardColor;
 import modelclasses.Route;
+import modelclasses.City;
 import results.Results;
 
 public class TestGamePlay {
@@ -112,7 +120,8 @@ public class TestGamePlay {
         assertEquals(5, game.getDiscardedTrainCards().size() - initialDiscardDeckSize);
     }
 
-    @Test public void claimRouteStartLastRound() {
+    @Test
+    public void claimRouteStartLastRound() {
         GameName gameName = new GameName("Claim Routes Game");
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         Player player = game.getPlayer(PLAYER_USERNAME);
@@ -133,6 +142,45 @@ public class TestGamePlay {
         assertEquals(0, player.getTrainCards().size());
         assertEquals(results.getClientCommands().size(), 2);
         assertEquals(4, game.getDiscardedTrainCards().size() - initialDiscardDeckSize);
+    }
+
+    @Test
+    public void addToConnectedCities() {
+        Player p = new Player("connectedCitiesPlayer");
+        Route helenaToDuluth = new Route(HELENA, DULUTH, ORANGE, 6);
+        Route calgaryToWinnipeg = new Route(CALGARY, WINNIPEG, WHITE, 6);
+        Route vancouverToCalgary = new Route(VANCOUVER, CALGARY, WILD, 3);
+        Route helenaToWinnipeg = new Route(HELENA, WINNIPEG, BLUE, 4);
+
+        p.addToConnectedCities(helenaToDuluth);
+        assertEquals(1, p.getConnectedCities().size());
+        HashSet<City> cities1 = p.getConnectedCities().get(0);
+        assertEquals(2, cities1.size());
+        assertTrue(cities1.contains(HELENA));
+        assertTrue(cities1.contains(DULUTH));
+
+        p.addToConnectedCities(calgaryToWinnipeg);
+        assertEquals(2, p.getConnectedCities().size());
+        HashSet<City> cities2 = p.getConnectedCities().get(1);
+        assertEquals(2, cities2.size());
+        assertTrue(cities2.contains(CALGARY));
+        assertTrue(cities2.contains(WINNIPEG));
+
+        p.addToConnectedCities(vancouverToCalgary);
+        assertEquals(2, p.getConnectedCities().size());
+        HashSet<City> cities3 = p.getConnectedCities().get(1);
+        assertEquals(3, cities3.size());
+        assertTrue(cities3.contains(VANCOUVER));
+
+        p.addToConnectedCities(helenaToWinnipeg);
+        assertEquals(1, p.getConnectedCities().size());
+        HashSet<City> finalCities = p.getConnectedCities().get(0);
+        assertEquals(5, finalCities.size());
+        assertTrue(finalCities.contains(HELENA));
+        assertTrue(finalCities.contains(DULUTH));
+        assertTrue(finalCities.contains(CALGARY));
+        assertTrue(finalCities.contains(VANCOUVER));
+        assertTrue(finalCities.contains(WINNIPEG));
     }
 
 }
