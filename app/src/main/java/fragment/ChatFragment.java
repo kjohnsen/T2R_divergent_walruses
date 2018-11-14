@@ -147,7 +147,9 @@ public class ChatFragment extends Fragment implements IChatView {
 
             holder.setMessageText(chatMessage.getMessage());
             holder.setUserNameText(chatMessage.getUsername());
-            holder.setUsernameColor(chatMessage.getPlayerColor());
+            if(chatMessage.getPlayerColor() != null) {
+                holder.setUsernameColor(chatMessage.getPlayerColor());
+            }
         }
 
         @Override

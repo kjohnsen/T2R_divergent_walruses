@@ -5,10 +5,12 @@ import java.util.List;
 
 import interfaces.IServer;
 import model.ServerModel;
+import model.ServerState;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.TrainCardColor;
 import results.Results;
 import data.Command;
 import modelclasses.GameName;
@@ -78,21 +80,39 @@ public class ServerFacade implements IServer {
     }
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS);
         return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
 
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
+        GameInfo gameInfo = ServerModel.getInstance().getGameInfo(name);
+        boolean isWild = gameInfo.getFaceUpCards().get(index).getColor().equals(TrainCardColor.WILD);
+        if(isWild) {
+            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
+        } else {
+            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+            } else {
+                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+            }
+        }
         return GamePlay.selectTrainCard(index, name, authToken);
     }
 
     @Override
     public Results drawTrainCard(GameName name, String authToken) {
+        if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+        } else {
+            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+        }
         return GamePlay.drawTrainCard(name, authToken);
     }
 
     @Override
     public Results drawDestinationCards(GameName name, String authToken) {
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
         return GamePlay.drawDestinationCard(name, authToken);
     }
 
@@ -359,6 +379,42 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
         results.setAuthToken(authToken);
         return results;
+    }
+
+    public void makeGameHistory(Command command, GameName gameName) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
+    public void makeGameHistory(Command command) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            GameName gameName = null;
+            switch(command.get_methodName()) {
+                case CommandMethodNames.claimRoute: gameName = (GameName)command.get_paramValues()[0];  break;
+                case CommandMethodNames.clearWilds: return;
+                case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0];    break;
+                case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1];  break;
+                case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0];   break;
+                case CommandMethodNames.selectTrainCard: gameName = (GameName)command.get_paramValues()[1]; break;
+                case CommandMethodNames.replaceTrainCard: return;
+            }
+
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
+    public void addGameHistory(GameName gameName, ChatMessage message) {
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.addGameHistory(gameName, message);
     }
 
     //these two methods are necessary for the client side, but not the server side
