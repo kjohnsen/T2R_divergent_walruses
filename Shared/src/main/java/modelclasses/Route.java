@@ -1,6 +1,8 @@
 package modelclasses;
 
-public class Route {
+import java.io.Serializable;
+
+public class Route implements Serializable {
     private City origin;
     private City destination;
     private TrainCardColor color;

@@ -69,13 +69,8 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
     public void update(Observable observable, Object o) {
         if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
-            List<DestinationCard> array = wrapper.getDestinationCards();
-            if (array.size() == 3 && array.get(0) instanceof DestinationCard) {
-                List<DestinationCard> tickets = new ArrayList<>();
-                for (Object object : array) {
-                    tickets.add((DestinationCard) object);
-                }
-                view.displayTickets(tickets);
+            if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.PreSelectionTickets) {
+                view.displayTickets(wrapper.getDestinationCards());
             }
         }
     }

@@ -12,6 +12,7 @@ import modelclasses.DestinationCardWrapper;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 
 public class GameInfoPresenter implements IGameInfoPresenter, Observer {
 
@@ -35,6 +36,8 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
+
+        //TODO: change to username... and query the model for the player info
         if (o instanceof Player) {
             Player player = (Player) o;
             for (int i = 0; i < playersInfo.size(); i++) {
@@ -44,22 +47,16 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
             }
             view.updatePlayerInfo(playersInfo);
             view.updateCurrentPlayer(player);
-        } else if (o instanceof ArrayList) {
-            ArrayList<Object> objects = (ArrayList<Object>) o;
-            if (objects.size() == 0) {
-                //to catch Travis errors
-            } else {
-                int destDeckSize = UIFacade.getInstance().getCurrentGame().getDestCardDeck().size();
-                int trainDeckSize = UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size();
-                view.updateDecksInfo(destDeckSize, trainDeckSize);
-            }
+
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
-            if(wrapper.isDeck()){
-                int destDeckSize = UIFacade.getInstance().getCurrentGame().getDestCardDeck().size();
-                int trainDeckSize = UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size();
-                view.updateDecksInfo(destDeckSize, trainDeckSize);
-            }
+            if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.DrawDeck)
+                view.updateDestDeckInfo(wrapper.getDestinationCards().size());
+
+        } else if (o instanceof TrainCardWrapper) {
+            TrainCardWrapper wrapper = (TrainCardWrapper) o;
+            if(wrapper.getDeckType() == TrainCardWrapper.DeckType.DrawDeck)
+                view.updateTrainDeckInfo(wrapper.getCards().size());
         }
     }
 }

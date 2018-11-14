@@ -13,6 +13,7 @@ import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.TrainCard;
+import modelclasses.Route;
 
 public class ClientProxy {
 
@@ -130,6 +131,24 @@ public class ClientProxy {
         for(Player player: ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
             if(!player.getUsername().equals(message.getUsername())) {
                 Command clientCommand = new Command("model.CommandFacade", "_addChatMessage", Arrays.asList(new Object[] {message}));
+                CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
+            }
+        }
+    }
+
+    public void claimRoute(GameName gameName, Route route, String clientUsername) {
+        for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            if (!player.getUsername().equals(clientUsername)) {
+                Command clientCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, clientUsername}));
+                CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
+            }
+        }
+    }
+
+    public void startLastRound(GameName gameName, String clientUsername) {
+        for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            if (!player.getUsername().equals(clientUsername)) {
+                Command clientCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
                 CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
             }
         }

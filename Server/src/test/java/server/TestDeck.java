@@ -29,7 +29,7 @@ public class TestDeck {
         TrainCard drawnCard = game.drawTrainCard();
         assertEquals(104, game.getTrainCardDeck().size());
 
-        for (int i = 0; i < 109; i++) {
+        for (int i = 0; i < 104; i++) {
             game.drawTrainCard();
         }
         assertEquals(0, game.getTrainCardDeck().size());
