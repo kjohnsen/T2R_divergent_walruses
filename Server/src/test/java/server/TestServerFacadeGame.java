@@ -6,16 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
-import data.Command;
-import data.CommandManager;
 import model.ServerModel;
-import modelclasses.DestinationCard;
 import modelclasses.Player;
-import modelclasses.PlayerColor;
-import modelclasses.TrainCard;
 import results.Results;
 import modelclasses.User;
 import modelclasses.GameInfo;

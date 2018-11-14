@@ -1,17 +1,14 @@
 package server;
 
 import java.util.Arrays;
-import java.util.List;
 
 import data.Command;
-import data.CommandManager;
 import model.ServerModel;
 import modelclasses.ChatMessage;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
-import modelclasses.TrainCard;
 import modelclasses.Route;
 
 public class ClientProxy {
