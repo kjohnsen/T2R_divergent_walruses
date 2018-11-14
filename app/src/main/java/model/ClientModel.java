@@ -5,11 +5,13 @@ import java.util.Observable;
 
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 import modelclasses.User;
 
 /* The ClientModel is the only Observable object. Each of its setter methods will call setChanged()
@@ -59,11 +61,16 @@ public class ClientModel extends Observable {
         for (DestinationCard c : rejections) {
             currentGame.putDestCardInDeck(c);
             if (currentUser.getUsername().equals(player.getUsername())) {
-                playerTickets.remove(c);
+                playerPreSelectionTickets.remove(c);
             }
         }
+        if (currentUser.getUsername().equals(player.getUsername())) {
+            playerTickets.addAll(playerPreSelectionTickets);
+            playerPreSelectionTickets.clear();
+            notifyObservers(new DestinationCardWrapper(playerTickets, DestinationCardWrapper.DeckType.PlayerTickets));
+        }
         notifyObservers(player);
-        notifyObservers(currentGame.getDestCardDeck());
+        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck));
     }
 
     public void selectTrainCardToHand(TrainCard card, Player player) {
@@ -74,7 +81,7 @@ public class ClientModel extends Observable {
         }
         notifyObservers(player);
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(currentGame.getTrainCardDeck());
+            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
         }
     }
 
@@ -89,18 +96,8 @@ public class ClientModel extends Observable {
         }
         notifyObservers(player);
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(currentGame.getTrainCardDeck());
+            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
         }
-    }
-
-    public void addTickets(ArrayList<DestinationCard> cards, Player player) {
-        currentGame.addTicketsToHand(cards, player);
-        if (currentUser.getUsername().equals(player.getUsername())) {
-            playerTickets.addAll(cards);
-            notifyObservers(cards);
-        }
-        notifyObservers(player);
-        notifyObservers(currentGame.getDestCardDeck());
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
@@ -115,9 +112,9 @@ public class ClientModel extends Observable {
         faceupCards.set(selected, replacement);
         //again, just remove a random card
         currentGame.getTrainCardDeck().remove(0);
-        notifyObservers(faceupCards);
+        notifyObservers(new TrainCardWrapper(faceupCards, TrainCardWrapper.DeckType.FaceUp));
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(currentGame.getTrainCardDeck());
+            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
         }
     }
 
@@ -127,9 +124,9 @@ public class ClientModel extends Observable {
         for (int i = 0; i < 6; i++) {
             currentGame.getTrainCardDeck().remove(0);
         }
-        notifyObservers(faceupCards);
+        notifyObservers(new TrainCardWrapper(faceupCards, TrainCardWrapper.DeckType.FaceUp));
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(currentGame.getTrainCardDeck());
+            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
         }
     }
 
@@ -139,17 +136,17 @@ public class ClientModel extends Observable {
 
     public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
         playerTrainCards = cards;
-        this.notifyObservers(cards);
+        this.notifyObservers(new TrainCardWrapper(cards, TrainCardWrapper.DeckType.PlayerCards));
     }
 
     public void setPlayerPreSelectionTickets(ArrayList<DestinationCard> preSelectionTickets) {
         playerPreSelectionTickets = preSelectionTickets;
-        this.notifyObservers(preSelectionTickets);
+        this.notifyObservers(new DestinationCardWrapper(preSelectionTickets, DestinationCardWrapper.DeckType.PreSelectionTickets));
     }
 
     public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
         playerTickets = tickets;
-        this.notifyObservers(tickets);
+        this.notifyObservers(new DestinationCardWrapper(tickets, DestinationCardWrapper.DeckType.PlayerTickets));
     }
 
     public ArrayList<TrainCard> getFaceupCards() {
