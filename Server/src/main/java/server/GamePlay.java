@@ -39,6 +39,8 @@ public class GamePlay {
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
         player.setPreSelectionDestCards(tickets);
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.displayDestinationCards(tickets, player, game);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
@@ -59,10 +61,12 @@ public class GamePlay {
         Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
+            clientProxy.replaceTrainCard(replacements.get(0), index, game, username);
             Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
             results.getClientCommands().add(replaceCardCommand);
 
         } else {
+            clientProxy.clearWilds(replacements, game, username);
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
             results.getClientCommands().add(clearWildsCommand);
         }
@@ -93,7 +97,8 @@ public class GamePlay {
                 player.addDestCardToHand(card);
             }
             player.clearPreSelectionDestCards();
-
+            ClientProxy clientProxy = new ClientProxy();
+            clientProxy.selectDestinationCards(game.getGameName(), tickets, player, game);
             Results results = new Results();
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
             results.getClientCommands().add(selectDestCardsCommand);

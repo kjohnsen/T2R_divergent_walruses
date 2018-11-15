@@ -31,7 +31,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
-                Command clientCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {gameName, rejections, player, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {gameName, rejections, player}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -41,7 +41,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
-                Command clientCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -51,7 +51,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(name)) {
-                Command clientCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacement, selected, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacement, selected}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -61,7 +61,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(name)) {
-                Command clientCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[] {replacements, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[] {replacements}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -71,7 +71,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
-                Command clientCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -81,7 +81,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
-                Command clientCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player, game}));
+                Command clientCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
