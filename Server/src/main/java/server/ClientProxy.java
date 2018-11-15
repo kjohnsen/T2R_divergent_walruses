@@ -88,6 +88,11 @@ public class ClientProxy {
         }
     }
 
+    public void startTurn(String nextPlayerUsername) {
+        Command startTurnCommand = new Command("model.CommandFacade", "_startTurn", Arrays.asList(new Object[] {}));
+        CommandManager.getInstance().addCommand(nextPlayerUsername, startTurnCommand);
+    }
+
     public void startLastRound(GameName gameName, String clientUsername) {
         for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
             if (!player.getUsername().equals(clientUsername)) {

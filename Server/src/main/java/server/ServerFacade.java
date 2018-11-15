@@ -80,39 +80,21 @@ public class ServerFacade implements IServer {
     }
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS);
         return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
 
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
-        GameInfo gameInfo = ServerModel.getInstance().getGameInfo(name);
-        boolean isWild = gameInfo.getFaceUpCards().get(index).getColor().equals(TrainCardColor.WILD);
-        if(isWild) {
-            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
-        } else {
-            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
-                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
-            } else {
-                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
-            }
-        }
         return GamePlay.selectTrainCard(index, name, authToken);
     }
 
     @Override
     public Results drawTrainCard(GameName name, String authToken) {
-        if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
-            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
-        } else {
-            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
-        }
         return GamePlay.drawTrainCard(name, authToken);
     }
 
     @Override
     public Results drawDestinationCards(GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
         return GamePlay.drawDestinationCard(name, authToken);
     }
 

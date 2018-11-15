@@ -1,6 +1,7 @@
 package server;
 
 import model.ServerModel;
+import model.ServerState;
 import modelclasses.DestinationCard;
 import modelclasses.TrainCardColor;
 import results.Results;
@@ -22,16 +23,30 @@ public class GamePlay {
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
+
+        if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+        } else {
+            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+        }
+
         TrainCard card = game.drawTrainCard();
         player.addTrainCardToHand(card);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
+
+        if (ServerModel.getInstance().getState().equals(ServerState.TOOKTWOTRAINCARDS)) {
+            sendStartNextTurnCommand(game);
+        }
+
         return results;
     }
 
     public static Results drawDestinationCard(GameName name, String authToken) {
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
@@ -49,6 +64,18 @@ public class GamePlay {
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         TrainCard card = game.getFaceUpCards().get(index);
+
+        boolean isWild = card.getColor().equals(TrainCardColor.WILD);
+        if(isWild) {
+            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
+        } else {
+            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+            } else {
+                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+            }
+        }
+
         player.addTrainCardToHand(card);
         ArrayList<TrainCard> replacements = game.replaceCards(index);
         Results results = new Results();
@@ -63,10 +90,18 @@ public class GamePlay {
             results.getClientCommands().add(clearWildsCommand);
         }
         results.setSuccess(true);
+
+        if (ServerModel.getInstance().getState().equals(ServerState.TOOKTWOTRAINCARDS) ||
+                ServerModel.getInstance().getState().equals(ServerState.TOOKWILDTRAINCARD)) {
+            sendStartNextTurnCommand(game);
+        }
+
         return results;
     }
 
     public static Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
+        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS);
+
         if (tickets != null) {
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
             String username = ServerModel.getInstance().getAuthTokens().get(authToken);
@@ -90,6 +125,7 @@ public class GamePlay {
             }
             player.clearPreSelectionDestCards();
 
+            sendStartNextTurnCommand(game);
             Results results = new Results();
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
             results.getClientCommands().add(selectDestCardsCommand);
@@ -137,10 +173,36 @@ public class GamePlay {
             clientProxy.startLastRound(gameName, username);
         }
 
+        sendStartNextTurnCommand(game);
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
         results.getClientCommands().add(claimRouteCommand);
         results.setSuccess(true);
         return results;
+    }
+
+    private static void sendStartNextTurnCommand(GameInfo game) {
+        Player currPlayer = game.getCurrentPlayer();
+        int currPlayerIndex = 0;
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            Player p = game.getPlayers().get(i);
+            if (currPlayer.equals(p)) {
+                currPlayerIndex = i;
+            }
+        }
+
+        boolean isLastPlayer = currPlayerIndex == game.getPlayers().size() - 1;
+        if (isLastPlayer && game.isLastRound()) {
+            // TODO: send back the end game command to all players
+        }
+        else {
+            int nextPlayerIndex = currPlayerIndex + 1;
+            if (isLastPlayer) {
+                nextPlayerIndex = 0;
+            }
+            Player nextPlayer = game.getPlayers().get(nextPlayerIndex);
+            ClientProxy clientProxy = new ClientProxy();
+            clientProxy.startTurn(nextPlayer.getUsername());
+        }
     }
 
     private static ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player) {

@@ -28,5 +28,6 @@ public interface iClient {
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
     void claimRoute(GameName gameName, Route route, String username);
+    void startTurn();
     void startLastRound();
 }
