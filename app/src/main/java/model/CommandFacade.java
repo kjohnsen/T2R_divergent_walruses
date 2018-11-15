@@ -86,6 +86,10 @@ public class CommandFacade implements iClient {
         ourInstance.startLastRound();
     }
 
+    public static void _endGame() {
+        ourInstance.endGame();
+    }
+
     @Override
     public void selectDestinationCards(ArrayList<DestinationCard> rejections, Player player) {
         ClientModel.getInstance().rejectTickets(rejections, player);
@@ -195,6 +199,11 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startLastRound() {
+        // TODO: implement this
+    }
+
+    @Override
+    public void endGame() {
         // TODO: implement this
     }
 }

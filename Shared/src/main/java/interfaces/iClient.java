@@ -30,4 +30,5 @@ public interface iClient {
     void claimRoute(GameName gameName, Route route, String username);
     void startTurn();
     void startLastRound();
+    void endGame();
 }

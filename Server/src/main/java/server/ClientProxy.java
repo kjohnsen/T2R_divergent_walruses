@@ -101,4 +101,13 @@ public class ClientProxy {
             }
         }
     }
+
+    public void endGame(GameName gameName, String clientUsername) {
+        for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
+            if (!player.getUsername().equals(clientUsername)) {
+                Command endGameCommand = new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
+                CommandManager.getInstance().addCommand(player.getUsername(), endGameCommand);
+            }
+        }
+    }
 }
