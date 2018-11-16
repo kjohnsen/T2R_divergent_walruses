@@ -1,17 +1,16 @@
 package server;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.CommandManager;
-import data.Serializer;
 import interfaces.IServer;
 import model.ServerModel;
+import model.ServerState;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
+import modelclasses.TrainCardColor;
 import results.Results;
 import data.Command;
 import modelclasses.GameName;
@@ -21,7 +20,6 @@ import modelclasses.TrainCard;
 import modelclasses.Route;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -363,6 +361,42 @@ public class ServerFacade implements IServer {
         results.setSuccess(true);
         results.setAuthToken(authToken);
         return results;
+    }
+
+    public void makeGameHistory(Command command, GameName gameName) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
+    public void makeGameHistory(Command command) {
+        String commandMessage = CommandTranslator.translateCommand(command);
+        if(!commandMessage.isEmpty()) {
+            ChatMessage message = new ChatMessage("History", commandMessage);
+            GameName gameName = null;
+            switch(command.get_methodName()) {
+                case CommandMethodNames.claimRoute: gameName = (GameName)command.get_paramValues()[0];  break;
+                case CommandMethodNames.clearWilds: return;
+                case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0];    break;
+                case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1];  break;
+                case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0];   break;
+                case CommandMethodNames.selectTrainCard: gameName = (GameName)command.get_paramValues()[1]; break;
+                case CommandMethodNames.replaceTrainCard: return;
+            }
+
+            if(gameName != null) {
+                addGameHistory(gameName, message);
+            }
+        }
+    }
+
+    public void addGameHistory(GameName gameName, ChatMessage message) {
+        ClientProxy clientProxy = new ClientProxy();
+        clientProxy.addGameHistory(gameName, message);
     }
 
     //these two methods are necessary for the client side, but not the server side
