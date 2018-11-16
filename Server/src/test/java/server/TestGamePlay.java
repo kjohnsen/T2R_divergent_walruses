@@ -49,6 +49,7 @@ public class TestGamePlay {
 
         // create game
         GameInfo game = new GameInfo(GAMENAME, players, 2);
+        game.setCurrentPlayer(players.get(0));
         ServerModel.getInstance().getGames().put(GAMENAME, game);
     }
 

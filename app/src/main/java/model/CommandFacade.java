@@ -78,8 +78,16 @@ public class CommandFacade implements iClient {
         ourInstance.claimRoute(gameName, route, username);
     }
 
+    public static void _startTurn() {
+        ourInstance.startTurn();
+    }
+
     public static void _startLastRound() {
         ourInstance.startLastRound();
+    }
+
+    public static void _endGame() {
+        ourInstance.endGame();
     }
 
     @Override
@@ -185,7 +193,17 @@ public class CommandFacade implements iClient {
     }
 
     @Override
+    public void startTurn() {
+        // TODO: implement this
+    }
+
+    @Override
     public void startLastRound() {
+        // TODO: implement this
+    }
+
+    @Override
+    public void endGame() {
         // TODO: implement this
     }
 }
