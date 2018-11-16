@@ -1,15 +1,18 @@
 package server;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import data.Command;
 import model.ServerModel;
 import modelclasses.ChatMessage;
+import modelclasses.DestinationCard;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Route;
+import modelclasses.TrainCard;
 
 public class ClientProxy {
 
@@ -24,10 +27,70 @@ public class ClientProxy {
         CommandManager.getInstance().addClient(username);
     }
 
+    public void selectDestinationCards(GameName gameName, ArrayList<DestinationCard> rejections, Player player, GameInfo game) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
+                Command clientCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {gameName, rejections, player}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void selectTrainCard(TrainCard card, Player player, GameInfo game) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
+                Command clientCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void replaceTrainCard(TrainCard replacement, Integer selected, GameInfo game, String name) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(name)) {
+                Command clientCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacement, selected}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void clearWilds(ArrayList<TrainCard> replacements, GameInfo game, String name) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(name)) {
+                Command clientCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[] {replacements}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void drawTrainCard(TrainCard card, Player player, GameInfo game) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
+                Command clientCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
+    public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player, GameInfo game) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(player.getUsername())) {
+                Command clientCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
     public void joinGame(Player player, GameName gameName, String clientUsername) {
         for(String username : ServerModel.getInstance().getUsers().keySet()) {
             if (!username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "joinGame", Arrays.asList(new Object[] {player, gameName}));
+                Command clientCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -37,7 +100,7 @@ public class ClientProxy {
         //create commands for every client in the server model except the one that asked
         for(String username : ServerModel.getInstance().getUsers().keySet()) {
             if (!username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "createGame", Arrays.asList(new Object[] {gameInfo}));
+                Command clientCommand = new Command("model.CommandFacade", "_createGame", Arrays.asList(new Object[] {gameInfo}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -48,7 +111,7 @@ public class ClientProxy {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
             if (game.getPlayer(username) != null && !username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "startGame", Arrays.asList(new Object[] {game}));
+                Command clientCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
@@ -57,7 +120,7 @@ public class ClientProxy {
     public void claimColor(String clientUsername, PlayerColor playerColor) {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             if (!username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "claimColor", Arrays.asList(new Object[] {clientUsername, playerColor}));
+                Command clientCommand = new Command("model.CommandFacade", "_claimColor", Arrays.asList(new Object[] {clientUsername, playerColor}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
