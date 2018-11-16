@@ -201,6 +201,7 @@ public class GamePlay {
         return results;
     }
 
+    /** returns the end game command, if applicable **/
     private static Command sendStartNextTurnCommand(GameInfo game) {
         // change this to send command to all users
         Player currPlayer = game.getCurrentPlayer();
@@ -225,7 +226,7 @@ public class GamePlay {
                 nextPlayerIndex = 0;
             }
             Player nextPlayer = game.getPlayers().get(nextPlayerIndex);
-            clientProxy.startTurn(nextPlayer.getUsername());
+            clientProxy.startTurn(game.getGameName(), nextPlayer.getUsername());
         }
         return null;
     }
