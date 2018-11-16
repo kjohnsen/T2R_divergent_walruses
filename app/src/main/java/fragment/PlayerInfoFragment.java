@@ -15,8 +15,11 @@ import com.example.emilyhales.tickettoride.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import adapter.DestinationCardListViewAdapter;
 import adapter.PlayerInfoListViewAdapter;
@@ -78,7 +81,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         cardBlack.setBackgroundColor(getResources().getColor(R.color.trainBlack));
         cardWild.setBackgroundColor(getResources().getColor(R.color.trainPink));
 
-        cards_textView = new HashMap<>();
+        cards_textView = new TreeMap<>();
         cards_textView.put(TrainCardColor.RED, cardRed);
         cards_textView.put(TrainCardColor.ORANGE, cardOrange);
         cards_textView.put(TrainCardColor.YELLOW, cardYellow);
@@ -99,7 +102,28 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
             cards_textView.get(trainCardColor).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    ArrayList<TrainCardColor> keys = new ArrayList<TrainCardColor>(cards_textView.keySet());
+                    //loop from back
+                    for(int i=keys.size()-1; i>=0;i--){
+                        if(keys.get(i) == trainCardColor){
+                            break;
+                        }
+                        cards_textView.get(keys.get(i)).bringToFront();
+                    }
+
+                    //loop from front
+                    for(int i = 0; i < keys.size(); i++){
+                        if(keys.get(i) == trainCardColor){
+                            break;
+                        } else {
+                            cards_textView.get(keys.get(i)).bringToFront();
+                        }
+                    }
+
+                    //set clicked to front
                     cards_textView.get(trainCardColor).bringToFront();
+
                 }
             });
         }
