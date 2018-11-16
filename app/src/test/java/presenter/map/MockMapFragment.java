@@ -36,4 +36,9 @@ public class MockMapFragment implements IMapView {
     public void displayMessage(String message) {
 
     }
+
+    @Override
+    public void queryUserForClaimColor(Route route) {
+
+    }
 }

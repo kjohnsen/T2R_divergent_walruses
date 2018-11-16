@@ -140,8 +140,8 @@ public class DecksFragment extends Fragment implements IDecksView{
 
     @Override
     public void drawDestinationCards() {
-        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
-        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
+//        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
+//        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
     }
 
     public class SelectCardTask extends AsyncTask<Integer, Void, String> {

@@ -135,6 +135,11 @@ public class MapFragment extends SupportMapFragment implements
     }
 
     @Override
+    public void queryUserForClaimColor(Route route) {
+        Toast.makeText(this.getContext(), "Need to show dialog here", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void initializeMap(MapSetup mapSetup) {
         LatLng northeast = new LatLng(mapSetup.getNorthBound(), mapSetup.getEastBound());
         LatLng southwest = new LatLng(mapSetup.getSouthBound(), mapSetup.getWestBound());

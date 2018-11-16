@@ -23,7 +23,6 @@ public class ChatPresenterTest {
     public static void setup() {
         chatPresenter = new ChatPresenter(chatView);
         chatPresenter.setUiFacade(uiFacade);
-        uiFacade.setServerProxy(mockServerProxy);
     }
 
     @Before

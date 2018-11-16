@@ -6,6 +6,14 @@ import model.UIFacade;
 import modelclasses.Route;
 
 public class ClaimingEnabledState extends MapPresenterState {
+    private static final ClaimingEnabledState ourInstance = new ClaimingEnabledState();
+
+    public static ClaimingEnabledState getInstance() {
+        return ourInstance;
+    }
+
+    private ClaimingEnabledState() {}
+
     @Override
     public void routeClicked(Route route) {
         super.routeClicked(route);

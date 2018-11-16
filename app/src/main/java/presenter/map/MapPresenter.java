@@ -11,8 +11,8 @@ import modelclasses.Route;
 import modelclasses.TrainCardWrapper;
 
 public class MapPresenter implements IMapPresenter, Observer {
-    IMapView mapView;
-    MapPresenterState state;
+    private IMapView mapView;
+    private MapPresenterState state;
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
@@ -28,9 +28,17 @@ public class MapPresenter implements IMapPresenter, Observer {
         this.state.enter();
     }
 
+    public IMapView getMapView() {
+        return mapView;
+    }
+
+    public MapPresenterState getState() {
+        return state;
+    }
+
     @Override
     public void routeClicked(Route route) {
-        state.getInstance().routeClicked(route);
+        state.routeClicked(route);
     }
 
     @Override
