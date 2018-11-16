@@ -202,6 +202,7 @@ public class GamePlay {
     }
 
     private static Command sendStartNextTurnCommand(GameInfo game) {
+        // change this to send command to all users
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = 0;
         for (int i = 0; i < game.getPlayers().size(); i++) {
