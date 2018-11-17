@@ -24,7 +24,7 @@ public class GamePlay {
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
 
-        if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+        if(ServerModel.getInstance().getState() == ServerState.TOOKONETRAINCARD) {
             ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
         } else {
             ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
@@ -39,7 +39,7 @@ public class GamePlay {
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState().equals(ServerState.TOOKTWOTRAINCARDS)) {
+        if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS) {
             Command endGameCommand = sendStartNextTurnCommand(game);
             if (endGameCommand != null) {
                 results.getClientCommands().add(endGameCommand);
@@ -76,7 +76,7 @@ public class GamePlay {
         if(isWild) {
             ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
         } else {
-            if(ServerModel.getInstance().getState().equals(ServerState.TOOKONETRAINCARD)) {
+            if(ServerModel.getInstance().getState() == ServerState.TOOKONETRAINCARD) {
                 ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
             } else {
                 ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
@@ -102,8 +102,8 @@ public class GamePlay {
         }
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState().equals(ServerState.TOOKTWOTRAINCARDS) ||
-                ServerModel.getInstance().getState().equals(ServerState.TOOKWILDTRAINCARD)) {
+        if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS ||
+                ServerModel.getInstance().getState() == ServerState.TOOKWILDTRAINCARD) {
             Command endGameCommand = sendStartNextTurnCommand(game);
             if (endGameCommand != null) {
                 results.getClientCommands().add(endGameCommand);
@@ -203,7 +203,6 @@ public class GamePlay {
 
     /** returns the end game command, if applicable **/
     private static Command sendStartNextTurnCommand(GameInfo game) {
-        // change this to send command to all users
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = 0;
         for (int i = 0; i < game.getPlayers().size(); i++) {
@@ -226,6 +225,7 @@ public class GamePlay {
                 nextPlayerIndex = 0;
             }
             Player nextPlayer = game.getPlayers().get(nextPlayerIndex);
+            game.setCurrentPlayer(nextPlayer);
             clientProxy.startTurn(game.getGameName(), nextPlayer.getUsername());
         }
         return null;
