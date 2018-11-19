@@ -43,6 +43,11 @@ public class MockMapFragment implements IMapView {
     }
 
     @Override
+    public void moveToEndGame() {
+
+    }
+
+    @Override
     public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller) {
         if (route.getDestination().equals(Atlas.LOS_ANGELES)) {
             caller.claimColorChosen(route, TrainCardColor.RED);

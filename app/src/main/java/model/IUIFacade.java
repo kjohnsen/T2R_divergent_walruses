@@ -43,5 +43,7 @@ public interface IUIFacade {
     public List<ChatMessage> getChatMessages();
     public void setHostIP(String hostIP);
     public void setHostPort(String hostPort);
+    public boolean isLastRound();
+    public boolean isEndGame();
 
 }

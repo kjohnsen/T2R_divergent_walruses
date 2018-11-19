@@ -174,4 +174,14 @@ public class MockUIFacade implements IUIFacade {
     public void setHostPort(String hostPort) {
 
     }
+
+    @Override
+    public boolean isLastRound() {
+        return false;
+    }
+
+    @Override
+    public boolean isEndGame() {
+        return false;
+    }
 }
