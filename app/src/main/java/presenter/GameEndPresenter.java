@@ -1,11 +1,15 @@
 package presenter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import activity.IGameEndView;
 import model.IUIFacade;
 import model.UIFacade;
+import modelclasses.City;
+import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerSummary;
@@ -28,11 +32,33 @@ public class GameEndPresenter implements IGameEndPresenter {
             PlayerSummary playerSummary = new PlayerSummary();
             playerSummary.setPlayerName(player.getUsername());
             playerSummary.setPointsFromRoutes(player.getPoints());
+
+            List<DestinationCard> destinationCards = player.getDestinationCards();
+            List<HashSet<City>> connectedCities = player.getConnectedCities();
+
+            for(DestinationCard card : destinationCards) {
+                City[] cities = card.getCities();
+                boolean completed = false;
+
+                for(HashSet<City> citySet: connectedCities) {
+                    if(citySet.contains(cities[0]) && citySet.contains(cities[1])) {
+                        completed = true;
+                        break;
+                    }
+                }
+
+                if(completed) {
+                    playerSummary.addGainedDestinationPoints(card.getPoints());
+                } else {
+                    playerSummary.addLostDestinationPoints(card.getPoints());
+                }
+            }
+
             //TODO: check for points gained and lost from destination cards
             if(player.getRoutes().size() > maxRoutes) {
                 maxRoutes = player.getRoutes().size();
             }
-            int totalPoints = playerSummary.getPointsFromRoutes(); //TODO: add everything else...
+            int totalPoints = playerSummary.getPointsFromRoutes() + playerSummary.getPointsGainedFromDestinations() - playerSummary.getPointsLostFromDestinations();//TODO: add everything else...
             playerSummary.setTotalPoints(totalPoints);
             playerSummaries.add(playerSummary);
         }
