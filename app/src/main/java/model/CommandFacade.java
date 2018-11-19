@@ -140,7 +140,7 @@ public class CommandFacade implements iClient {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         if(player != null && !gameInfo.getPlayers().contains(player)) {
             gameInfo.addPlayer(player);
-            ClientModel.getInstance().notifyObservers(gameInfo.getPlayers());
+            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getGameList());
         }
         if (player == null || player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
             ClientModel.getInstance().setCurrentGame(gameInfo);
