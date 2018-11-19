@@ -123,14 +123,6 @@ public class GameInfo implements Serializable {
         this.players = players;
     }
 
-    public boolean setCurrentPlayer() {
-        if (players.size() > 0) {
-            currentPlayer = players.get(0);
-            return true;
-        }
-        return false;
-    }
-
     public void changeTurn() {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).equals(currentPlayer)) {
@@ -308,6 +300,26 @@ public class GameInfo implements Serializable {
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public int getCurrentPlayerIndex() {
+        int currPlayerIndex = 0;
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+            if (currentPlayer.equals(p)) {
+                currPlayerIndex = i;
+            }
+        }
+        return currPlayerIndex;
+    }
+
+    public Player getNextPlayer() {
+        int currPlayerIndex = getCurrentPlayerIndex();
+        int nextPlayerIndex = currPlayerIndex + 1;
+        if (nextPlayerIndex == players.size()) {
+            nextPlayerIndex = 0;
+        }
+        return players.get(nextPlayerIndex);
     }
 
     public boolean isLastRound() {

@@ -85,7 +85,7 @@ public class TestGamePlay {
 
         Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME);
         assertTrue(results.getSuccess());
-        assertEquals(results.getClientCommands().size(), 1);
+        assertEquals(results.getClientCommands().size(), 2);
 
         int trainCarDiff = initialTrainCarNum - player.getNumberOfTrains();
         assertEquals(4, trainCarDiff);
@@ -112,7 +112,7 @@ public class TestGamePlay {
 
         Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME);
         assertTrue(results.getSuccess());
-        assertEquals(results.getClientCommands().size(), 1);
+        assertEquals(results.getClientCommands().size(), 2);
 
         int trainCarDiff = initialTrainCarNum - player.getNumberOfTrains();
         assertEquals(5, trainCarDiff);
@@ -141,7 +141,7 @@ public class TestGamePlay {
         assertTrue(results.getSuccess());
         assertTrue(player.getNumberOfTrains() == 2);
         assertEquals(0, player.getTrainCards().size());
-        assertEquals(results.getClientCommands().size(), 2);
+        assertEquals(results.getClientCommands().size(), 3);
         assertEquals(4, game.getDiscardedTrainCards().size() - initialDiscardDeckSize);
     }
 

@@ -83,6 +83,7 @@ public class ServerFacade implements IServer {
         return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
 
+
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
         return GamePlay.selectTrainCard(index, name, authToken);
@@ -277,7 +278,7 @@ public class ServerFacade implements IServer {
 
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
-        game.setCurrentPlayer();
+        game.setCurrentPlayer(gamePlayers.get(0));
 
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);

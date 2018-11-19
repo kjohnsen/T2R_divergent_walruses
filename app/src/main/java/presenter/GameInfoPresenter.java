@@ -28,9 +28,12 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
         int trainDeckSize = UIFacade.getInstance().getTrainDeckSize();
         int destDeckSize = UIFacade.getInstance().getDestDeckSize();
         playersInfo = UIFacade.getInstance().getCurrentGame().getPlayers();
+
+
         view.updateTrainDeckInfo(trainDeckSize);
         view.updateDestDeckInfo(destDeckSize);
         view.updatePlayerInfo(playersInfo);
+        view.updateCurrentPlayer(UIFacade.getInstance().getCurrentGame().getCurrentPlayer());
 
     }
 
@@ -51,7 +54,7 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
                 }
             }
             view.updatePlayerInfo(playersInfo);
-            view.updateCurrentPlayer(player);
+            //view.updateCurrentPlayer(player);
 
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;

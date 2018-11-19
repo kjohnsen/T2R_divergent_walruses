@@ -56,6 +56,11 @@ public class Player implements Serializable {
     private Integer numberOfTrains = 45;
 
     /**
+     *
+     */
+    private boolean startOfGame;
+
+    /**
      * creates a Player object with given username
      * @pre username is unique and not null
      * @post Player's color is UNCHOSEN
@@ -63,6 +68,7 @@ public class Player implements Serializable {
     public Player(String username) {
         this.username = username;
         playerColor = PlayerColor.UNCHOSEN;
+        startOfGame = true;
     }
 
 
@@ -74,6 +80,7 @@ public class Player implements Serializable {
     public Player(String username, PlayerColor color) {
         this.username = username;
         playerColor = color;
+        startOfGame = true;
     }
 
     /**
@@ -315,6 +322,14 @@ public class Player implements Serializable {
 
     public ArrayList<HashSet<City>> getConnectedCities() {
         return connectedCities;
+    }
+
+    public boolean isStartOfGame() {
+        return startOfGame;
+    }
+
+    public void setStartOfGameFalse() {
+        startOfGame = false;
     }
 
     /**

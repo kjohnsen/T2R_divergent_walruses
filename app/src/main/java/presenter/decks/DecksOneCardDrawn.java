@@ -24,4 +24,10 @@ public class DecksOneCardDrawn extends DecksState {
             return super.selectTrainCard(presenter, index);
         }
     }
+
+    @Override
+    public String drawTrainCard(DecksPresenter presenter) {
+        presenter.setState(DecksWaiting.getInstance());
+        return super.drawTrainCard(presenter);
+    }
 }

@@ -183,6 +183,14 @@ public class UIFacade implements IUIFacade {
         return ClientModel.getInstance().getChatMessages();
     }
 
+    public boolean isLastRound() {
+        return ClientModel.getInstance().isLastRound();
+    }
+
+    public boolean isEndGame() {
+        return ClientModel.getInstance().isEndGame();
+    }
+
     public void setHostIP(String hostIP) {
         serverProxy.setHostIP(hostIP);
     }

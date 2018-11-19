@@ -57,6 +57,8 @@ public interface IMapView {
 
     public void displayMessage(String message);
 
+    public void moveToEndGame();
+
     /**
      * Sets route to color user specifies, to then claim
      * @param route

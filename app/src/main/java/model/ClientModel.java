@@ -28,6 +28,8 @@ public class ClientModel extends Observable {
     private ArrayList<DestinationCard> playerPreSelectionTickets;
     private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
+    private Boolean lastRound;
+    private Boolean endGame;
 
     private static final ClientModel ourInstance = new ClientModel();
 
@@ -41,6 +43,8 @@ public class ClientModel extends Observable {
         playerTickets = new ArrayList<>();
         chatMessages = new ArrayList<>();
         startGame = true;
+        lastRound = false;
+        endGame = false;
     }
 
     public void reset() {
@@ -204,6 +208,7 @@ public class ClientModel extends Observable {
     public ArrayList<GameInfo> getGameList() {
         return gameList;
     }
+
     public GameInfo getGame(GameName gameName) {
         for (GameInfo gameInfo : gameList) {
             if (gameInfo.getGameName().equals(gameName)) {
@@ -211,6 +216,24 @@ public class ClientModel extends Observable {
             }
         }
         return null;
+    }
+
+    public void setLastRoundTrue() {
+        lastRound = true;
+        this.notifyObservers(lastRound);
+    }
+
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    public void setEndGameTrue() {
+        endGame = true;
+        this.notifyObservers(endGame);
+    }
+
+    public boolean isEndGame() {
+        return endGame;
     }
 
     @Override
