@@ -78,8 +78,8 @@ public class CommandFacade implements iClient {
         ourInstance.claimRoute(gameName, route, username);
     }
 
-    public static void _startTurn() {
-        ourInstance.startTurn();
+    public static void _startNextTurn(String username) {
+        ourInstance.startNextTurn(username);
     }
 
     public static void _startLastRound() {
@@ -156,6 +156,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startGame(GameInfo game) {
+        ClientModel.getInstance().setCurrentGame(game);
         ClientModel.getInstance().setFaceupCards(game.getFaceUpCards());
         ClientModel.getInstance().setCurrentGamePlayers(game.getPlayers());
 
@@ -193,17 +194,19 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void startTurn() {
-        // TODO: implement this
+    public void startNextTurn(String username) {
+        Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
+        ClientModel.getInstance().notifyObservers(player);
     }
 
     @Override
     public void startLastRound() {
-        // TODO: implement this
+        ClientModel.getInstance().setLastRoundTrue();
     }
 
     @Override
     public void endGame() {
-        // TODO: implement this
+        ClientModel.getInstance().setEndGameTrue();
     }
 }

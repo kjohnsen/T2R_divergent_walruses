@@ -55,4 +55,6 @@ public interface IMapView {
 
     public void displayMessage(String message);
 
+    public void moveToEndGame();
+
 }

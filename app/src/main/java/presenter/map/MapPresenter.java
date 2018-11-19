@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import fragment.IMapView;
 import model.ClientModel;
+import model.UIFacade;
 import modelclasses.DestinationCardWrapper;
 import modelclasses.Player;
 import modelclasses.Route;
@@ -45,6 +46,13 @@ public class MapPresenter implements IMapPresenter, Observer {
             }
         } else if (o instanceof DestinationCardWrapper || o instanceof TrainCardWrapper) {
             this.setState(ClaimingDisabledState.getInstance());
+        } else if (o instanceof Boolean) {
+            if (UIFacade.getInstance().isLastRound()) {
+                mapView.displayMessage("Starting Last Round");
+            }
+            else if (UIFacade.getInstance().isEndGame()) {
+                mapView.moveToEndGame();
+            }
         }
     }
 }
