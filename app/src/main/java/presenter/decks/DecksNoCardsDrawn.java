@@ -11,7 +11,7 @@ public class DecksNoCardsDrawn extends DecksState {
     private DecksNoCardsDrawn() {}
     
     public String drawDestinationCards(DecksPresenter presenter) {
-        if (!isGameStart(presenter)) {
+        if (!isGameStart(presenter) && UIFacade.getInstance().isStartPlayer()) {
             presenter.setState(DecksWaiting.getInstance());
         }
         return super.drawDestinationCards(presenter);
