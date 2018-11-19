@@ -1,23 +1,24 @@
 package fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import com.example.emilyhales.tickettoride.R;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Set;
-import com.google.common.collect.
 
 import modelclasses.TrainCardColor;
 import static modelclasses.TrainCardColor.*;
-import presenter.ChooseClaimColorPresenter;
 import presenter.IChooseClaimColorPresenter;
 
 public class ChooseClaimColorFragment extends DialogFragment implements IChooseClaimColorView {
@@ -33,6 +34,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
 
     private BiMap<Button, TrainCardColor> buttonColorBiMap = HashBiMap.create();
 
+    @Override
     public void setPresenter(IChooseClaimColorPresenter presenter) {
         this.presenter = presenter;
     }
@@ -80,5 +82,13 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
             });
         }
 
+
+
+        Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
     }
 }

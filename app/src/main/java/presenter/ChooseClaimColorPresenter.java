@@ -1,22 +1,39 @@
 package presenter;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import fragment.IChooseClaimColorView;
+import model.ClientModel;
+import modelclasses.Player;
 import modelclasses.Route;
 import modelclasses.TrainCardColor;
 
 public class ChooseClaimColorPresenter implements IChooseClaimColorPresenter {
     private ChooseClaimColorCaller caller;
     private Route route;
+    private IChooseClaimColorView view;
 
-    public ChooseClaimColorPresenter(Route route, ChooseClaimColorCaller caller) {
+    public ChooseClaimColorPresenter(IChooseClaimColorView view, Route route,
+                                     ChooseClaimColorCaller caller) {
+        this.view = view;
         this.route = route;
         this.caller = caller;
+        view.displayPossibleColors(getPossibleColors(route));
     }
 
-    @Override
-    public Set<TrainCardColor> getPossibleColors() {
-        return null;
+    private Set<TrainCardColor> getPossibleColors(Route route) {
+        Set<TrainCardColor> result = new HashSet<>();
+        int length = route.getLength();
+        Map<TrainCardColor, Integer> colorQuantityMap =
+                Player.getTrainCardQuantities(ClientModel.getInstance().getPlayerTrainCards());
+        for (TrainCardColor color : colorQuantityMap.keySet()) {
+            if (colorQuantityMap.get(color) >= length) {
+                result.add(color);
+            }
+        }
+        return result;
     }
 
     @Override

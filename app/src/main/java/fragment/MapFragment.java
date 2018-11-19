@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Random;
 
 import model.ClientModel;
+import model.UIFacade;
 import modelclasses.City;
 import modelclasses.MapSetup;
 import modelclasses.Player;
@@ -137,9 +138,10 @@ public class MapFragment extends SupportMapFragment implements
     }
 
     @Override
-    public void queryUserForClaimColor(Route route) {
+    public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller) {
         Toast.makeText(this.getContext(), "Need to show dialog here", Toast.LENGTH_LONG).show();
-
+        ChooseClaimColorFragment cccf = new ChooseClaimColorFragment();
+        cccf.setPresenter(new ChooseClaimColorPresenter(cccf, route, presenter);
 //        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
 //        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
 
