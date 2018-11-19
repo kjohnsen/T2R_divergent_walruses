@@ -207,6 +207,7 @@ public class GamePlay {
     private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
+        ServerModel.getInstance().setState(ServerState.TURNSTART);
 
         ClientProxy clientProxy = new ClientProxy();
         boolean isLastPlayer = currPlayerIndex == game.getPlayers().size() - 1;
