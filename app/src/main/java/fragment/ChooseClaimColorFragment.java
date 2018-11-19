@@ -12,8 +12,8 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.example.emilyhales.tickettoride.R;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+//import com.google.common.collect.BiMap;
+//import com.google.common.collect.HashBiMap;
 
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     private Button black;
     private Button white;
 
-    private BiMap<Button, TrainCardColor> buttonColorBiMap = HashBiMap.create();
+    //private BiMap<Button, TrainCardColor> buttonColorBiMap = HashBiMap.create();
 
     @Override
     public void setPresenter(IChooseClaimColorPresenter presenter) {
@@ -42,11 +42,11 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     @Override
     public void displayPossibleColors(Set<TrainCardColor> possibleColors) {
         for (TrainCardColor color : TrainCardColor.values()) {
-            Button button = buttonColorBiMap.inverse().get(color);
+      //      Button button = buttonColorBiMap.inverse().get(color);
             if (possibleColors.contains(color)) {
-                button.setEnabled(true);
+        //        button.setEnabled(true);
             } else {
-                button.setEnabled(false);
+          //      button.setEnabled(false);
             }
         }
     }
@@ -64,7 +64,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         purple = view.findViewById(R.id.ccButtonPurple);
         black = view.findViewById(R.id.ccButtonBlack);
         white = view.findViewById(R.id.ccButtonWhite);
-        buttonColorBiMap.put(red, RED);
+       /* buttonColorBiMap.put(red, RED);
         buttonColorBiMap.put(orange, ORANGE);
         buttonColorBiMap.put(yellow, YELLOW);
         buttonColorBiMap.put(green, GREEN);
@@ -72,6 +72,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         buttonColorBiMap.put(purple, PURPLE);
         buttonColorBiMap.put(black, BLACK);
         buttonColorBiMap.put(white, WHITE);
+
 
         for (Button button : buttonColorBiMap.keySet()) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +84,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
                 }
             });
         }
-
+*/
 
 
         Dialog dialog = new Dialog(getActivity());

@@ -9,11 +9,22 @@ public class Route implements Serializable {
     private Integer length;
     private Player player;
 
+    private Route twinRoute;
+
     public Route(City origin, City destination, TrainCardColor color, Integer length) {
         this.origin = origin;
         this.destination = destination;
         this.color = color;
         this.length = length;
+        twinRoute = null;
+    }
+
+    public Route getTwinRoute() {
+        return twinRoute;
+    }
+
+    public void setTwinRoute(Route twinRoute) {
+        this.twinRoute = twinRoute;
     }
 
     public City getOrigin() {

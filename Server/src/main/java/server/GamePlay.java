@@ -164,6 +164,27 @@ public class GamePlay {
         Player player = game.getPlayer(username);
         Results results = new Results();
 
+        // check double route validity
+        boolean fewPlayers = game.getNumPlayers() < 4;
+        Route twinRoute = route.getTwinRoute();
+        boolean twoRoutes = twinRoute != null;
+
+        if (fewPlayers && twoRoutes) {
+            if (!game.getUnclaimedRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Double route already claimed");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
+        else if (!fewPlayers && twoRoutes) {
+            if (player.getRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Don't be a jerk");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
         // verify that player can claim route
         ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
         boolean enoughTrains = (player.getNumberOfTrains() - route.getLength()) >= 0;
