@@ -156,6 +156,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startGame(GameInfo game) {
+        ClientModel.getInstance().setCurrentGame(game);
         ClientModel.getInstance().setFaceupCards(game.getFaceUpCards());
         ClientModel.getInstance().setCurrentGamePlayers(game.getPlayers());
 
