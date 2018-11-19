@@ -194,7 +194,6 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startNextTurn(String username) {
-        // TODO: implement this
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
         ClientModel.getInstance().notifyObservers(player);
@@ -202,11 +201,11 @@ public class CommandFacade implements iClient {
 
     @Override
     public void startLastRound() {
-        // TODO: implement this
+        ClientModel.getInstance().setLastRoundTrue();
     }
 
     @Override
     public void endGame() {
-        // TODO: implement this
+        ClientModel.getInstance().setEndGameTrue();
     }
 }

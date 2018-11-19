@@ -1,6 +1,7 @@
 package fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import activity.GameEndView;
 import model.ClientModel;
 import modelclasses.City;
 import modelclasses.MapSetup;
@@ -307,6 +309,12 @@ public class MapFragment extends SupportMapFragment implements
     private double randDouble(double rangeMin, double rangeMax) {
         Random r = new Random();
         return rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+    }
+
+    @Override
+    public void moveToEndGame() {
+        Intent intent = new Intent(getActivity(), GameEndView.class);
+        startActivity(intent);
     }
 
     @Override
