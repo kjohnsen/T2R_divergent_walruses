@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IServer;
+import model.ClientModel;
 import model.IUIFacade;
+import modelclasses.Atlas;
 import modelclasses.ChatMessage;
+import modelclasses.City;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 
 public class MockUIFacade implements IUIFacade {
@@ -74,6 +78,25 @@ public class MockUIFacade implements IUIFacade {
 
     @Override
     public String selectDestinationCards(ArrayList<DestinationCard> rejected) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Route> getAvailableRoutes() {
+        return null;
+    }
+
+    @Override
+    public String claimRoute(Route route) {
+        City destination = route.getDestination();
+        if (destination.equals(Atlas.PORTLAND)) {
+            return "Can't afford route";
+        } else if (destination.equals(Atlas.CALGARY)){  // claimable
+            // do nothing, claim route at bottom
+        } else if (destination.equals(Atlas.DENVER)) {
+            return "Route already claimed";
+        }
+        ClientModel.getInstance().getCurrentGame().getCurrentPlayer().addRoute(route);
         return null;
     }
 

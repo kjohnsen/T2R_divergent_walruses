@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.UIFacade;
 import modelclasses.Route;
+import modelclasses.TrainCardColor;
 
 public class ClaimingEnabledState extends MapPresenterState {
     private static final ClaimingEnabledState ourInstance = new ClaimingEnabledState();
@@ -17,7 +18,10 @@ public class ClaimingEnabledState extends MapPresenterState {
     @Override
     public void routeClicked(Route route) {
         super.routeClicked(route);
-        String result = UIFacade.getInstance().claimRoute(route);
+        if (route.getColor().equals(TrainCardColor.WILD)) {
+            view.queryUserForClaimColor(route);
+        }
+        String result = this.uiFacade.claimRoute(route);
         if (result != null) {
             this.view.displayMessage(result);
         }
@@ -26,7 +30,7 @@ public class ClaimingEnabledState extends MapPresenterState {
     @Override
     public void enter() {
         super.enter();
-        ArrayList<Route> availableRoutes = UIFacade.getInstance().getAvailableRoutes();
+        ArrayList<Route> availableRoutes = this.uiFacade.getAvailableRoutes();
         this.view.emphasizeSelectRoutes(availableRoutes);
     }
 }

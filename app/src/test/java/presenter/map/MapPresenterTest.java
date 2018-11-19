@@ -13,6 +13,7 @@ import clientserver.ClientCommunicator;
 import clientserver.ServerProxy;
 import model.ClientModel;
 import model.CommandFacade;
+import model.IUIFacade;
 import model.MockServerProxy;
 import model.UIFacade;
 import modelclasses.Atlas;
@@ -24,6 +25,7 @@ import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
+import presenter.MockUIFacade;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -37,7 +39,6 @@ public class MapPresenterTest {
     @Mock
     private static MockMapFragment view;
     private static MapPresenter presenter;
-    private static MockServerProxy mockServerProxy = new MockServerProxy();
 
     private Route calgary = new Route(Atlas.SLC, Atlas.CALGARY, TrainCardColor.BLACK, 1);
     private Route la = new Route(Atlas.SLC, Atlas.LOS_ANGELES, TrainCardColor.WILD, 1);
@@ -51,8 +52,9 @@ public class MapPresenterTest {
     public static void setupClass() {
         view = mock(MockMapFragment.class);
         presenter = new MapPresenter(view);
-        UIFacade.getInstance().setAuthToken("player");
-        uiFacade.setServerProxy(mockServerProxy);
+        IUIFacade uiFacade = new MockUIFacade();
+        uiFacade.setAuthToken("player");
+        presenter.setUiFacade(uiFacade);
     }
 
     @Before
@@ -75,6 +77,7 @@ public class MapPresenterTest {
         player.addTrainCardToHand(new TrainCard(TrainCardColor.BLACK));
         player.addTrainCardToHand(new TrainCard(TrainCardColor.RED));
         ClientModel.getInstance().getCurrentGame().addPlayer(player);
+        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
 
     }
 
@@ -98,7 +101,7 @@ public class MapPresenterTest {
         presenter.setState(ClaimingEnabledState.getInstance());
         presenter.routeClicked(portland);
         assertThat(player.getRoutes(), not(hasItem(portland)));
-        verify(view, times(1)).displayMessage(anyString());
+        verify(view, times(1)).displayMessage("Can't afford route");
     }
 
     @Test

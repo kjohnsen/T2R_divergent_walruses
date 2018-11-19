@@ -5,6 +5,8 @@ import java.util.Observer;
 
 import fragment.IMapView;
 import model.ClientModel;
+import model.IUIFacade;
+import model.UIFacade;
 import modelclasses.DestinationCardWrapper;
 import modelclasses.Player;
 import modelclasses.Route;
@@ -13,6 +15,7 @@ import modelclasses.TrainCardWrapper;
 public class MapPresenter implements IMapPresenter, Observer {
     private IMapView mapView;
     private MapPresenterState state;
+    private IUIFacade uiFacade;
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
@@ -25,6 +28,7 @@ public class MapPresenter implements IMapPresenter, Observer {
         this.state = state;
         state.setPresenter(this);
         state.setView(this.mapView);
+        state.setUiFacade(this.uiFacade);
         this.state.enter();
     }
 
@@ -39,6 +43,10 @@ public class MapPresenter implements IMapPresenter, Observer {
     @Override
     public void routeClicked(Route route) {
         state.routeClicked(route);
+    }
+
+    public void setUiFacade(IUIFacade uiFacade) {
+        this.uiFacade = uiFacade;
     }
 
     @Override

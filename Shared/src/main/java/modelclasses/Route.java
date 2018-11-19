@@ -39,4 +39,8 @@ public class Route implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public void setColor(TrainCardColor color) {
+        this.color = color;
+    }
 }
