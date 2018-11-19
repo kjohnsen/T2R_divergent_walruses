@@ -138,8 +138,8 @@ public class GamePlay {
             clientProxy.selectDestinationCards(game.getGameName(), tickets, player, game);
 
             Results results = new Results();
-            if (game.isStartOfGame()) {
-                game.setStartOfGameFalse();
+            if (player.isStartOfGame()) {
+                player.setStartOfGameFalse();
             }
             else {
                 Command command = startNextTurn(game);
