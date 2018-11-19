@@ -151,10 +151,12 @@ public class ClientProxy {
         }
     }
 
-    public void startTurn(GameName gameName, String nextPlayerUsername) {
+    public void startTurn(GameName gameName, String clientUsername, String nextPlayerUsername) {
         for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
-            Command startTurnCommand = new Command("model.CommandFacade", "_startTurn", Arrays.asList(new Object[] {nextPlayerUsername}));
-            CommandManager.getInstance().addCommand(player.getUsername(), startTurnCommand);
+            if (!player.getUsername().equals(clientUsername)) {
+                Command startTurnCommand = new Command("model.CommandFacade", "_startTurn", Arrays.asList(new Object[] {nextPlayerUsername}));
+                CommandManager.getInstance().addCommand(player.getUsername(), startTurnCommand);
+            }
         }
     }
 
