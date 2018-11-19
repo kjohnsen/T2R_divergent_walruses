@@ -40,7 +40,7 @@ public class GamePlay {
         results.setSuccess(true);
 
         if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS) {
-            Command command = sendStartNextTurnCommand(game);
+            Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
 
@@ -102,7 +102,7 @@ public class GamePlay {
 
         if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS ||
                 ServerModel.getInstance().getState() == ServerState.TOOKWILDTRAINCARD) {
-            Command command = sendStartNextTurnCommand(game);
+            Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
 
@@ -138,7 +138,7 @@ public class GamePlay {
             clientProxy.selectDestinationCards(game.getGameName(), tickets, player, game);
 
             Results results = new Results();
-            Command command = sendStartNextTurnCommand(game);
+            Command command = startNextTurn(game);
             results.getClientCommands().add(command);
 
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
@@ -187,7 +187,7 @@ public class GamePlay {
             clientProxy.startLastRound(gameName, username);
         }
 
-        Command command = sendStartNextTurnCommand(game);
+        Command command = startNextTurn(game);
         results.getClientCommands().add(command);
 
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
@@ -198,7 +198,7 @@ public class GamePlay {
     }
 
     /** returns either the end game command or the startTurnCommand **/
-    private static Command sendStartNextTurnCommand(GameInfo game) {
+    private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
 
@@ -212,7 +212,7 @@ public class GamePlay {
             Player nextPlayer = game.getNextPlayer();
             game.setCurrentPlayer(nextPlayer);
             clientProxy.startTurn(game.getGameName(), currPlayer.getUsername(), nextPlayer.getUsername());
-            return new Command("model.CommandFacade", "_startTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
+            return new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
         }
     }
 
