@@ -90,7 +90,7 @@ public class ClientProxy {
     public void joinGame(Player player, GameName gameName, String clientUsername) {
         for(String username : ServerModel.getInstance().getUsers().keySet()) {
             if (!username.equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "_joinedGame", Arrays.asList(new Object[] {player, gameName}));
+                Command clientCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }
         }
