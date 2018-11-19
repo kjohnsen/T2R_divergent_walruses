@@ -165,6 +165,7 @@ public class CommandFacade implements iClient {
         ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards());
         ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
         ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
+        ClientModel.getInstance().notifyObservers(game.getCurrentPlayer().getUsername());
     }
 
     @Override
@@ -197,7 +198,7 @@ public class CommandFacade implements iClient {
     public void startNextTurn(String username) {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
-        ClientModel.getInstance().notifyObservers(player);
+        ClientModel.getInstance().notifyObservers(player.getUsername());
     }
 
     @Override
