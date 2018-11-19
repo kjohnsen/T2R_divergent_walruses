@@ -69,6 +69,10 @@ public class UIFacade implements IUIFacade {
         return ClientModel.getInstance().getDestDeckSize();
     }
 
+    public boolean isStartPlayer() {
+        return ClientModel.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(getUsername());
+    }
+
     //This returns the error message if there is one, or null if there isn't
     private String processResults(Results results) {
         if(results != null && results.getSuccess()) {
