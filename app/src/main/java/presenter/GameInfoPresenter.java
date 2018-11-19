@@ -54,7 +54,7 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
                 }
             }
             view.updatePlayerInfo(playersInfo);
-            view.updateCurrentPlayer(player);
+            //view.updateCurrentPlayer(player);
 
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
