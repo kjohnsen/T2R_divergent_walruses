@@ -138,8 +138,13 @@ public class GamePlay {
             clientProxy.selectDestinationCards(game.getGameName(), tickets, player, game);
 
             Results results = new Results();
-            Command command = startNextTurn(game);
-            results.getClientCommands().add(command);
+            if (game.isStartOfGame()) {
+                game.setStartOfGameFalse();
+            }
+            else {
+                Command command = startNextTurn(game);
+                results.getClientCommands().add(command);
+            }
 
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
             results.getClientCommands().add(selectDestCardsCommand);

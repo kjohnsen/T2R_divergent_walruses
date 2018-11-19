@@ -19,6 +19,7 @@ public class GameInfo implements Serializable {
     private ArrayList<Route> unclaimedRoutes = new ArrayList<>();
     private Player currentPlayer;
     private boolean lastRound;
+    private boolean startOfGame;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -29,6 +30,7 @@ public class GameInfo implements Serializable {
         initializeFaceUpCards();
         initializeUnclaimedRoutes();
         lastRound = false;
+        startOfGame = true;
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -328,6 +330,14 @@ public class GameInfo implements Serializable {
 
     public void setLastRound(boolean lastRound) {
         this.lastRound = lastRound;
+    }
+
+    public boolean isStartOfGame() {
+        return startOfGame;
+    }
+
+    public void setStartOfGameFalse() {
+        startOfGame = false;
     }
 
     @Override
