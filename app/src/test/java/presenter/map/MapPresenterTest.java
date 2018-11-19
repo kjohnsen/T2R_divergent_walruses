@@ -25,6 +25,7 @@ import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
+import modelclasses.User;
 import presenter.MockUIFacade;
 
 import static org.junit.Assert.*;
@@ -39,6 +40,7 @@ public class MapPresenterTest {
     @Mock
     private static MockMapFragment view;
     private static MapPresenter presenter;
+    private static ClientModel clientModel = ClientModel.getInstance();
 
     private Route calgary = new Route(Atlas.SLC, Atlas.CALGARY, TrainCardColor.BLACK, 1);
     private Route la = new Route(Atlas.SLC, Atlas.LOS_ANGELES, TrainCardColor.WILD, 1);
@@ -59,25 +61,26 @@ public class MapPresenterTest {
 
     @Before
     public void setup() {
-        ClientModel.getInstance().reset();
+        clientModel.reset();
 
         GameInfo game = new GameInfo(new GameName("game"), new ArrayList<Player>(), 2);
-        ClientModel.getInstance().setCurrentGame(game);
+        clientModel.setCurrentGame(game);
         ArrayList<Route> routes = new ArrayList<>();
         routes.add(calgary);
         routes.add(la);
         routes.add(portland);
-        ClientModel.getInstance().getCurrentGame().setUnclaimedRoutes(routes);
+        clientModel.getCurrentGame().setUnclaimedRoutes(routes);
 
         other = new Player("other", PlayerColor.BLUE);
         other.addRoute(denver);
-        ClientModel.getInstance().getCurrentGame().addPlayer(other);
+        clientModel.getCurrentGame().addPlayer(other);
 
         this.player = new Player("player", PlayerColor.GREEN);
         player.addTrainCardToHand(new TrainCard(TrainCardColor.BLACK));
         player.addTrainCardToHand(new TrainCard(TrainCardColor.RED));
-        ClientModel.getInstance().getCurrentGame().addPlayer(player);
-        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
+        clientModel.setCurrentUser(new User("player", "password"));
+        clientModel.getCurrentGame().addPlayer(player);
+        clientModel.getCurrentGame().setCurrentPlayer(player);
 
     }
 
@@ -123,25 +126,27 @@ public class MapPresenterTest {
 
     @Test
     public void turnStart() {
-        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(this.player);
+        clientModel.getCurrentGame().setCurrentPlayer(this.player);
+        clientModel.notifyObservers(this.player);
         assertEquals(ClaimingEnabledState.getInstance(), presenter.getState());
     }
 
     @Test
     public void turnEnd() {
-        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(this.other);
+        clientModel.getCurrentGame().setCurrentPlayer(this.other);
+        clientModel.notifyObservers(this.other);
         assertEquals(ClaimingDisabledState.getInstance(), presenter.getState());
     }
 
     @Test
     public void drawTrainCardDisables() {
-        ClientModel.getInstance().drawTrainCardToHand(new TrainCard(TrainCardColor.BLACK), player);
+        clientModel.drawTrainCardToHand(new TrainCard(TrainCardColor.BLACK), player);
         assertEquals(ClaimingDisabledState.getInstance(), presenter.getState());
     }
 
     @Test
     public void drawDestinationTicketDisables() {
-        ClientModel.getInstance().getCurrentGame().setCurrentPlayer(this.player);
+        clientModel.getCurrentGame().setCurrentPlayer(this.player);
         CommandFacade._selectDestinationCards(new GameName("game"), new ArrayList<DestinationCard>(), player);
         assertEquals(ClaimingDisabledState.getInstance(), presenter.getState());
     }

@@ -46,6 +46,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCardColor;
+import presenter.ChooseClaimColorPresenter;
 import presenter.map.IMapPresenter;
 import presenter.map.MapPresenter;
 import util.PlayerColorConverter;
@@ -54,7 +55,8 @@ import util.TrainColorConverter;
 public class MapFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         IMapView,
-        GoogleMap.OnPolylineClickListener
+        GoogleMap.OnPolylineClickListener,
+        ChooseClaimColorPresenter.ChooseClaimColorCaller
 {
     private GoogleMap map;
     private Map<Route, Polyline> routePolylineMap = new HashMap<>();
@@ -137,6 +139,15 @@ public class MapFragment extends SupportMapFragment implements
     @Override
     public void queryUserForClaimColor(Route route) {
         Toast.makeText(this.getContext(), "Need to show dialog here", Toast.LENGTH_LONG).show();
+
+//        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
+//        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
+
+    }
+
+    @Override
+    public void claimColorChosen(Route route, TrainCardColor color) {
+
     }
 
     @Override
@@ -327,4 +338,5 @@ public class MapFragment extends SupportMapFragment implements
         route.setPlayer(player);
         cm.notifyObservers(route);
     }
+
 }
