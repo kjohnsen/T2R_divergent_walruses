@@ -12,6 +12,7 @@ import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 import modelclasses.User;
 import modelclasses.Route;
 
@@ -74,8 +75,8 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _claimRoute(GameName gameName, Route route, String username) {
-        ourInstance.claimRoute(gameName, route, username);
+    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
+        ourInstance.claimRoute(gameName, route, username, updatedHand);
     }
 
     public static void _startNextTurn(String username) {
@@ -140,6 +141,7 @@ public class CommandFacade implements iClient {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         if(player != null && !gameInfo.getPlayers().contains(player)) {
             gameInfo.addPlayer(player);
+            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getGameList());
             ClientModel.getInstance().notifyObservers(gameInfo.getPlayers());
         }
         if (player == null || player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
@@ -165,6 +167,7 @@ public class CommandFacade implements iClient {
         ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards());
         ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
         ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
+        ClientModel.getInstance().notifyObservers(game.getCurrentPlayer().getUsername());
     }
 
     @Override
@@ -181,9 +184,11 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void claimRoute(GameName gameName, Route route, String username) {
+    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
         ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        player.setTrainCards(updatedHand);
+        ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {
                 r.setPlayer(player);
@@ -197,7 +202,7 @@ public class CommandFacade implements iClient {
     public void startNextTurn(String username) {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
-        ClientModel.getInstance().notifyObservers(player);
+        ClientModel.getInstance().notifyObservers(player.getUsername());
     }
 
     @Override

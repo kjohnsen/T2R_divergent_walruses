@@ -164,9 +164,31 @@ public class GamePlay {
         Player player = game.getPlayer(username);
         Results results = new Results();
 
+        // check double route validity
+        boolean fewPlayers = game.getNumPlayers() < 4;
+        Route twinRoute = route.getTwinRoute();
+        boolean twoRoutes = twinRoute != null;
+
+        if (fewPlayers && twoRoutes) {
+            if (!game.getUnclaimedRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Double route already claimed");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
+        else if (!fewPlayers && twoRoutes) {
+            if (player.getRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Don't be a jerk");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
         // verify that player can claim route
         ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
-        if (cardsForClaimingRoute == null) {
+        boolean enoughTrains = (player.getNumberOfTrains() - route.getLength()) >= 0;
+        if (cardsForClaimingRoute == null || !enoughTrains) {
             results.setErrorMessage("Player unable to claim route");
             results.setSuccess(false);
             return results;
@@ -182,10 +204,10 @@ public class GamePlay {
 
         // send claimRoute command to the clients
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.claimRoute(gameName, route, username);
+        clientProxy.claimRoute(gameName, route, username, player.getTrainCards());
 
         // check if player's number of train cars initiates last round
-        if (player.getNumberOfTrains() < 3) {
+        if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
             game.setLastRound(true);
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
             results.getClientCommands().add(lastRoundCommand);
@@ -195,7 +217,7 @@ public class GamePlay {
         Command command = startNextTurn(game);
         results.getClientCommands().add(command);
 
-        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
+        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards()}));
         results.getClientCommands().add(claimRouteCommand);
 
         results.setSuccess(true);
@@ -206,6 +228,7 @@ public class GamePlay {
     private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
+        ServerModel.getInstance().setState(ServerState.TURNSTART);
 
         ClientProxy clientProxy = new ClientProxy();
         boolean isLastPlayer = currPlayerIndex == game.getPlayers().size() - 1;

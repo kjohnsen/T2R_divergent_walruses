@@ -6,6 +6,7 @@ import java.util.Observer;
 
 import fragment.IDecksView;
 import model.ClientModel;
+import model.UIFacade;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardWrapper;
 
@@ -95,6 +96,10 @@ public class DecksPresenter implements IDecksPresenter, Observer {
             TrainCardWrapper wrapper = (TrainCardWrapper) o;
             if (wrapper.getDeckType().equals(TrainCardWrapper.DeckType.FaceUp)) {
                 view.replaceTrainCards(wrapper.getCards());
+            }
+        } else if (o instanceof String) {
+            if (UIFacade.getInstance().getUsername().equals(o)) {
+                setState(DecksNoCardsDrawn.getInstance());
             }
         }
     }
