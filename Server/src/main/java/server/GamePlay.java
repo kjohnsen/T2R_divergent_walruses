@@ -166,7 +166,8 @@ public class GamePlay {
 
         // verify that player can claim route
         ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
-        if (cardsForClaimingRoute == null) {
+        boolean enoughTrains = (player.getNumberOfTrains() - route.getLength()) >= 0;
+        if (cardsForClaimingRoute == null || !enoughTrains) {
             results.setErrorMessage("Player unable to claim route");
             results.setSuccess(false);
             return results;
