@@ -24,10 +24,13 @@ public class MapSetup implements Serializable {
     // path as well as for rendering differently redundant routes
     private void addRoute(City one, City two, TrainCardColor color, int length) {
         Route route = new Route(one, two, color, length);
+        //newfunction(route)
         routes.add(route);
         cityConnectionMap.get(one).add(two);
         cityConnectionMap.get(two).add(one);
     }
+
+
 
     public MapSetup() {
         // wild routes
