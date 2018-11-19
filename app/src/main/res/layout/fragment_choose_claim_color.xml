@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="89dp">
+
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/ccButtonRed"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RED"
+                tools:layout_editor_absoluteX="268dp"
+                tools:layout_editor_absoluteY="451dp" />
+
+            <Button
+                android:id="@+id/ccButtonOrange"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="orange"
+                tools:layout_editor_absoluteX="491dp"
+                tools:layout_editor_absoluteY="451dp" />
+
+            <Button
+                android:id="@+id/ccButtonYellow"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="yellow"
+                tools:layout_editor_absoluteX="79dp"
+                tools:layout_editor_absoluteY="451dp" />
+
+            <Button
+                android:id="@+id/ccButtonGreen"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="green"
+                tools:layout_editor_absoluteX="650dp"
+                tools:layout_editor_absoluteY="451dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/ccButtonBlue"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="blue"
+                tools:layout_editor_absoluteX="278dp"
+                tools:layout_editor_absoluteY="592dp" />
+
+            <Button
+                android:id="@+id/ccButtonPurple"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="purple"
+                tools:layout_editor_absoluteX="424dp"
+                tools:layout_editor_absoluteY="592dp" />
+
+            <Button
+                android:id="@+id/ccButtonBlack"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="black"
+                tools:layout_editor_absoluteX="135dp"
+                tools:layout_editor_absoluteY="592dp" />
+
+            <Button
+                android:id="@+id/ccButtonWhite"
+                style="@style/ClaimColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="white"
+                tools:layout_editor_absoluteX="585dp"
+                tools:layout_editor_absoluteY="592dp" />
+        </TableRow>
+
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

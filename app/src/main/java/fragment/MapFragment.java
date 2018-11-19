@@ -42,12 +42,14 @@ import java.util.Random;
 
 import activity.GameEndView;
 import model.ClientModel;
+import model.UIFacade;
 import modelclasses.City;
 import modelclasses.MapSetup;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCardColor;
+import presenter.ChooseClaimColorPresenter;
 import presenter.map.IMapPresenter;
 import presenter.map.MapPresenter;
 import util.PlayerColorConverter;
@@ -134,6 +136,13 @@ public class MapFragment extends SupportMapFragment implements
     @Override
     public void displayMessage(String message) {
         Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller) {
+        ChooseClaimColorFragment cccf = new ChooseClaimColorFragment();
+        cccf.setPresenter(new ChooseClaimColorPresenter(cccf, route, caller));
+        cccf.show(MapFragment.this.getActivity().getSupportFragmentManager(), "chooseClaimColor");
     }
 
     @Override
@@ -330,4 +339,5 @@ public class MapFragment extends SupportMapFragment implements
         route.setPlayer(player);
         cm.notifyObservers(route);
     }
+
 }

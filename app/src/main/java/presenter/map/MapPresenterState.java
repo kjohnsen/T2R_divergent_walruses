@@ -1,12 +1,13 @@
 package presenter.map;
 
 import fragment.IMapView;
+import model.IUIFacade;
 import modelclasses.Route;
 
 public class MapPresenterState {
-    private static final MapPresenterState ourInstance = new MapPresenterState();
     protected IMapPresenter presenter;
     protected IMapView view;
+    protected IUIFacade uiFacade;
 
     public void setPresenter(IMapPresenter presenter) {
         this.presenter = presenter;
@@ -16,11 +17,8 @@ public class MapPresenterState {
         this.view = view;
     }
 
-    public static MapPresenterState getInstance() {
-        return ourInstance;
-    }
-
-    protected MapPresenterState() {
+    public void setUiFacade(IUIFacade uiFacade) {
+        this.uiFacade = uiFacade;
     }
 
     public void routeClicked(Route route) {}

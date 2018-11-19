@@ -5,15 +5,16 @@ import java.util.Observer;
 
 import fragment.IMapView;
 import model.ClientModel;
-import model.UIFacade;
+import model.IUIFacade;
 import modelclasses.DestinationCardWrapper;
 import modelclasses.Player;
 import modelclasses.Route;
 import modelclasses.TrainCardWrapper;
 
 public class MapPresenter implements IMapPresenter, Observer {
-    IMapView mapView;
-    MapPresenterState state;
+    private IMapView mapView;
+    private MapPresenterState state;
+    private IUIFacade uiFacade;
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
@@ -26,12 +27,25 @@ public class MapPresenter implements IMapPresenter, Observer {
         this.state = state;
         state.setPresenter(this);
         state.setView(this.mapView);
+        state.setUiFacade(this.uiFacade);
         this.state.enter();
+    }
+
+    public IMapView getMapView() {
+        return mapView;
+    }
+
+    public MapPresenterState getState() {
+        return state;
     }
 
     @Override
     public void routeClicked(Route route) {
-        state.getInstance().routeClicked(route);
+        state.routeClicked(route);
+    }
+
+    public void setUiFacade(IUIFacade uiFacade) {
+        this.uiFacade = uiFacade;
     }
 
     @Override
@@ -47,10 +61,10 @@ public class MapPresenter implements IMapPresenter, Observer {
         } else if (o instanceof DestinationCardWrapper || o instanceof TrainCardWrapper) {
             this.setState(ClaimingDisabledState.getInstance());
         } else if (o instanceof Boolean) {
-            if (UIFacade.getInstance().isLastRound()) {
+            if (uiFacade.isLastRound()) {
                 mapView.displayMessage("Starting Last Round");
             }
-            else if (UIFacade.getInstance().isEndGame()) {
+            else if (uiFacade.isEndGame()) {
                 mapView.moveToEndGame();
             }
         }

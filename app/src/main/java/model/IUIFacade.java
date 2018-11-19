@@ -10,6 +10,7 @@ import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 import results.Results;
 
@@ -28,6 +29,8 @@ public interface IUIFacade {
     public String drawTrainCard();
     public String drawDestinationCards();
     public String selectDestinationCards(ArrayList<DestinationCard> rejected);
+    public ArrayList<Route> getAvailableRoutes();
+    public String claimRoute(Route route);
     public String loginUser(String username, String password);
     public String joinGame(String gameName);
     public String createGame(String gameName, int numPlayers);
@@ -40,5 +43,7 @@ public interface IUIFacade {
     public List<ChatMessage> getChatMessages();
     public void setHostIP(String hostIP);
     public void setHostPort(String hostPort);
+    public boolean isLastRound();
+    public boolean isEndGame();
 
 }

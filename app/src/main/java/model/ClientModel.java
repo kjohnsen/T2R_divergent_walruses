@@ -52,6 +52,8 @@ public class ClientModel extends Observable {
         currentUser = null;
         gameList = new ArrayList<>();
         faceupCards = new ArrayList<>();
+        playerTickets = new ArrayList<>();
+        playerPreSelectionTickets = new ArrayList<>();
     }
 
     public PlayerColor getCurrentColor() {

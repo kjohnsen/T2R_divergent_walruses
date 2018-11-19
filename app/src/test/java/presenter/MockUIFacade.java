@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.IServer;
+import model.ClientModel;
 import model.IUIFacade;
+import modelclasses.Atlas;
 import modelclasses.ChatMessage;
+import modelclasses.City;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
 import modelclasses.PlayerColor;
+import modelclasses.Route;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 
 public class MockUIFacade implements IUIFacade {
     @Override
@@ -78,6 +83,33 @@ public class MockUIFacade implements IUIFacade {
     }
 
     @Override
+    public ArrayList<Route> getAvailableRoutes() {
+        return null;
+    }
+
+    @Override
+    public String claimRoute(Route route) {
+        City destination = route.getDestination();
+        if (destination.equals(Atlas.PORTLAND)) {
+            return "Can't afford route";
+        } else if (destination.equals(Atlas.CALGARY)){  // claimable
+            // do nothing, claim route at bottom
+        } else if (destination.equals(Atlas.DENVER)) {
+            return "Route already claimed";
+        }
+        ClientModel.getInstance().getCurrentGame().getCurrentPlayer().addRoute(route);
+        TrainCardColor color = route.getColor();
+        int x = route.getLength();
+        ArrayList<TrainCard> cards = ClientModel.getInstance().getPlayerTrainCards();
+        while (x > 0) {
+            cards.remove(new TrainCard(color));
+            --x;
+        }
+
+        return null;
+    }
+
+    @Override
     public String loginUser(String username, String password) {
         return null;
     }
@@ -141,5 +173,15 @@ public class MockUIFacade implements IUIFacade {
     @Override
     public void setHostPort(String hostPort) {
 
+    }
+
+    @Override
+    public boolean isLastRound() {
+        return false;
+    }
+
+    @Override
+    public boolean isEndGame() {
+        return false;
     }
 }
