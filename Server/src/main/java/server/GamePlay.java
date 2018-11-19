@@ -186,7 +186,7 @@ public class GamePlay {
         clientProxy.claimRoute(gameName, route, username);
 
         // check if player's number of train cars initiates last round
-        if (player.getNumberOfTrains() < 3) {
+        if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
             game.setLastRound(true);
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
             results.getClientCommands().add(lastRoundCommand);
