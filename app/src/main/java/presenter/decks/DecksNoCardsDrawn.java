@@ -11,7 +11,9 @@ public class DecksNoCardsDrawn extends DecksState {
     private DecksNoCardsDrawn() {}
     
     public String drawDestinationCards(DecksPresenter presenter) {
-        presenter.setState(DecksWaiting.getInstance());
+        if (!isGameStart(presenter)) {
+            presenter.setState(DecksWaiting.getInstance());
+        }
         return super.drawDestinationCards(presenter);
     }
     
