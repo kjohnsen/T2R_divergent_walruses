@@ -1,7 +1,5 @@
 package data;
 
-import com.google.gson.internal.LinkedTreeMap;
-
 import modelclasses.User;
 import results.Results;
 
