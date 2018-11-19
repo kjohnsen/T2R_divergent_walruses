@@ -57,7 +57,7 @@ public class CommandFacade implements iClient {
     public static void _createGame(GameInfo gameInfo) {
         ourInstance.createGame(gameInfo);
     }
-    public static void _joinGame(Player player, GameName gameName) {
+    public static void _joinedGame(Player player, GameName gameName) {
         ourInstance.joinGame(player, gameName);
     }
     public static void _joinGame(GameInfo gameInfo) {
