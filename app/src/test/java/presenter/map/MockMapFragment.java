@@ -2,11 +2,14 @@ package presenter.map;
 
 import java.util.ArrayList;
 
+import fragment.ChooseClaimColorFragment;
 import fragment.IMapView;
+import fragment.MapFragment;
 import modelclasses.Atlas;
 import modelclasses.MapSetup;
 import modelclasses.Route;
 import modelclasses.TrainCardColor;
+import presenter.ChooseClaimColorPresenter;
 
 public class MockMapFragment implements IMapView {
     @Override
@@ -40,8 +43,9 @@ public class MockMapFragment implements IMapView {
     }
 
     @Override
-    public void queryUserForClaimColor(Route route) {
-        if (route.getDestination().equals(Atlas.LOS_ANGELES))
-        route.setColor(TrainCardColor.RED);
+    public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller) {
+        if (route.getDestination().equals(Atlas.LOS_ANGELES)) {
+            caller.claimColorChosen(route, TrainCardColor.RED);
+        }
     }
 }

@@ -56,8 +56,7 @@ import util.TrainColorConverter;
 public class MapFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         IMapView,
-        GoogleMap.OnPolylineClickListener,
-        ChooseClaimColorPresenter.ChooseClaimColorCaller
+        GoogleMap.OnPolylineClickListener
 {
     private GoogleMap map;
     private Map<Route, Polyline> routePolylineMap = new HashMap<>();
@@ -139,17 +138,9 @@ public class MapFragment extends SupportMapFragment implements
 
     @Override
     public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller) {
-        Toast.makeText(this.getContext(), "Need to show dialog here", Toast.LENGTH_LONG).show();
         ChooseClaimColorFragment cccf = new ChooseClaimColorFragment();
-        cccf.setPresenter(new ChooseClaimColorPresenter(cccf, route, presenter);
-//        ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
-//        cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
-
-    }
-
-    @Override
-    public void claimColorChosen(Route route, TrainCardColor color) {
-
+        cccf.setPresenter(new ChooseClaimColorPresenter(cccf, route, caller));
+        cccf.show(MapFragment.this.getActivity().getSupportFragmentManager(), "chooseClaimColor");
     }
 
     @Override

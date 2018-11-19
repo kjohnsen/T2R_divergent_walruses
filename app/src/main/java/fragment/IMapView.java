@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import modelclasses.MapSetup;
 import modelclasses.Route;
+import modelclasses.TrainCardColor;
+import presenter.ChooseClaimColorPresenter;
 
 /**
  * IMapView is the interface for a view that displays the Ticket to Ride map/gameboard.
@@ -55,6 +57,10 @@ public interface IMapView {
 
     public void displayMessage(String message);
 
-    public void queryUserForClaimColor(Route route);
+    /**
+     * Sets route to color user specifies, to then claim
+     * @param route
+     */
+    public void queryUserForClaimColor(Route route, ChooseClaimColorPresenter.ChooseClaimColorCaller caller);
 
 }

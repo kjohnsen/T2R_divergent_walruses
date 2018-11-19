@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +33,12 @@ import presenter.MockUIFacade;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class MapPresenterTest {
@@ -81,11 +86,13 @@ public class MapPresenterTest {
         clientModel.setCurrentUser(new User("player", "password"));
         clientModel.getCurrentGame().addPlayer(player);
         clientModel.getCurrentGame().setCurrentPlayer(player);
+        clientModel.setPlayerTrainCards(player.getTrainCards());
 
     }
 
     @Test
     public void claimableRouteClicked() {
+        presenter.setState(ClaimingEnabledState.getInstance());
         assertThat(player.getRoutes(), not(hasItem(this.calgary)));
         presenter.routeClicked(calgary);
         assertThat(player.getRoutes(), hasItem(this.calgary));
@@ -111,10 +118,18 @@ public class MapPresenterTest {
     public void wildRouteClicked() {
         presenter.setState(ClaimingEnabledState.getInstance());
         assertThat(player.getRoutes(), not(hasItem(this.la)));
+        TrainCard redCard = new TrainCard(TrainCardColor.RED);
+        assertTrue(clientModel.getPlayerTrainCards().contains(redCard));
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                invocation.callRealMethod();
+                return null;
+            }
+        }).when(view).queryUserForClaimColor(la, ClaimingEnabledState.getInstance());
         presenter.routeClicked(la);
-        verify(view).queryUserForClaimColor(la);
         assertThat(player.getRoutes(), hasItem(this.la));
-
+        assertFalse(clientModel.getPlayerTrainCards().contains(redCard));
     }
 
     @Test

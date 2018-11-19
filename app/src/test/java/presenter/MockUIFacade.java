@@ -14,6 +14,7 @@ import modelclasses.GameInfo;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 
 public class MockUIFacade implements IUIFacade {
     @Override
@@ -97,6 +98,14 @@ public class MockUIFacade implements IUIFacade {
             return "Route already claimed";
         }
         ClientModel.getInstance().getCurrentGame().getCurrentPlayer().addRoute(route);
+        TrainCardColor color = route.getColor();
+        int x = route.getLength();
+        ArrayList<TrainCard> cards = ClientModel.getInstance().getPlayerTrainCards();
+        while (x > 0) {
+            cards.remove(new TrainCard(color));
+            --x;
+        }
+
         return null;
     }
 

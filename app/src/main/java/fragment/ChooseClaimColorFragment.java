@@ -78,6 +78,8 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
                 @Override
                 public void onClick(View view) {
                     presenter.chooseClaimColor(buttonColorBiMap.get(view));
+                    presenter.onSwitchView();
+                    ChooseClaimColorFragment.this.dismiss();
                 }
             });
         }
