@@ -6,6 +6,7 @@ import java.util.Observable;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.DestinationCardWrapper;
+import static modelclasses.DestinationCardWrapper.*;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -73,13 +74,15 @@ public class ClientModel extends Observable {
                 playerPreSelectionTickets.remove(c);
             }
         }
+        Player localPlayer = getCurrentGame().getPlayer(getCurrentUser().getUsername());
         if (currentUser.getUsername().equals(player.getUsername())) {
-            getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards().addAll(playerPreSelectionTickets);
+            DeckType deckType = localPlayer.getDestinationCards().size() == 0 ? DeckType.FirstTimeTickets : DeckType.PlayerTickets;
+            localPlayer.getDestinationCards().addAll(playerPreSelectionTickets);
             playerPreSelectionTickets.clear();
-            notifyObservers(new DestinationCardWrapper(getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards(), DestinationCardWrapper.DeckType.PlayerTickets));
+            notifyObservers(new DestinationCardWrapper(getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards(), deckType));
         }
         notifyObservers(player);
-        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck));
+        notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), DeckType.DrawDeck));
     }
 
     public void selectTrainCardToHand(TrainCard card, Player player) {

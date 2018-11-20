@@ -1,5 +1,7 @@
 package presenter.map;
 
+import android.security.keystore.UserNotAuthenticatedException;
+
 import java.util.Observable;
 import java.util.Observer;
 import fragment.IMapView;
@@ -23,6 +25,11 @@ public class MapPresenter implements IMapPresenter, Observer {
 
     @Override
     public void setInitialState() {
+        String thisUser = ClientModel.getInstance().getCurrentUser().getUsername();
+        String turnUser = ClientModel.getInstance().getCurrentGame().getCurrentPlayer().getUsername();
+        if (thisUser.equals(turnUser)) {
+            this.setState(ClaimingEnabledState.getInstance());
+        }
     }
 
     public void setState(MapPresenterState state) {
@@ -61,7 +68,12 @@ public class MapPresenter implements IMapPresenter, Observer {
             } else {
                 this.setState(ClaimingDisabledState.getInstance());
             }
-        } else if (o instanceof DestinationCardWrapper || o instanceof TrainCardWrapper) {
+        } else if (o instanceof DestinationCardWrapper) {
+            DestinationCardWrapper dcw = (DestinationCardWrapper) o;
+            if (dcw.getDeckType().equals(DestinationCardWrapper.DeckType.PlayerTickets)) {
+                this.setState(ClaimingDisabledState.getInstance());
+            }
+        } else if (o instanceof TrainCardWrapper) {
             this.setState(ClaimingDisabledState.getInstance());
         } else if (o instanceof Boolean) {
             if (uiFacade.isLastRound()) {

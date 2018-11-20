@@ -13,6 +13,7 @@ public class DestinationCardWrapper implements Serializable {
         DiscardDeck,
         PlayerTickets,
         PreSelectionTickets,
+        FirstTimeTickets
     }
 
     public DestinationCardWrapper(ArrayList<DestinationCard> destinationCards, DeckType deckType) {

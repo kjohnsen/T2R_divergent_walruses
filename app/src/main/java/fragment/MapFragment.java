@@ -64,7 +64,7 @@ public class MapFragment extends SupportMapFragment implements
     private Map<Route, Polyline> routePolylineMap = new HashMap<>();
     private IMapPresenter presenter;
     private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
-    private static final int POLYLINE_CLAIMED_WIDTH = 24;
+    private static final int POLYLINE_CLAIMED_WIDTH = 36;
     private static final int POLYLINE_TRANSLUCENT_OPACITY = 60;
     private static final int POLYLINE_OPAQUE_OPACITY = 160;
 
@@ -87,6 +87,8 @@ public class MapFragment extends SupportMapFragment implements
         map.getUiSettings().setMapToolbarEnabled(false);
 
         initializeMap(new MapSetup());
+
+        presenter.setInitialState();
     }
 
 
@@ -186,7 +188,7 @@ public class MapFragment extends SupportMapFragment implements
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
                 map.setLatLngBoundsForCameraTarget(bounds);
                 map.setMinZoomPreference(map.getCameraPosition().zoom);
-                map.setMaxZoomPreference(6.0f);
+                map.setMaxZoomPreference(8.0f);
             }
         });
 
