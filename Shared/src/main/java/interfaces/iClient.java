@@ -27,7 +27,7 @@ public interface iClient {
     void startGame(GameInfo gameInfo);
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
-    void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand);
+    void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum);
     void startNextTurn(String username);
     void startLastRound();
     void endGame();

@@ -75,8 +75,8 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
-        ourInstance.claimRoute(gameName, route, username, updatedHand);
+    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
+        ourInstance.claimRoute(gameName, route, username, updatedHand, playerTrainNum);
     }
 
     public static void _startNextTurn(String username) {
@@ -184,10 +184,11 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
+    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
         ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         player.setTrainCards(updatedHand);
+        player.setNumberOfTrains(playerTrainNum);
         ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {

@@ -205,7 +205,7 @@ public class GamePlay {
 
         // send claimRoute command to the clients
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.claimRoute(gameName, route, username, player.getTrainCards());
+        clientProxy.claimRoute(gameName, route, username, player.getTrainCards(), player.getNumberOfTrains());
 
         // check if player's number of train cars initiates last round
         if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
@@ -218,7 +218,7 @@ public class GamePlay {
         Command command = startNextTurn(game);
         results.getClientCommands().add(command);
 
-        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards()}));
+        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
         results.getClientCommands().add(claimRouteCommand);
 
         results.setSuccess(true);
