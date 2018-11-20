@@ -68,16 +68,25 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         black = view.findViewById(R.id.ccButtonBlack);
         white = view.findViewById(R.id.ccButtonWhite);
 
-        for (Button button : buttonColorMap.keySet()) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    presenter.chooseClaimColor(buttonColorMap.get(view));
-                    presenter.onSwitchView();
-                    ChooseClaimColorFragment.this.dismiss();
-                }
-            });
-        }
+        red.setOnClickListener(new WildRouteButtonClickListener());
+        orange.setOnClickListener(new WildRouteButtonClickListener());
+        yellow.setOnClickListener(new WildRouteButtonClickListener());
+        green.setOnClickListener(new WildRouteButtonClickListener());
+        blue.setOnClickListener(new WildRouteButtonClickListener());
+        purple.setOnClickListener(new WildRouteButtonClickListener());
+        black.setOnClickListener(new WildRouteButtonClickListener());
+        white.setOnClickListener(new WildRouteButtonClickListener());
+
+//        for (Button button : buttonColorMap.keySet()) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    presenter.chooseClaimColor(buttonColorMap.get(view));
+//                    presenter.onSwitchView();
+//                    ChooseClaimColorFragment.this.dismiss();
+//                }
+//            });
+//        }
         putInMaps(red, RED);
         putInMaps(orange, ORANGE);
         putInMaps(yellow, YELLOW);
@@ -98,5 +107,14 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     private void putInMaps(Button button, TrainCardColor color) {
         buttonColorMap.put(button, color);
         colorButtonMap.put(color, button);
+    }
+
+    private class WildRouteButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            presenter.chooseClaimColor(buttonColorMap.get(view));
+            presenter.onSwitchView();
+            ChooseClaimColorFragment.this.dismiss();
+        }
     }
 }
