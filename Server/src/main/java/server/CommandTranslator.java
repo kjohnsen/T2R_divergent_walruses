@@ -87,7 +87,7 @@ public class CommandTranslator {
         String routeColor = translateTrainCardColor(route.getColor());
         String routeLength = Integer.toString(route.getLength());
 
-        return username + "claimed the " + routeColor + " Route of length " + routeLength + " from " + originCityName + " to " + destinationCityName + ".";
+        return username + " claimed the " + routeColor + " Route of length " + routeLength + " from " + originCityName + " to " + destinationCityName + ".";
     }
 
     private static String translateReplaceTrainCard(Command command) {
