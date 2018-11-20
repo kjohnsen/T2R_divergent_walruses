@@ -43,11 +43,13 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     @Override
     public void displayPossibleColors(Set<TrainCardColor> possibleColors) {
         for (TrainCardColor color : TrainCardColor.values()) {
-            Button button = colorButtonMap.get(color);
-            if (possibleColors.contains(color)) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
+            if (!color.equals(TrainCardColor.WILD)) {
+                Button button = colorButtonMap.get(color);
+                if (possibleColors.contains(color)) {
+                    button.setEnabled(true);
+                } else {
+                    button.setEnabled(false);
+                }
             }
         }
     }
