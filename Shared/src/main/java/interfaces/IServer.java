@@ -34,7 +34,7 @@ public interface IServer {
 
     Results sendChatMessage(ChatMessage message, GameName gameName);
 
-    Results claimRoute(GameName gameName, Route route, String username);
+    Results claimRoute(GameName gameName, Route route, String authToken);
 
     void setHostIP(String hostIP);
 

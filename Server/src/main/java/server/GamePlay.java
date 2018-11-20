@@ -158,9 +158,10 @@ public class GamePlay {
         }
     }
 
-    public static Results claimRoute(GameName gameName, Route route, String username) {
+    public static Results claimRoute(GameName gameName, Route route, String authToken) {
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         Results results = new Results();
 

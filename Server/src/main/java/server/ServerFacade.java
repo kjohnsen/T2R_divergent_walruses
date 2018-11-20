@@ -354,8 +354,8 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results claimRoute(GameName gameName, Route route, String username) {
-        return GamePlay.claimRoute(gameName, route, username);
+    public Results claimRoute(GameName gameName, Route route, String authToken) {
+        return GamePlay.claimRoute(gameName, route, authToken);
     }
 
     public Results getCommands(String authToken) {
