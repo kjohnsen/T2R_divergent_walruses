@@ -148,19 +148,22 @@ public class ClientModel extends Observable {
         return getCurrentGame().getPlayer(getCurrentUser().getUsername()).getTrainCards();
     }
 
-    public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
+    public void setPlayerTrainCards(ArrayList<TrainCard> cards, String username) {
         getCurrentGame().getPlayer(getCurrentUser().getUsername()).setTrainCards(cards);
-        this.notifyObservers(new TrainCardWrapper(cards, TrainCardWrapper.DeckType.PlayerCards));
+        this.notifyObservers(new TrainCardWrapper(cards, TrainCardWrapper.DeckType.PlayerCards,
+                username.equals(currentUser.getUsername())));
     }
 
-    public void setPlayerPreSelectionTickets(ArrayList<DestinationCard> preSelectionTickets) {
+    public void setPlayerPreSelectionTickets(ArrayList<DestinationCard> preSelectionTickets, String username) {
         playerPreSelectionTickets = preSelectionTickets;
-        this.notifyObservers(new DestinationCardWrapper(preSelectionTickets, DestinationCardWrapper.DeckType.PreSelectionTickets));
+        this.notifyObservers(new DestinationCardWrapper(preSelectionTickets, DestinationCardWrapper.DeckType.PreSelectionTickets,
+                username.equals(currentUser.getUsername())));
     }
 
-    public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
+    public void setPlayerTickets(ArrayList<DestinationCard> tickets, String username) {
         getCurrentGame().getPlayer(getCurrentUser().getUsername()).setDestinationCards(tickets);
-        this.notifyObservers(new DestinationCardWrapper(tickets, DestinationCardWrapper.DeckType.PlayerTickets));
+        this.notifyObservers(new DestinationCardWrapper(tickets, DestinationCardWrapper.DeckType.PlayerTickets,
+                username.equals(currentUser.getUsername())));
     }
 
     public ArrayList<TrainCard> getFaceupCards() {

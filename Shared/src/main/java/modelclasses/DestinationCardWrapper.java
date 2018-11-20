@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class DestinationCardWrapper implements Serializable {
     ArrayList<DestinationCard> destinationCards;
     DeckType deckType;
+    boolean currPlayerCards;
 
     public enum DeckType implements Serializable {
         DrawDeck,
@@ -17,6 +18,17 @@ public class DestinationCardWrapper implements Serializable {
     public DestinationCardWrapper(ArrayList<DestinationCard> destinationCards, DeckType deckType) {
         this.destinationCards = destinationCards;
         this.deckType = deckType;
+        this.currPlayerCards = false;
+    }
+
+    public DestinationCardWrapper(ArrayList<DestinationCard> destinationCards, DeckType deckType, boolean currPlayerCards) {
+        this.destinationCards = destinationCards;
+        this.deckType = deckType;
+        this.currPlayerCards = currPlayerCards;
+    }
+
+    public boolean isCurrPlayerCards() {
+        return currPlayerCards;
     }
 
     public ArrayList<DestinationCard> getDestinationCards() {
