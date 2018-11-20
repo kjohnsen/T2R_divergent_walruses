@@ -1,13 +1,14 @@
 package presenter.map;
 
+import org.checkerframework.checker.guieffect.qual.UI;
+
 import java.util.Observable;
 import java.util.Observer;
-
 import fragment.IMapView;
 import model.ClientModel;
 import model.IUIFacade;
+import model.UIFacade;
 import modelclasses.DestinationCardWrapper;
-import modelclasses.Player;
 import modelclasses.Route;
 import modelclasses.TrainCardWrapper;
 
@@ -18,7 +19,11 @@ public class MapPresenter implements IMapPresenter, Observer {
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
-        this.setState(ClaimingDisabledState.getInstance());
+        if(UIFacade.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(UIFacade.getInstance().getUsername())) {
+            this.setState(ClaimingEnabledState.getInstance());
+        } else {
+            this.setState(ClaimingDisabledState.getInstance());
+        }
         ClientModel.getInstance().addObserver(this);
     }
 
@@ -52,8 +57,8 @@ public class MapPresenter implements IMapPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof Route) {
             mapView.updateRoute((Route) o);
-        } else if (o instanceof Player){ // turn change
-            if (((Player) o).getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+        } else if (o instanceof String){ // turn change
+            if (o.equals(UIFacade.getInstance().getUsername())) {
                 this.setState(ClaimingEnabledState.getInstance());
             } else {
                 this.setState(ClaimingDisabledState.getInstance());
