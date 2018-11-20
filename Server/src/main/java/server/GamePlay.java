@@ -199,6 +199,8 @@ public class GamePlay {
         game.removeFromUnclaimedRoutes(route);
         player.addRoute(route);
         route.setPlayer(player);
+        player.addPoints(Route.getPointsForRouteOfLength(route.getLength()));
+
         player.setNumberOfTrains(player.getNumberOfTrains() - route.getLength());
         player.removeTrainCardsFromHand(cardsForClaimingRoute);
         game.addCardsToTrainDiscarded(cardsForClaimingRoute);
