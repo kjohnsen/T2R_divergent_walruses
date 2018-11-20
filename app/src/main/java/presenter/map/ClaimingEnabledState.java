@@ -15,7 +15,9 @@ public class ClaimingEnabledState extends MapPresenterState
         return ourInstance;
     }
 
-    private ClaimingEnabledState() {}
+    private ClaimingEnabledState() {
+        this.uiFacade = UIFacade.getInstance();
+    }
 
     @Override
     public void routeClicked(Route route) {
@@ -42,7 +44,7 @@ public class ClaimingEnabledState extends MapPresenterState
     @Override
     public void enter() {
         super.enter();
-        ArrayList<Route> availableRoutes = this.uiFacade.getAvailableRoutes();
+        ArrayList<Route> availableRoutes = UIFacade.getInstance().getAvailableRoutes();
         this.view.emphasizeSelectRoutes(availableRoutes);
     }
 }

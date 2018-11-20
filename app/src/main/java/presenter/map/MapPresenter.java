@@ -13,16 +13,16 @@ import modelclasses.TrainCardWrapper;
 public class MapPresenter implements IMapPresenter, Observer {
     private IMapView mapView;
     private MapPresenterState state;
-    private IUIFacade uiFacade;
+    private IUIFacade uiFacade = UIFacade.getInstance();
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
-        if(UIFacade.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(UIFacade.getInstance().getUsername())) {
-            this.setState(ClaimingEnabledState.getInstance());
-        } else {
-            this.setState(ClaimingDisabledState.getInstance());
-        }
+        this.setState(ClaimingDisabledState.getInstance());
         ClientModel.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void setInitialState() {
     }
 
     public void setState(MapPresenterState state) {

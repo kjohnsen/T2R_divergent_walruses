@@ -7,4 +7,5 @@ import presenter.IChooseClaimColorPresenter;
 public interface IMapPresenter {
     void routeClicked(Route route);
     void setUiFacade(IUIFacade uiFacade);
+    void setInitialState();
 }
