@@ -75,7 +75,7 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
+    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, Integer playerTrainNum) {
         ourInstance.claimRoute(gameName, route, username, updatedHand, playerTrainNum);
     }
 
