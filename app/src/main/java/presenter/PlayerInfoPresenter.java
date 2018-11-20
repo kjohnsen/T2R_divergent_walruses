@@ -38,12 +38,14 @@ public class PlayerInfoPresenter implements IPlayerInfoPresenter, Observer {
 
         if(o instanceof TrainCardWrapper) {
             TrainCardWrapper wrapper = (TrainCardWrapper)o;
-            if(wrapper.getDeckType() == TrainCardWrapper.DeckType.PlayerCards)
+            if(wrapper.getDeckType() == TrainCardWrapper.DeckType.PlayerCards &&
+                    UIFacade.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(UIFacade.getInstance().getUsername()))
                 view.updateTrainCards(Player.getTrainCardQuantities(wrapper.getCards()));
 
         } else if (o instanceof DestinationCardWrapper) {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
-            if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.PlayerTickets){
+            if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.PlayerTickets &&
+                    UIFacade.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(UIFacade.getInstance().getUsername())){
                 view.updateDestinationTickets(wrapper.getDestinationCards());
             }
         }

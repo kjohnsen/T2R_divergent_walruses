@@ -23,8 +23,6 @@ public class ClientModel extends Observable {
     private ArrayList<GameInfo> gameList = new ArrayList<>();
     private GameInfo currentGame;
     private ArrayList<TrainCard> faceupCards;
-    private ArrayList<TrainCard> playerTrainCards;
-    private ArrayList<DestinationCard> playerTickets;
     private ArrayList<DestinationCard> playerPreSelectionTickets;
     private ArrayList<ChatMessage> chatMessages;
     private boolean startGame;
@@ -39,8 +37,6 @@ public class ClientModel extends Observable {
 
     private ClientModel() {
         faceupCards = new ArrayList<>();
-        playerTrainCards = new ArrayList<>();
-        playerTickets = new ArrayList<>();
         chatMessages = new ArrayList<>();
         startGame = true;
         lastRound = false;
@@ -52,7 +48,6 @@ public class ClientModel extends Observable {
         currentUser = null;
         gameList = new ArrayList<>();
         faceupCards = new ArrayList<>();
-        playerTickets = new ArrayList<>();
         playerPreSelectionTickets = new ArrayList<>();
     }
 
@@ -79,9 +74,9 @@ public class ClientModel extends Observable {
             }
         }
         if (currentUser.getUsername().equals(player.getUsername())) {
-            playerTickets.addAll(playerPreSelectionTickets);
+            getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards().addAll(playerPreSelectionTickets);
             playerPreSelectionTickets.clear();
-            notifyObservers(new DestinationCardWrapper(playerTickets, DestinationCardWrapper.DeckType.PlayerTickets));
+            notifyObservers(new DestinationCardWrapper(getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards(), DestinationCardWrapper.DeckType.PlayerTickets));
         }
         notifyObservers(player);
         notifyObservers(new DestinationCardWrapper(currentGame.getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck));
@@ -90,7 +85,7 @@ public class ClientModel extends Observable {
     public void selectTrainCardToHand(TrainCard card, Player player) {
         currentGame.addTrainCardToHand(card, player);
         if (currentUser.getUsername().equals(player.getUsername())) {
-            playerTrainCards.add(card);
+            getCurrentGame().getPlayer(getCurrentUser().getUsername()).addTrainCardToHand(card);
             notifyObservers(card);
         }
         notifyObservers(player);
@@ -107,7 +102,7 @@ public class ClientModel extends Observable {
         //card for ease
         currentGame.getTrainCardDeck().remove(0);
         if (currentUser.getUsername().equals(player.getUsername())) {
-            playerTrainCards.add(card);
+            getCurrentGame().getPlayer(getCurrentUser().getUsername()).addTrainCardToHand(card);
             notifyObservers(card);
         }
         notifyObservers(player);
@@ -119,7 +114,8 @@ public class ClientModel extends Observable {
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
-        return playerTickets;
+
+        return getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards();
     }
     
     public ArrayList<DestinationCard> getPlayerPreSelectionTickets() {
@@ -149,11 +145,11 @@ public class ClientModel extends Observable {
     }
 
     public ArrayList<TrainCard> getPlayerTrainCards() {
-        return playerTrainCards;
+        return getCurrentGame().getPlayer(getCurrentUser().getUsername()).getTrainCards();
     }
 
     public void setPlayerTrainCards(ArrayList<TrainCard> cards) {
-        playerTrainCards = cards;
+        getCurrentGame().getPlayer(getCurrentUser().getUsername()).setTrainCards(cards);
         this.notifyObservers(new TrainCardWrapper(cards, TrainCardWrapper.DeckType.PlayerCards));
     }
 
@@ -163,7 +159,7 @@ public class ClientModel extends Observable {
     }
 
     public void setPlayerTickets(ArrayList<DestinationCard> tickets) {
-        playerTickets = tickets;
+        getCurrentGame().getPlayer(getCurrentUser().getUsername()).setDestinationCards(tickets);
         this.notifyObservers(new DestinationCardWrapper(tickets, DestinationCardWrapper.DeckType.PlayerTickets));
     }
 
