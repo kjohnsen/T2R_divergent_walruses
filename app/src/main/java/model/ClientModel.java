@@ -149,7 +149,7 @@ public class ClientModel extends Observable {
     }
 
     public void setPlayerTrainCards(ArrayList<TrainCard> cards, String username) {
-        getCurrentGame().getPlayer(getCurrentUser().getUsername()).setTrainCards(cards);
+        getCurrentGame().getPlayer(username).setTrainCards(cards);
         this.notifyObservers(new TrainCardWrapper(cards, TrainCardWrapper.DeckType.PlayerCards,
                 username.equals(currentUser.getUsername())));
     }
@@ -161,7 +161,7 @@ public class ClientModel extends Observable {
     }
 
     public void setPlayerTickets(ArrayList<DestinationCard> tickets, String username) {
-        getCurrentGame().getPlayer(getCurrentUser().getUsername()).setDestinationCards(tickets);
+        getCurrentGame().getPlayer(username).setDestinationCards(tickets);
         this.notifyObservers(new DestinationCardWrapper(tickets, DestinationCardWrapper.DeckType.PlayerTickets,
                 username.equals(currentUser.getUsername())));
     }
