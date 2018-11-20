@@ -7,6 +7,7 @@ import java.util.Observer;
 import fragment.IDecksView;
 import model.ClientModel;
 import model.UIFacade;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardWrapper;
 
@@ -101,6 +102,8 @@ public class DecksPresenter implements IDecksPresenter, Observer {
             if (UIFacade.getInstance().getUsername().equals(o)) {
                 setState(DecksNoCardsDrawn.getInstance());
             }
+        } else if(o instanceof Route) {
+            setState(DecksWaiting.getInstance());
         }
     }
 }
