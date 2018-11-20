@@ -20,10 +20,10 @@ public class ChooseClaimColorPresenter implements IChooseClaimColorPresenter {
         this.view = view;
         this.route = route;
         this.caller = caller;
-        view.displayPossibleColors(getPossibleColors(route));
+        //view.displayPossibleColors(getPossibleColors(route));
     }
 
-    private Set<TrainCardColor> getPossibleColors(Route route) {
+    public Set<TrainCardColor> getPossibleColors() {
         Set<TrainCardColor> result = new HashSet<>();
         int length = route.getLength();
         Map<TrainCardColor, Integer> colorQuantityMap =

@@ -84,7 +84,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         putInMaps(purple, PURPLE);
         putInMaps(black, BLACK);
         putInMaps(white, WHITE);
-
+        displayPossibleColors(presenter.getPossibleColors());
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
