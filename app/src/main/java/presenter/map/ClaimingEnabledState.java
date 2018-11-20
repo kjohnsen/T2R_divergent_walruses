@@ -1,5 +1,7 @@
 package presenter.map;
 
+import android.os.AsyncTask;
+
 import java.util.ArrayList;
 
 import model.UIFacade;
@@ -46,5 +48,20 @@ public class ClaimingEnabledState extends MapPresenterState
         super.enter();
         ArrayList<Route> availableRoutes = UIFacade.getInstance().getAvailableRoutes();
         this.view.emphasizeSelectRoutes(availableRoutes);
+    }
+
+    private class ClaimRouteTask extends AsyncTask<Route, Void, String> {
+
+        @Override
+        protected String doInBackground(Route... routes) {
+            return UIFacade.getInstance().claimRoute(routes[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null) {
+                System.out.println(s);
+            }
+        }
     }
 }
