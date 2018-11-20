@@ -190,7 +190,9 @@ public class CommandFacade implements iClient {
         player.setTrainCards(updatedHand);
         player.setNumberOfTrains(playerTrainNum);
         TrainCardWrapper trainCardWrapper = new TrainCardWrapper(updatedHand, TrainCardWrapper.DeckType.PlayerCards);
-        ClientModel.getInstance().notifyObservers(trainCardWrapper);
+        if (username.equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+            ClientModel.getInstance().notifyObservers(trainCardWrapper);
+        }
         ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {
