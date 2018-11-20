@@ -1,9 +1,10 @@
 package presenter.map;
 
+import model.IUIFacade;
 import modelclasses.Route;
 import presenter.IChooseClaimColorPresenter;
 
 public interface IMapPresenter {
-    public void routeClicked(Route route);
-
+    void routeClicked(Route route);
+    void setUiFacade(IUIFacade uiFacade);
 }
