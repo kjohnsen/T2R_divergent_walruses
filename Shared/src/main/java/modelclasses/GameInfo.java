@@ -188,8 +188,15 @@ public class GameInfo implements Serializable {
     }
 
     public void initializeFaceUpCards() {
-        for (int i = 0; i < 5; i++) {
+        int wilds = 0;
+        while (faceUpCards.size() < 5) {
             TrainCard card = drawTrainCard();
+            if (card.getColor().equals(TrainCardColor.WILD)) {
+                if (wilds >= 2) {
+                    continue;
+                }
+                wilds++;
+            }
             faceUpCards.add(card);
         }
     }
