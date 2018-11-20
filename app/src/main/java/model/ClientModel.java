@@ -95,7 +95,9 @@ public class ClientModel extends Observable {
         }
         notifyObservers(player);
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
+            if (player.getUsername().equals(currentUser.getUsername())) {
+                notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
+            }
         }
     }
 
@@ -110,7 +112,9 @@ public class ClientModel extends Observable {
         }
         notifyObservers(player);
         if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
+            if (player.getUsername().equals(currentUser.getUsername())) {
+                notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
+            }
         }
     }
 
