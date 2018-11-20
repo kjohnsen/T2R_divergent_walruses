@@ -27,8 +27,9 @@ public class ChooseClaimColorPresenter implements IChooseClaimColorPresenter {
         int length = route.getLength();
         Map<TrainCardColor, Integer> colorQuantityMap =
                 Player.getTrainCardQuantities(ClientModel.getInstance().getPlayerTrainCards());
+        int numWilds = colorQuantityMap.get(TrainCardColor.WILD);
         for (TrainCardColor color : colorQuantityMap.keySet()) {
-            if (colorQuantityMap.get(color) + colorQuantityMap.get(TrainCardColor.WILD) >= length) {
+            if (colorQuantityMap.get(color) + numWilds >= length) {
                 result.add(color);
             }
         }
