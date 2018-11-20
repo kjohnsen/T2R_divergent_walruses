@@ -1,7 +1,5 @@
 package presenter.map;
 
-import org.checkerframework.checker.guieffect.qual.UI;
-
 import java.util.Observable;
 import java.util.Observer;
 import fragment.IMapView;
