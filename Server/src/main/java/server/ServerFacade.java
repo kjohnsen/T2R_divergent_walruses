@@ -283,10 +283,13 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         clientProxy.startGame(gameName, username);
+        clientProxy.startTurn(gameName, username, game.getCurrentPlayer().getUsername());
 
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
+        Command startFirstTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {game.getCurrentPlayer().getUsername()}));
 
         results.getClientCommands().add(startGameCommand);
+        results.getClientCommands().add(startFirstTurnCommand);
         results.setSuccess(true);
 
         return results;
