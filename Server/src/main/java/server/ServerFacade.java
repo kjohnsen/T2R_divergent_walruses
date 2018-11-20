@@ -75,8 +75,8 @@ public class ServerFacade implements IServer {
         return ourInstance.sendChatMessage(message, gameName);
     }
 
-    public static Results _claimRoute(GameName gameName, Route route, String username) {
-        return ourInstance.claimRoute(gameName, route, username);
+    public static Results _claimRoute(GameName gameName, Route route, String username, TrainCardColor chosenColor) {
+        return ourInstance.claimRoute(gameName, route, username, chosenColor);
     }
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
@@ -354,8 +354,8 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results claimRoute(GameName gameName, Route route, String authToken) {
-        return GamePlay.claimRoute(gameName, route, authToken);
+    public Results claimRoute(GameName gameName, Route route, String authToken, TrainCardColor chosenColor) {
+        return GamePlay.claimRoute(gameName, route, authToken, chosenColor);
     }
 
     public Results getCommands(String authToken) {

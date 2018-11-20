@@ -158,7 +158,7 @@ public class GamePlay {
         }
     }
 
-    public static Results claimRoute(GameName gameName, Route route, String authToken) {
+    public static Results claimRoute(GameName gameName, Route route, String authToken, TrainCardColor chosenColor) {
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
@@ -187,7 +187,7 @@ public class GamePlay {
         }
 
         // verify that player can claim route
-        ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
+        ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player, chosenColor);
         boolean enoughTrains = (player.getNumberOfTrains() - route.getLength()) >= 0;
         if (cardsForClaimingRoute == null || !enoughTrains) {
             results.setErrorMessage("Player unable to claim route");
@@ -245,8 +245,8 @@ public class GamePlay {
         }
     }
 
-    private static ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player) {
-        int routeLength = route.getLength();
+    private static ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player, TrainCardColor chosenColor) {
+        int routeLength = route.getLength();;
         ArrayList<TrainCard> cardsForClaimingRoute = new ArrayList<>();
 
         ArrayList<TrainCard> playerTrainCards = player.getTrainCards();
@@ -255,7 +255,7 @@ public class GamePlay {
             if (card.getColor().equals(TrainCardColor.WILD)) {
                 wildCards.add(card);
             }
-            boolean matchingColor = card.getColor().equals(route.getColor());
+            boolean matchingColor = card.getColor().equals(chosenColor);
             boolean needMoreCards = cardsForClaimingRoute.size() < routeLength;
             if (matchingColor && needMoreCards) {
                 cardsForClaimingRoute.add(card);
