@@ -48,8 +48,8 @@ public class GameActivityTest extends GameActivity {
         //setting random trains and tickets so player info can see it
         Player asdf0 = gameInfo.getPlayer("asdf0");
         asdf0.setPlayerColor(PlayerColor.GREEN);
-        ClientModel.getInstance().setPlayerTrainCards(asdf0.getTrainCards());
-        ClientModel.getInstance().setPlayerTickets(gameInfo.getPlayer("asdf0").getDestinationCards());
+        ClientModel.getInstance().setPlayerTrainCards(asdf0.getTrainCards(), "asdf0");
+        ClientModel.getInstance().setPlayerTickets(gameInfo.getPlayer("asdf0").getDestinationCards(), "asdf0");
     }
 
     @Override
