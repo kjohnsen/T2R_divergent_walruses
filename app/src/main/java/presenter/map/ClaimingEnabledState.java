@@ -27,10 +27,8 @@ public class ClaimingEnabledState extends MapPresenterState
         if (route.getColor().equals(TrainCardColor.WILD)) {
             view.queryUserForClaimColor(route, this);
         } else {
-            String result = this.uiFacade.claimRoute(route);
-            if (result != null) {
-                this.view.displayMessage(result);
-            }
+            ClaimRouteTask claimRouteTask = new ClaimRouteTask();
+            claimRouteTask.execute(route);
         }
     }
 
