@@ -187,12 +187,9 @@ public class CommandFacade implements iClient {
     public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
         ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
-        player.setTrainCards(updatedHand);
+        ClientModel.getInstance().setPlayerTrainCards(updatedHand);
         player.setNumberOfTrains(playerTrainNum);
-        TrainCardWrapper trainCardWrapper = new TrainCardWrapper(updatedHand, TrainCardWrapper.DeckType.PlayerCards);
-        if (username.equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
-            ClientModel.getInstance().notifyObservers(trainCardWrapper);
-        }
+
         ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {
