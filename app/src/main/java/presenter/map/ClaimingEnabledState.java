@@ -34,8 +34,7 @@ public class ClaimingEnabledState extends MapPresenterState
 
     @Override
     public void claimColorChosen(Route route, TrainCardColor color) {
-        route.setColor(color);
-        ChooseClaimColorTask chooseClaimColorTask = new ChooseClaimColorTask();
+        ChooseClaimColorTask chooseClaimColorTask = new ChooseClaimColorTask(color);
         chooseClaimColorTask.execute(route);
     }
 
@@ -50,7 +49,7 @@ public class ClaimingEnabledState extends MapPresenterState
 
         @Override
         protected String doInBackground(Route... routes) {
-            return uiFacade.claimRoute(routes[0]);
+            return uiFacade.claimRoute(routes[0], routes[0].getColor());
         }
 
         @Override
@@ -63,9 +62,13 @@ public class ClaimingEnabledState extends MapPresenterState
 
     private class ChooseClaimColorTask extends AsyncTask<Route, Void, String> {
 
+        public ChooseClaimColorTask(TrainCardColor chosen) {
+            chosenColor = chosen;
+        }
+        private TrainCardColor chosenColor;
         @Override
         protected String doInBackground(Route... routes) {
-            return uiFacade.claimRoute(routes[0]);
+            return uiFacade.claimRoute(routes[0], chosenColor);
         }
 
         @Override
