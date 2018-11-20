@@ -8,5 +8,5 @@ public interface IGameInfoView {
     void updatePlayerInfo(List<Player> players);
     void updateTrainDeckInfo(int trainDeckSize);
     void updateDestDeckInfo(int destDeckSize);
-    void updateCurrentPlayer(Player player);
+    void updateCurrentPlayer(String player);
 }
