@@ -75,8 +75,8 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
-        ourInstance.claimRoute(gameName, route, username, updatedHand);
+    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, Integer playerTrainNum) {
+        ourInstance.claimRoute(gameName, route, username, updatedHand, playerTrainNum);
     }
 
     public static void _startNextTurn(String username) {
@@ -118,7 +118,7 @@ public class CommandFacade implements iClient {
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
-        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets);
+        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets, player.getUsername());
     }
 
     @Override
@@ -164,9 +164,9 @@ public class CommandFacade implements iClient {
 
         String username = ClientModel.getInstance().getCurrentUser().getUsername();
         Player player = game.getPlayer(username);
-        ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards());
-        ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
-        ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
+        ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards(), username);
+        ClientModel.getInstance().setPlayerTickets(player.getDestinationCards(), username);
+        ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards(), username);
         ClientModel.getInstance().notifyObservers(game.getCurrentPlayer().getUsername());
     }
 
@@ -184,10 +184,13 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand) {
+    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
         ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
-        player.setTrainCards(updatedHand);
+        ClientModel.getInstance().setPlayerTrainCards(updatedHand, username);
+        player.setNumberOfTrains(playerTrainNum);
+        player.addPoints(Route.getPointsForRouteOfLength(route.getLength()));
+
         ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {

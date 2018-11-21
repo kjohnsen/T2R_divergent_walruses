@@ -64,7 +64,7 @@ public class MapFragment extends SupportMapFragment implements
     private Map<Route, Polyline> routePolylineMap = new HashMap<>();
     private IMapPresenter presenter;
     private static final int POLYLINE_UNCLAIMED_WIDTH = 12;
-    private static final int POLYLINE_CLAIMED_WIDTH = 24;
+    private static final int POLYLINE_CLAIMED_WIDTH = 36;
     private static final int POLYLINE_TRANSLUCENT_OPACITY = 60;
     private static final int POLYLINE_OPAQUE_OPACITY = 160;
 
@@ -74,6 +74,7 @@ public class MapFragment extends SupportMapFragment implements
         View view = super.onCreateView(layoutInflater, viewGroup, bundle);
         this.getMapAsync(this);
         presenter = new MapPresenter(this);
+        presenter.setUiFacade(UIFacade.getInstance());
         return view;
     }
 
@@ -85,52 +86,82 @@ public class MapFragment extends SupportMapFragment implements
 //        map.getUiSettings().setAllGesturesEnabled(false);
         map.getUiSettings().setMapToolbarEnabled(false);
 
-
         initializeMap(new MapSetup());
+
+        presenter.setInitialState();
     }
 
 
     @Override
-    public void updateRoute(Route route) {
-        Polyline polyline = routePolylineMap.get(route);
-        Player player = route.getPlayer();
-        if (player != null) {
-            polyline.setWidth(POLYLINE_CLAIMED_WIDTH);
-            polyline.setColor(getColorWithOpacity(route.getPlayer().getPlayerColor(), POLYLINE_OPAQUE_OPACITY));
-        } else {
-            polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
-        }
+    public void updateRoute(final Route route) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Polyline polyline = routePolylineMap.get(route);
+                Player player = route.getPlayer();
+                if (player != null) {
+                    polyline.setWidth(POLYLINE_CLAIMED_WIDTH);
+                    polyline.setColor(getColorWithOpacity(route.getPlayer().getPlayerColor(), POLYLINE_OPAQUE_OPACITY));
+                } else {
+                    polyline.setWidth(POLYLINE_UNCLAIMED_WIDTH);
+                }
+            }
+        });
     }
 
     @Override
-    public void setRouteEmphasized(Route route, boolean enabled) {
-        Polyline polyline = routePolylineMap.get(route);
-        if (enabled) {
-            polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_OPAQUE_OPACITY));
-            polyline.setClickable(true);
-        } else {
-            polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_TRANSLUCENT_OPACITY));
-            polyline.setClickable(false);
-        }
+    public void setRouteEmphasized(final Route route, final boolean enabled) {
+        getActivity().runOnUiThread(new Runnable() {
+            final Polyline polyline = routePolylineMap.get(route);
+            @Override
+            public void run() {
+                if (polyline == null) {
+                    int x = 42;
+                } else {
+                    int x = 42;
+                }
+                assert polyline != null;
+                if (enabled) {
+                    polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_OPAQUE_OPACITY));
+                    polyline.setClickable(true);
+                } else {
+                    polyline.setColor(ColorUtils.setAlphaComponent(polyline.getColor(), POLYLINE_TRANSLUCENT_OPACITY));
+                    polyline.setClickable(false);
+                }
+            }
+        });
     }
 
     @Override
-    public void emphasizeSelectRoutes(ArrayList<Route> routes) {
-        for (Route r : this.routePolylineMap.keySet()) {
-            setRouteEmphasized(r, false);
-            routePolylineMap.get(r).setClickable(false);
-        }
-        for (Route r : routes) {
-            setRouteEmphasized(r, true);
-            routePolylineMap.get(r).setClickable(true);
-        }
+    public void emphasizeSelectRoutes(final ArrayList<Route> routes) {
+        final Map<Route, Polyline> rpMap = this.routePolylineMap;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (Route r : rpMap.keySet()) {
+                    setRouteEmphasized(r, false);
+                    routePolylineMap.get(r).setClickable(false);
+                }
+                for (Route r : routes) {
+                    setRouteEmphasized(r, true);
+                    routePolylineMap.get(r).setClickable(true);
+                }
+            }
+        });
     }
 
     @Override
     public void resetRouteEmphasis() {
-        for (Route r : this.routePolylineMap.keySet()) {
-            setRouteEmphasized(r, true);
-        }
+        final Map<Route, Polyline> rpMap = this.routePolylineMap;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (Route r : rpMap.keySet()) {
+                    setRouteEmphasized(r, true);
+                }
+
+            }
+        });
     }
 
     @Override
@@ -157,7 +188,7 @@ public class MapFragment extends SupportMapFragment implements
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
                 map.setLatLngBoundsForCameraTarget(bounds);
                 map.setMinZoomPreference(map.getCameraPosition().zoom);
-                map.setMaxZoomPreference(6.0f);
+                map.setMaxZoomPreference(8.0f);
             }
         });
 
@@ -329,15 +360,7 @@ public class MapFragment extends SupportMapFragment implements
     @Override
     public void onPolylineClick(Polyline polyline) {
         Route route = (Route) polyline.getTag();
-//        route.setPlayer(new Player("player", PlayerColor.BLUE));
-//        updateRoute(route);
-//        setRouteEnabled(route, false);
-        ClientModel cm = ClientModel.getInstance();
-        String username = cm.getCurrentUser().getUsername();
-        Player player = cm.getCurrentGame().getPlayer(username);
-        player.addRoute(route);
-        route.setPlayer(player);
-        cm.notifyObservers(route);
+        presenter.routeClicked(route);
     }
 
 }

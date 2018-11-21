@@ -15,6 +15,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 import results.Results;
 
 public class UIFacade implements IUIFacade {
@@ -112,8 +113,8 @@ public class UIFacade implements IUIFacade {
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
-    public String claimRoute(Route route) {
-        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken));
+    public String claimRoute(Route route, TrainCardColor color) {
+        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken, color));
     }
 
     public ArrayList<Route> getAvailableRoutes() {

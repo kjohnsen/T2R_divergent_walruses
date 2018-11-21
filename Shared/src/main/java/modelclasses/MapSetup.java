@@ -33,6 +33,7 @@ public class MapSetup implements Serializable {
     private void addRoute(City one, City two, TrainCardColor colorOne, TrainCardColor colorTwo, int length) {
         Route route1 = new Route(one, two, colorOne, length);
         Route route2 = new Route(one, two, colorTwo, length);
+        route2.setTwin(true);
         route1.setTwinRoute(route2);
         route2.setTwinRoute(route2);
         routes.add(route1);

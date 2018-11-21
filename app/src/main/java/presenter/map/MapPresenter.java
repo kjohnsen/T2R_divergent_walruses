@@ -1,25 +1,35 @@
 package presenter.map;
 
+import android.security.keystore.UserNotAuthenticatedException;
+
 import java.util.Observable;
 import java.util.Observer;
-
 import fragment.IMapView;
 import model.ClientModel;
 import model.IUIFacade;
+import model.UIFacade;
 import modelclasses.DestinationCardWrapper;
-import modelclasses.Player;
 import modelclasses.Route;
 import modelclasses.TrainCardWrapper;
 
 public class MapPresenter implements IMapPresenter, Observer {
     private IMapView mapView;
     private MapPresenterState state;
-    private IUIFacade uiFacade;
+    private IUIFacade uiFacade = UIFacade.getInstance();
 
     public MapPresenter(IMapView mapView) {
         this.mapView = mapView;
         this.setState(ClaimingDisabledState.getInstance());
         ClientModel.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void setInitialState() {
+        String thisUser = ClientModel.getInstance().getCurrentUser().getUsername();
+        String turnUser = ClientModel.getInstance().getCurrentGame().getCurrentPlayer().getUsername();
+        if (thisUser.equals(turnUser)) {
+            this.setState(ClaimingEnabledState.getInstance());
+        }
     }
 
     public void setState(MapPresenterState state) {
@@ -52,13 +62,18 @@ public class MapPresenter implements IMapPresenter, Observer {
     public void update(Observable observable, Object o) {
         if (o instanceof Route) {
             mapView.updateRoute((Route) o);
-        } else if (o instanceof Player){ // turn change
-            if (((Player) o).getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
+        } else if (o instanceof String){ // turn change
+            if (o.equals(UIFacade.getInstance().getUsername())) {
                 this.setState(ClaimingEnabledState.getInstance());
             } else {
                 this.setState(ClaimingDisabledState.getInstance());
             }
-        } else if (o instanceof DestinationCardWrapper || o instanceof TrainCardWrapper) {
+        } else if (o instanceof DestinationCardWrapper) {
+            DestinationCardWrapper dcw = (DestinationCardWrapper) o;
+            if (dcw.getDeckType().equals(DestinationCardWrapper.DeckType.PlayerTickets)) {
+                this.setState(ClaimingDisabledState.getInstance());
+            }
+        } else if (o instanceof TrainCardWrapper) {
             this.setState(ClaimingDisabledState.getInstance());
         } else if (o instanceof Boolean) {
             if (uiFacade.isLastRound()) {

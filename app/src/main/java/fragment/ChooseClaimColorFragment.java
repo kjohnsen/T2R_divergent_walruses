@@ -43,11 +43,13 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     @Override
     public void displayPossibleColors(Set<TrainCardColor> possibleColors) {
         for (TrainCardColor color : TrainCardColor.values()) {
-            Button button = colorButtonMap.get(color);
-            if (possibleColors.contains(color)) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
+            if (!color.equals(TrainCardColor.WILD)) {
+                Button button = colorButtonMap.get(color);
+                if (possibleColors.contains(color)) {
+                    button.setEnabled(true);
+                } else {
+                    button.setEnabled(false);
+                }
             }
         }
     }
@@ -66,16 +68,25 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         black = view.findViewById(R.id.ccButtonBlack);
         white = view.findViewById(R.id.ccButtonWhite);
 
-        for (Button button : buttonColorMap.keySet()) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    presenter.chooseClaimColor(buttonColorMap.get(view));
-                    presenter.onSwitchView();
-                    ChooseClaimColorFragment.this.dismiss();
-                }
-            });
-        }
+        red.setOnClickListener(new WildRouteButtonClickListener());
+        orange.setOnClickListener(new WildRouteButtonClickListener());
+        yellow.setOnClickListener(new WildRouteButtonClickListener());
+        green.setOnClickListener(new WildRouteButtonClickListener());
+        blue.setOnClickListener(new WildRouteButtonClickListener());
+        purple.setOnClickListener(new WildRouteButtonClickListener());
+        black.setOnClickListener(new WildRouteButtonClickListener());
+        white.setOnClickListener(new WildRouteButtonClickListener());
+
+//        for (Button button : buttonColorMap.keySet()) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    presenter.chooseClaimColor(buttonColorMap.get(view));
+//                    presenter.onSwitchView();
+//                    ChooseClaimColorFragment.this.dismiss();
+//                }
+//            });
+//        }
         putInMaps(red, RED);
         putInMaps(orange, ORANGE);
         putInMaps(yellow, YELLOW);
@@ -84,7 +95,7 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         putInMaps(purple, PURPLE);
         putInMaps(black, BLACK);
         putInMaps(white, WHITE);
-
+        displayPossibleColors(presenter.getPossibleColors());
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -96,5 +107,14 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     private void putInMaps(Button button, TrainCardColor color) {
         buttonColorMap.put(button, color);
         colorButtonMap.put(color, button);
+    }
+
+    private class WildRouteButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            presenter.chooseClaimColor(buttonColorMap.get(view));
+            presenter.onSwitchView();
+            ChooseClaimColorFragment.this.dismiss();
+        }
     }
 }

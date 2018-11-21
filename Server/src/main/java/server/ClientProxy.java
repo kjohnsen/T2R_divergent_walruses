@@ -142,10 +142,10 @@ public class ClientProxy {
         }
     }
 
-    public void claimRoute(GameName gameName, Route route, String clientUsername, ArrayList<TrainCard> playerTrainCards) {
+    public void claimRoute(GameName gameName, Route route, String clientUsername, ArrayList<TrainCard> playerTrainCards, int playerTrainNum) {
         for (Player player : ServerModel.getInstance().getGameInfo(gameName).getPlayers()) {
             if (!player.getUsername().equals(clientUsername)) {
-                Command clientCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, clientUsername, playerTrainCards}));
+                Command clientCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, clientUsername, playerTrainCards, playerTrainNum}));
                 CommandManager.getInstance().addCommand(player.getUsername(), clientCommand);
             }
         }

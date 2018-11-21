@@ -14,11 +14,22 @@ public class TrainCardWrapper implements Serializable{
 
     ArrayList<TrainCard> cards;
     DeckType deckType;
+    boolean currPlayerCards;
+
+
+    public TrainCardWrapper(ArrayList<TrainCard> cards, DeckType deckType, boolean currPlayerCards) {
+        this.cards = cards;
+        this.deckType = deckType;
+        this.currPlayerCards = currPlayerCards;
+    }
 
     public TrainCardWrapper(ArrayList<TrainCard> cards, DeckType deckType) {
         this.cards = cards;
         this.deckType = deckType;
+        this.currPlayerCards = false;
     }
+
+    public boolean isCurrPlayerCards() { return currPlayerCards; }
 
     public ArrayList<TrainCard> getCards() {
         return cards;

@@ -75,8 +75,8 @@ public class ServerFacade implements IServer {
         return ourInstance.sendChatMessage(message, gameName);
     }
 
-    public static Results _claimRoute(GameName gameName, Route route, String username) {
-        return ourInstance.claimRoute(gameName, route, username);
+    public static Results _claimRoute(GameName gameName, Route route, String username, TrainCardColor chosenColor) {
+        return ourInstance.claimRoute(gameName, route, username, chosenColor);
     }
 
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
@@ -283,10 +283,13 @@ public class ServerFacade implements IServer {
         ClientProxy clientProxy = new ClientProxy();
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken);
         clientProxy.startGame(gameName, username);
+        clientProxy.startTurn(gameName, username, game.getCurrentPlayer().getUsername());
 
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
+        Command startFirstTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {game.getCurrentPlayer().getUsername()}));
 
         results.getClientCommands().add(startGameCommand);
+        results.getClientCommands().add(startFirstTurnCommand);
         results.setSuccess(true);
 
         return results;
@@ -351,8 +354,8 @@ public class ServerFacade implements IServer {
         return results;
     }
 
-    public Results claimRoute(GameName gameName, Route route, String username) {
-        return GamePlay.claimRoute(gameName, route, username);
+    public Results claimRoute(GameName gameName, Route route, String authToken, TrainCardColor chosenColor) {
+        return GamePlay.claimRoute(gameName, route, authToken, chosenColor);
     }
 
     public Results getCommands(String authToken) {
