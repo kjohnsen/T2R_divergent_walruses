@@ -15,7 +15,7 @@ import presenter.decks.DecksPresenter;
 
 public class TestDecksPresenter {
     private static DecksPresenter presenter;
-    private static DecksMock view = new DecksMock();
+    private static DecksMock view;
     private static TrainCard card0 = new TrainCard(TrainCardColor.RED);
     private static TrainCard card1 = new TrainCard(TrainCardColor.BLACK);
     private static TrainCard card2 = new TrainCard(TrainCardColor.WILD);
@@ -31,6 +31,7 @@ public class TestDecksPresenter {
 
     @BeforeClass
     public static void prep() {
+        view = new DecksMock();
         firstCards.add(card0);
         firstCards.add(card1);
         firstCards.add(card2);
