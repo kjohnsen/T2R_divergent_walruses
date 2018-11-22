@@ -52,6 +52,10 @@ public class UIFacade implements IUIFacade {
         this.serverProxy = serverProxy;
     }
 
+    public boolean isCurrentPlayer() {
+        return ClientModel.getInstance().isCurrentPlayer();
+    }
+
     public void setGameStart(boolean start) { ClientModel.getInstance().setGameStart(start); }
 
     public ArrayList<TrainCard> getPlayerTrainCards() { return ClientModel.getInstance().getPlayerTrainCards(); }

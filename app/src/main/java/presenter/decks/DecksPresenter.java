@@ -23,7 +23,11 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     public DecksPresenter(IDecksView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
-        setState(DecksNoCardsDrawn.getInstance());
+        if (UIFacade.getInstance().isGameStart() || UIFacade.getInstance().isCurrentPlayer()) {
+            setState(DecksNoCardsDrawn.getInstance());
+        } else {
+            setState(DecksWaiting.getInstance());
+        }
     }
 
     public IDecksView getView() {
