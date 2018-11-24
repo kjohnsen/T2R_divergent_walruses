@@ -76,7 +76,7 @@ public class MapPresenter implements IMapPresenter, Observer {
         } else if (o instanceof TrainCardWrapper) {
             this.setState(ClaimingDisabledState.getInstance());
         } else if (o instanceof Boolean) {
-            if (uiFacade.isLastRound()) {
+            if (uiFacade.isLastRound() && !uiFacade.isEndGame()) {
                 mapView.displayMessage("Starting Last Round");
             }
             else if (uiFacade.isEndGame()) {

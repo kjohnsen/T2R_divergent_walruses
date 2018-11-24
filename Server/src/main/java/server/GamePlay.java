@@ -209,16 +209,17 @@ public class GamePlay {
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.claimRoute(gameName, route, username, player.getTrainCards(), player.getNumberOfTrains());
 
+        Command command = startNextTurn(game);
+        results.getClientCommands().add(command);
+
         // check if player's number of train cars initiates last round
         if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
             game.setLastRound(true);
+            ServerModel.getInstance().setLastPlayerIndex(game.getCurrentPlayerIndex());
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
             results.getClientCommands().add(lastRoundCommand);
             clientProxy.startLastRound(gameName, username);
         }
-
-        Command command = startNextTurn(game);
-        results.getClientCommands().add(command);
 
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
         results.getClientCommands().add(claimRouteCommand);
@@ -234,7 +235,7 @@ public class GamePlay {
         ServerModel.getInstance().setState(ServerState.TURNSTART);
 
         ClientProxy clientProxy = new ClientProxy();
-        boolean isLastPlayer = currPlayerIndex == game.getPlayers().size() - 1;
+        boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
         if (isLastPlayer && game.isLastRound()) {
             clientProxy.endGame(game.getGameName(), currPlayer.getUsername());
             return new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
