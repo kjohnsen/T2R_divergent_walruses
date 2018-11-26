@@ -85,7 +85,7 @@ public class PlayerInfoFragmentTest implements IPlayerInfoView {
             }
 
             //set clicked to front
-            cards_textView.get(trainCardColor).bringToFront();
+            //cards_textView.get(trainCardColor).bringToFront();
         }
 
 
