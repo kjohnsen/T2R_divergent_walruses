@@ -82,7 +82,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         cardBlack.setBackgroundColor(getResources().getColor(R.color.trainBlack));
         cardWild.setBackgroundColor(getResources().getColor(R.color.trainPink));
 
-        cards_textView = new TreeMap<>();
+        cards_textView = new LinkedHashMap<>();
         cards_textView.put(TrainCardColor.RED, cardRed);
         cards_textView.put(TrainCardColor.ORANGE, cardOrange);
         cards_textView.put(TrainCardColor.YELLOW, cardYellow);
