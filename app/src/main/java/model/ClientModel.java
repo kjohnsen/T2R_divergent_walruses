@@ -154,6 +154,11 @@ public class ClientModel extends Observable {
         }
     }
 
+    public void setInitialFaceupCards(ArrayList<TrainCard> cards) {
+        faceupCards = cards;
+        notifyObservers(new TrainCardWrapper(faceupCards, TrainCardWrapper.DeckType.FaceUp));
+    }
+
     public ArrayList<TrainCard> getPlayerTrainCards() {
         return getCurrentGame().getPlayer(getCurrentUser().getUsername()).getTrainCards();
     }
