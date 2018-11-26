@@ -106,6 +106,7 @@ public class GameInfo implements Serializable {
             for (int i = 0; i < 5; i++) {
                 TrainCard c = drawTrainCard();
                 replacements.add(c);
+                discardedTrainCards.add(faceUpCards.get(i));
                 faceUpCards.set(i, c);
             }
         }
@@ -167,7 +168,7 @@ public class GameInfo implements Serializable {
     }
 
     public void initializeTrainCardDeck() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             TrainCard redTrainCard = new TrainCard(TrainCardColor.RED);
             TrainCard orangeTrainCard = new TrainCard(TrainCardColor.ORANGE);
             TrainCard yellowTrainCard = new TrainCard(TrainCardColor.YELLOW);
@@ -187,7 +188,7 @@ public class GameInfo implements Serializable {
             trainCardDeck.add(whiteTrainCard);
         }
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             TrainCard wildCard = new TrainCard(TrainCardColor.WILD);
             trainCardDeck.add(wildCard);
         }
