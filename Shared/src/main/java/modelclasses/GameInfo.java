@@ -218,7 +218,6 @@ public class GameInfo implements Serializable {
 
             TrainCard drawnCard = trainCardDeck.get(cardIndex);
             trainCardDeck.remove(cardIndex);
-
             return drawnCard;
         }
         return null;
