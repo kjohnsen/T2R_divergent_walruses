@@ -92,6 +92,12 @@ public class GameInfo implements Serializable {
         return null;
     }
 
+    public ArrayList<TrainCard> shuffleTrainDeck() {
+        trainCardDeck.addAll(discardedTrainCards);
+        discardedTrainCards = new ArrayList<>();
+        return trainCardDeck;
+    }
+
     public ArrayList<TrainCard> replaceCards(Integer index) {
         TrainCard card = drawTrainCard();
         faceUpCards.set(index, card);
@@ -100,6 +106,7 @@ public class GameInfo implements Serializable {
             for (int i = 0; i < 5; i++) {
                 TrainCard c = drawTrainCard();
                 replacements.add(c);
+                discardedTrainCards.add(faceUpCards.get(i));
                 faceUpCards.set(i, c);
             }
         }
@@ -193,6 +200,9 @@ public class GameInfo implements Serializable {
             TrainCard card = drawTrainCard();
             if (card.getColor().equals(TrainCardColor.WILD)) {
                 if (wilds >= 2) {
+                    ArrayList<TrainCard> discard = new ArrayList<>();
+                    discard.add(card);
+                    addCardsToTrainDiscarded(discard);
                     continue;
                 }
                 wilds++;
@@ -203,17 +213,12 @@ public class GameInfo implements Serializable {
 
     public TrainCard drawTrainCard() {
         int deckSize = trainCardDeck.size();
-        if (deckSize == 0) {
-            trainCardDeck = discardedTrainCards;
-            discardedTrainCards.clear();
-        }
         if (deckSize > 0) {
             Random rand = new Random();
             int cardIndex = rand.nextInt(deckSize);
 
             TrainCard drawnCard = trainCardDeck.get(cardIndex);
             trainCardDeck.remove(cardIndex);
-
             return drawnCard;
         }
         return null;

@@ -43,6 +43,9 @@ public class CommandFacade implements iClient {
     public static void _replaceTrainCard(TrainCard replacement, Integer selected) {
         ourInstance.replaceTrainCard(replacement, selected);
     }
+    public static void _replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ourInstance.replaceTrainDeck(newDeck);
+    }
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
@@ -107,6 +110,11 @@ public class CommandFacade implements iClient {
     }
 
     @Override
+    public void replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ClientModel.getInstance().replaceTrainDeck(newDeck);
+    }
+
+    @Override
     public void clearWilds(ArrayList<TrainCard> replacements) {
         ClientModel.getInstance().setFaceupCards(replacements);
     }
@@ -159,7 +167,7 @@ public class CommandFacade implements iClient {
     @Override
     public void startGame(GameInfo game) {
         ClientModel.getInstance().setCurrentGame(game);
-        ClientModel.getInstance().setFaceupCards(game.getFaceUpCards());
+        ClientModel.getInstance().setInitialFaceupCards(game.getFaceUpCards());
         ClientModel.getInstance().setCurrentGamePlayers(game.getPlayers());
 
         String username = ClientModel.getInstance().getCurrentUser().getUsername();
