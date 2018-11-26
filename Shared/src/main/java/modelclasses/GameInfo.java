@@ -92,6 +92,12 @@ public class GameInfo implements Serializable {
         return null;
     }
 
+    public ArrayList<TrainCard> shuffleTrainDeck() {
+        trainCardDeck.addAll(discardedTrainCards);
+        discardedTrainCards = new ArrayList<>();
+        return trainCardDeck;
+    }
+
     public ArrayList<TrainCard> replaceCards(Integer index) {
         TrainCard card = drawTrainCard();
         faceUpCards.set(index, card);
@@ -161,7 +167,7 @@ public class GameInfo implements Serializable {
     }
 
     public void initializeTrainCardDeck() {
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 3; i++) {
             TrainCard redTrainCard = new TrainCard(TrainCardColor.RED);
             TrainCard orangeTrainCard = new TrainCard(TrainCardColor.ORANGE);
             TrainCard yellowTrainCard = new TrainCard(TrainCardColor.YELLOW);
@@ -181,7 +187,7 @@ public class GameInfo implements Serializable {
             trainCardDeck.add(whiteTrainCard);
         }
 
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 2; i++) {
             TrainCard wildCard = new TrainCard(TrainCardColor.WILD);
             trainCardDeck.add(wildCard);
         }
@@ -193,6 +199,9 @@ public class GameInfo implements Serializable {
             TrainCard card = drawTrainCard();
             if (card.getColor().equals(TrainCardColor.WILD)) {
                 if (wilds >= 2) {
+                    ArrayList<TrainCard> discard = new ArrayList<>();
+                    discard.add(card);
+                    addCardsToTrainDiscarded(discard);
                     continue;
                 }
                 wilds++;
@@ -203,10 +212,6 @@ public class GameInfo implements Serializable {
 
     public TrainCard drawTrainCard() {
         int deckSize = trainCardDeck.size();
-        if (deckSize == 0) {
-            trainCardDeck = discardedTrainCards;
-            discardedTrainCards.clear();
-        }
         if (deckSize > 0) {
             Random rand = new Random();
             int cardIndex = rand.nextInt(deckSize);

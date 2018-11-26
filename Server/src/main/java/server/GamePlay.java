@@ -37,6 +37,12 @@ public class GamePlay {
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
+        }
         results.setSuccess(true);
 
         if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS) {
@@ -97,6 +103,12 @@ public class GamePlay {
             clientProxy.clearWilds(replacements, game, username);
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
             results.getClientCommands().add(clearWildsCommand);
+        }
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
         }
         results.setSuccess(true);
 

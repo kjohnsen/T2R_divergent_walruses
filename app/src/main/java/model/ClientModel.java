@@ -134,9 +134,12 @@ public class ClientModel extends Observable {
         //again, just remove a random card
         currentGame.getTrainCardDeck().remove(0);
         notifyObservers(new TrainCardWrapper(faceupCards, TrainCardWrapper.DeckType.FaceUp));
-        if (currentGame.getTrainCardDeck().size() != 5) {
-            notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
-        }
+        notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
+    }
+
+    public void replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        currentGame.setTrainCardDeck(newDeck);
+        notifyObservers(new TrainCardWrapper(newDeck, TrainCardWrapper.DeckType.DrawDeck));
     }
 
     public void setFaceupCards(ArrayList<TrainCard> cards) {

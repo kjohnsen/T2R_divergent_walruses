@@ -43,6 +43,9 @@ public class CommandFacade implements iClient {
     public static void _replaceTrainCard(TrainCard replacement, Integer selected) {
         ourInstance.replaceTrainCard(replacement, selected);
     }
+    public static void _replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ourInstance.replaceTrainDeck(newDeck);
+    }
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
     }
@@ -104,6 +107,11 @@ public class CommandFacade implements iClient {
     @Override
     public void replaceTrainCard(TrainCard replacement, Integer selected) {
         ClientModel.getInstance().replaceFaceupCard(replacement, selected);
+    }
+
+    @Override
+    public void replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ClientModel.getInstance().replaceTrainDeck(newDeck);
     }
 
     @Override

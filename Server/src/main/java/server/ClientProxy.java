@@ -57,6 +57,16 @@ public class ClientProxy {
         }
     }
 
+    public void replaceTrainDeck(ArrayList<TrainCard> newDeck, GameInfo game, String name) {
+        for (String username : ServerModel.getInstance().getUsers().keySet()) {
+            // this checks that the user is a player in the game, and that it is not the client user
+            if (game.getPlayer(username) != null && !username.equals(name)) {
+                Command clientCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[] {newDeck}));
+                CommandManager.getInstance().addCommand(username, clientCommand);
+            }
+        }
+    }
+
     public void clearWilds(ArrayList<TrainCard> replacements, GameInfo game, String name) {
         for (String username : ServerModel.getInstance().getUsers().keySet()) {
             // this checks that the user is a player in the game, and that it is not the client user
