@@ -165,8 +165,14 @@ public class MapFragment extends SupportMapFragment implements
     }
 
     @Override
-    public void displayMessage(String message) {
-        Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+    public void displayMessage(final String message) {
+        final Context context = this.getContext();
+        this.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

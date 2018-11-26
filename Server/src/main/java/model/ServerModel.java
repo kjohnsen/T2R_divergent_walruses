@@ -46,6 +46,8 @@ public class ServerModel {
 
     private ServerState state = ServerState.TURNSTART;
 
+    private int lastPlayerIndex = -1;
+
     /**
      * private empty constructor.
      * @pre None
@@ -67,6 +69,14 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public int getLastPlayerIndex() {
+        return lastPlayerIndex;
+    }
+
+    public void setLastPlayerIndex(int lastPlayerIndex) {
+        this.lastPlayerIndex = lastPlayerIndex;
     }
 
     public ServerState getState() {
