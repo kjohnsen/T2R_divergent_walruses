@@ -20,14 +20,24 @@ public class DecksOneCardDrawn extends DecksState {
         if (card.getColor().equals(TrainCardColor.WILD)) {
             return "You've already drawn one card-- you can't pick a wild";
         } else {
-            presenter.setState(DecksWaiting.getInstance());
-            return super.selectTrainCard(presenter, index);
+            String message = super.selectTrainCard(presenter, index);
+            if (message != null) {
+                return message;
+            } else {
+                presenter.setState(DecksWaiting.getInstance());
+                return null;
+            }
         }
     }
 
     @Override
     public String drawTrainCard(DecksPresenter presenter) {
-        presenter.setState(DecksWaiting.getInstance());
-        return super.drawTrainCard(presenter);
+        String message = super.drawTrainCard(presenter);
+        if (message != null) {
+            return message;
+        } else {
+            presenter.setState(DecksWaiting.getInstance());
+            return null;
+        }
     }
 }
