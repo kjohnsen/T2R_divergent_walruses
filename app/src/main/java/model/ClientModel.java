@@ -121,7 +121,6 @@ public class ClientModel extends Observable {
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
-
         return getCurrentGame().getPlayer(getCurrentUser().getUsername()).getDestinationCards();
     }
     
