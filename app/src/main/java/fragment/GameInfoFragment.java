@@ -59,7 +59,8 @@ public class GameInfoFragment extends Fragment implements IGameInfoView {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                currentPlayer.setText(player);
+                String currentPlayerText = "Player Turn: " + player;
+                currentPlayer.setText(currentPlayerText);
             }
         });
     }
