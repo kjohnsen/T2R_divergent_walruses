@@ -24,17 +24,27 @@ public class DecksNoCardsDrawn extends DecksState {
     }
     
     public String drawTrainCard(DecksPresenter presenter) {
-        presenter.setState(DecksOneCardDrawn.getInstance());
-        return super.drawTrainCard(presenter);
+        String message = super.drawTrainCard(presenter);
+        if (message != null) {
+            return message;
+        } else {
+            presenter.setState(DecksOneCardDrawn.getInstance());
+            return null;
+        }
     }
 
     public String selectTrainCard(DecksPresenter presenter, int index) {
         TrainCard card = UIFacade.getInstance().getFaceupCards().get(index);
-        if (card.getColor().equals(TrainCardColor.WILD)) {
-            presenter.setState(DecksWaiting.getInstance());
+        String message = super.selectTrainCard(presenter, index);
+        if (message != null) {
+            return message;
         } else {
-            presenter.setState(DecksOneCardDrawn.getInstance());
+            if (card.getColor().equals(TrainCardColor.WILD)) {
+                presenter.setState(DecksWaiting.getInstance());
+            } else {
+                presenter.setState(DecksOneCardDrawn.getInstance());
+            }
+            return null;
         }
-        return super.selectTrainCard(presenter, index);
     }
 }

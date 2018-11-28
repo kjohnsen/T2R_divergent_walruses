@@ -101,10 +101,16 @@ public class UIFacade implements IUIFacade {
     }
 
     public String selectTrainCard(int index) {
+        if (UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size() == 0) {
+            return "There are no train cards to draw";
+        }
         return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
     }
 
     public String drawTrainCard() {
+        if (UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size() == 0) {
+            return "There are no train cards to draw";
+        }
         return processResults(serverProxy.drawTrainCard(getCurrentGame().getGameName(), authToken));
     }
 
