@@ -96,11 +96,7 @@ public class ClientModel extends Observable {
             notifyObservers(card);
         }
         notifyObservers(player);
-        if (currentGame.getTrainCardDeck().size() != 5) {
-            if (player.getUsername().equals(currentUser.getUsername())) {
-                notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
-            }
-        }
+        notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
     }
 
     public void drawTrainCardToHand(TrainCard card, Player player) {
@@ -113,11 +109,7 @@ public class ClientModel extends Observable {
             notifyObservers(card);
         }
         notifyObservers(player);
-        if (currentGame.getTrainCardDeck().size() != 5) {
-            if (player.getUsername().equals(currentUser.getUsername())) {
-                notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
-            }
-        }
+        notifyObservers(new TrainCardWrapper(currentGame.getTrainCardDeck(), TrainCardWrapper.DeckType.DrawDeck));
     }
 
     public ArrayList<DestinationCard> getPlayerTickets() {
