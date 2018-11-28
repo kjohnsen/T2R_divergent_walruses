@@ -57,10 +57,12 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
+        /*
         if (viewGroup != null && viewGroup.getChildAt(i) != null) {
             viewGroup.getChildAt(i).setBackgroundColor(
                     PlayerColorConverter.convertPlayerColor(players.get(i).getPlayerColor(), mContext));
         }
+        */
 
         LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -70,8 +72,9 @@ public class PlayerInfoListViewAdapter extends BaseAdapter {
         //ImageView imageView = (ImageView)view.findViewById(R.id.image_avatar);
         //imageView.setImageResource(R.drawable.map_marker);
 
+        String playerNameText = players.get(i).getUsername() + "(" + players.get(i).getPlayerColor().toString() + ")";
         TextView playerName = view.findViewById(R.id.player_name);
-        playerName.setText(players.get(i).getUsername());
+        playerName.setText(playerNameText);
 
         TextView playerOrder = view.findViewById(R.id.player_order);
         playerOrder.setText(String.valueOf("Player Order: " + (i+1)));

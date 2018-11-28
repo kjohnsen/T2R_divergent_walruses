@@ -58,7 +58,6 @@ public class GameInfoPresenter implements IGameInfoPresenter, Observer {
             DestinationCardWrapper wrapper = (DestinationCardWrapper)o;
             if(wrapper.getDeckType() == DestinationCardWrapper.DeckType.DrawDeck)
                 view.updateDestDeckInfo(wrapper.getDestinationCards().size());
-
         } else if (o instanceof TrainCardWrapper) {
             TrainCardWrapper wrapper = (TrainCardWrapper) o;
             if(wrapper.getDeckType() == TrainCardWrapper.DeckType.DrawDeck)

@@ -54,16 +54,23 @@ public class GamePlay {
     }
 
     public static Results drawDestinationCard(GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+        Results results = new Results();
 
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
+
+        if (tickets.isEmpty()) {
+            results.setSuccess(false);
+            results.setErrorMessage("no destination cards in deck");
+            return results;
+        }
+
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
         player.setPreSelectionDestCards(tickets);
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.displayDestinationCards(tickets, player, game);
-        Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
@@ -217,9 +224,16 @@ public class GamePlay {
         player.removeTrainCardsFromHand(cardsForClaimingRoute);
         game.addCardsToTrainDiscarded(cardsForClaimingRoute);
 
+
         // send claimRoute command to the clients
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.claimRoute(gameName, route, username, player.getTrainCards(), player.getNumberOfTrains());
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
+        }
 
         Command command = startNextTurn(game);
         results.getClientCommands().add(command);
