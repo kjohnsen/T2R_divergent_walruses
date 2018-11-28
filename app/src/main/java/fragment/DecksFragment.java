@@ -100,7 +100,10 @@ public class DecksFragment extends Fragment implements IDecksView{
         destinationDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.drawDestinationCards();
+                String error = presenter.drawDestinationCards();
+                if(error != null) {
+                    Toast.makeText(DecksFragment.this.getActivity(), error, Toast.LENGTH_LONG).show();
+                }
             }
         });
         presenter.getFaceupCards();
