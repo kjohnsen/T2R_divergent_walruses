@@ -22,7 +22,7 @@ public enum PlayerColor implements Serializable {
         return colors;
     }
 
-    public static List<PlayerColor> getColorsNotString() {
+    public static List<PlayerColor> getRandomColors() {
         return Arrays.asList(values());
     }
 

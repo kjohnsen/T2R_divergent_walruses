@@ -261,16 +261,20 @@ public class ServerFacade implements IServer {
     }
 
     private void assignPlayersColors(GameInfo game) {
-        List<PlayerColor> availableColors = PlayerColor.getColorsNotString();
+        List<PlayerColor> takenColors = new ArrayList<>();
         for (Player p : game.getPlayers()) {
             if (!p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
-                availableColors.remove(p.getPlayerColor());
+                takenColors.add(p.getPlayerColor());
             }
         }
+        List<PlayerColor> allColors = PlayerColor.getRandomColors();
+        int index = 0;
         for (Player p : game.getPlayers()) {
-            if (p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
-                p.setPlayerColor(availableColors.get(0));
-                availableColors.remove(0);
+            while (p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
+                if (!takenColors.contains(allColors.get(index))) {
+                    p.setPlayerColor(allColors.get(index));
+                }
+                index++;
             }
         }
     }
