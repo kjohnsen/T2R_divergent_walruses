@@ -45,6 +45,9 @@ public class GameEndView extends AppCompatActivity implements IGameEndView {
     }
 
     @Override
+    public void onBackPressed() {}
+
+    @Override
     public void updateGameEndInfo() {}
 
     private class EndGameAdapter extends RecyclerView.Adapter<EndGameAdapter.EndGameInfoViewHolder> {

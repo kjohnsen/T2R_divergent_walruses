@@ -53,6 +53,9 @@ public class GameActivityTest extends GameActivity {
     }
 
     @Override
+    public void onBackPressed() { }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setupTest();

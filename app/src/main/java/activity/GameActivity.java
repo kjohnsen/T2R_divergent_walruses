@@ -40,6 +40,9 @@ public class GameActivity extends AppCompatActivity {
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
+    @Override
+    public void onBackPressed() {}
+
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 4;
         public MyPagerAdapter(FragmentManager fm) {

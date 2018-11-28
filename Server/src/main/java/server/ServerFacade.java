@@ -115,6 +115,10 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Password incorrect");
             return results;
         }
+        if(serverModel.userIsAlreadyInGame(username)) {
+            results.setErrorMessage("User is already in game");
+            return results;
+        }
 
         //*****************************************************************
 

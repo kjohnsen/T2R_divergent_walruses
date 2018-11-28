@@ -71,6 +71,9 @@ public class GameLobbyActivity extends AppCompatActivity implements IGameLobbyVi
     }
 
     @Override
+    public void onBackPressed() {}
+
+    @Override
     public void updateAvailableColors(final List<String> colors, final int position) {
         runOnUiThread(new Runnable() {
             @Override

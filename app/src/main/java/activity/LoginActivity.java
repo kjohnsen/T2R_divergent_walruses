@@ -221,6 +221,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    public void onBackPressed() {}
+
+    @Override
     public void setLoginEnabled(boolean enabled) {
         if (loginButton != null) {
             loginButton.setEnabled(enabled);
