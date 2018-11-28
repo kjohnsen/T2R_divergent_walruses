@@ -7,6 +7,7 @@ import data.Serializer;
 import interfaces.iClient;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
@@ -126,6 +127,11 @@ public class CommandFacade implements iClient {
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
+        for (int i = 0; i < tickets.size(); i++) {
+            ClientModel.getInstance().getCurrentGame().getDestCardDeck().remove(0);
+        }
+        DestinationCardWrapper destinationCardWrapper = new DestinationCardWrapper(ClientModel.getInstance().getCurrentGame().getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck);
+        ClientModel.getInstance().notifyObservers(destinationCardWrapper);
         ClientModel.getInstance().setPlayerPreSelectionTickets(tickets, player.getUsername());
     }
 

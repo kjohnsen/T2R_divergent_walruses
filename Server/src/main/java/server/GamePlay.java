@@ -54,16 +54,23 @@ public class GamePlay {
     }
 
     public static Results drawDestinationCard(GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+        Results results = new Results();
 
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
+
+        if (tickets.isEmpty()) {
+            results.setSuccess(false);
+            results.setErrorMessage("no destination cards in deck");
+            return results;
+        }
+
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
         player.setPreSelectionDestCards(tickets);
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.displayDestinationCards(tickets, player, game);
-        Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
