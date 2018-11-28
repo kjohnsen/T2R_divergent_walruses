@@ -34,11 +34,11 @@ public class DecksNoCardsDrawn extends DecksState {
     }
 
     public String selectTrainCard(DecksPresenter presenter, int index) {
+        TrainCard card = UIFacade.getInstance().getFaceupCards().get(index);
         String message = super.selectTrainCard(presenter, index);
         if (message != null) {
             return message;
         } else {
-            TrainCard card = UIFacade.getInstance().getFaceupCards().get(index);
             if (card.getColor().equals(TrainCardColor.WILD)) {
                 presenter.setState(DecksWaiting.getInstance());
             } else {
