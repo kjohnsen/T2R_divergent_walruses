@@ -48,6 +48,9 @@ public class GameListActivity extends AppCompatActivity implements IGameListView
     }
 
     @Override
+    public void onBackPressed() {}
+
+    @Override
     public void populateGameList(final List<GameInfo> games) {
         runOnUiThread(new Runnable() {
             @Override
