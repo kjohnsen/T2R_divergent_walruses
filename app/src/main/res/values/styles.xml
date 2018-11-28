@@ -12,4 +12,9 @@
         <item name="android:layout_margin">16dp</item>
     </style>
 
+    <style name="overlayBox">
+        <item name="android:background">#55000000</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>
