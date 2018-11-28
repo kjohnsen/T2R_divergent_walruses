@@ -39,7 +39,7 @@ public class TestGameSetup {
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("u1", PlayerColor.GREEN));
         players.add(new Player("u2", PlayerColor.BLUE));
-        players.add(new Player("u3", PlayerColor.MAGENTA));
+        players.add(new Player("u3", PlayerColor.YELLOW));
 
         // put them in the CommandManager
         CommandManager.getInstance().addClient("u1");
