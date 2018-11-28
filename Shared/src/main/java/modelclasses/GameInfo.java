@@ -253,7 +253,10 @@ public class GameInfo implements Serializable {
     public ArrayList<DestinationCard> getPlayerInitialDestCards() {
         ArrayList<DestinationCard> cards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            cards.add(drawDestCard());
+            DestinationCard cardToAdd = drawDestCard();
+            if (cardToAdd != null) {
+                cards.add(cardToAdd);
+            }
         }
         return cards;
     }

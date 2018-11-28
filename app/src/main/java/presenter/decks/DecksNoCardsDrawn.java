@@ -1,5 +1,6 @@
 package presenter.decks;
 
+import model.ClientModel;
 import model.UIFacade;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardColor;
@@ -11,16 +12,15 @@ public class DecksNoCardsDrawn extends DecksState {
     private DecksNoCardsDrawn() {}
     
     public String drawDestinationCards(DecksPresenter presenter) {
-        String message = super.drawDestinationCards(presenter);
-        if (message != null) {
-            return message;
+        if (UIFacade.getInstance().getDestDeckSize() != 0) {
+            if (!isGameStart(presenter)) {
+                presenter.setState(DecksWaiting.getInstance());
+            } else if (!UIFacade.getInstance().isStartPlayer()) {
+                presenter.setState(DecksWaiting.getInstance());
+            }
+            return super.drawDestinationCards(presenter);
         }
-        if (!isGameStart(presenter)) {
-            presenter.setState(DecksWaiting.getInstance());
-        } else if (!UIFacade.getInstance().isStartPlayer()) {
-            presenter.setState(DecksWaiting.getInstance());
-        }
-        return null;
+        return "no cards in destination deck";
     }
     
     public String drawTrainCard(DecksPresenter presenter) {
