@@ -6,6 +6,8 @@ import java.util.Observer;
 
 import fragment.IDecksView;
 import model.ClientModel;
+import model.UIFacade;
+import modelclasses.Route;
 import modelclasses.TrainCard;
 import modelclasses.TrainCardWrapper;
 
@@ -21,7 +23,11 @@ public class DecksPresenter implements IDecksPresenter, Observer {
     public DecksPresenter(IDecksView view) {
         this.view = view;
         ClientModel.getInstance().addObserver(this);
-        setState(DecksNoCardsDrawn.getInstance());
+        if (UIFacade.getInstance().isGameStart() || UIFacade.getInstance().isCurrentPlayer()) {
+            setState(DecksNoCardsDrawn.getInstance());
+        } else {
+            setState(DecksWaiting.getInstance());
+        }
     }
 
     public IDecksView getView() {
@@ -96,6 +102,12 @@ public class DecksPresenter implements IDecksPresenter, Observer {
             if (wrapper.getDeckType().equals(TrainCardWrapper.DeckType.FaceUp)) {
                 view.replaceTrainCards(wrapper.getCards());
             }
+        } else if (o instanceof String) {
+            if (UIFacade.getInstance().getUsername().equals(o)) {
+                setState(DecksNoCardsDrawn.getInstance());
+            }
+        } else if(o instanceof Route) {
+            setState(DecksWaiting.getInstance());
         }
     }
 }

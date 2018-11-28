@@ -78,14 +78,14 @@ public class TestGameSetup {
         }
 
         // check player commands
-        assertEquals(1, results.getClientCommands().size());
+        assertEquals(2, results.getClientCommands().size());
         for (Player p : game.getPlayers()) {
             ArrayList<Command> userCommands = CommandManager.getInstance().getCommands(p.getUsername());
             if (p.getUsername().equals("u1")) {
                 assertEquals(0, userCommands.size());
             }
             else {
-                assertEquals(1, userCommands.size());
+                assertEquals(2, userCommands.size());
             }
         }
     }

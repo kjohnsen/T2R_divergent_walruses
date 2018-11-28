@@ -7,11 +7,13 @@ import data.Serializer;
 import interfaces.iClient;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
+import modelclasses.DestinationCardWrapper;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
 import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardWrapper;
 import modelclasses.User;
 import modelclasses.Route;
 
@@ -41,6 +43,9 @@ public class CommandFacade implements iClient {
     }
     public static void _replaceTrainCard(TrainCard replacement, Integer selected) {
         ourInstance.replaceTrainCard(replacement, selected);
+    }
+    public static void _replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ourInstance.replaceTrainDeck(newDeck);
     }
     public static void _drawTrainCard(TrainCard card, Player player) {
         ourInstance.drawTrainCard(card, player);
@@ -74,8 +79,8 @@ public class CommandFacade implements iClient {
 
     public static void _addChatMessage(ChatMessage message) { ourInstance.addChatMessage(message); }
 
-    public static void _claimRoute(GameName gameName, Route route, String username) {
-        ourInstance.claimRoute(gameName, route, username);
+    public static void _claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, Integer playerTrainNum) {
+        ourInstance.claimRoute(gameName, route, username, updatedHand, playerTrainNum);
     }
 
     public static void _startNextTurn(String username) {
@@ -106,6 +111,11 @@ public class CommandFacade implements iClient {
     }
 
     @Override
+    public void replaceTrainDeck(ArrayList<TrainCard> newDeck) {
+        ClientModel.getInstance().replaceTrainDeck(newDeck);
+    }
+
+    @Override
     public void clearWilds(ArrayList<TrainCard> replacements) {
         ClientModel.getInstance().setFaceupCards(replacements);
     }
@@ -117,7 +127,12 @@ public class CommandFacade implements iClient {
 
     @Override
     public void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player) {
-        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets);
+        for (int i = 0; i < tickets.size(); i++) {
+            ClientModel.getInstance().getCurrentGame().getDestCardDeck().remove(0);
+        }
+        DestinationCardWrapper destinationCardWrapper = new DestinationCardWrapper(ClientModel.getInstance().getCurrentGame().getDestCardDeck(), DestinationCardWrapper.DeckType.DrawDeck);
+        ClientModel.getInstance().notifyObservers(destinationCardWrapper);
+        ClientModel.getInstance().setPlayerPreSelectionTickets(tickets, player.getUsername());
     }
 
     @Override
@@ -140,6 +155,7 @@ public class CommandFacade implements iClient {
         GameInfo gameInfo = ClientModel.getInstance().getGame(gameName);
         if(player != null && !gameInfo.getPlayers().contains(player)) {
             gameInfo.addPlayer(player);
+            ClientModel.getInstance().notifyObservers(ClientModel.getInstance().getGameList());
             ClientModel.getInstance().notifyObservers(gameInfo.getPlayers());
         }
         if (player == null || player.getUsername().equals(ClientModel.getInstance().getCurrentUser().getUsername())) {
@@ -157,14 +173,15 @@ public class CommandFacade implements iClient {
     @Override
     public void startGame(GameInfo game) {
         ClientModel.getInstance().setCurrentGame(game);
-        ClientModel.getInstance().setFaceupCards(game.getFaceUpCards());
+        ClientModel.getInstance().setInitialFaceupCards(game.getFaceUpCards());
         ClientModel.getInstance().setCurrentGamePlayers(game.getPlayers());
 
         String username = ClientModel.getInstance().getCurrentUser().getUsername();
         Player player = game.getPlayer(username);
-        ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards());
-        ClientModel.getInstance().setPlayerTickets(player.getDestinationCards());
-        ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards());
+        ClientModel.getInstance().setPlayerPreSelectionTickets(player.getPreSelectionDestCards(), username);
+        ClientModel.getInstance().setPlayerTickets(player.getDestinationCards(), username);
+        ClientModel.getInstance().setPlayerTrainCards(player.getTrainCards(), username);
+        ClientModel.getInstance().notifyObservers(game.getCurrentPlayer().getUsername());
     }
 
     @Override
@@ -181,9 +198,14 @@ public class CommandFacade implements iClient {
     }
 
     @Override
-    public void claimRoute(GameName gameName, Route route, String username) {
+    public void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum) {
         ArrayList<Route> routes = ClientModel.getInstance().getCurrentGame().getUnclaimedRoutes();
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
+        ClientModel.getInstance().setPlayerTrainCards(updatedHand, username);
+        player.setNumberOfTrains(playerTrainNum);
+        player.addPoints(Route.getPointsForRouteOfLength(route.getLength()));
+
+        ClientModel.getInstance().notifyObservers(player);
         for (Route r : routes) {
             if (r.equals(route)) {
                 r.setPlayer(player);
@@ -197,7 +219,7 @@ public class CommandFacade implements iClient {
     public void startNextTurn(String username) {
         Player player = ClientModel.getInstance().getCurrentGame().getPlayer(username);
         ClientModel.getInstance().getCurrentGame().setCurrentPlayer(player);
-        ClientModel.getInstance().notifyObservers(player);
+        ClientModel.getInstance().notifyObservers(player.getUsername());
     }
 
     @Override

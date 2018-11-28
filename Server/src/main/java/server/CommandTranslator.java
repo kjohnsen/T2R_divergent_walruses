@@ -58,15 +58,10 @@ public class CommandTranslator {
 
     private static String translateSelectTrainCard(Command command) {
         Object[] params = command.get_paramValues();
-        Integer index = (Integer)params[0];
-        GameName gameName = (GameName)params[1];
         String authToken = (String)params[2];
-        GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
-        TrainCard card = game.getFaceUpCards().get(index);
-        String cardColor = translateTrainCardColor(card.getColor());
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
 
-        return username + " took a " + cardColor + " face-up Train Card.";
+        return username + " took a  face-up Train Card.";
     }
 
     private static String translateDrawTrainCard(Command command) {
@@ -87,7 +82,7 @@ public class CommandTranslator {
         String routeColor = translateTrainCardColor(route.getColor());
         String routeLength = Integer.toString(route.getLength());
 
-        return username + "claimed the " + routeColor + " Route of length " + routeLength + " from " + originCityName + " to " + destinationCityName + ".";
+        return username + " claimed the " + routeColor + " Route of length " + routeLength + " from " + originCityName + " to " + destinationCityName + ".";
     }
 
     private static String translateReplaceTrainCard(Command command) {

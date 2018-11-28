@@ -2,12 +2,13 @@ package presenter.map;
 
 import fragment.IMapView;
 import model.IUIFacade;
+import model.UIFacade;
 import modelclasses.Route;
 
 public class MapPresenterState {
     protected IMapPresenter presenter;
     protected IMapView view;
-    protected IUIFacade uiFacade;
+    protected IUIFacade uiFacade = UIFacade.getInstance();
 
     public void setPresenter(IMapPresenter presenter) {
         this.presenter = presenter;

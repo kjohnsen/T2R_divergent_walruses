@@ -37,6 +37,12 @@ public class GamePlay {
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
+        }
         results.setSuccess(true);
 
         if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS) {
@@ -48,16 +54,23 @@ public class GamePlay {
     }
 
     public static Results drawDestinationCard(GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+        Results results = new Results();
 
         GameInfo game = ServerModel.getInstance().getGameInfo(name);
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         ArrayList<DestinationCard> tickets = game.getPlayerInitialDestCards();
+
+        if (tickets.isEmpty()) {
+            results.setSuccess(false);
+            results.setErrorMessage("no destination cards in deck");
+            return results;
+        }
+
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
         player.setPreSelectionDestCards(tickets);
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.displayDestinationCards(tickets, player, game);
-        Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
         results.setSuccess(true);
@@ -97,6 +110,12 @@ public class GamePlay {
             clientProxy.clearWilds(replacements, game, username);
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
             results.getClientCommands().add(clearWildsCommand);
+        }
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
         }
         results.setSuccess(true);
 
@@ -158,15 +177,38 @@ public class GamePlay {
         }
     }
 
-    public static Results claimRoute(GameName gameName, Route route, String username) {
+    public static Results claimRoute(GameName gameName, Route route, String authToken, TrainCardColor chosenColor) {
 
         GameInfo game = ServerModel.getInstance().getGameInfo(gameName);
+        String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
         Results results = new Results();
 
+        // check double route validity
+        boolean fewPlayers = game.getNumPlayers() < 4;
+        Route twinRoute = route.getTwinRoute();
+        boolean twoRoutes = twinRoute != null;
+
+        if (fewPlayers && twoRoutes) {
+            if (!game.getUnclaimedRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Double route already claimed");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
+        else if (!fewPlayers && twoRoutes) {
+            if (player.getRoutes().contains(twinRoute)) {
+                results.setErrorMessage("Don't be a jerk");
+                results.setSuccess(false);
+                return results;
+            }
+        }
+
         // verify that player can claim route
-        ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player);
-        if (cardsForClaimingRoute == null) {
+        ArrayList<TrainCard> cardsForClaimingRoute = getCardsForClaimingRoute(route, player, chosenColor);
+        boolean enoughTrains = (player.getNumberOfTrains() - route.getLength()) >= 0;
+        if (cardsForClaimingRoute == null || !enoughTrains) {
             results.setErrorMessage("Player unable to claim route");
             results.setSuccess(false);
             return results;
@@ -176,26 +218,36 @@ public class GamePlay {
         game.removeFromUnclaimedRoutes(route);
         player.addRoute(route);
         route.setPlayer(player);
+        player.addPoints(Route.getPointsForRouteOfLength(route.getLength()));
+
         player.setNumberOfTrains(player.getNumberOfTrains() - route.getLength());
         player.removeTrainCardsFromHand(cardsForClaimingRoute);
         game.addCardsToTrainDiscarded(cardsForClaimingRoute);
 
+
         // send claimRoute command to the clients
         ClientProxy clientProxy = new ClientProxy();
-        clientProxy.claimRoute(gameName, route, username);
-
-        // check if player's number of train cars initiates last round
-        if (player.getNumberOfTrains() < 3) {
-            game.setLastRound(true);
-            Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
-            results.getClientCommands().add(lastRoundCommand);
-            clientProxy.startLastRound(gameName, username);
+        clientProxy.claimRoute(gameName, route, username, player.getTrainCards(), player.getNumberOfTrains());
+        if (game.getTrainCardDeck().size() == 0) {
+            ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
+            clientProxy.replaceTrainDeck(newDeck, game, username);
+            Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            results.getClientCommands().add(replaceDeckCommand);
         }
 
         Command command = startNextTurn(game);
         results.getClientCommands().add(command);
 
-        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
+        // check if player's number of train cars initiates last round
+        if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
+            game.setLastRound(true);
+            ServerModel.getInstance().setLastPlayerIndex(game.getCurrentPlayerIndex());
+            Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
+            results.getClientCommands().add(lastRoundCommand);
+            clientProxy.startLastRound(gameName, username);
+        }
+
+        Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
         results.getClientCommands().add(claimRouteCommand);
 
         results.setSuccess(true);
@@ -206,9 +258,10 @@ public class GamePlay {
     private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
+        ServerModel.getInstance().setState(ServerState.TURNSTART);
 
         ClientProxy clientProxy = new ClientProxy();
-        boolean isLastPlayer = currPlayerIndex == game.getPlayers().size() - 1;
+        boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
         if (isLastPlayer && game.isLastRound()) {
             clientProxy.endGame(game.getGameName(), currPlayer.getUsername());
             return new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
@@ -221,8 +274,8 @@ public class GamePlay {
         }
     }
 
-    private static ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player) {
-        int routeLength = route.getLength();
+    private static ArrayList<TrainCard> getCardsForClaimingRoute(Route route, Player player, TrainCardColor chosenColor) {
+        int routeLength = route.getLength();;
         ArrayList<TrainCard> cardsForClaimingRoute = new ArrayList<>();
 
         ArrayList<TrainCard> playerTrainCards = player.getTrainCards();
@@ -231,7 +284,7 @@ public class GamePlay {
             if (card.getColor().equals(TrainCardColor.WILD)) {
                 wildCards.add(card);
             }
-            boolean matchingColor = card.getColor().equals(route.getColor());
+            boolean matchingColor = card.getColor().equals(chosenColor);
             boolean needMoreCards = cardsForClaimingRoute.size() < routeLength;
             if (matchingColor && needMoreCards) {
                 cardsForClaimingRoute.add(card);

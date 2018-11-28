@@ -51,6 +51,8 @@ public class TestGamePlay {
         GameInfo game = new GameInfo(GAMENAME, players, 2);
         game.setCurrentPlayer(players.get(0));
         ServerModel.getInstance().getGames().put(GAMENAME, game);
+        ServerModel.getInstance().getAuthTokens().put("player1", "player1");
+        ServerModel.getInstance().getAuthTokens().put("player2", "player2");
     }
 
     @Test
@@ -64,7 +66,7 @@ public class TestGamePlay {
 
         GameName gameName = new GameName("Claim Routes Game");
         Route route = new Route(PORTLAND, SLC, BLUE, 6);
-        Results results = ServerFacade.getInstance().claimRoute(gameName, route, PLAYER_USERNAME);
+        Results results = ServerFacade.getInstance().claimRoute(gameName, route, PLAYER_USERNAME, route.getColor());
         assertFalse(results.getSuccess());
         assertEquals("Player unable to claim route", results.getErrorMessage());
     }
@@ -83,7 +85,7 @@ public class TestGamePlay {
         }
         player.setTrainCards(playerCards);
 
-        Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME);
+        Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME, route.getColor());
         assertTrue(results.getSuccess());
         assertEquals(results.getClientCommands().size(), 2);
 
@@ -110,7 +112,7 @@ public class TestGamePlay {
         }
         player.setTrainCards(trainCardsToAdd);
 
-        Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME);
+        Results results = ServerFacade.getInstance().claimRoute(GAMENAME, route, PLAYER_USERNAME, route.getColor());
         assertTrue(results.getSuccess());
         assertEquals(results.getClientCommands().size(), 2);
 
@@ -137,7 +139,7 @@ public class TestGamePlay {
         }
         player.setTrainCards(playerCards);
 
-        Results results = ServerFacade.getInstance().claimRoute(gameName, route, PLAYER_USERNAME);
+        Results results = ServerFacade.getInstance().claimRoute(gameName, route, PLAYER_USERNAME, route.getColor());
         assertTrue(results.getSuccess());
         assertTrue(player.getNumberOfTrains() == 2);
         assertEquals(0, player.getTrainCards().size());

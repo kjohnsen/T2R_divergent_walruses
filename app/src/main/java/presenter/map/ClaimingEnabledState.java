@@ -1,5 +1,7 @@
 package presenter.map;
 
+import android.os.AsyncTask;
+
 import java.util.ArrayList;
 
 import model.UIFacade;
@@ -15,7 +17,9 @@ public class ClaimingEnabledState extends MapPresenterState
         return ourInstance;
     }
 
-    private ClaimingEnabledState() {}
+    private ClaimingEnabledState() {
+        this.uiFacade = UIFacade.getInstance();
+    }
 
     @Override
     public void routeClicked(Route route) {
@@ -23,26 +27,55 @@ public class ClaimingEnabledState extends MapPresenterState
         if (route.getColor().equals(TrainCardColor.WILD)) {
             view.queryUserForClaimColor(route, this);
         } else {
-            String result = this.uiFacade.claimRoute(route);
-            if (result != null) {
-                this.view.displayMessage(result);
-            }
+            ClaimRouteTask claimRouteTask = new ClaimRouteTask();
+            claimRouteTask.execute(route);
         }
     }
 
     @Override
     public void claimColorChosen(Route route, TrainCardColor color) {
-        route.setColor(color);
-        String result = this.uiFacade.claimRoute(route);
-        if (result != null) {
-            this.view.displayMessage(result);
-        }
+        ChooseClaimColorTask chooseClaimColorTask = new ChooseClaimColorTask(color);
+        chooseClaimColorTask.execute(route);
     }
 
     @Override
     public void enter() {
         super.enter();
-        ArrayList<Route> availableRoutes = this.uiFacade.getAvailableRoutes();
+        ArrayList<Route> availableRoutes = UIFacade.getInstance().getAvailableRoutes();
         this.view.emphasizeSelectRoutes(availableRoutes);
+    }
+
+    private class ClaimRouteTask extends AsyncTask<Route, Void, String> {
+
+        @Override
+        protected String doInBackground(Route... routes) {
+            return uiFacade.claimRoute(routes[0], routes[0].getColor());
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null) {
+                view.displayMessage(s);
+            }
+        }
+    }
+
+    private class ChooseClaimColorTask extends AsyncTask<Route, Void, String> {
+
+        public ChooseClaimColorTask(TrainCardColor chosen) {
+            chosenColor = chosen;
+        }
+        private TrainCardColor chosenColor;
+        @Override
+        protected String doInBackground(Route... routes) {
+            return uiFacade.claimRoute(routes[0], chosenColor);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null) {
+                view.displayMessage(s);
+            }
+        }
     }
 }

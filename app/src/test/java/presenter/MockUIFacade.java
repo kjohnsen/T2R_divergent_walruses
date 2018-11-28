@@ -88,7 +88,7 @@ public class MockUIFacade implements IUIFacade {
     }
 
     @Override
-    public String claimRoute(Route route) {
+    public String claimRoute(Route route, TrainCardColor c) {
         City destination = route.getDestination();
         if (destination.equals(Atlas.PORTLAND)) {
             return "Can't afford route";

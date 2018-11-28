@@ -8,4 +8,5 @@ import modelclasses.TrainCardColor;
 public interface IChooseClaimColorPresenter {
     void onSwitchView();
     void chooseClaimColor(TrainCardColor color);
+    Set<TrainCardColor> getPossibleColors();
 }

@@ -18,6 +18,7 @@ public interface iClient {
     void selectTrainCard(TrainCard card, Player player);
     void clearWilds(ArrayList<TrainCard> replacements);
     void replaceTrainCard(TrainCard replacement, Integer index);
+    void replaceTrainDeck(ArrayList<TrainCard> newDeck);
     void drawTrainCard(TrainCard card, Player player);
     void displayDestinationCards(ArrayList<DestinationCard> tickets, Player player);
     void loginUser(User user, String authToken, ArrayList<GameInfo> gameInfos);
@@ -27,7 +28,7 @@ public interface iClient {
     void startGame(GameInfo gameInfo);
     void claimColor(String username, PlayerColor playerColor);
     void addChatMessage(ChatMessage message);
-    void claimRoute(GameName gameName, Route route, String username);
+    void claimRoute(GameName gameName, Route route, String username, ArrayList<TrainCard> updatedHand, int playerTrainNum);
     void startNextTurn(String username);
     void startLastRound();
     void endGame();

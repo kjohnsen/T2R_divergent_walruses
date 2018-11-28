@@ -12,9 +12,9 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.example.emilyhales.tickettoride.R;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import modelclasses.TrainCardColor;
@@ -32,7 +32,8 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     private Button black;
     private Button white;
 
-    private BiMap<Button, TrainCardColor> buttonColorBiMap = HashBiMap.create();
+    private Map<Button, TrainCardColor> buttonColorMap = new HashMap<>();
+    private Map<TrainCardColor, Button> colorButtonMap = new HashMap<>();
 
     @Override
     public void setPresenter(IChooseClaimColorPresenter presenter) {
@@ -42,11 +43,13 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
     @Override
     public void displayPossibleColors(Set<TrainCardColor> possibleColors) {
         for (TrainCardColor color : TrainCardColor.values()) {
-            Button button = buttonColorBiMap.inverse().get(color);
-            if (possibleColors.contains(color)) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
+            if (!color.equals(TrainCardColor.WILD)) {
+                Button button = colorButtonMap.get(color);
+                if (possibleColors.contains(color)) {
+                    button.setEnabled(true);
+                } else {
+                    button.setEnabled(false);
+                }
             }
         }
     }
@@ -64,33 +67,54 @@ public class ChooseClaimColorFragment extends DialogFragment implements IChooseC
         purple = view.findViewById(R.id.ccButtonPurple);
         black = view.findViewById(R.id.ccButtonBlack);
         white = view.findViewById(R.id.ccButtonWhite);
-        buttonColorBiMap.put(red, RED);
-        buttonColorBiMap.put(orange, ORANGE);
-        buttonColorBiMap.put(yellow, YELLOW);
-        buttonColorBiMap.put(green, GREEN);
-        buttonColorBiMap.put(blue, BLUE);
-        buttonColorBiMap.put(purple, PURPLE);
-        buttonColorBiMap.put(black, BLACK);
-        buttonColorBiMap.put(white, WHITE);
 
-        for (Button button : buttonColorBiMap.keySet()) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    presenter.chooseClaimColor(buttonColorBiMap.get(view));
-                    presenter.onSwitchView();
-                    ChooseClaimColorFragment.this.dismiss();
-                }
-            });
-        }
+        red.setOnClickListener(new WildRouteButtonClickListener());
+        orange.setOnClickListener(new WildRouteButtonClickListener());
+        yellow.setOnClickListener(new WildRouteButtonClickListener());
+        green.setOnClickListener(new WildRouteButtonClickListener());
+        blue.setOnClickListener(new WildRouteButtonClickListener());
+        purple.setOnClickListener(new WildRouteButtonClickListener());
+        black.setOnClickListener(new WildRouteButtonClickListener());
+        white.setOnClickListener(new WildRouteButtonClickListener());
 
-
-
+//        for (Button button : buttonColorMap.keySet()) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    presenter.chooseClaimColor(buttonColorMap.get(view));
+//                    presenter.onSwitchView();
+//                    ChooseClaimColorFragment.this.dismiss();
+//                }
+//            });
+//        }
+        putInMaps(red, RED);
+        putInMaps(orange, ORANGE);
+        putInMaps(yellow, YELLOW);
+        putInMaps(green, GREEN);
+        putInMaps(blue, BLUE);
+        putInMaps(purple, PURPLE);
+        putInMaps(black, BLACK);
+        putInMaps(white, WHITE);
+        displayPossibleColors(presenter.getPossibleColors());
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
         return dialog;
+    }
+
+    private void putInMaps(Button button, TrainCardColor color) {
+        buttonColorMap.put(button, color);
+        colorButtonMap.put(color, button);
+    }
+
+    private class WildRouteButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            presenter.chooseClaimColor(buttonColorMap.get(view));
+            presenter.onSwitchView();
+            ChooseClaimColorFragment.this.dismiss();
+        }
     }
 }

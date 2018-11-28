@@ -8,6 +8,9 @@ import modelclasses.TrainCard;
 public class DecksState {
 
     public String drawDestinationCards(DecksPresenter presenter) {
+        if (UIFacade.getInstance().getDestDeckSize() == 0) {
+            return "No destination cards left to draw";
+        }
         onSwitchView(presenter);
         presenter.getView().drawDestinationCards();
         //don't return anything-- there won't be an error
@@ -15,6 +18,9 @@ public class DecksState {
     }
 
     public String drawTrainCard(DecksPresenter presenter) {
+        if(UIFacade.getInstance().getTrainDeckSize() == 0) {
+            return "No train cards left to draw";
+        }
         return UIFacade.getInstance().drawTrainCard();
     }
 

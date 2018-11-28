@@ -12,6 +12,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 import results.Results;
 
 public interface IUIFacade {
@@ -30,7 +31,7 @@ public interface IUIFacade {
     public String drawDestinationCards();
     public String selectDestinationCards(ArrayList<DestinationCard> rejected);
     public ArrayList<Route> getAvailableRoutes();
-    public String claimRoute(Route route);
+    public String claimRoute(Route route, TrainCardColor color);
     public String loginUser(String username, String password);
     public String joinGame(String gameName);
     public String createGame(String gameName, int numPlayers);

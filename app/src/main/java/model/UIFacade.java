@@ -15,6 +15,7 @@ import modelclasses.Player;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
 import modelclasses.TrainCard;
+import modelclasses.TrainCardColor;
 import results.Results;
 
 public class UIFacade implements IUIFacade {
@@ -51,6 +52,10 @@ public class UIFacade implements IUIFacade {
         this.serverProxy = serverProxy;
     }
 
+    public boolean isCurrentPlayer() {
+        return ClientModel.getInstance().isCurrentPlayer();
+    }
+
     public void setGameStart(boolean start) { ClientModel.getInstance().setGameStart(start); }
 
     public ArrayList<TrainCard> getPlayerTrainCards() { return ClientModel.getInstance().getPlayerTrainCards(); }
@@ -67,6 +72,10 @@ public class UIFacade implements IUIFacade {
 
     public int getDestDeckSize() {
         return ClientModel.getInstance().getDestDeckSize();
+    }
+
+    public boolean isStartPlayer() {
+        return ClientModel.getInstance().getCurrentGame().getCurrentPlayer().getUsername().equals(getUsername());
     }
 
     //This returns the error message if there is one, or null if there isn't
@@ -92,10 +101,16 @@ public class UIFacade implements IUIFacade {
     }
 
     public String selectTrainCard(int index) {
+        if (UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size() == 0) {
+            return "There are no train cards to draw";
+        }
         return processResults(serverProxy.selectTrainCard(index, getCurrentGame().getGameName(), authToken));
     }
 
     public String drawTrainCard() {
+        if (UIFacade.getInstance().getCurrentGame().getTrainCardDeck().size() == 0) {
+            return "There are no train cards to draw";
+        }
         return processResults(serverProxy.drawTrainCard(getCurrentGame().getGameName(), authToken));
     }
 
@@ -108,8 +123,8 @@ public class UIFacade implements IUIFacade {
         return processResults(serverProxy.selectDestinationCards(rejected, getCurrentGame().getGameName(), authToken));
     }
 
-    public String claimRoute(Route route) {
-        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken));
+    public String claimRoute(Route route, TrainCardColor color) {
+        return processResults(serverProxy.claimRoute(getCurrentGame().getGameName(), route, authToken, color));
     }
 
     public ArrayList<Route> getAvailableRoutes() {

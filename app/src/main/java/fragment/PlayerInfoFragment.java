@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.content.Context;
 
 import com.example.emilyhales.tickettoride.R;
 
@@ -81,7 +82,7 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
         cardBlack.setBackgroundColor(getResources().getColor(R.color.trainBlack));
         cardWild.setBackgroundColor(getResources().getColor(R.color.trainPink));
 
-        cards_textView = new TreeMap<>();
+        cards_textView = new LinkedHashMap<>();
         cards_textView.put(TrainCardColor.RED, cardRed);
         cards_textView.put(TrainCardColor.ORANGE, cardOrange);
         cards_textView.put(TrainCardColor.YELLOW, cardYellow);
@@ -135,16 +136,27 @@ public class PlayerInfoFragment extends Fragment implements IPlayerInfoView {
 
     //update texts for each card
     @Override
-    public void updateTrainCards(Map<TrainCardColor, Integer> cards_amount) {
-        for(TrainCardColor trainCardColor: cards_textView.keySet()){
-            cards_textView.get(trainCardColor).setText(String.valueOf(cards_amount.get(trainCardColor)));
-        }
+    public void updateTrainCards(final Map<TrainCardColor, Integer> cards_amount) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(TrainCardColor trainCardColor: cards_textView.keySet()){
+                    cards_textView.get(trainCardColor).setText(String.valueOf(cards_amount.get(trainCardColor)));
+                }
+            }
+        });
     }
 
     @Override
-    public void updateDestinationTickets(List<DestinationCard> destinationCards) {
+    public void updateDestinationTickets(final List<DestinationCard> destinationCards) {
         //this should update the list view.
-        DestinationCardListViewAdapter listViewAdapter = new DestinationCardListViewAdapter(this.getContext(), destinationCards);
-        destinationCardList.setAdapter(listViewAdapter);
+        final Context context = this.getContext();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DestinationCardListViewAdapter listViewAdapter = new DestinationCardListViewAdapter(context, destinationCards);
+                destinationCardList.setAdapter(listViewAdapter);
+            }
+        });
     }
 }

@@ -11,6 +11,7 @@ import modelclasses.DestinationCard;
 import modelclasses.GameName;
 import modelclasses.PlayerColor;
 import modelclasses.Route;
+import modelclasses.TrainCardColor;
 import results.Results;
 
 public class ServerProxy implements IServer {
@@ -104,8 +105,8 @@ public class ServerProxy implements IServer {
     }
 
     @Override
-    public Results claimRoute(GameName gameName, Route route, String username) {
-        Command command = new Command("server.ServerFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username}));
+    public Results claimRoute(GameName gameName, Route route, String username, TrainCardColor color) {
+        Command command = new Command("server.ServerFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, color}));
         Results results = ClientCommunicator.getInstance().send(command);
         return results;
     }
