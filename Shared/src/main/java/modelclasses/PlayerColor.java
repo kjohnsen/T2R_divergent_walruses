@@ -2,11 +2,11 @@ package modelclasses;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public enum PlayerColor implements Serializable {
     UNCHOSEN,
-    MAGENTA,
     BLUE,
     RED,
     GREEN,
@@ -20,6 +20,10 @@ public enum PlayerColor implements Serializable {
             colors.add(c.name());
         }
         return colors;
+    }
+
+    public static List<PlayerColor> getColorsNotString() {
+        return Arrays.asList(values());
     }
 
     public static List<String> getAvailableColors(List<Player> players, String username) {

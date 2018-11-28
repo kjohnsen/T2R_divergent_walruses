@@ -260,6 +260,21 @@ public class ServerFacade implements IServer {
         return player;
     }
 
+    private void assignPlayersColors(GameInfo game) {
+        List<PlayerColor> availableColors = PlayerColor.getColorsNotString();
+        for (Player p : game.getPlayers()) {
+            if (!p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
+                availableColors.remove(p.getPlayerColor());
+            }
+        }
+        for (Player p : game.getPlayers()) {
+            if (p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
+                p.setPlayerColor(availableColors.get(0));
+                availableColors.remove(0);
+            }
+        }
+    }
+
     public Results startGame(GameName gameName, String clientAuthToken) {
 
         Results results = new Results();
@@ -275,7 +290,7 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Not enough players to start game");
             return results;
         }
-
+        assignPlayersColors(game);
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
         game.setCurrentPlayer(gamePlayers.get(0));
