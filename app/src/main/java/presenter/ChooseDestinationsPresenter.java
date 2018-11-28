@@ -24,8 +24,6 @@ public class ChooseDestinationsPresenter implements IChooseDestinationsPresenter
 
     @Override
     public String getDestinationCards() {
-        // TODO: is this where I should check to see if it failed?
-        // TODO: how do I change the state?
         return UIFacade.getInstance().drawDestinationCards();
     }
 

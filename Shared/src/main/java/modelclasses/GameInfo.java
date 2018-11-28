@@ -33,7 +33,7 @@ public class GameInfo implements Serializable {
     }
 
     public void removeDestCardsTEMP() {
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 20; i++) {
             destCardDeck.remove(destCardDeck.size()-1);
         }
     }
