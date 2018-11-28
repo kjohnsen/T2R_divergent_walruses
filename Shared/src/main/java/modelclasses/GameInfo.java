@@ -26,9 +26,16 @@ public class GameInfo implements Serializable {
         setPlayers(players);
         initializeTrainCardDeck();
         setDestCardDeck(new ArrayList<>(Arrays.asList(Atlas.getDestinations())));
+        removeDestCardsTEMP();
         initializeFaceUpCards();
         initializeUnclaimedRoutes();
         lastRound = false;
+    }
+
+    public void removeDestCardsTEMP() {
+        for (int i = 0; i < 25; i++) {
+            destCardDeck.remove(destCardDeck.size()-1);
+        }
     }
 
     public static GameInfo makeRandomGameInfo(){
@@ -253,7 +260,10 @@ public class GameInfo implements Serializable {
     public ArrayList<DestinationCard> getPlayerInitialDestCards() {
         ArrayList<DestinationCard> cards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            cards.add(drawDestCard());
+            DestinationCard cardToAdd = drawDestCard();
+            if (cardToAdd != null) {
+                cards.add(cardToAdd);
+            }
         }
         return cards;
     }
