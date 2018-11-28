@@ -18,6 +18,9 @@ public class DecksState {
     }
 
     public String drawTrainCard(DecksPresenter presenter) {
+        if(UIFacade.getInstance().getTrainDeckSize() == 0) {
+            return "No train cards left to draw";
+        }
         return UIFacade.getInstance().drawTrainCard();
     }
 
