@@ -18,7 +18,7 @@ import results.Results;
 
 public class ServerPoller extends Service {
     private static Handler handler = null;
-    private static final long DEFAULT_POLL_INTERVAL = 2 * 1000; //2 seconds
+    private static final long DEFAULT_POLL_INTERVAL = 1 * 1000; //2 seconds
     private IServer serverProxy = ServerProxy.getInstance();
 
     private Runnable runnableService = new Runnable() {
