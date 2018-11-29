@@ -19,6 +19,7 @@ public class Route implements Serializable {
         this.color = color;
         this.length = length;
         twinRoute = null;
+        player = null;
     }
 
     public Route getTwinRoute() {

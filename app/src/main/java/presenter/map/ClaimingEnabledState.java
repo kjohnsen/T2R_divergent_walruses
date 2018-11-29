@@ -23,12 +23,14 @@ public class ClaimingEnabledState extends MapPresenterState
 
     @Override
     public void routeClicked(Route route) {
-        super.routeClicked(route);
-        if (route.getColor().equals(TrainCardColor.WILD)) {
-            view.queryUserForClaimColor(route, this);
-        } else {
-            ClaimRouteTask claimRouteTask = new ClaimRouteTask();
-            claimRouteTask.execute(route);
+        if(route.getPlayer() == null) {
+            super.routeClicked(route);
+            if (route.getColor().equals(TrainCardColor.WILD)) {
+                view.queryUserForClaimColor(route, this);
+            } else {
+                ClaimRouteTask claimRouteTask = new ClaimRouteTask();
+                claimRouteTask.execute(route);
+            }
         }
     }
 
