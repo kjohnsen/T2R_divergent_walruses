@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/ttrBackground"
     tools:context="activity.GameLobbyActivity">
     <android.support.constraint.Guideline
         android:layout_width="0dp"
@@ -29,14 +30,16 @@
         android:id="@+id/bottomGuide"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".7"/>
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/playerList"
+        style="@style/overlayBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/playerList"
-        app:layout_constraintTop_toTopOf="@id/topGuide"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuide"
         app:layout_constraintEnd_toEndOf="@id/rightGuide"
         app:layout_constraintStart_toStartOf="@id/leftGuide"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuide"/>
+        app:layout_constraintTop_toTopOf="@id/topGuide" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

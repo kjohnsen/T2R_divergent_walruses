@@ -15,6 +15,11 @@
     <style name="overlayBox">
         <item name="android:background">#55000000</item>
         <item name="android:padding">4dp</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <style name="ttrBackground">
+        <item name="android:background">@drawable/ttr_background</item>
     </style>
 
 </resources>
