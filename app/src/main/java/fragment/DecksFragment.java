@@ -144,6 +144,7 @@ public class DecksFragment extends Fragment implements IDecksView{
     @Override
     public void drawDestinationCards() {
         ChooseDestinationsFragment cd = new ChooseDestinationsFragment();
+        cd.setCancelable(false);
         cd.show(DecksFragment.this.getActivity().getSupportFragmentManager(), "example");
     }
 
