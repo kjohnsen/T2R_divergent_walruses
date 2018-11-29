@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 
 import model.UIFacade;
+import modelclasses.GameInfo;
+import modelclasses.Player;
 import modelclasses.Route;
 import modelclasses.TrainCardColor;
 import presenter.ChooseClaimColorPresenter;
@@ -23,7 +25,16 @@ public class ClaimingEnabledState extends MapPresenterState
 
     @Override
     public void routeClicked(Route route) {
-        if(route.getPlayer() == null) {
+        boolean claimed = false;
+        GameInfo currentGame = uiFacade.getCurrentGame();
+        for(Player p: currentGame.getPlayers()) {
+            if(p.getRoutes().contains(route)) {
+                claimed = true;
+                break;
+            }
+        }
+
+        if(!claimed) {
             super.routeClicked(route);
             if (route.getColor().equals(TrainCardColor.WILD)) {
                 view.queryUserForClaimColor(route, this);
