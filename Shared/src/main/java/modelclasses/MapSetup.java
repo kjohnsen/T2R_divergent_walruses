@@ -35,7 +35,7 @@ public class MapSetup implements Serializable {
         Route route2 = new Route(one, two, colorTwo, length);
         route2.setTwin(true);
         route1.setTwinRoute(route2);
-        route2.setTwinRoute(route2);
+        route2.setTwinRoute(route1);
         routes.add(route1);
         routes.add(route2);
     }

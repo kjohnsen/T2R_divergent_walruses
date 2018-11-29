@@ -35,14 +35,15 @@
                 android:id="@+id/trainDeck"/>
         </LinearLayout>
 
+
         <ListView
             android:id="@+id/list_view_player_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/decksView"/>
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="60dp"/>
 
     </LinearLayout>
-
 
 
 

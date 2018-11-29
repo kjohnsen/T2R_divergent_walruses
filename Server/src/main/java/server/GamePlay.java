@@ -235,13 +235,13 @@ public class GamePlay {
             results.getClientCommands().add(replaceDeckCommand);
         }
 
-        Command command = startNextTurn(game);
-        results.getClientCommands().add(command);
+        int currentPlayerIndex = game.getCurrentPlayerIndex();
+        Command startCommand = startNextTurn(game);
 
         // check if player's number of train cars initiates last round
         if (player.getNumberOfTrains() < 3 && !game.isLastRound()) {
             game.setLastRound(true);
-            ServerModel.getInstance().setLastPlayerIndex(game.getCurrentPlayerIndex());
+            ServerModel.getInstance().setLastPlayerIndex(currentPlayerIndex);
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
             results.getClientCommands().add(lastRoundCommand);
             clientProxy.startLastRound(gameName, username);
@@ -249,6 +249,7 @@ public class GamePlay {
 
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
         results.getClientCommands().add(claimRouteCommand);
+        results.getClientCommands().add(startCommand);
 
         results.setSuccess(true);
         return results;

@@ -26,7 +26,7 @@ public class SerializerTest {
 
         Player nephi = new Player("Nephi", PlayerColor.BLUE);
         gameInfo.addPlayer(nephi);
-        Player laman = new Player("Laman", PlayerColor.MAGENTA);
+        Player laman = new Player("Laman", PlayerColor.YELLOW);
         gameInfo.addPlayer(laman);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -44,7 +44,7 @@ public class SerializerTest {
         ArrayList<Object> games = new ArrayList<>();
 
         Player nephi = new Player("Nephi", PlayerColor.BLUE);
-        Player laman = new Player("Laman", PlayerColor.MAGENTA);
+        Player laman = new Player("Laman", PlayerColor.YELLOW);
         GameInfo game1 = new GameInfo(new GameName("game1"), new ArrayList<Player>(), 4);
         game1.addPlayer(nephi);
         game1.addPlayer(laman);

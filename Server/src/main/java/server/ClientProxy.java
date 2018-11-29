@@ -109,7 +109,7 @@ public class ClientProxy {
     public void createGame(GameInfo gameInfo, String clientUsername) {
         //create commands for every client in the server model except the one that asked
         for(String username : ServerModel.getInstance().getUsers().keySet()) {
-            if (!username.equals(clientUsername)) {
+            if (!username.equals(clientUsername) && !ServerModel.getInstance().userIsAlreadyInGame(username)) {
                 Command clientCommand = new Command("model.CommandFacade", "_createGame", Arrays.asList(new Object[] {gameInfo}));
                 CommandManager.getInstance().addCommand(username, clientCommand);
             }

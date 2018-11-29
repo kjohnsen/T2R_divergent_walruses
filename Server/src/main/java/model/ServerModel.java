@@ -223,5 +223,17 @@ public class ServerModel {
         this.games = games;
     }
 
+    public boolean userIsAlreadyInGame(String username) {
+        boolean inGame = false;
+        for(GameInfo gameInfo: games.values()) {
+            if(gameInfo.getPlayer(username) != null) {
+                inGame = true;
+                break;
+            }
+        }
+
+        return inGame;
+    }
+
     //********************************************
 }

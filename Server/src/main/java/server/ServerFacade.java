@@ -115,6 +115,10 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Password incorrect");
             return results;
         }
+        if(serverModel.userIsAlreadyInGame(username)) {
+            results.setErrorMessage("User is already in game");
+            return results;
+        }
 
         //*****************************************************************
 
@@ -260,6 +264,25 @@ public class ServerFacade implements IServer {
         return player;
     }
 
+    private void assignPlayersColors(GameInfo game) {
+        List<PlayerColor> takenColors = new ArrayList<>();
+        for (Player p : game.getPlayers()) {
+            if (!p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
+                takenColors.add(p.getPlayerColor());
+            }
+        }
+        List<PlayerColor> allColors = PlayerColor.getRandomColors();
+        int index = 0;
+        for (Player p : game.getPlayers()) {
+            while (p.getPlayerColor().equals(PlayerColor.UNCHOSEN)) {
+                if (!takenColors.contains(allColors.get(index))) {
+                    p.setPlayerColor(allColors.get(index));
+                }
+                index++;
+            }
+        }
+    }
+
     public Results startGame(GameName gameName, String clientAuthToken) {
 
         Results results = new Results();
@@ -275,7 +298,7 @@ public class ServerFacade implements IServer {
             results.setErrorMessage("Not enough players to start game");
             return results;
         }
-
+        assignPlayersColors(game);
         givePlayersInitialTrainCards(game);
         givePlayersInitialDestCards(game);
         game.setCurrentPlayer(gamePlayers.get(0));
