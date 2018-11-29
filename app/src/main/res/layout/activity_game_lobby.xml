@@ -49,6 +49,7 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/overlayBox"
             android:id="@+id/colorSpinner"/>
         <Button
             android:layout_width="wrap_content"

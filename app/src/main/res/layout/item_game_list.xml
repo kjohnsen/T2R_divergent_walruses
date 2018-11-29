@@ -21,15 +21,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/itemName"
         app:layout_constraintStart_toStartOf="parent"
+        style="@style/overlaidItem"
         app:layout_constraintEnd_toStartOf="@id/leftGuide"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemPlayers"
         app:layout_constraintStart_toEndOf="@id/leftGuide"
+        style="@style/overlaidItem"
         app:layout_constraintEnd_toStartOf="@id/rightGuide"/>
     <TextView
         android:layout_width="wrap_content"
+        style="@style/overlaidItem"
         android:layout_height="wrap_content"
         android:id="@+id/itemNum"
         app:layout_constraintStart_toEndOf="@id/rightGuide"
