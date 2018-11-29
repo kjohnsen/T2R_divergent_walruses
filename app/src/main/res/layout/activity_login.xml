@@ -2,100 +2,122 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ttrBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="activity.LoginActivity">
+
     <android.support.constraint.Guideline
+        android:id="@+id/middleGuide"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:id="@+id/middleGuide"
-        app:layout_constraintGuide_percent=".5"/>
+        app:layout_constraintGuide_percent=".5" />
+
     <android.support.constraint.Guideline
+        android:id="@+id/bottomGuide"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/bottomGuide"
-        app:layout_constraintGuide_percent=".7"/>
+        app:layout_constraintGuide_percent=".7" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/registerLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/registerLayout">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/hostIP"
-            android:inputType="text"
-            android:hint="@string/host_ip"/>
-        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="@string/host_ip"
+            android:inputType="text" />
+
+        <EditText
             android:id="@+id/hostPort"
-            android:inputType="number"
-            android:hint="@string/host_port"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/host_port"
+            android:inputType="number" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:id="@+id/loginLayout"
-        app:layout_constraintBottom_toTopOf="@id/bottomGuide"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/middleGuide">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/username"
-            android:id="@+id/loginUsername"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="@string/password"
-            android:id="@+id/loginPassword"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:id="@+id/loginButton"
-            android:enabled="false"/>
-    </LinearLayout>
-    <LinearLayout
+        style="@style/overlayBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/registerLayout"
-        app:layout_constraintStart_toEndOf="@id/middleGuide"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuide">
+        app:layout_constraintBottom_toTopOf="@id/bottomGuide"
+        app:layout_constraintEnd_toStartOf="@id/middleGuide"
+        app:layout_constraintStart_toStartOf="parent">
+
         <EditText
+            android:id="@+id/loginUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:hint="@string/username"
-            android:id="@+id/registerUsername"/>
+            style="@style/overlaidItem"
+            android:inputType="text" />
+
         <EditText
+            android:id="@+id/loginPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:hint="@string/password"
-            android:id="@+id/registerPassword"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/confirm"
-            android:id="@+id/confirm"/>
+            style="@style/overlaidItem"
+            android:inputType="textPassword" />
+
         <Button
+            android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/login" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/registerLayout"
+        style="@style/overlayBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/middleGuide">
+
+        <EditText
+            android:id="@+id/registerUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            style="@style/overlaidItem"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/registerPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            style="@style/overlaidItem"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm"
+            style="@style/overlaidItem"
+            android:inputType="text" />
+
+        <Button
             android:id="@+id/registerButton"
-            android:text="@string/register"
-            android:enabled="false"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/register" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

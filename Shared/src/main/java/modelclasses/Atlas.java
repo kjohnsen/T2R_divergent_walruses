@@ -8,7 +8,7 @@ public class Atlas {
     public static final City ATLANTA = new City("Atlanta", 33.75, -84.39);
     public static final City BOSTON = new City("Boston", 42.32, -71.08);
     public static final City CALGARY = new City("Calgary", 51.08, -114.08);
-    public static final City CHARLESTON = new City("Charleston", 38.35, -81.63);
+    public static final City CHARLESTON = new City("Charleston", 32.78, -79.94);
     public static final City CHICAGO = new City("Chicago", 41.84, -87.69);
     public static final City DALLAS = new City("Dallas", 32.78, -96.81);
     public static final City DENVER = new City("Denver", 39.76, -104.88);

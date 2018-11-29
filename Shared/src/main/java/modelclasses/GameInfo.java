@@ -84,6 +84,7 @@ public class GameInfo implements Serializable {
     }
 
     public Player getPlayer(String username) {
+        if (players == null) return null;
         for (Player p : players) {
             if (p.getUsername().equals(username)) {
                 return p;

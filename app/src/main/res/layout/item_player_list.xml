@@ -10,6 +10,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:id="@+id/middleGuide"
+        style="@style/overlaidItem"
         app:layout_constraintGuide_percent=".5"/>
 
     <TextView
@@ -17,10 +18,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/itemName"
         app:layout_constraintStart_toStartOf="parent"
+        style="@style/overlaidItem"
         app:layout_constraintEnd_toStartOf="@id/middleGuide"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/overlaidItem"
         android:id="@+id/itemColor"
         app:layout_constraintStart_toEndOf="@id/middleGuide"
         app:layout_constraintEnd_toEndOf="parent"/>
