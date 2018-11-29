@@ -2,6 +2,7 @@
 
  import static org.junit.Assert.* ;
 
+ import org.junit.After;
  import org.junit.Before;
  import org.junit.Test;
 
@@ -33,6 +34,11 @@
      public void enterUser() {
          User user = new User("anotheruser", "pass");
          ServerModel.getInstance().getUsers().put("anotheruser", user);
+     }
+
+     @After
+     public void tearDown() {
+         ServerModel.getInstance().setUsers(new HashMap<String, User>());
      }
 
      @Test
