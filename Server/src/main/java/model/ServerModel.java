@@ -44,7 +44,7 @@ public class ServerModel {
      */
     private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
-    private ServerState state = ServerState.TURNSTART;
+    private Map<GameName, ServerState> serverState = new HashMap<>();
 
     private int lastPlayerIndex = -1;
 
@@ -79,12 +79,12 @@ public class ServerModel {
         this.lastPlayerIndex = lastPlayerIndex;
     }
 
-    public ServerState getState() {
-        return state;
+    public ServerState getState(GameName gameName) {
+        return serverState.get(gameName);
     }
 
-    public void setState(ServerState state) {
-        this.state = state;
+    public void setState(ServerState state, GameName gameName) {
+        this.serverState.put(gameName, state);
     }
 
     /**

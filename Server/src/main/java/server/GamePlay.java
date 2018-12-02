@@ -24,10 +24,10 @@ public class GamePlay {
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
 
-        if(ServerModel.getInstance().getState() == ServerState.TOOKONETRAINCARD) {
-            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+        if(ServerModel.getInstance().getState(name) == ServerState.TOOKONETRAINCARD) {
+            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS, name);
         } else {
-            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD, name);
         }
 
         TrainCard card = game.drawTrainCard();
@@ -45,7 +45,7 @@ public class GamePlay {
         }
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS) {
+        if (ServerModel.getInstance().getState(name) == ServerState.TOOKTWOTRAINCARDS) {
             Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
@@ -67,7 +67,7 @@ public class GamePlay {
             return results;
         }
 
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS);
+        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS, name);
         player.setPreSelectionDestCards(tickets);
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.displayDestinationCards(tickets, player, game);
@@ -85,12 +85,12 @@ public class GamePlay {
 
         boolean isWild = card.getColor().equals(TrainCardColor.WILD);
         if(isWild) {
-            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD);
+            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD, name);
         } else {
-            if(ServerModel.getInstance().getState() == ServerState.TOOKONETRAINCARD) {
-                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS);
+            if(ServerModel.getInstance().getState(name) == ServerState.TOOKONETRAINCARD) {
+                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS, name);
             } else {
-                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD);
+                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD, name);
             }
         }
 
@@ -119,8 +119,8 @@ public class GamePlay {
         }
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState() == ServerState.TOOKTWOTRAINCARDS ||
-                ServerModel.getInstance().getState() == ServerState.TOOKWILDTRAINCARD) {
+        if (ServerModel.getInstance().getState(name) == ServerState.TOOKTWOTRAINCARDS ||
+                ServerModel.getInstance().getState(name) == ServerState.TOOKWILDTRAINCARD) {
             Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
@@ -129,7 +129,7 @@ public class GamePlay {
     }
 
     public static Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS);
+        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS, name);
 
         if (tickets != null) {
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
@@ -259,7 +259,7 @@ public class GamePlay {
     private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
-        ServerModel.getInstance().setState(ServerState.TURNSTART);
+        ServerModel.getInstance().setState(ServerState.TURNSTART, game.getGameName());
 
         ClientProxy clientProxy = new ClientProxy();
         boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
