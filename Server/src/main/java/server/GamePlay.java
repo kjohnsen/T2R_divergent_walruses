@@ -4,6 +4,7 @@ import model.ServerModel;
 import model.ServerState;
 import modelclasses.DestinationCard;
 import modelclasses.TrainCardColor;
+import persistence.IPersistencePluginFactory;
 import results.Results;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -37,6 +38,7 @@ public class GamePlay {
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
+
         if (game.getTrainCardDeck().size() == 0) {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);

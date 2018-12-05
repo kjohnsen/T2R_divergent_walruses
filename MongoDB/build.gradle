@@ -1,0 +1,11 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':Server')
+    implementation project(':Shared')
+    implementation "org.mongodb:mongodb-driver-sync:3.9.1"
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
