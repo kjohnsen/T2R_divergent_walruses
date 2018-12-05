@@ -3,13 +3,21 @@ package persistence;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.ServerModel;
+
 public class PluginManager {
 
     IPersistencePluginFactory iPersistencePluginFactory;
 
-    Map<String, IPersistencePluginFactory> pluginName_pluginFactory = new HashMap<>();
+    Map<String, IPersistencePluginFactory> pluginName_pluginFactory;
 
     public PluginManager() {
+        initializeAllPlugins();
+    }
+
+    public void initializeAllPlugins(){
+
+        pluginName_pluginFactory = new HashMap<>();
 
         //may as well do all the instantiating in the constructor...
         //should we instantiate all of the plugins?
@@ -24,9 +32,7 @@ public class PluginManager {
     public IPersistencePluginFactory createPlugin(String pluginName) {
 
         //TODO: look into JSON file to instantiate the plugin
-
         //Use Java URLClassLoader
-
         //automatically set server iPersistencePluginFactory
 
         return null;
@@ -36,7 +42,9 @@ public class PluginManager {
         return iPersistencePluginFactory;
     }
 
+    //auto set server model whenever setter is used.
     public void setiPersistencePluginFactory(IPersistencePluginFactory iPersistencePluginFactory) {
+        ServerModel.getInstance().setiPersistencePluginFactory(iPersistencePluginFactory);
         this.iPersistencePluginFactory = iPersistencePluginFactory;
     }
 }
