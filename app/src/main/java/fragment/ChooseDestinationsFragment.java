@@ -36,6 +36,8 @@ public class ChooseDestinationsFragment extends DialogFragment implements IChoos
     Button selectButton;
     IChooseDestinationsPresenter presenter;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
