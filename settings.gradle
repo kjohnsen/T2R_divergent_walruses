@@ -1,1 +1,1 @@
-include ':app', ':Shared', ':Server'
+include ':app', ':Shared', ':Server', ':MongoDB'
