@@ -11,6 +11,8 @@ import modelclasses.ChatMessage;
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import modelclasses.User;
+import persistence.IPersistencePluginFactory;
+import persistence.PluginManager;
 
 /**
  * Represents the model on the server side.
@@ -23,6 +25,16 @@ public class ServerModel {
      * Singleton so that there exists one copy of the model
      */
     private static ServerModel instance = null;
+
+    /**
+     * Manages data persistence plugins.
+     */
+    PluginManager pluginManager = new PluginManager();
+
+    /**
+     * This is points to the iPersistencePluginFactory on the PluginManager class
+     */
+    IPersistencePluginFactory iPersistencePluginFactory = pluginManager.getiPersistencePluginFactory();
 
     /**
      * Map of authTokens to usernames (owners of the auth tokens)
@@ -69,6 +81,14 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public IPersistencePluginFactory getiPersistencePluginFactory() {
+        return iPersistencePluginFactory;
+    }
+
+    public void setiPersistencePluginFactory(IPersistencePluginFactory iPersistencePluginFactory) {
+        this.iPersistencePluginFactory = iPersistencePluginFactory;
     }
 
     public int getLastPlayerIndex() {
