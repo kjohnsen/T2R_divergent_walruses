@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import persistence.IUserDAO;
 import persistence.Result;
@@ -57,6 +58,11 @@ public class SQLUserDao implements IUserDAO {
         } catch (SQLException e) {
             System.out.println("read user failed");
         }
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> readAllUsers() {
         return null;
     }
 

@@ -70,6 +70,11 @@ public class SQLCommandDao implements ICommandDAO {
     }
 
     @Override
+    public ArrayList<Command> readAllCommands() {
+        return null;
+    }
+
+    @Override
     public Result deleteCommand(GameName gameName) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {

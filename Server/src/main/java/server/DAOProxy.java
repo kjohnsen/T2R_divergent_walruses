@@ -41,7 +41,7 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
-    public List<Command> readAllCommands() {
+    public ArrayList<Command> readAllCommands() {
         return null;
     }
 
@@ -61,7 +61,7 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
-    public List<GameInfo> readAllGameInfos() {
+    public ArrayList<GameInfo> readAllGameInfos() {
         return null;
     }
 
@@ -81,7 +81,7 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
-    public List<User> readAllUsers() {
+    public ArrayList<User> readAllUsers() {
         return null;
     }
 

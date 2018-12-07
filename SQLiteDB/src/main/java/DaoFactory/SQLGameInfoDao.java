@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class SQLGameInfoDao implements IGameInfoDAO {
 
@@ -33,6 +34,11 @@ public class SQLGameInfoDao implements IGameInfoDAO {
         } catch (SQLException e) {
             System.out.println("create game info failed");
         }
+        return null;
+    }
+
+    @Override
+    public ArrayList<GameInfo> readAllGameInfos() {
         return null;
     }
 
