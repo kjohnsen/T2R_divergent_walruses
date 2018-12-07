@@ -13,6 +13,7 @@ import modelclasses.GameName;
 import modelclasses.User;
 import persistence.IPersistencePluginFactory;
 import persistence.PluginManager;
+import server.DAOProxy;
 
 /**
  * Represents the model on the server side.
@@ -30,6 +31,11 @@ public class ServerModel {
      * Manages data persistence plugins.
      */
     PluginManager pluginManager = new PluginManager();
+
+    /**
+     * connection to the DAO stuff
+     */
+    private DAOProxy daoProxy = new DAOProxy();
 
     /**
      * delta counter counts until it hits deltaMax.
@@ -202,6 +208,15 @@ public class ServerModel {
     }
 
     // ********** getters and setters ***********
+
+
+    public DAOProxy getDaoProxy() {
+        return daoProxy;
+    }
+
+    public Map<GameName, Integer> getGameName_delta() {
+        return gameName_delta;
+    }
 
     /**
      * increments the delta of the corresponding gamename

@@ -22,10 +22,16 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
         //if the delta hits the max, then update the gameInfo
         if(ServerModel.getInstance().getDelta(gameName) >= ServerModel.getInstance().getDeltaMax()){
 
+            //update game info and delete commands
             updateGameInfo(ServerModel.getInstance().getGameInfo(gameName));
             deleteCommand(gameName);
+
+            //set delta to 0. hopefully the map can determine that the gamenames are the same.
+            ServerModel.getInstance().initializeDelta(gameName);
         }
 
+        //increment the delta
+        ServerModel.getInstance().deltaIncrementer(gameName);
         return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().createCommand(command, gameName);
     }
 

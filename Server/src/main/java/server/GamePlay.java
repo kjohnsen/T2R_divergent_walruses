@@ -39,10 +39,15 @@ public class GamePlay {
         Command selectCardCommand = new Command("model.CommandFacade", "_drawTrainCard", Arrays.asList(new Object[] {card, player}));
         results.getClientCommands().add(selectCardCommand);
 
+        //add to database
+        ServerModel.getInstance().getDaoProxy().createCommand(selectCardCommand, name);
+
         if (game.getTrainCardDeck().size() == 0) {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);
             Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(replaceDeckCommand, name);
             results.getClientCommands().add(replaceDeckCommand);
         }
         results.setSuccess(true);
@@ -75,6 +80,11 @@ public class GamePlay {
         clientProxy.displayDestinationCards(tickets, player, game);
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
+
+        //add to database
+        ServerModel.getInstance().getDaoProxy().createCommand(selectCardCommand, name);
+
+
         results.setSuccess(true);
         return results;
     }
@@ -102,21 +112,30 @@ public class GamePlay {
         clientProxy.selectTrainCard(card, player, game);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
+        //add to database
+        ServerModel.getInstance().getDaoProxy().createCommand(selectCardCommand, name);
+
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
             clientProxy.replaceTrainCard(replacements.get(0), index, game, username);
             Command replaceCardCommand = new Command("model.CommandFacade", "_replaceTrainCard", Arrays.asList(new Object[] {replacements.get(0), index}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(replaceCardCommand, name);
             results.getClientCommands().add(replaceCardCommand);
 
         } else {
             clientProxy.clearWilds(replacements, game, username);
             Command clearWildsCommand = new Command("model.CommandFacade", "_clearWilds", Arrays.asList(new Object[]{replacements}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(clearWildsCommand, name);
             results.getClientCommands().add(clearWildsCommand);
         }
         if (game.getTrainCardDeck().size() == 0) {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);
             Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(replaceDeckCommand, name);
             results.getClientCommands().add(replaceDeckCommand);
         }
         results.setSuccess(true);
@@ -168,6 +187,8 @@ public class GamePlay {
             }
 
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(selectDestCardsCommand, name);
             results.getClientCommands().add(selectDestCardsCommand);
             results.setSuccess(true);
             return results;
@@ -234,6 +255,8 @@ public class GamePlay {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);
             Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(replaceDeckCommand, gameName);
             results.getClientCommands().add(replaceDeckCommand);
         }
 
@@ -245,11 +268,15 @@ public class GamePlay {
             game.setLastRound(true);
             ServerModel.getInstance().setLastPlayerIndex(currentPlayerIndex);
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(lastRoundCommand, gameName);
             results.getClientCommands().add(lastRoundCommand);
             clientProxy.startLastRound(gameName, username);
         }
 
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
+        //add to database
+        ServerModel.getInstance().getDaoProxy().createCommand(claimRouteCommand, gameName);
         results.getClientCommands().add(claimRouteCommand);
         results.getClientCommands().add(startCommand);
 
@@ -267,7 +294,14 @@ public class GamePlay {
         boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
         if (isLastPlayer && game.isLastRound()) {
             clientProxy.endGame(game.getGameName(), currPlayer.getUsername());
-            return new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
+            Command endGameCommand = new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
+
+
+
+
+
+
+            return endGameCommand;
         }
         else {
             Player nextPlayer = game.getNextPlayer();
