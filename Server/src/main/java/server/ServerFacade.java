@@ -165,6 +165,9 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
+        //save in database.
+        ServerModel.getInstance().getDaoProxy().createUser(user);
+
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
         Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
@@ -250,6 +253,9 @@ public class ServerFacade implements IServer {
 
         Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
 
+        //don't need to update gameinfo because we only initialize it and then update it
+        //whenever we hit the deltamax
+
         results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
 
@@ -311,6 +317,13 @@ public class ServerFacade implements IServer {
 
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
         Command startFirstTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {game.getCurrentPlayer().getUsername()}));
+
+        //add the game to the database when it is started
+        //add new game to database
+        ServerModel.getInstance().getDaoProxy().createGameInfo(ServerModel.getInstance().getGameInfo(gameName));
+
+        //initialize delta
+        ServerModel.getInstance().initializeDelta(gameName);
 
         results.getClientCommands().add(startGameCommand);
         results.getClientCommands().add(startFirstTurnCommand);
