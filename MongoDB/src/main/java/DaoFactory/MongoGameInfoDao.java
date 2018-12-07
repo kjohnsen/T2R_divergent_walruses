@@ -26,9 +26,13 @@ public class MongoGameInfoDao implements IGameInfoDAO {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(gameInfo);
+            objectOutputStream.close();
+            objectOutputStream.flush();
             byte[] gameInfoData = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            byteArrayOutputStream.flush();
             BsonBinary bsonBinary = new BsonBinary(gameInfoData);
-            Document gameInfoDoc = new Document("gameName", gameInfo.getGameName()).append("data", bsonBinary);
+            Document gameInfoDoc = new Document("gameName", gameInfo.getGameName().getName()).append("data", bsonBinary);
             gameInfoCollection.insertOne(gameInfoDoc);
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +43,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
 
     @Override
     public GameInfo readGameInfo(GameName gameName) {
-        Document gameInfoDoc = gameInfoCollection.find(Filters.eq("gameName", gameName)).first();
+        Document gameInfoDoc = gameInfoCollection.find(Filters.eq("gameName", gameName.getName())).first();
         BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");
 
         if(bsonBinary != null) {
@@ -63,7 +67,11 @@ public class MongoGameInfoDao implements IGameInfoDAO {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(gameInfo);
+            objectOutputStream.close();
+            objectOutputStream.flush();
             byte[] gameInfoData = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            byteArrayOutputStream.flush();
             BsonBinary bsonBinary = new BsonBinary(gameInfoData);
             gameInfoCollection.updateOne(Filters.eq("gameName", gameInfo.getGameName()), Updates.set("data", bsonBinary));
         } catch(IOException e) {
@@ -74,7 +82,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
 
     @Override
     public Result deleteGameInfo(GameInfo gameInfo) {
-        gameInfoCollection.deleteOne(Filters.eq("gameName", gameInfo.getGameName()));
+        gameInfoCollection.deleteOne(Filters.eq("gameName", gameInfo.getGameName().getName()));
         return null;
     }
 }

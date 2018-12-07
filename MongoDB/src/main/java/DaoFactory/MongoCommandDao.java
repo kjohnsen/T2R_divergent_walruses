@@ -1,5 +1,6 @@
 package DaoFactory;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
@@ -15,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import data.Command;
+import modelclasses.GameName;
 import persistence.ICommandDAO;
 import persistence.Result;
 import sun.corba.OutputStreamFactory;
@@ -23,7 +25,7 @@ public class MongoCommandDao implements ICommandDAO {
     private final MongoCollection<Document> commandCollection = MongoFactoryPlugin.getDatabase().getCollection("Command");
 
     @Override
-    public Result createCommand(Command command) {
+    public Result createCommand(Command command, GameName gameName) {
         long numCommands = commandCollection.countDocuments();
         String commandID = Long.toString(numCommands + 1);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -31,9 +33,15 @@ public class MongoCommandDao implements ICommandDAO {
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(command);
+            objectOutputStream.close();
+            objectOutputStream.flush();
             byte[] commandData = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            byteArrayOutputStream.flush();
             BsonBinary bsonBinary = new BsonBinary(commandData);
-            Document commandDoc = new Document("commandID", commandID).append("data", bsonBinary);
+            Document commandDoc = new Document("commandID", commandID)
+                    .append("data", bsonBinary)
+                    .append("gameName", gameName.getName());
             commandCollection.insertOne(commandDoc);
         } catch(IOException e) {
             e.printStackTrace();
@@ -42,8 +50,10 @@ public class MongoCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Command readCommand(String commandID) {
-        Document commandDoc = commandCollection.find(Filters.eq("commandID", commandID)).first();
+    public Command readCommand(String commandID, GameName gameName) {
+        FindIterable<Document> foundCommands = commandCollection.find(Filters.eq("gameName", gameName.getName()));
+        Document commandDoc = foundCommands.filter(Filters.eq("commandID", commandID)).first();
+
         BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
 
@@ -60,8 +70,8 @@ public class MongoCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Result deleteCommand(ArrayList<Command> commands) {
-        commandCollection.deleteMany(new Document());
+    public Result deleteCommand(GameName gameName) {
+        commandCollection.deleteMany(Filters.eq("gameName", gameName.getName()));
 //        long numCommands = commandCollection.countDocuments();
 //        for(int i = 0; i < numCommands; ++i) {
 //            String commandID = Integer.toString(i + 1);

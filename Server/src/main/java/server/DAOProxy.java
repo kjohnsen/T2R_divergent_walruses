@@ -36,8 +36,8 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
-    public Command readCommand(String commandID) {
-        return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().readCommand(commandID);
+    public Command readCommand(String commandID, GameName gameName) {
+        return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().readCommand(commandID, gameName);
     }
 
     @Override

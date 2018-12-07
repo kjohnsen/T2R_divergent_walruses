@@ -7,6 +7,6 @@ import modelclasses.GameName;
 
 public interface ICommandDAO {
     public Result createCommand(Command command, GameName gameName);
-    public Command readCommand(String commandID);
+    public Command readCommand(String commandID, GameName gameName);
     public Result deleteCommand(GameName gameName);
 }
