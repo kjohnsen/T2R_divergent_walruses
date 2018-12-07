@@ -26,7 +26,7 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
             deleteCommand(gameName);
         }
 
-        return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().createCommand(command);
+        return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().createCommand(command, gameName);
     }
 
     @Override
