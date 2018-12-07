@@ -13,7 +13,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import data.Command;
 import modelclasses.GameName;
@@ -67,6 +69,28 @@ public class MongoCommandDao implements ICommandDAO {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Command> readAllCommands() {
+        ArrayList<Command> commands = new ArrayList<>();
+
+        FindIterable<Document> foundCommands = commandCollection.find();
+        for (Document commandDoc : foundCommands) {
+            BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
+
+            try {
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                commands.add((Command)objectInputStream.readObject());
+            } catch(IOException e) {
+                e.printStackTrace();
+            } catch(ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return commands;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package DaoFactory;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -12,6 +13,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 import persistence.IGameInfoDAO;
@@ -58,6 +62,29 @@ public class MongoGameInfoDao implements IGameInfoDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<GameInfo> readAllGameInfos() {
+        FindIterable<Document> gameInfoDocs = gameInfoCollection.find();
+        List<GameInfo> games = new ArrayList<>();
+        for (Document gameInfoDoc : gameInfoDocs) {
+
+            BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");
+
+            if(bsonBinary != null) {
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
+                try {
+                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                    games.add((GameInfo)objectInputStream.readObject());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch(ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return games;
     }
 
     @Override
