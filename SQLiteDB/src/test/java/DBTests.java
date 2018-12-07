@@ -21,7 +21,7 @@ public class DBTests {
         factoryPlugin.openConnection();
     }
 
-    @Test
+//    @Test
     public void createAllTables() {
         factoryPlugin.createTables();
     }
@@ -29,14 +29,14 @@ public class DBTests {
     @Test
     public void createUser() {
         User user = new User("newuser1", "password");
-        factoryPlugin.getUserDAO().create(user);
+        factoryPlugin.getUserDAO().createUser(user);
     }
 
     @Test
     public void readUser() {
         User user = new User("readme", "pass");
-        factoryPlugin.getUserDAO().create(user);
-        User readUser = factoryPlugin.getUserDAO().read("readme");
+        factoryPlugin.getUserDAO().createUser(user);
+        User readUser = factoryPlugin.getUserDAO().readUser("readme");
 
         assertEquals("readme", readUser.getUsername());
         assertEquals("pass", readUser.getPassword());
@@ -46,7 +46,7 @@ public class DBTests {
     public void createCommand() {
         GameName gameName = new GameName("create");
         Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
-        factoryPlugin.getCommandDAO().create(gameName, command);
+        factoryPlugin.getCommandDAO().createCommand(command, gameName);
     }
 
     @Test
@@ -54,14 +54,14 @@ public class DBTests {
         GameName gameName1 = new GameName("read1");
         GameName gameName2 = new GameName("read2");
         Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
-        factoryPlugin.getCommandDAO().create(gameName1, command);
-        factoryPlugin.getCommandDAO().create(gameName1, command);
-        factoryPlugin.getCommandDAO().create(gameName2, command);
+        factoryPlugin.getCommandDAO().createCommand(command, gameName1);
+        factoryPlugin.getCommandDAO().createCommand(command, gameName1);
+        factoryPlugin.getCommandDAO().createCommand(command, gameName2);
 
-        ArrayList<Command> game1Commands = factoryPlugin.getCommandDAO().read(gameName1);
+        ArrayList<Command> game1Commands = factoryPlugin.getCommandDAO().readCommands(gameName1);
         assertEquals(2, game1Commands.size());
 
-        ArrayList<Command> game2Commands = factoryPlugin.getCommandDAO().read(gameName2);
+        ArrayList<Command> game2Commands = factoryPlugin.getCommandDAO().readCommands(gameName2);
         assertEquals(1, game2Commands.size());
     }
 

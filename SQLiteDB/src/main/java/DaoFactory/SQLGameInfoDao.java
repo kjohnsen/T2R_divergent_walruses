@@ -9,22 +9,22 @@ import modelclasses.GameName;
 public class SQLGameInfoDao implements IGameInfoDAO {
 
     @Override
-    public Result create(GameInfo gameInfo) {
+    public Result createGameInfo(GameInfo gameInfo) {
         return null;
     }
 
     @Override
-    public GameInfo read(GameName gameName) {
+    public GameInfo readGameInfo(GameName gameName) {
         return null;
     }
 
     @Override
-    public Result update(GameInfo gameInfo) {
+    public Result updateGameInfo(GameInfo gameInfo) {
         return null;
     }
 
     @Override
-    public Result delete(GameInfo gameInfo) {
+    public Result deleteGameInfo(GameInfo gameInfo) {
         return null;
     }
 

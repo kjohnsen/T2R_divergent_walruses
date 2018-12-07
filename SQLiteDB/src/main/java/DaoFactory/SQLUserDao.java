@@ -13,7 +13,7 @@ import modelclasses.User;
 public class SQLUserDao implements IUserDAO {
 
     @Override
-    public Result create(User user) {
+    public Result createUser(User user) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {
             Statement stmt = null;
@@ -33,7 +33,7 @@ public class SQLUserDao implements IUserDAO {
     }
 
     @Override
-    public User read(String username) {
+    public User readUser(String username) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {
             Statement stmt = connection.createStatement();

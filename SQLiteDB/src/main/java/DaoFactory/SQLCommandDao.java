@@ -24,7 +24,7 @@ public class SQLCommandDao implements ICommandDAO {
     private Serializer serializer = new Serializer();
 
     @Override
-    public Result create(GameName gameName, Command command) {
+    public Result createCommand(Command command, GameName gameName) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {
             Statement stmt = null;
@@ -58,7 +58,7 @@ public class SQLCommandDao implements ICommandDAO {
     }
 
     @Override
-    public ArrayList<Command> read(GameName gameName) {
+    public ArrayList<Command> readCommands(GameName gameName) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {
             Statement stmt = connection.createStatement();
@@ -94,7 +94,7 @@ public class SQLCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Result delete(ArrayList<Command> commands) {
+    public Result deleteCommand(GameName gameName) {
         return null;
     }
 
