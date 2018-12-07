@@ -11,15 +11,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Base64;
 
 public class SQLCommandDao implements ICommandDAO {
 
@@ -38,10 +36,13 @@ public class SQLCommandDao implements ICommandDAO {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
                 oos.writeObject(command);
-                byte[] commandAsBytes = baos.toByteArray();
+                oos.flush();
+                Base64.Encoder encoder = Base64.getEncoder();
+                String serializedCommand = new String(encoder.encode(baos.toByteArray()));
 
                 stmt.executeUpdate("insert into commands (command_id, game_name, command) " +
-                        "values ('" + commandId + "', '" + gameName + "', '" + commandAsBytes + "');");
+                        "values ('" + commandId + "', '" + gameName + "', '" + serializedCommand + "');");
+
 
             } catch (java.io.IOException ex) {
                 ex.printStackTrace();
@@ -66,10 +67,9 @@ public class SQLCommandDao implements ICommandDAO {
                 rs = stmt.executeQuery("select * from commands where game_name = '" + gameName.getName() + "'");
                 ArrayList<Command> commands = new ArrayList<>();
                 while (rs.next()) {
-                    byte[] commandByteArray = rs.getObject("command").toString().getBytes();
-//                    String serializedCommand = rs.getObject("command").toString();
+                    Base64.Decoder decoder = Base64.getDecoder();
+                    byte[] commandByteArray = decoder.decode(rs.getString("command").getBytes());
                     ByteArrayInputStream baip = new ByteArrayInputStream(commandByteArray);
-//                    ByteArrayInputStream baip = new ByteArrayInputStream(serializedCommand);
                     ObjectInputStream ois = new ObjectInputStream(baip);
                     Command command = (Command) ois.readObject();
                     commands.add(command);
