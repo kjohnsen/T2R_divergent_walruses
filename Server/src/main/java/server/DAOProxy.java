@@ -2,6 +2,7 @@ package server;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import data.Command;
 import model.ServerModel;
@@ -40,6 +41,11 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
+    public List<Command> readAllCommands() {
+        return null;
+    }
+
+    @Override
     public Result deleteCommand(GameName gameName) {
         return ServerModel.getInstance().getiPersistencePluginFactory().getCommandDAO().deleteCommand(gameName);
     }
@@ -55,6 +61,11 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     }
 
     @Override
+    public List<GameInfo> readAllGameInfos() {
+        return null;
+    }
+
+    @Override
     public Result updateGameInfo(GameInfo gameInfo) {
         return ServerModel.getInstance().getiPersistencePluginFactory().getGameInfoDAO().updateGameInfo(gameInfo);
     }
@@ -67,6 +78,11 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
     @Override
     public Result createUser(User user) {
         return ServerModel.getInstance().getiPersistencePluginFactory().getUserDAO().createUser(user);
+    }
+
+    @Override
+    public List<User> readAllUsers() {
+        return null;
     }
 
     @Override

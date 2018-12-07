@@ -1,10 +1,20 @@
 package server;
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpServer;
 
+import data.Command;
 import handler.ExcmdHandler;
+import model.ServerModel;
+import modelclasses.GameInfo;
+import modelclasses.User;
+import persistence.ICommandDAO;
+import persistence.IGameInfoDAO;
+import persistence.IPersistencePluginFactory;
+import persistence.IUserDAO;
+import persistence.PluginManager;
 
 /**
  * Created by Parker on 2/10/18.
@@ -64,7 +74,27 @@ public class ServerCommunicator {
     }
 
 
+    private static void reloadPersistentData(IPersistencePluginFactory persistencePluginFactory) {
+        persistencePluginFactory.startTransaction();
 
+        // load all users into model
+        IUserDAO userDAO = persistencePluginFactory.getUserDAO();
+        for (User user : userDAO.readAllUsers()) {
+            ServerModel.getInstance().getUsers().put(user.getUsername(), user);
+        }
+        // load all games into model
+        IGameInfoDAO gameInfoDAO = persistencePluginFactory.getGameInfoDAO();
+        for (GameInfo game : gameInfoDAO.readAllGameInfos()) {
+            ServerModel.getInstance().getGames().put(game.getGameName(), game);
+        }
+        // run all commands on games
+        ICommandDAO commandDAO = persistencePluginFactory.getCommandDAO();
+        for (Command command : commandDAO.readAllCommands()) {
+            command.execute();
+        }
+
+        persistencePluginFactory.endTransaction();
+    }
 
 
     // "main" method for the server program
@@ -72,6 +102,14 @@ public class ServerCommunicator {
     // on which the server should accept incoming client connections.
     public static void main(String[] args) {
         String portNumber = args[0];
+        String persistenceType = args[1];
+        int commandsBetweenCheckpoints = Integer.parseInt(args[2]);
+
+        IPersistencePluginFactory pluginFactory = new PluginManager().createPlugin(persistenceType);
+        ServerModel.getInstance().setiPersistencePluginFactory(pluginFactory);
+        ServerModel.getInstance().setDeltaMax(commandsBetweenCheckpoints);
+        reloadPersistentData(pluginFactory);
+
         new ServerCommunicator().run(portNumber);
     }
 }
