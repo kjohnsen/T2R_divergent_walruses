@@ -290,16 +290,15 @@ public class GamePlay {
         int currPlayerIndex = game.getCurrentPlayerIndex();
         ServerModel.getInstance().setState(ServerState.TURNSTART, game.getGameName());
 
+        GameName gameName = ServerModel.getInstance().getGameNameFromGameInfo(game);
+
         ClientProxy clientProxy = new ClientProxy();
         boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
         if (isLastPlayer && game.isLastRound()) {
             clientProxy.endGame(game.getGameName(), currPlayer.getUsername());
             Command endGameCommand = new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
-
-
-
-
-
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(endGameCommand, gameName);
 
             return endGameCommand;
         }
@@ -307,7 +306,12 @@ public class GamePlay {
             Player nextPlayer = game.getNextPlayer();
             game.setCurrentPlayer(nextPlayer);
             clientProxy.startTurn(game.getGameName(), currPlayer.getUsername(), nextPlayer.getUsername());
-            return new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
+
+            Command startNextTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
+
+            //add to database
+            ServerModel.getInstance().getDaoProxy().createCommand(startNextTurnCommand, gameName);
+            return startNextTurnCommand;
         }
     }
 

@@ -318,5 +318,13 @@ public class ServerModel {
         return inGame;
     }
 
+    public GameName getGameNameFromGameInfo(GameInfo gameInfo){
+        for(GameName gameName : getGames().keySet()){
+            if(getGames().get(gameName).equals(gameInfo))
+                return gameName;
+        }
+        return null;
+    }
+
     //********************************************
 }
