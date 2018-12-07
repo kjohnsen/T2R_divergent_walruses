@@ -21,7 +21,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     private final MongoCollection<Document> gameInfoCollection = MongoFactoryPlugin.getDatabase().getCollection("GameInfo");
 
     @Override
-    public Result create(GameInfo gameInfo) {
+    public Result createGameInfo(GameInfo gameInfo) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -38,7 +38,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     }
 
     @Override
-    public GameInfo read(GameName gameName) {
+    public GameInfo readGameInfo(GameName gameName) {
         Document gameInfoDoc = gameInfoCollection.find(Filters.eq("gameName", gameName)).first();
         BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");
 
@@ -57,7 +57,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     }
 
     @Override
-    public Result update(GameInfo gameInfo) {
+    public Result updateGameInfo(GameInfo gameInfo) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
@@ -73,7 +73,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     }
 
     @Override
-    public Result delete(GameInfo gameInfo) {
+    public Result deleteGameInfo(GameInfo gameInfo) {
         gameInfoCollection.deleteOne(Filters.eq("gameName", gameInfo.getGameName()));
         return null;
     }

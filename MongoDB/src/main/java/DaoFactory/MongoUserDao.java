@@ -14,14 +14,14 @@ public class MongoUserDao implements IUserDAO {
     private final MongoCollection<Document> userCollection = MongoFactoryPlugin.getDatabase().getCollection("User");
 
     @Override
-    public Result create(User user) {
+    public Result createUser(User user) {
         Document document = new Document("username", user.getUsername()).append("password", user.getPassword());
         userCollection.insertOne(document);
         return null;
     }
 
     @Override
-    public User read(String username) {
+    public User readUser(String username) {
         Document userDoc = userCollection.find(Filters.eq("username", username)).first();
         if(userDoc != null) {
             String password = (String)userDoc.get("password");

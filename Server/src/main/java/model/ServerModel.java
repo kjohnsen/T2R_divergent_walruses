@@ -32,6 +32,21 @@ public class ServerModel {
     PluginManager pluginManager = new PluginManager();
 
     /**
+     * delta counter counts until it hits deltaMax.
+     * When it hits deltaMax, it deletes the commands
+     * and updates the GameInfo blob in the database.
+     */
+    private Map<GameName, Integer> gameName_delta = new HashMap<>();
+
+    /**
+     * deltaMax comes from the commandline when initializing the server.
+     * It is the number of commands that are added to the data base
+     * before the list of commands is deleted and the gameinfo blob
+     * is updated.
+     */
+    private Integer deltaMax = 0;
+
+    /**
      * This is points to the iPersistencePluginFactory on the PluginManager class
      */
     IPersistencePluginFactory iPersistencePluginFactory = pluginManager.getiPersistencePluginFactory();
@@ -187,6 +202,39 @@ public class ServerModel {
     }
 
     // ********** getters and setters ***********
+
+    /**
+     * increments the delta of the corresponding gamename
+     * @param gameName
+     */
+    public void deltaIncrementer(GameName gameName) {
+        gameName_delta.put(gameName, gameName_delta.get(gameName) + 1);
+    }
+
+    /**
+     * initialize the delta for the corresponding game
+     * @param gameName
+     */
+    public void initializeDelta(GameName gameName) {
+        gameName_delta.put(gameName, 0);
+    }
+
+    /**
+     * gets the delta of the corresponding gamename.
+     * @param gameName
+     * @return
+     */
+    public Integer getDelta(GameName gameName) {
+        return gameName_delta.get(gameName);
+    }
+
+    public Integer getDeltaMax() {
+        return deltaMax;
+    }
+
+    public void setDeltaMax(Integer deltaMax) {
+        this.deltaMax = deltaMax;
+    }
 
     /**
      * Getters and Setters self explanatory

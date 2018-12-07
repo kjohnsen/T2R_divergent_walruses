@@ -101,7 +101,7 @@ public class ServerFacade implements IServer {
 
     public Results loginUser(String username, String password) {
 
-        //create the logged in results because you have to return something if it fails.
+        //createCommand the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
 
@@ -147,7 +147,7 @@ public class ServerFacade implements IServer {
 
     public Results registerUser(String username, String password) {
 
-        //create the logged in results because you have to return something if it fails.
+        //createCommand the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
 
@@ -199,7 +199,7 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        //create game info and add to server model.
+        //createCommand game info and add to server model.
         ArrayList<Player> players = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
@@ -258,7 +258,7 @@ public class ServerFacade implements IServer {
 
     private Player addUserToGame(String clientAuthToken, GameInfo game) {
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
-        Player player = new Player(username); // create new player
+        Player player = new Player(username); // createCommand new player
         game.addPlayer(player); // add player to game
         User user = ServerModel.getInstance().getUser(username);
         user.addGame(game.getGameName());

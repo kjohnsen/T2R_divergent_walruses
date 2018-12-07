@@ -23,7 +23,7 @@ public class MongoCommandDao implements ICommandDAO {
     private final MongoCollection<Document> commandCollection = MongoFactoryPlugin.getDatabase().getCollection("Command");
 
     @Override
-    public Result create(Command command) {
+    public Result createCommand(Command command) {
         long numCommands = commandCollection.countDocuments();
         String commandID = Long.toString(numCommands + 1);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -42,7 +42,7 @@ public class MongoCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Command read(String commandID) {
+    public Command readCommand(String commandID) {
         Document commandDoc = commandCollection.find(Filters.eq("commandID", commandID)).first();
         BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
@@ -60,7 +60,7 @@ public class MongoCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Result delete(ArrayList<Command> commands) {
+    public Result deleteCommand(ArrayList<Command> commands) {
         commandCollection.deleteMany(new Document());
 //        long numCommands = commandCollection.countDocuments();
 //        for(int i = 0; i < numCommands; ++i) {
