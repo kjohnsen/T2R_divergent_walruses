@@ -1,0 +1,2 @@
+SQLiteDB ../../../../../SQLiteDB/build/libs SQLiteDB.jar SQLFactoryPlugin
+MongoDB ../../../../../MongoDB/build/libs MongoDB.jar MongoFactoryPlugin
