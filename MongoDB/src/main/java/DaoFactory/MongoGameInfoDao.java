@@ -65,9 +65,9 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     }
 
     @Override
-    public List<GameInfo> readAllGameInfos() {
+    public ArrayList<GameInfo> readAllGameInfos() {
         FindIterable<Document> gameInfoDocs = gameInfoCollection.find();
-        List<GameInfo> games = new ArrayList<>();
+        ArrayList<GameInfo> games = new ArrayList<>();
         for (Document gameInfoDoc : gameInfoDocs) {
 
             BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");

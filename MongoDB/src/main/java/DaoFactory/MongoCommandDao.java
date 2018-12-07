@@ -2,6 +2,7 @@ package DaoFactory;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
 import org.bson.BsonBinary;
@@ -16,6 +17,8 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.print.Doc;
 
 import data.Command;
 import modelclasses.GameName;
@@ -52,27 +55,37 @@ public class MongoCommandDao implements ICommandDAO {
     }
 
     @Override
-    public Command readCommand(String commandID, GameName gameName) {
+    public ArrayList<Command> readCommands(GameName gameName) {
         FindIterable<Document> foundCommands = commandCollection.find(Filters.eq("gameName", gameName.getName()));
-        Document commandDoc = foundCommands.filter(Filters.eq("commandID", commandID)).first();
+        MongoCursor<Document> cursor = foundCommands.iterator();
+        int commandID = 1;
+        ArrayList<Command> commands = new ArrayList<>();
 
-        BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
-
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            return (Command)objectInputStream.readObject();
-        } catch(IOException e) {
-            e.printStackTrace();
-        } catch(ClassNotFoundException e) {
-            e.printStackTrace();
+        while(cursor.hasNext()) {
+            Document commandDoc = foundCommands.filter(Filters.eq("commandID", Integer.toString(commandID))).first();
+            BsonBinary bsonBinary = (BsonBinary)commandDoc.get("commandID");
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
+            try {
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                commands.add((Command)objectInputStream.readObject());
+            } catch(IOException e) {
+                e.printStackTrace();
+                cursor.close();
+                return null;
+            } catch(ClassNotFoundException e) {
+                e.printStackTrace();
+                cursor.close();
+                return null;
+            }
+            cursor.next();
+            commandID++;
         }
-
-        return null;
+        cursor.close();
+        return commands;
     }
 
     @Override
-    public List<Command> readAllCommands() {
+    public ArrayList<Command> readAllCommands() {
         ArrayList<Command> commands = new ArrayList<>();
 
         FindIterable<Document> foundCommands = commandCollection.find();
