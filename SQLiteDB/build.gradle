@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':Server')
+    implementation project(':Shared')
+    implementation files('libs/sqlite-jdbc-3.23.1.jar')
+    implementation 'junit:junit:4.13-beta-1'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
