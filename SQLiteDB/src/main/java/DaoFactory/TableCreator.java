@@ -33,8 +33,8 @@ public class TableCreator {
                 stmt = conn.createStatement();
                 stmt.executeUpdate("drop table if exists games");
                 stmt.executeUpdate("create table games " +
-                        "(game_id string primary key, " +
-                        "game_state blob not null);");
+                        "(game_name string primary key, " +
+                        "game_state string not null);");
             } finally {
                 if (stmt != null) {
                     stmt.close();
