@@ -4,12 +4,14 @@ import persistence.ICommandDAO;
 import persistence.Result;
 
 import data.Command;
+import data.Serializer;
 import modelclasses.GameName;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,36 +23,28 @@ import java.util.UUID;
 
 public class SQLCommandDao implements ICommandDAO {
 
+    private Serializer serializer = new Serializer();
+
     @Override
     public Result create(GameName gameName, Command command) {
         Connection connection = SQLFactoryPlugin.getConnection();
         try {
-            PreparedStatement stmt = null;
-//            Statement stmt = null;
+            Statement stmt = null;
             try {
-//                stmt = connection.createStatement();
-                String sql = "insert into commands (command_id, game_name, command) values (?, ?, ?)";
-                stmt = connection.prepareStatement(sql);
+                stmt = connection.createStatement();
 
                 String commandId = UUID.randomUUID().toString();
+
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
                 oos.writeObject(command);
                 byte[] commandAsBytes = baos.toByteArray();
-//                stmt.executeUpdate("insert into commands (command_id, game_name, command) " +
-//                        "values ('" + commandId + "', '" + gameName + "', '" + commandAsBytes + "');");
 
-                Blob blob = connection.createBlob();
-                blob.setBytes(1, commandAsBytes);
-
-                stmt.setString(1, commandId);
-                stmt.setString(2, gameName.getName());
-                stmt.setBlob(3, blob);
-
-                stmt.executeUpdate();
+                stmt.executeUpdate("insert into commands (command_id, game_name, command) " +
+                        "values ('" + commandId + "', '" + gameName + "', '" + commandAsBytes + "');");
 
             } catch (java.io.IOException ex) {
-                System.out.println("io exception");
+                ex.printStackTrace();
             } finally {
                 if (stmt != null) {
                     stmt.close();
@@ -62,18 +56,6 @@ public class SQLCommandDao implements ICommandDAO {
         return null;
     }
 
-//    Statement stmt = dbConn.createStatement();
-//    ResultSet rs = stmt.executeQuery("SELECT emp FROM Employee");
-//    while (rs.next()) {
-//        byte[] st = (byte[]) rs.getObject(1);
-//        ByteArrayInputStream baip = new ByteArrayInputStream(st);
-//        ObjectInputStream ois = new ObjectInputStream(baip);
-//        Employee emp = (Employee) ois.readObject();
-//    }
-//    stmt.close();
-//    rs.close();
-//    dbConn.close();
-
     @Override
     public ArrayList<Command> read(GameName gameName) {
         Connection connection = SQLFactoryPlugin.getConnection();
@@ -84,16 +66,17 @@ public class SQLCommandDao implements ICommandDAO {
                 rs = stmt.executeQuery("select * from commands where game_name = '" + gameName.getName() + "'");
                 ArrayList<Command> commands = new ArrayList<>();
                 while (rs.next()) {
-                    System.out.println(rs.getObject("command").toString());
-                    byte[] commandByteArray = (byte[]) rs.getObject(3);
+                    byte[] commandByteArray = rs.getObject("command").toString().getBytes();
+//                    String serializedCommand = rs.getObject("command").toString();
                     ByteArrayInputStream baip = new ByteArrayInputStream(commandByteArray);
+//                    ByteArrayInputStream baip = new ByteArrayInputStream(serializedCommand);
                     ObjectInputStream ois = new ObjectInputStream(baip);
                     Command command = (Command) ois.readObject();
                     commands.add(command);
                 }
                 return commands;
             } catch (java.io.IOException ex) {
-                System.out.println("io exception");
+                ex.printStackTrace();
             } catch (java.lang.ClassNotFoundException ce) {
                 System.out.println("class not found exception");
             } finally {

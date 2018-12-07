@@ -15,7 +15,7 @@ public class TableCreator {
                 stmt.executeUpdate("create table commands " +
                         "(command_id string primary key, " +
                         "game_name string not null, " +
-                        "command blob not null);");
+                        "command string not null);");
             } finally {
                 if (stmt != null) {
                     stmt.close();
