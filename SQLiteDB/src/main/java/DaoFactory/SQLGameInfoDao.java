@@ -39,6 +39,29 @@ public class SQLGameInfoDao implements IGameInfoDAO {
 
     @Override
     public ArrayList<GameInfo> readAllGameInfos() {
+        Connection connection = SQLFactoryPlugin.getConnection();
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = null;
+            ArrayList<GameInfo> games = new ArrayList<>();
+            try {
+                rs = stmt.executeQuery("select * from games");
+                while (rs.next()) {
+                    GameInfo gameInfo = (GameInfo) ObjectSerializer.deserializeObject(rs.getString("game_state").getBytes());
+                    games.add(gameInfo);
+                }
+                return games;
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("read all game infos failed");
+        }
         return null;
     }
 

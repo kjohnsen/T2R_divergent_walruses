@@ -64,13 +64,36 @@ public class SQLCommandDao implements ICommandDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("read user failed");
+            System.out.println("read commands failed");
         }
         return null;
     }
 
     @Override
     public ArrayList<Command> readAllCommands() {
+        Connection connection = SQLFactoryPlugin.getConnection();
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = null;
+            try {
+                rs = stmt.executeQuery("select * from commands");
+                ArrayList<Command> allCommands = new ArrayList<>();
+                while (rs.next()) {
+                    Command command = (Command) ObjectSerializer.deserializeObject(rs.getString("command").getBytes());
+                    allCommands.add(command);
+                }
+                return allCommands;
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("read all commands failed");
+        }
         return null;
     }
 

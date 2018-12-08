@@ -45,6 +45,23 @@ public class DBTests {
     }
 
     @Test
+    public void readAllUsers() {
+        User user1 = new User("u1", "p");
+        User user2 = new User("u2", "pw");
+        User user3 = new User("u3", "pww");
+
+        factoryPlugin.getUserDAO().createUser(user1);
+        factoryPlugin.getUserDAO().createUser(user2);
+        factoryPlugin.getUserDAO().createUser(user3);
+
+        ArrayList<User> allUsers = factoryPlugin.getUserDAO().readAllUsers();
+        assertEquals(3, allUsers.size());
+        assertEquals("u1", allUsers.get(0).getUsername());
+        assertEquals("u2", allUsers.get(1).getUsername());
+        assertEquals("u3", allUsers.get(2).getUsername());
+    }
+
+    @Test
     public void createCommand() {
         GameName gameName = new GameName("create");
         Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
@@ -65,6 +82,19 @@ public class DBTests {
 
         ArrayList<Command> game2Commands = factoryPlugin.getCommandDAO().readCommands(gameName2);
         assertEquals(1, game2Commands.size());
+    }
+
+    @Test
+    public void readAllCommands() {
+        GameName game1 = new GameName("readAllCommands1");
+        GameName game2 = new GameName("readAllCommands2");
+        Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
+        factoryPlugin.getCommandDAO().createCommand(command, game1);
+        factoryPlugin.getCommandDAO().createCommand(command, game2);
+        factoryPlugin.getCommandDAO().createCommand(command, game1);
+
+        ArrayList<Command> commands = factoryPlugin.getCommandDAO().readAllCommands();
+        assertEquals(3, commands.size());
     }
 
     @Test
@@ -100,6 +130,31 @@ public class DBTests {
 
         assertEquals("readGameInfo", gameFromDB.getGameName().getName());
         assertEquals(2, gameFromDB.getNumPlayers());
+    }
+
+    @Test
+    public void readAllGames() {
+        GameName gameName1 = new GameName("g1");
+        GameName gameName2 = new GameName("g2");
+        GameName gameName3 = new GameName("g3");
+
+        ArrayList<Player> players = new ArrayList<>();
+        GameInfo game1 = new GameInfo(gameName1, players, 2);
+        GameInfo game2 = new GameInfo(gameName2, players, 3);
+        GameInfo game3 = new GameInfo(gameName3, players, 4);
+
+        factoryPlugin.getGameInfoDAO().createGameInfo(game1);
+        factoryPlugin.getGameInfoDAO().createGameInfo(game2);
+        factoryPlugin.getGameInfoDAO().createGameInfo(game3);
+
+        ArrayList<GameInfo> allGames = factoryPlugin.getGameInfoDAO().readAllGameInfos();
+        assertEquals(3, allGames.size());
+        assertEquals("g1", allGames.get(0).getGameName().getName());
+        assertEquals("g2", allGames.get(1).getGameName().getName());
+        assertEquals("g3", allGames.get(2).getGameName().getName());
+        assertEquals(2, allGames.get(0).getNumPlayers());
+        assertEquals(3, allGames.get(1).getNumPlayers());
+        assertEquals(4, allGames.get(2).getNumPlayers());
     }
 
     @Test
