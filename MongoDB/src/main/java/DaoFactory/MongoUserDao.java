@@ -41,8 +41,8 @@ public class MongoUserDao implements IUserDAO {
     }
 
     @Override
-    public List<User> readAllUsers() {
-        List<User> users = new ArrayList<>();
+    public ArrayList<User> readAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
         FindIterable<Document> userDocs = userCollection.find();
         for (Document userDoc : userDocs) {
             BsonBinary bsonBinary = (BsonBinary)userDoc.get("data");
