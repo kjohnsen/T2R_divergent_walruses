@@ -4,6 +4,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 
 import org.bson.BsonBinary;
 import org.bson.Document;
@@ -16,7 +17,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.print.Doc;
 
@@ -56,31 +59,23 @@ public class MongoCommandDao implements ICommandDAO {
 
     @Override
     public ArrayList<Command> readCommands(GameName gameName) {
-        FindIterable<Document> foundCommands = commandCollection.find(Filters.eq("gameName", gameName.getName()));
-        MongoCursor<Document> cursor = foundCommands.iterator();
-        int commandID = 1;
+        FindIterable<Document> foundCommands = commandCollection.find(Filters.eq("gameName", gameName.getName())).sort(Sorts.ascending("commandID"));
         ArrayList<Command> commands = new ArrayList<>();
 
-        while(cursor.hasNext()) {
-            Document commandDoc = foundCommands.filter(Filters.eq("commandID", Integer.toString(commandID))).first();
-            BsonBinary bsonBinary = (BsonBinary)commandDoc.get("commandID");
+        for (Document doc: foundCommands) {
+            BsonBinary bsonBinary = (BsonBinary)doc.get("commandID");
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                 commands.add((Command)objectInputStream.readObject());
             } catch(IOException e) {
                 e.printStackTrace();
-                cursor.close();
                 return null;
             } catch(ClassNotFoundException e) {
                 e.printStackTrace();
-                cursor.close();
                 return null;
             }
-            cursor.next();
-            commandID++;
         }
-        cursor.close();
         return commands;
     }
 
@@ -88,7 +83,7 @@ public class MongoCommandDao implements ICommandDAO {
     public ArrayList<Command> readAllCommands() {
         ArrayList<Command> commands = new ArrayList<>();
 
-        FindIterable<Document> foundCommands = commandCollection.find();
+        FindIterable<Document> foundCommands = commandCollection.find().sort(Sorts.orderBy(Sorts.ascending("gameName"), Sorts.ascending("commandID")));
         for (Document commandDoc : foundCommands) {
             BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
