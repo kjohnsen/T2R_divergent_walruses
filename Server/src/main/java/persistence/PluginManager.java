@@ -48,6 +48,7 @@ public class PluginManager {
     }
 
     public IPersistencePluginFactory createPlugin(String className, String filePath) throws Exception {
+        URL test = new URL(filePath);
         URL[] classLoaderUrls = new URL[]{new URL(filePath)};
         URLClassLoader loader = new URLClassLoader(classLoaderUrls);
         Class<?> pluginClass = loader.loadClass(className);
