@@ -51,7 +51,7 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     @Override
     public void clearDB() {
-
+        createTables();
     }
 
     @Override
