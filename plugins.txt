@@ -1,0 +1,1 @@
+sqlite  SQLiteDB/build/libs SQLiteDB.jar    SQLFactoryPlugin

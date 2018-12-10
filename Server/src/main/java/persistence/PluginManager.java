@@ -63,8 +63,9 @@ public class PluginManager {
     }
 
     //auto set server model whenever setter is used.
-    public void setiPersistencePluginFactory(IPersistencePluginFactory iPersistencePluginFactory) {
-        ServerModel.getInstance().setiPersistencePluginFactory(iPersistencePluginFactory);
-        this.iPersistencePluginFactory = iPersistencePluginFactory;
+    public void setiPersistencePluginFactory(String pluginName) {
+        IPersistencePluginFactory pluginFactory = pluginName_pluginFactory.get(pluginName);
+        ServerModel.getInstance().setiPersistencePluginFactory(pluginFactory);
+        this.iPersistencePluginFactory = pluginFactory;
     }
 }

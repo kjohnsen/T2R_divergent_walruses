@@ -105,8 +105,9 @@ public class ServerCommunicator {
         String persistenceType = args[1];
         int commandsBetweenCheckpoints = Integer.parseInt(args[2]);
 
-        IPersistencePluginFactory pluginFactory = new PluginManager().createPlugin(persistenceType);
-        ServerModel.getInstance().setiPersistencePluginFactory(pluginFactory);
+        PluginManager pluginManager = new PluginManager();
+        pluginManager.setiPersistencePluginFactory(persistenceType);
+        IPersistencePluginFactory pluginFactory = pluginManager.getiPersistencePluginFactory();
         ServerModel.getInstance().setDeltaMax(commandsBetweenCheckpoints);
         reloadPersistentData(pluginFactory);
 
