@@ -2,7 +2,6 @@ package DaoFactory;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 
@@ -11,23 +10,15 @@ import org.bson.Document;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.print.Doc;
 
 import data.Command;
 import modelclasses.GameName;
 import persistence.ICommandDAO;
 import persistence.Result;
-import sun.corba.OutputStreamFactory;
 
 public class MongoCommandDao implements ICommandDAO {
     private final MongoCollection<Document> commandCollection = MongoFactoryPlugin.getDatabase().getCollection("Command");

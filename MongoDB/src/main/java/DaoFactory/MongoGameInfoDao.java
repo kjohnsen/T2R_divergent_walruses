@@ -7,6 +7,7 @@ import com.mongodb.client.model.Updates;
 
 import org.bson.BsonBinary;
 import org.bson.Document;
+import org.bson.types.Binary;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -48,7 +49,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
     @Override
     public GameInfo readGameInfo(GameName gameName) {
         Document gameInfoDoc = gameInfoCollection.find(Filters.eq("gameName", gameName.getName())).first();
-        BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");
+        Binary bsonBinary = (Binary)gameInfoDoc.get("data");
 
         if(bsonBinary != null) {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());

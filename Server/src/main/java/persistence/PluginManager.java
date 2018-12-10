@@ -48,13 +48,16 @@ public class PluginManager {
     }
 
     public IPersistencePluginFactory createPlugin(String className, String filePath) throws Exception {
-        filePath = "file://" + filePath;
+        //filePath = "file://" + filePath;
+        className = "DaoFactory." + className;
 
 
 
         //Get a class loader and set it up to load the jar file
         File pluginJarFile= new File(filePath);
+        System.out.println(pluginJarFile.exists());
         URL pluginURL= pluginJarFile.toURI().toURL();
+        System.out.println(pluginURL.getFile());
         URLClassLoader loader = new URLClassLoader(new URL[]{pluginURL});
         // Load the jar file's plugin class, create and return an instance
         Class<?> messagePluginClass= (Class<IPersistencePluginFactory>)loader.loadClass(className);
