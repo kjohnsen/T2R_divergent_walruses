@@ -1,7 +1,12 @@
 package persistence;
 
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import model.ServerModel;
 
@@ -15,10 +20,23 @@ public class PluginManager {
         initializeAllPlugins();
     }
 
-    public void initializeAllPlugins(){
-
+    private void initializeAllPlugins() {
         pluginName_pluginFactory = new HashMap<>();
-
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        File file = new File("plugins.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNext()) {
+                String name = scanner.next();
+                String path = scanner.next();
+                String jarName = scanner.next();
+                String className = scanner.next();
+                IPersistencePluginFactory plugin = createPlugin(className, path + "/" + jarName);
+                pluginName_pluginFactory.put(name, plugin);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //may as well do all the instantiating in the constructor...
         //should we instantiate all of the plugins?
         //maybe a map of all the plugins... and then just set the right plugin
@@ -29,13 +47,15 @@ public class PluginManager {
 
     }
 
-    public IPersistencePluginFactory createPlugin(String pluginName) {
-
+    public IPersistencePluginFactory createPlugin(String className, String filePath) throws Exception {
+        URL[] classLoaderUrls = new URL[]{new URL(filePath)};
+        URLClassLoader loader = new URLClassLoader(classLoaderUrls);
+        Class<?> pluginClass = loader.loadClass(className);
+        Constructor<?> constructor = pluginClass.getConstructor();
+        return (IPersistencePluginFactory)constructor.newInstance();
         //TODO: look into JSON file to instantiate the plugin
         //Use Java URLClassLoader
         //automatically set server iPersistencePluginFactory
-
-        return null;
     }
 
     public IPersistencePluginFactory getiPersistencePluginFactory() {
