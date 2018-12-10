@@ -49,14 +49,35 @@ public class PluginManager {
 
     public IPersistencePluginFactory createPlugin(String className, String filePath) throws Exception {
         filePath = "file://" + filePath;
+
+
+
+        //Get a class loader and set it up to load the jar file
+        File pluginJarFile= new File(filePath);
+        URL pluginURL= pluginJarFile.toURI().toURL();
+        URLClassLoader loader = new URLClassLoader(new URL[]{pluginURL});
+        // Load the jar file's plugin class, create and return an instance
+        Class<?> messagePluginClass= (Class<IPersistencePluginFactory>)loader.loadClass(className);
+
+        IPersistencePluginFactory asdf = (IPersistencePluginFactory)messagePluginClass.getDeclaredConstructor(null).newInstance();
+
+        return null;
+
+
+        /*
         URL[] classLoaderUrls = new URL[]{new URL(filePath)};
         URLClassLoader loader = new URLClassLoader(classLoaderUrls);
+
+        Class<? extends > pluginClass1 = (Class<MessagePlugin>)loader.loadClass(className);
+
         Class<?> pluginClass = loader.loadClass(className);
         Constructor<?> constructor = pluginClass.getConstructor();
         return (IPersistencePluginFactory)constructor.newInstance();
         //TODO: look into JSON file to instantiate the plugin
         //Use Java URLClassLoader
         //automatically set server iPersistencePluginFactory
+
+        */
     }
 
     public IPersistencePluginFactory getiPersistencePluginFactory() {
