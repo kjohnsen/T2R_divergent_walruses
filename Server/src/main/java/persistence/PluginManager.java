@@ -62,9 +62,7 @@ public class PluginManager {
         // Load the jar file's plugin class, create and return an instance
         Class<?> messagePluginClass= (Class<IPersistencePluginFactory>)loader.loadClass(className);
 
-        IPersistencePluginFactory asdf = (IPersistencePluginFactory)messagePluginClass.getDeclaredConstructor(null).newInstance();
-
-        return null;
+        return (IPersistencePluginFactory)messagePluginClass.getDeclaredConstructor(null).newInstance();
 
 
         /*
