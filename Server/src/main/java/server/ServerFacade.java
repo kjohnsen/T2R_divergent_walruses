@@ -177,14 +177,14 @@ public class ServerFacade implements IServer {
         User newUser = new User(username, password);
         serverModel.getUsers().put(username, newUser);
         serverModel.getAuthTokens().put(authToken, username);
-        User user = new User(username, password);
+        newUser.setAuthToken(authToken);
 
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
-        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
+        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {newUser, authToken, gameList}));
 
         startTransaction();
-        ServerModel.getInstance().getDaoProxy().createUser(user);
+        ServerModel.getInstance().getDaoProxy().createUser(newUser);
         endTransaction();
 
         //set results
