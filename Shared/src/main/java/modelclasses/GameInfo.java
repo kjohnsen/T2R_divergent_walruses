@@ -19,6 +19,7 @@ public class GameInfo implements Serializable {
     private ArrayList<Route> unclaimedRoutes = new ArrayList<>();
     private Player currentPlayer;
     private boolean lastRound;
+    private ServerState serverState = ServerState.TURNSTART;
 
     public GameInfo(GameName gameName, ArrayList<Player> players, int numPlayers) {
         this.gameName = gameName;
@@ -50,6 +51,14 @@ public class GameInfo implements Serializable {
         }
 
         return new GameInfo(new GameName("game name!"),players, 5);
+    }
+
+    public ServerState getServerState() {
+        return serverState;
+    }
+
+    public void setServerState(ServerState serverState) {
+        this.serverState = serverState;
     }
 
     public void addPlayer(Player player) {

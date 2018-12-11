@@ -3,7 +3,6 @@ package model;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.List;
 
 import modelclasses.ChatMessage;
@@ -77,8 +76,6 @@ public class ServerModel {
      */
     private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
-    private Map<GameName, ServerState> serverState = new HashMap<>();
-
     private int lastPlayerIndex = -1;
 
     /**
@@ -128,13 +125,6 @@ public class ServerModel {
         this.lastPlayerIndex = lastPlayerIndex;
     }
 
-    public ServerState getState(GameName gameName) {
-        return serverState.get(gameName);
-    }
-
-    public void setState(ServerState state, GameName gameName) {
-        this.serverState.put(gameName, state);
-    }
 
     /**
      * @pre None

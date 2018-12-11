@@ -5,7 +5,7 @@ import java.util.List;
 
 import interfaces.IServer;
 import model.ServerModel;
-import model.ServerState;
+import modelclasses.ServerState;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
@@ -221,7 +221,7 @@ public class ServerFacade implements IServer {
         ArrayList<Player> players = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
-        ServerModel.getInstance().setState(ServerState.TURNSTART, gameName);
+        ServerModel.getInstance().getGameInfo(gameName).setServerState(ServerState.TURNSTART);
 
         // createGame command sent to all other clients
         ClientProxy clientProxy = new ClientProxy();

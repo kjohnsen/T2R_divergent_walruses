@@ -1,4 +1,4 @@
-package model;
+package modelclasses;
 
 public enum ServerState {
     TURNSTART,
