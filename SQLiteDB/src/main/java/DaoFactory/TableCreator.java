@@ -50,7 +50,8 @@ public class TableCreator {
                 stmt = conn.createStatement();
                 stmt.executeUpdate("create table if not exists users " +
                         "(username text primary key, " +
-                        "password text not null);");
+                        "password text not null, " +
+                        "auth_token text not null);");
             } finally {
                 if (stmt != null) {
                     stmt.close();
