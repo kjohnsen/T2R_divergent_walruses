@@ -71,7 +71,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
         ArrayList<GameInfo> games = new ArrayList<>();
         for (Document gameInfoDoc : gameInfoDocs) {
 
-            BsonBinary bsonBinary = (BsonBinary)gameInfoDoc.get("data");
+            Binary bsonBinary = (Binary)gameInfoDoc.get("data");
 
             if(bsonBinary != null) {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
@@ -101,7 +101,7 @@ public class MongoGameInfoDao implements IGameInfoDAO {
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
             BsonBinary bsonBinary = new BsonBinary(gameInfoData);
-            gameInfoCollection.updateOne(Filters.eq("gameName", gameInfo.getGameName()), Updates.set("data", bsonBinary));
+            gameInfoCollection.updateOne(Filters.eq("gameName", gameInfo.getGameName().getName()), Updates.set("data", bsonBinary));
         } catch(IOException e) {
             e.printStackTrace();
         }

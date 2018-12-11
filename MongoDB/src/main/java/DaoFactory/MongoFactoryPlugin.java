@@ -71,14 +71,6 @@ public class MongoFactoryPlugin implements IPersistencePluginFactory {
     public static void main(String[] args) {
         MongoFactoryPlugin mongoFactoryPlugin = new MongoFactoryPlugin();
         mongoFactoryPlugin.clearDB();
-
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player("testPlayer"));
-        GameInfo gameInfo = new GameInfo(new GameName("testGame"), players, 2);
-
-        mongoFactoryPlugin.getGameInfoDAO().createGameInfo(gameInfo);
-        GameInfo testGameInfo = mongoFactoryPlugin.getGameInfoDAO().readGameInfo(new GameName("testGame"));
-        System.out.println(testGameInfo.equals(gameInfo));
     }
 
 }

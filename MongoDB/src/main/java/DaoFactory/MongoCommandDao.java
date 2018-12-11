@@ -7,6 +7,7 @@ import com.mongodb.client.model.Sorts;
 
 import org.bson.BsonBinary;
 import org.bson.Document;
+import org.bson.types.Binary;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,7 +55,7 @@ public class MongoCommandDao implements ICommandDAO {
         ArrayList<Command> commands = new ArrayList<>();
 
         for (Document doc: foundCommands) {
-            BsonBinary bsonBinary = (BsonBinary)doc.get("commandID");
+            Binary bsonBinary = (Binary)doc.get("commandID");
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
             try {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
@@ -76,7 +77,7 @@ public class MongoCommandDao implements ICommandDAO {
 
         FindIterable<Document> foundCommands = commandCollection.find().sort(Sorts.orderBy(Sorts.ascending("gameName"), Sorts.ascending("commandID")));
         for (Document commandDoc : foundCommands) {
-            BsonBinary bsonBinary = (BsonBinary)commandDoc.get("data");
+            Binary bsonBinary = (Binary)commandDoc.get("data");
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
 
             try {
