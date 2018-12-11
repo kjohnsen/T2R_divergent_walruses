@@ -56,40 +56,40 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     @Override
     public void startTransaction() {
-        try {
-            Statement stmt = null;
-            try {
-                stmt = connection.createStatement();
-                stmt.executeUpdate("BEGIN TRANSACTION ");
-            } catch (NullPointerException n) {
-                System.out.println("connection not open");
-            } finally {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("startTransaction failed");
-        }
+//        try {
+//            Statement stmt = null;
+//            try {
+//                stmt = connection.createStatement();
+//                stmt.executeUpdate("BEGIN TRANSACTION ");
+//            } catch (NullPointerException n) {
+//                System.out.println("connection not open");
+//            } finally {
+//                if (stmt != null) {
+//                    stmt.close();
+//                }
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("startTransaction failed");
+//        }
     }
 
     @Override
     public void endTransaction() {
-        try {
-            Statement stmt = null;
-            try {
-                stmt = connection.createStatement();
-                stmt.executeUpdate("COMMIT TRANSACTION ");
-            } catch (NullPointerException n) {
-                System.out.println("connection not open");
-            } finally {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("endTransaction failed");
-        }
+//        try {
+//            Statement stmt = null;
+//            try {
+//                stmt = connection.createStatement();
+//                stmt.executeUpdate("COMMIT TRANSACTION ");
+//            } catch (NullPointerException n) {
+//                System.out.println("connection not open");
+//            } finally {
+//                if (stmt != null) {
+//                    stmt.close();
+//                }
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("endTransaction failed");
+//        }
     }
 
     @Override
