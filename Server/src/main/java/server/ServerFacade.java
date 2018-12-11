@@ -33,6 +33,15 @@ public class ServerFacade implements IServer {
         return ourInstance;
     }
 
+    public static void startTransaction(){
+        ServerModel.getInstance().getiPersistencePluginFactory().startTransaction();
+    }
+
+    public static void endTransaction(){
+        ServerModel.getInstance().getiPersistencePluginFactory().endTransaction();
+    }
+
+
     public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         return ourInstance.selectDestinationCards(tickets, name, authToken);
     }
@@ -166,7 +175,9 @@ public class ServerFacade implements IServer {
         User user = new User(username, password);
 
         //save in database.
+        startTransaction();
         ServerModel.getInstance().getDaoProxy().createUser(user);
+        endTransaction();
 
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
@@ -320,7 +331,9 @@ public class ServerFacade implements IServer {
 
         //add the game to the database when it is started
         //add new game to database
+        startTransaction();
         ServerModel.getInstance().getDaoProxy().createGameInfo(ServerModel.getInstance().getGameInfo(gameName));
+        endTransaction();
 
         //initialize delta
         ServerModel.getInstance().initializeDelta(gameName);

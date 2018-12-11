@@ -28,6 +28,7 @@ public class DAOProxy implements ICommandDAO, IGameInfoDAO, IUserDAO {
 
             //set delta to 0. hopefully the map can determine that the gamenames are the same.
             ServerModel.getInstance().initializeDelta(gameName);
+
         }
 
         //increment the delta
