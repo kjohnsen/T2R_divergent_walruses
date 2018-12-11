@@ -45,20 +45,9 @@ public class MongoUserDao implements IUserDAO {
         ArrayList<User> users = new ArrayList<>();
         FindIterable<Document> userDocs = userCollection.find();
         for (Document userDoc : userDocs) {
-            BsonBinary bsonBinary = (BsonBinary)userDoc.get("data");
-
-            if(bsonBinary != null) {
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bsonBinary.getData());
-                try {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-                    users.add((User)objectInputStream.readObject());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch(ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            String username = (String)userDoc.get("username");
+            String password = (String)userDoc.get("password");
+            users.add(new User(username, password));
         }
 
         return users;
