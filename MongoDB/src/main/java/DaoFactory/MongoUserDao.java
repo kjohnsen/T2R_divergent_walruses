@@ -24,7 +24,9 @@ public class MongoUserDao implements IUserDAO {
 
     @Override
     public Result createUser(User user) {
-        Document document = new Document("username", user.getUsername()).append("password", user.getPassword());
+        Document document = new Document("username", user.getUsername())
+                .append("password", user.getPassword())
+                .append("authToken", user.getAuthToken());
         userCollection.insertOne(document);
         return null;
     }
@@ -34,7 +36,10 @@ public class MongoUserDao implements IUserDAO {
         Document userDoc = userCollection.find(Filters.eq("username", username)).first();
         if(userDoc != null) {
             String password = (String)userDoc.get("password");
-            return new User(username, password);
+            String authToken = (String)userDoc.get("authToken");
+            User user = new User(username, password);
+            user.setAuthToken(authToken);
+            return user;
         }
 
         return null;
@@ -47,7 +52,10 @@ public class MongoUserDao implements IUserDAO {
         for (Document userDoc : userDocs) {
             String username = (String)userDoc.get("username");
             String password = (String)userDoc.get("password");
-            users.add(new User(username, password));
+            String authToken = (String)userDoc.get("authToken");
+            User user = new User(username, password);
+            user.setAuthToken(authToken);
+            users.add(user);
         }
 
         return users;

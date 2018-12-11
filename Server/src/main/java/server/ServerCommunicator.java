@@ -81,6 +81,7 @@ public class ServerCommunicator {
         IUserDAO userDAO = persistencePluginFactory.getUserDAO();
         for (User user : userDAO.readAllUsers()) {
             ServerModel.getInstance().getUsers().put(user.getUsername(), user);
+            ServerModel.getInstance().getAuthTokens().put(user.getAuthToken(), user.getUsername());
         }
         // load all games into model
         IGameInfoDAO gameInfoDAO = persistencePluginFactory.getGameInfoDAO();

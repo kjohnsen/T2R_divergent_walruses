@@ -58,7 +58,10 @@ ExcmdHandler implements HttpHandler {
                         case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0]; ServerFacade.getInstance().addToDB(command, gameName);   break;
                         case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1]; ServerFacade.getInstance().addToDB(command, gameName);  break;
                         case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0]; ServerFacade.getInstance().addToDB(command, gameName);  break;
-                        case CommandMethodNames.selectTrainCard: gameName = (GameName)command.get_paramValues()[1]; ServerFacade.getInstance().addToDB(command, gameName); break;
+                        case CommandMethodNames.selectTrainCard:
+                            gameName = (GameName)command.get_paramValues()[1];
+                        ServerFacade.getInstance().addToDB(command, gameName);
+                        break;
                     }
 
 
