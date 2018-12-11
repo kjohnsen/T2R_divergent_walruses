@@ -1,5 +1,7 @@
 package DaoFactory;
 
+import org.sqlite.JDBC;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,12 +18,16 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
     private ICommandDAO commandDAO = new SQLCommandDao();
     static private Connection connection = null;
 
-    public SQLFactoryPlugin() {}
+    public SQLFactoryPlugin() {
+        this.openConnection();
+        createTables();
+    }
 
     @Override
     public void openConnection() {
         try{
-            String url = "jdbc:sqlite:SQLiteDB.sqlite";
+            DriverManager.registerDriver(new JDBC());
+            String url = "jdbc:sqlite:SQLiteDB/data.db";
             Connection conn = DriverManager.getConnection(url);
             conn.setAutoCommit(false);
             connection = conn;
@@ -51,7 +57,25 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     @Override
     public void clearDB() {
-        createTables();
+        String[] tableNames = {"commands", "users", "games"};
+        for (String tableName : tableNames) {
+            try {
+                Statement stmt = null;
+                try {
+                    stmt = connection.createStatement();
+                    stmt.executeUpdate("drop table if exists " + tableName +
+                            " (command_id string primary key, " +
+                            "game_name string not null, " +
+                            "command string not null);");
+                } finally {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("clearDB failed");
+            }
+        }
     }
 
     @Override

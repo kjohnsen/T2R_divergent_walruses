@@ -1,2 +1,2 @@
-SQLiteDB SQLFactoryPlugin SQLiteDB/build/libs/SQLiteDB.jar
+SQLiteDB SQLFactoryPlugin SQLiteDB/build/libs/SQLiteDB.jar SQLiteDB/libs/sqlite-jdbc-3.23.1.jar
 MongoDB MongoFactoryPlugin MongoDB/build/libs/MongoDB.jar MongoDB/libs/mongo-java-driver-3.9.1.jar

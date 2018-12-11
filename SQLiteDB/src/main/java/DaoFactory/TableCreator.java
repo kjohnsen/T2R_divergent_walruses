@@ -11,8 +11,7 @@ public class TableCreator {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
-                stmt.executeUpdate("drop table if exists commands");
-                stmt.executeUpdate("create table commands " +
+                stmt.executeUpdate("create table if not exists commands " +
                         "(command_id string primary key, " +
                         "game_name string not null, " +
                         "command string not null);");
@@ -31,8 +30,7 @@ public class TableCreator {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
-                stmt.executeUpdate("drop table if exists games");
-                stmt.executeUpdate("create table games " +
+                stmt.executeUpdate("create table if not exists games " +
                         "(game_name string primary key, " +
                         "game_state string not null);");
             } finally {
@@ -50,8 +48,7 @@ public class TableCreator {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
-                stmt.executeUpdate("drop table if exists users");
-                stmt.executeUpdate("create table users " +
+                stmt.executeUpdate("create table if not exists users " +
                         "(username text primary key, " +
                         "password text not null);");
             } finally {

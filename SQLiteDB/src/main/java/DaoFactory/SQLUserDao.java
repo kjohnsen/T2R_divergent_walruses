@@ -66,7 +66,7 @@ public class SQLUserDao implements IUserDAO {
             Statement stmt = connection.createStatement();
             ResultSet rs = null;
             try {
-                rs = stmt.executeQuery("select * from users");
+                rs = stmt.executeQuery("select * from users;");
                 ArrayList<User> allUsers = new ArrayList<>();
                 while (rs.next()) {
                     String username = rs.getString("username");
