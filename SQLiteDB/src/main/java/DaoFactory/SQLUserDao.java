@@ -20,8 +20,8 @@ public class SQLUserDao implements IUserDAO {
             Statement stmt = null;
             try {
                 stmt = connection.createStatement();
-                stmt.executeUpdate("insert into users (username, password) " +
-                        "values ('" + user.getUsername() + "', '" + user.getPassword() + "');");
+                stmt.executeUpdate("insert into users (username, password, auth_token) " +
+                        "values ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getAuthToken() + "');");
             } finally {
                 if (stmt != null) {
                     stmt.close();
