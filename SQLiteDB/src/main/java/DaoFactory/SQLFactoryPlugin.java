@@ -114,6 +114,12 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 //        } catch (SQLException e) {
 //            System.out.println("endTransaction failed");
 //        }
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

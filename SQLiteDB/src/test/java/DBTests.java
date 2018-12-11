@@ -24,6 +24,7 @@ public class DBTests {
         createAllTables();
     }
 
+    @Test
     public void createAllTables() {
         factoryPlugin.createTables();
     }
