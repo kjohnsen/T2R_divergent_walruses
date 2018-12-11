@@ -41,6 +41,12 @@ public class ServerFacade implements IServer {
         ServerModel.getInstance().getiPersistencePluginFactory().endTransaction();
     }
 
+    public void addToDB(Command command, GameName gameName){
+        startTransaction();
+        ServerModel.getInstance().getDaoProxy().createCommand(command, gameName);
+        endTransaction();
+    }
+
 
     public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         return ourInstance.selectDestinationCards(tickets, name, authToken);
@@ -91,7 +97,6 @@ public class ServerFacade implements IServer {
     public Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
-
 
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
@@ -174,14 +179,13 @@ public class ServerFacade implements IServer {
         serverModel.getAuthTokens().put(authToken, username);
         User user = new User(username, password);
 
-        //save in database.
-        startTransaction();
-        ServerModel.getInstance().getDaoProxy().createUser(user);
-        endTransaction();
-
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
         Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
+
+        startTransaction();
+        ServerModel.getInstance().getDaoProxy().createUser(user);
+        endTransaction();
 
         //set results
         results.getClientCommands().add(registerUserCommand);
