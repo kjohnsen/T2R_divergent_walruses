@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import modelclasses.User;
 
 public interface IUserDAO {
-    Result createUser(User user, String authToken);
+    Result createUser(User user);
     ArrayList<User> readAllUsers();
     User readUser(String username);
 }
