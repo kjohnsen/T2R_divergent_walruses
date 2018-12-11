@@ -4,17 +4,20 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import model.Plugin;
 import model.ServerModel;
+import sun.rmi.log.LogInputStream;
 
 public class PluginManager {
 
     IPersistencePluginFactory iPersistencePluginFactory;
 
-    Map<String, IPersistencePluginFactory> pluginName_pluginFactory;
+    Map<String, Plugin> pluginName_pluginFactory;
 
     public PluginManager() {
         initializeAllPlugins();
@@ -26,14 +29,24 @@ public class PluginManager {
         File file = new File("plugins.txt");
         try {
             Scanner scanner = new Scanner(file);
-            while (scanner.hasNext()) {
-                String name = scanner.next();
-                String path = scanner.next();
-                String jarName = scanner.next();
-                String className = scanner.next();
-                IPersistencePluginFactory plugin = createPlugin(className, path + "/" + jarName);
+            String newLine;
+            while (scanner.hasNextLine()) {
+                newLine = scanner.nextLine();
+
+                Scanner scanner2 = new Scanner(newLine);
+                Plugin plugin = new Plugin();
+                String name = scanner2.next();
+                plugin.setName(name);
+                plugin.setClassName(scanner2.next());
+                while(scanner2.hasNext()){
+                    plugin.addPath(scanner2.next());
+                }
+
+                //IPersistencePluginFactory plugin = createPlugin(className, path + "/" + jarName);
                 pluginName_pluginFactory.put(name, plugin);
             }
+
+            //MongoDB MongoFactoryPlugin MongoDB/build/libs MongoDB.jar MongoDB/libs/mongo-java-driver-3.9.1.jar
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,20 +60,22 @@ public class PluginManager {
 
     }
 
-    public IPersistencePluginFactory createPlugin(String className, String filePath) throws Exception {
-        //filePath = "file://" + filePath;
-        className = "DaoFactory." + className;
-
-
+    public IPersistencePluginFactory createPlugin(Plugin plugin) throws Exception {
 
         //Get a class loader and set it up to load the jar file
-        File pluginJarFile= new File(filePath);
-        System.out.println(pluginJarFile.exists());
-        URL pluginURL= pluginJarFile.toURI().toURL();
-        System.out.println(pluginURL.getFile());
-        URLClassLoader loader = new URLClassLoader(new URL[]{pluginURL});
+
+
+        //create an array of URLs
+        ArrayList<URL> urlList = new ArrayList<>();
+        for (String urlPath : plugin.getDependencies()) {
+            File pluginJarFile= new File(urlPath);
+            System.out.println(pluginJarFile.exists());
+            urlList.add(pluginJarFile.toURI().toURL());
+        }
+
+        URLClassLoader loader = new URLClassLoader(urlList.toArray(new URL[urlList.size()]));
         // Load the jar file's plugin class, create and return an instance
-        Class<?> messagePluginClass= (Class<IPersistencePluginFactory>)loader.loadClass(className);
+        Class<?> messagePluginClass= (Class<IPersistencePluginFactory>)loader.loadClass("DaoFactory." + plugin.getClassName());
 
         return (IPersistencePluginFactory)messagePluginClass.getDeclaredConstructor(null).newInstance();
 
@@ -86,8 +101,18 @@ public class PluginManager {
     }
 
     //auto set server model whenever setter is used.
+    //instantiates new plugin.
     public void setiPersistencePluginFactory(String pluginName) {
-        IPersistencePluginFactory pluginFactory = pluginName_pluginFactory.get(pluginName);
+
+        IPersistencePluginFactory pluginFactory = null;
+
+        try{
+            pluginFactory = createPlugin(pluginName_pluginFactory.get(pluginName));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
         ServerModel.getInstance().setiPersistencePluginFactory(pluginFactory);
         this.iPersistencePluginFactory = pluginFactory;
     }

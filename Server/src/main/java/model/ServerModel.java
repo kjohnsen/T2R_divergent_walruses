@@ -55,7 +55,7 @@ public class ServerModel {
     /**
      * This is points to the iPersistencePluginFactory on the PluginManager class
      */
-    IPersistencePluginFactory iPersistencePluginFactory = pluginManager.getiPersistencePluginFactory();
+    IPersistencePluginFactory iPersistencePluginFactory = null;
 
     /**
      * Map of authTokens to usernames (owners of the auth tokens)
@@ -102,6 +102,14 @@ public class ServerModel {
             instance = new ServerModel();
         }
         return instance;
+    }
+
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
+
+    public void setPluginManager(PluginManager pluginManager) {
+        this.pluginManager = pluginManager;
     }
 
     public IPersistencePluginFactory getiPersistencePluginFactory() {
