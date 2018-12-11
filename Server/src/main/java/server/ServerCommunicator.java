@@ -93,6 +93,13 @@ public class ServerCommunicator {
             command.execute();
         }
 
+        //after executing commands... delete them from the database and reinitialize delta
+        for (GameInfo game : gameInfoDAO.readAllGameInfos()) {
+            ServerModel.getInstance().getDaoProxy().deleteCommand(game.getGameName());
+            ServerModel.getInstance().initializeDelta(game.getGameName());
+        }
+
+
         persistencePluginFactory.endTransaction();
     }
 
