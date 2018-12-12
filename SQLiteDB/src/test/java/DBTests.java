@@ -18,24 +18,24 @@ import modelclasses.GameInfo;
 public class DBTests {
     private SQLFactoryPlugin factoryPlugin = new SQLFactoryPlugin();
 
-    @Before
+//    @Before
     public void openConnection() {
         factoryPlugin.openConnection();
         createAllTables();
     }
 
-    @Test
+//    @Test
     public void createAllTables() {
         factoryPlugin.createTables();
     }
 
-    @Test
+//    @Test
     public void createUser() {
         User user = new User("newuser1", "password");
         factoryPlugin.getUserDAO().createUser(user);
     }
 
-    @Test
+//    @Test
     public void readUser() {
         User user = new User("readme", "pass");
         factoryPlugin.getUserDAO().createUser(user);
@@ -45,7 +45,7 @@ public class DBTests {
         assertEquals("pass", readUser.getPassword());
     }
 
-    @Test
+//    @Test
     public void readAllUsers() {
         User user1 = new User("u1", "p");
         User user2 = new User("u2", "pw");
@@ -62,14 +62,14 @@ public class DBTests {
         assertEquals("u3", allUsers.get(2).getUsername());
     }
 
-    @Test
+//    @Test
     public void createCommand() {
         GameName gameName = new GameName("create");
         Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
         factoryPlugin.getCommandDAO().createCommand(command, gameName);
     }
 
-    @Test
+//    @Test
     public void readCommands() {
         GameName gameName1 = new GameName("read1");
         GameName gameName2 = new GameName("read2");
@@ -85,7 +85,7 @@ public class DBTests {
         assertEquals(1, game2Commands.size());
     }
 
-    @Test
+//    @Test
     public void readAllCommands() {
         GameName game1 = new GameName("readAllCommands1");
         GameName game2 = new GameName("readAllCommands2");
@@ -98,7 +98,7 @@ public class DBTests {
         assertEquals(3, commands.size());
     }
 
-    @Test
+//    @Test
     public void deleteCommands() {
         GameName gameName = new GameName("delete");
         Command command = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {"username"}));
@@ -111,7 +111,7 @@ public class DBTests {
         factoryPlugin.getCommandDAO().deleteCommand(gameName);
     }
 
-    @Test
+//    @Test
     public void createGame() {
         GameName gameName = new GameName("createGameInfo");
         ArrayList<Player> players = new ArrayList<>();
@@ -120,7 +120,7 @@ public class DBTests {
         factoryPlugin.getGameInfoDAO().createGameInfo(gameInfo);
     }
 
-    @Test
+//    @Test
     public void readGame() {
         GameName gameName = new GameName("readGameInfo");
         ArrayList<Player> players = new ArrayList<>();
@@ -133,7 +133,7 @@ public class DBTests {
         assertEquals(2, gameFromDB.getNumPlayers());
     }
 
-    @Test
+//    @Test
     public void readAllGames() {
         GameName gameName1 = new GameName("g1");
         GameName gameName2 = new GameName("g2");
@@ -158,7 +158,7 @@ public class DBTests {
         assertEquals(4, allGames.get(2).getNumPlayers());
     }
 
-    @Test
+//    @Test
     public void updateGame() {
         GameName gameName = new GameName("updateGameInfo");
         ArrayList<Player> players = new ArrayList<>();
@@ -176,7 +176,7 @@ public class DBTests {
         assertEquals(5, newGameFromDB.getNumPlayers());
     }
 
-    @Test
+//    @Test
     public void deleteGame() {
         GameName gameName = new GameName("deleteGame");
         ArrayList<Player> players = new ArrayList<>();
@@ -190,7 +190,7 @@ public class DBTests {
         factoryPlugin.getGameInfoDAO().deleteGameInfo(gameInfo);
     }
 
-    @After
+//    @After
     public void closeConnection() {
         factoryPlugin.closeConnection();
     }
