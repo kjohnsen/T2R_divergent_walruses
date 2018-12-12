@@ -57,63 +57,16 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     @Override
     public void clearDB() {
-        String[] tableNames = {"commands", "users", "games"};
-        for (String tableName : tableNames) {
-            try {
-                Statement stmt = null;
-                try {
-                    stmt = connection.createStatement();
-                    stmt.executeUpdate("drop table if exists " + tableName +
-                            " (command_id string primary key, " +
-                            "game_name string not null, " +
-                            "command string not null);");
-                } finally {
-                    if (stmt != null) {
-                        stmt.close();
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("clearDB failed");
-            }
-        }
+        createTables();
     }
 
     @Override
     public void startTransaction() {
-//        try {
-//            Statement stmt = null;
-//            try {
-//                stmt = connection.createStatement();
-//                stmt.executeUpdate("BEGIN TRANSACTION ");
-//            } catch (NullPointerException n) {
-//                System.out.println("connection not open");
-//            } finally {
-//                if (stmt != null) {
-//                    stmt.close();
-//                }
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("startTransaction failed");
-//        }
+
     }
 
     @Override
     public void endTransaction() {
-//        try {
-//            Statement stmt = null;
-//            try {
-//                stmt = connection.createStatement();
-//                stmt.executeUpdate("COMMIT TRANSACTION ");
-//            } catch (NullPointerException n) {
-//                System.out.println("connection not open");
-//            } finally {
-//                if (stmt != null) {
-//                    stmt.close();
-//                }
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("endTransaction failed");
-//        }
         try {
             connection.commit();
         } catch (SQLException e) {
@@ -139,6 +92,14 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     public static Connection getConnection() {
         return connection;
+    }
+
+    public static void main(String[] args) {
+        SQLFactoryPlugin sqlFactoryPlugin = new SQLFactoryPlugin();
+        sqlFactoryPlugin.openConnection();
+        sqlFactoryPlugin.clearDB();
+        sqlFactoryPlugin.endTransaction();
+        sqlFactoryPlugin.closeConnection();
     }
 
 }
