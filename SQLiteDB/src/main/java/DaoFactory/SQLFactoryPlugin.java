@@ -21,6 +21,7 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
     public SQLFactoryPlugin() {
         this.openConnection();
         createTables();
+        this.closeConnection();
     }
 
     @Override
@@ -57,7 +58,22 @@ public class SQLFactoryPlugin implements IPersistencePluginFactory{
 
     @Override
     public void clearDB() {
-        createTables();
+        String[] tableNames = {"commands", "users", "games"};
+        for (String tableName : tableNames) {
+            try {
+                Statement stmt = null;
+                try {
+                    stmt = connection.createStatement();
+                    stmt.executeUpdate("drop table if exists " + tableName);
+                } finally {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("clearDB failed");
+            }
+        }
     }
 
     @Override
