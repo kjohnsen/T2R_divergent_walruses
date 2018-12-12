@@ -78,6 +78,8 @@ public class ServerModel {
 
     private int lastPlayerIndex = -1;
 
+    private boolean bootingUp = false;
+
     /**
      * private empty constructor.
      * @pre None
@@ -322,6 +324,14 @@ public class ServerModel {
                 return gameName;
         }
         return null;
+    }
+
+    public boolean isBootingUp() {
+        return bootingUp;
+    }
+
+    public void setBootingUp(boolean bootingUp) {
+        this.bootingUp = bootingUp;
     }
 
     //********************************************

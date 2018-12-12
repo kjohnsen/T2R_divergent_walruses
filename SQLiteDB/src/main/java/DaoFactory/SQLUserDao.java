@@ -43,7 +43,10 @@ public class SQLUserDao implements IUserDAO {
                 rs = stmt.executeQuery("select * from users where username = '" + username + "'");
                 while (rs.next()) {
                     String password = rs.getString("password");
-                    return new User(username, password);
+                    String authToken = rs.getString("auth_token");
+                    User user = new User(username, password);
+                    user.setAuthToken(authToken);
+                    return user;
                 }
             } finally {
                 if (rs != null) {
@@ -71,7 +74,9 @@ public class SQLUserDao implements IUserDAO {
                 while (rs.next()) {
                     String username = rs.getString("username");
                     String password = rs.getString("password");
+                    String authToken = rs.getString("auth_token");
                     User user = new User(username, password);
+                    user.setAuthToken(authToken);
                     allUsers.add(user);
                 }
                 return allUsers;

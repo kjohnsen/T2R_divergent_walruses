@@ -1,7 +1,6 @@
 package server;
 import java.io.*;
 import java.net.*;
-import java.util.List;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -75,6 +74,7 @@ public class ServerCommunicator {
 
 
     private static void reloadPersistentData(IPersistencePluginFactory persistencePluginFactory) {
+        ServerModel.getInstance().setBootingUp(true);
         persistencePluginFactory.startTransaction();
 
         // load all users into model
@@ -82,6 +82,7 @@ public class ServerCommunicator {
         for (User user : userDAO.readAllUsers()) {
             ServerModel.getInstance().getUsers().put(user.getUsername(), user);
             ServerModel.getInstance().getAuthTokens().put(user.getAuthToken(), user.getUsername());
+            CommandManager.getInstance().addClient(user.getUsername());
         }
         // load all games into model
         IGameInfoDAO gameInfoDAO = persistencePluginFactory.getGameInfoDAO();
@@ -100,8 +101,8 @@ public class ServerCommunicator {
             ServerModel.getInstance().initializeDelta(game.getGameName());
         }
 
-
         persistencePluginFactory.endTransaction();
+        ServerModel.getInstance().setBootingUp(false);
     }
 
 
