@@ -81,7 +81,7 @@
          assertEquals("Username doesn't exist", results.getErrorMessage());
      }
 
-     @Test
+//     @Test
      public void registerUserTest() {
          Results results = ServerFacade.getInstance().registerUser("newUser", "word");
          assertTrue(results.getSuccess());

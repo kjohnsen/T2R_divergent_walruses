@@ -4,7 +4,16 @@ import java.net.*;
 
 import com.sun.net.httpserver.HttpServer;
 
+import data.Command;
 import handler.ExcmdHandler;
+import model.ServerModel;
+import modelclasses.GameInfo;
+import modelclasses.User;
+import persistence.ICommandDAO;
+import persistence.IGameInfoDAO;
+import persistence.IPersistencePluginFactory;
+import persistence.IUserDAO;
+import persistence.PluginManager;
 
 /**
  * Created by Parker on 2/10/18.
@@ -64,7 +73,41 @@ public class ServerCommunicator {
     }
 
 
+    private static void reloadPersistentData(IPersistencePluginFactory persistencePluginFactory) {
+        ServerModel.getInstance().setBootingUp(true);
+        persistencePluginFactory.startTransaction();
 
+        // load all users into model
+        IUserDAO userDAO = persistencePluginFactory.getUserDAO();
+        for (User user : userDAO.readAllUsers()) {
+            ServerModel.getInstance().getUsers().put(user.getUsername(), user);
+            ServerModel.getInstance().getAuthTokens().put(user.getAuthToken(), user.getUsername());
+            CommandManager.getInstance().addClient(user.getUsername());
+        }
+        // load all games into model
+        IGameInfoDAO gameInfoDAO = persistencePluginFactory.getGameInfoDAO();
+        for (GameInfo game : gameInfoDAO.readAllGameInfos()) {
+            ServerModel.getInstance().getGames().put(game.getGameName(), game);
+        }
+        // run all commands on games
+        ICommandDAO commandDAO = persistencePluginFactory.getCommandDAO();
+        for (Command command : commandDAO.readAllCommands()) {
+            command.execute();
+        }
+
+        for(GameInfo gameInfo: ServerModel.getInstance().getGameList()) {
+            gameInfoDAO.updateGameInfo(gameInfo);
+        }
+
+        //after executing commands... delete them from the database and reinitialize delta
+        for (GameInfo game : gameInfoDAO.readAllGameInfos()) {
+            ServerModel.getInstance().getDaoProxy().deleteCommand(game.getGameName());
+            ServerModel.getInstance().initializeDelta(game.getGameName());
+        }
+
+        persistencePluginFactory.endTransaction();
+        ServerModel.getInstance().setBootingUp(false);
+    }
 
 
     // "main" method for the server program
@@ -72,6 +115,17 @@ public class ServerCommunicator {
     // on which the server should accept incoming client connections.
     public static void main(String[] args) {
         String portNumber = args[0];
+        String persistenceType = args[1];
+        int commandsBetweenCheckpoints = Integer.parseInt(args[2]);
+
+        ServerModel.getInstance().setDeltaMax(commandsBetweenCheckpoints);
+
+        PluginManager pluginManager = ServerModel.getInstance().getPluginManager();
+        pluginManager.setiPersistencePluginFactory(persistenceType);
+        IPersistencePluginFactory pluginFactory = pluginManager.getiPersistencePluginFactory();
+
+        reloadPersistentData(pluginFactory);
+
         new ServerCommunicator().run(portNumber);
     }
 }

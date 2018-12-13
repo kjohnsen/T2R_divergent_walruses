@@ -1,8 +1,11 @@
 package persistence;
 
+import java.util.ArrayList;
+
 import modelclasses.User;
 
 public interface IUserDAO {
-    public Result create(User user);
-    public User read(String username);
+    Result createUser(User user);
+    ArrayList<User> readAllUsers();
+    User readUser(String username);
 }

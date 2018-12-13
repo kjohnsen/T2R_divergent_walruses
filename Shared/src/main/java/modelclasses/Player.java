@@ -53,7 +53,7 @@ public class Player implements Serializable {
     /**
      * stores the number of trains the player has remaining
      */
-    private Integer numberOfTrains = 10;
+    private Integer numberOfTrains = 45;
 
     /**
      *

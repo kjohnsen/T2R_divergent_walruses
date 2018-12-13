@@ -7,6 +7,13 @@ import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
+import java.util.ArrayList;
+
+import data.Command;
+import modelclasses.GameInfo;
+import modelclasses.GameName;
+import modelclasses.Player;
+import modelclasses.User;
 import persistence.ICommandDAO;
 import persistence.IGameInfoDAO;
 import persistence.IPersistencePluginFactory;
@@ -60,4 +67,10 @@ public class MongoFactoryPlugin implements IPersistencePluginFactory {
     public IGameInfoDAO getGameInfoDAO() {
         return gameInfoDAO;
     }
+
+    public static void main(String[] args) {
+        MongoFactoryPlugin mongoFactoryPlugin = new MongoFactoryPlugin();
+        mongoFactoryPlugin.clearDB();
+    }
+
 }

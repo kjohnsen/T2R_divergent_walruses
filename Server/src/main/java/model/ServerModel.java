@@ -3,7 +3,6 @@ package model;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.List;
 
 import modelclasses.ChatMessage;
@@ -13,6 +12,7 @@ import modelclasses.GameName;
 import modelclasses.User;
 import persistence.IPersistencePluginFactory;
 import persistence.PluginManager;
+import server.DAOProxy;
 
 /**
  * Represents the model on the server side.
@@ -32,9 +32,29 @@ public class ServerModel {
     PluginManager pluginManager = new PluginManager();
 
     /**
+     * connection to the DAO stuff
+     */
+    private DAOProxy daoProxy = new DAOProxy();
+
+    /**
+     * delta counter counts until it hits deltaMax.
+     * When it hits deltaMax, it deletes the commands
+     * and updates the GameInfo blob in the database.
+     */
+    private Map<GameName, Integer> gameName_delta = new HashMap<>();
+
+    /**
+     * deltaMax comes from the commandline when initializing the server.
+     * It is the number of commands that are added to the data base
+     * before the list of commands is deleted and the gameinfo blob
+     * is updated.
+     */
+    private Integer deltaMax = 0;
+
+    /**
      * This is points to the iPersistencePluginFactory on the PluginManager class
      */
-    IPersistencePluginFactory iPersistencePluginFactory = pluginManager.getiPersistencePluginFactory();
+    IPersistencePluginFactory iPersistencePluginFactory = null;
 
     /**
      * Map of authTokens to usernames (owners of the auth tokens)
@@ -56,9 +76,9 @@ public class ServerModel {
      */
     private Map<GameName,List<ChatMessage>> chatMessages = new HashMap<>();
 
-    private Map<GameName, ServerState> serverState = new HashMap<>();
-
     private int lastPlayerIndex = -1;
+
+    private boolean bootingUp = false;
 
     /**
      * private empty constructor.
@@ -83,6 +103,14 @@ public class ServerModel {
         return instance;
     }
 
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
+
+    public void setPluginManager(PluginManager pluginManager) {
+        this.pluginManager = pluginManager;
+    }
+
     public IPersistencePluginFactory getiPersistencePluginFactory() {
         return iPersistencePluginFactory;
     }
@@ -99,13 +127,6 @@ public class ServerModel {
         this.lastPlayerIndex = lastPlayerIndex;
     }
 
-    public ServerState getState(GameName gameName) {
-        return serverState.get(gameName);
-    }
-
-    public void setState(ServerState state, GameName gameName) {
-        this.serverState.put(gameName, state);
-    }
 
     /**
      * @pre None
@@ -188,6 +209,48 @@ public class ServerModel {
 
     // ********** getters and setters ***********
 
+
+    public DAOProxy getDaoProxy() {
+        return daoProxy;
+    }
+
+    public Map<GameName, Integer> getGameName_delta() {
+        return gameName_delta;
+    }
+
+    /**
+     * increments the delta of the corresponding gamename
+     * @param gameName
+     */
+    public void deltaIncrementer(GameName gameName) {
+        gameName_delta.put(gameName, gameName_delta.get(gameName) + 1);
+    }
+
+    /**
+     * initialize the delta for the corresponding game
+     * @param gameName
+     */
+    public void initializeDelta(GameName gameName) {
+        gameName_delta.put(gameName, 0);
+    }
+
+    /**
+     * gets the delta of the corresponding gamename.
+     * @param gameName
+     * @return
+     */
+    public Integer getDelta(GameName gameName) {
+        return gameName_delta.get(gameName);
+    }
+
+    public Integer getDeltaMax() {
+        return deltaMax;
+    }
+
+    public void setDeltaMax(Integer deltaMax) {
+        this.deltaMax = deltaMax;
+    }
+
     /**
      * Getters and Setters self explanatory
      * @pre None
@@ -253,6 +316,22 @@ public class ServerModel {
         }
 
         return inGame;
+    }
+
+    public GameName getGameNameFromGameInfo(GameInfo gameInfo){
+        for(GameName gameName : getGames().keySet()){
+            if(getGames().get(gameName).equals(gameInfo))
+                return gameName;
+        }
+        return null;
+    }
+
+    public boolean isBootingUp() {
+        return bootingUp;
+    }
+
+    public void setBootingUp(boolean bootingUp) {
+        this.bootingUp = bootingUp;
     }
 
     //********************************************

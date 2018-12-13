@@ -46,6 +46,7 @@ public class ClientCommunicator {
 
             //Get the connection
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setConnectTimeout(1000);
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 

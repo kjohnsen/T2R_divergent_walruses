@@ -3,9 +3,11 @@ package persistence;
 import java.util.ArrayList;
 
 import data.Command;
+import modelclasses.GameName;
 
 public interface ICommandDAO {
-    public Result create(Command command);
-    public Command read(String commandID);
-    public Result delete(ArrayList<Command> commands);
+    Result createCommand(Command command, GameName gameName);
+    ArrayList<Command> readCommands(GameName gameName);
+    ArrayList<Command> readAllCommands();
+    Result deleteCommand(GameName gameName);
 }

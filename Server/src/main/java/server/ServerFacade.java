@@ -5,7 +5,7 @@ import java.util.List;
 
 import interfaces.IServer;
 import model.ServerModel;
-import model.ServerState;
+import modelclasses.ServerState;
 import modelclasses.ChatMessage;
 import modelclasses.DestinationCard;
 import modelclasses.GameInfo;
@@ -32,6 +32,21 @@ public class ServerFacade implements IServer {
     public static ServerFacade getInstance() {
         return ourInstance;
     }
+
+    public static void startTransaction(){
+        ServerModel.getInstance().getiPersistencePluginFactory().startTransaction();
+    }
+
+    public static void endTransaction(){
+        ServerModel.getInstance().getiPersistencePluginFactory().endTransaction();
+    }
+
+    public void addToDB(Command command, GameName gameName){
+        startTransaction();
+        ServerModel.getInstance().getDaoProxy().createCommand(command, gameName);
+        endTransaction();
+    }
+
 
     public static Results _selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
         return ourInstance.selectDestinationCards(tickets, name, authToken);
@@ -83,7 +98,6 @@ public class ServerFacade implements IServer {
         return GamePlay.selectDestinationCards(tickets, name, authToken);
     }
 
-
     @Override
     public Results selectTrainCard(Integer index, GameName name, String authToken) {
         return GamePlay.selectTrainCard(index, name, authToken);
@@ -101,7 +115,7 @@ public class ServerFacade implements IServer {
 
     public Results loginUser(String username, String password) {
 
-        //create the logged in results because you have to return something if it fails.
+        //createCommand the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
 
@@ -147,7 +161,7 @@ public class ServerFacade implements IServer {
 
     public Results registerUser(String username, String password) {
 
-        //create the logged in results because you have to return something if it fails.
+        //createCommand the logged in results because you have to return something if it fails.
         //should is et success equal to false? yes because we assume failure until success
         Results results = new Results();
 
@@ -163,11 +177,15 @@ public class ServerFacade implements IServer {
         User newUser = new User(username, password);
         serverModel.getUsers().put(username, newUser);
         serverModel.getAuthTokens().put(authToken, username);
-        User user = new User(username, password);
+        newUser.setAuthToken(authToken);
 
         ArrayList<GameInfo> gameList = ServerModel.getInstance().getGameList();
 
-        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {user, authToken, gameList}));
+        Command registerUserCommand = new Command("model.CommandFacade", "_registerUser", Arrays.asList(new Object[] {newUser, authToken, gameList}));
+
+        startTransaction();
+        ServerModel.getInstance().getDaoProxy().createUser(newUser);
+        endTransaction();
 
         //set results
         results.getClientCommands().add(registerUserCommand);
@@ -199,11 +217,11 @@ public class ServerFacade implements IServer {
             return results;
         }
 
-        //create game info and add to server model.
+        //createCommand game info and add to server model.
         ArrayList<Player> players = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(gameName, players, numPlayers);
         ServerModel.getInstance().getGames().put(gameName, gameInfo);
-        ServerModel.getInstance().setState(ServerState.TURNSTART, gameName);
+        ServerModel.getInstance().getGameInfo(gameName).setServerState(ServerState.TURNSTART);
 
         // createGame command sent to all other clients
         ClientProxy clientProxy = new ClientProxy();
@@ -250,6 +268,9 @@ public class ServerFacade implements IServer {
 
         Command joinGameCommand = new Command("model.CommandFacade", "_joinGame", Arrays.asList(new Object[] {player, gameName}));
 
+        //don't need to update gameinfo because we only initialize it and then update it
+        //whenever we hit the deltamax
+
         results.getClientCommands().add(joinGameCommand);
         results.setSuccess(true);
 
@@ -258,7 +279,7 @@ public class ServerFacade implements IServer {
 
     private Player addUserToGame(String clientAuthToken, GameInfo game) {
         String username = ServerModel.getInstance().getAuthTokens().get(clientAuthToken); // look up username using authToken
-        Player player = new Player(username); // create new player
+        Player player = new Player(username); // createCommand new player
         game.addPlayer(player); // add player to game
         User user = ServerModel.getInstance().getUser(username);
         user.addGame(game.getGameName());
@@ -311,6 +332,15 @@ public class ServerFacade implements IServer {
 
         Command startGameCommand = new Command("model.CommandFacade", "_startGame", Arrays.asList(new Object[] {game}));
         Command startFirstTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {game.getCurrentPlayer().getUsername()}));
+
+        //add the game to the database when it is started
+        //add new game to database
+        startTransaction();
+        ServerModel.getInstance().getDaoProxy().createGameInfo(ServerModel.getInstance().getGameInfo(gameName));
+        endTransaction();
+
+        //initialize delta
+        ServerModel.getInstance().initializeDelta(gameName);
 
         results.getClientCommands().add(startGameCommand);
         results.getClientCommands().add(startFirstTurnCommand);

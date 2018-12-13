@@ -8,8 +8,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 import data.Command;
+import modelclasses.GameName;
 import results.Results;
 import data.Serializer;
+import server.CommandMethodNames;
 import server.ServerFacade;
 
 
@@ -47,7 +49,22 @@ ExcmdHandler implements HttpHandler {
                 }
                 Results results = command.execute();
                 if(results.getSuccess()) {
+
                     ServerFacade.getInstance().makeGameHistory(command);
+
+                    GameName gameName = null;
+                    switch(command.get_methodName()) {
+                        case CommandMethodNames.claimRoute: gameName = (GameName)command.get_paramValues()[0]; ServerFacade.getInstance().addToDB(command, gameName);  break;
+                        case CommandMethodNames.drawDestinationCards: gameName = (GameName)command.get_paramValues()[0]; ServerFacade.getInstance().addToDB(command, gameName);   break;
+                        case CommandMethodNames.selectDestinationCards: gameName = (GameName)command.get_paramValues()[1]; ServerFacade.getInstance().addToDB(command, gameName);  break;
+                        case CommandMethodNames.drawTrainCard: gameName = (GameName)command.get_paramValues()[0]; ServerFacade.getInstance().addToDB(command, gameName);  break;
+                        case CommandMethodNames.selectTrainCard:
+                            gameName = (GameName)command.get_paramValues()[1];
+                        ServerFacade.getInstance().addToDB(command, gameName);
+                        break;
+                    }
+
+
                 }
 
                 //************************************************

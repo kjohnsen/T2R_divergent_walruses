@@ -1,10 +1,9 @@
 package server;
 
 import model.ServerModel;
-import model.ServerState;
+import modelclasses.ServerState;
 import modelclasses.DestinationCard;
 import modelclasses.TrainCardColor;
-import persistence.IPersistencePluginFactory;
 import results.Results;
 import modelclasses.GameName;
 import modelclasses.GameInfo;
@@ -25,10 +24,10 @@ public class GamePlay {
         String username = ServerModel.getInstance().getAuthTokens().get(authToken);
         Player player = game.getPlayer(username);
 
-        if(ServerModel.getInstance().getState(name) == ServerState.TOOKONETRAINCARD) {
-            ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS, name);
+        if(ServerModel.getInstance().getGameInfo(name).getServerState() == ServerState.TOOKONETRAINCARD) {
+            ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKTWOTRAINCARDS);
         } else {
-            ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD, name);
+            ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKONETRAINCARD);
         }
 
         TrainCard card = game.drawTrainCard();
@@ -43,11 +42,12 @@ public class GamePlay {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);
             Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+
             results.getClientCommands().add(replaceDeckCommand);
         }
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState(name) == ServerState.TOOKTWOTRAINCARDS) {
+        if (ServerModel.getInstance().getGameInfo(name).getServerState() == ServerState.TOOKTWOTRAINCARDS) {
             Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
@@ -69,12 +69,14 @@ public class GamePlay {
             return results;
         }
 
-        ServerModel.getInstance().setState(ServerState.TOOKDESTINATIONCARDS, name);
+        ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKDESTINATIONCARDS);
         player.setPreSelectionDestCards(tickets);
         ClientProxy clientProxy = new ClientProxy();
         clientProxy.displayDestinationCards(tickets, player, game);
         Command selectCardCommand = new Command("model.CommandFacade", "_displayDestinationCards", Arrays.asList(new Object[] {tickets, player}));
         results.getClientCommands().add(selectCardCommand);
+
+
         results.setSuccess(true);
         return results;
     }
@@ -87,12 +89,12 @@ public class GamePlay {
 
         boolean isWild = card.getColor().equals(TrainCardColor.WILD);
         if(isWild) {
-            ServerModel.getInstance().setState(ServerState.TOOKWILDTRAINCARD, name);
+            ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKWILDTRAINCARD);
         } else {
-            if(ServerModel.getInstance().getState(name) == ServerState.TOOKONETRAINCARD) {
-                ServerModel.getInstance().setState(ServerState.TOOKTWOTRAINCARDS, name);
+            if(ServerModel.getInstance().getGameInfo(name).getServerState() == ServerState.TOOKONETRAINCARD) {
+                ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKTWOTRAINCARDS);
             } else {
-                ServerModel.getInstance().setState(ServerState.TOOKONETRAINCARD, name);
+                ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.TOOKONETRAINCARD);
             }
         }
 
@@ -102,6 +104,7 @@ public class GamePlay {
         clientProxy.selectTrainCard(card, player, game);
         Results results = new Results();
         Command selectCardCommand = new Command("model.CommandFacade", "_selectTrainCard", Arrays.asList(new Object[] {card, player}));
+
         results.getClientCommands().add(selectCardCommand);
         if (replacements.size() == 1) {
             clientProxy.replaceTrainCard(replacements.get(0), index, game, username);
@@ -121,8 +124,8 @@ public class GamePlay {
         }
         results.setSuccess(true);
 
-        if (ServerModel.getInstance().getState(name) == ServerState.TOOKTWOTRAINCARDS ||
-                ServerModel.getInstance().getState(name) == ServerState.TOOKWILDTRAINCARD) {
+        if (ServerModel.getInstance().getGameInfo(name).getServerState() == ServerState.TOOKTWOTRAINCARDS ||
+                ServerModel.getInstance().getGameInfo(name).getServerState() == ServerState.TOOKWILDTRAINCARD) {
             Command command = startNextTurn(game);
             results.getClientCommands().add(command);
         }
@@ -131,7 +134,7 @@ public class GamePlay {
     }
 
     public static Results selectDestinationCards(ArrayList<DestinationCard> tickets, GameName name, String authToken) {
-        ServerModel.getInstance().setState(ServerState.CHOSEDESTINATIONCARDS, name);
+        ServerModel.getInstance().getGameInfo(name).setServerState(ServerState.CHOSEDESTINATIONCARDS);
 
         if (tickets != null) {
             GameInfo game = ServerModel.getInstance().getGameInfo(name);
@@ -168,6 +171,7 @@ public class GamePlay {
             }
 
             Command selectDestCardsCommand = new Command("model.CommandFacade", "_selectDestinationCards", Arrays.asList(new Object[] {name, tickets, player}));
+
             results.getClientCommands().add(selectDestCardsCommand);
             results.setSuccess(true);
             return results;
@@ -234,6 +238,7 @@ public class GamePlay {
             ArrayList<TrainCard> newDeck = game.shuffleTrainDeck();
             clientProxy.replaceTrainDeck(newDeck, game, username);
             Command replaceDeckCommand = new Command("model.CommandFacade", "_replaceTrainDeck", Arrays.asList(new Object[]{newDeck}));
+
             results.getClientCommands().add(replaceDeckCommand);
         }
 
@@ -245,11 +250,13 @@ public class GamePlay {
             game.setLastRound(true);
             ServerModel.getInstance().setLastPlayerIndex(currentPlayerIndex);
             Command lastRoundCommand = new Command("model.CommandFacade", "_startLastRound", Arrays.asList(new Object[] {}));
+
             results.getClientCommands().add(lastRoundCommand);
             clientProxy.startLastRound(gameName, username);
         }
 
         Command claimRouteCommand = new Command("model.CommandFacade", "_claimRoute", Arrays.asList(new Object[] {gameName, route, username, player.getTrainCards(), player.getNumberOfTrains()}));
+
         results.getClientCommands().add(claimRouteCommand);
         results.getClientCommands().add(startCommand);
 
@@ -261,19 +268,27 @@ public class GamePlay {
     private static Command startNextTurn(GameInfo game) {
         Player currPlayer = game.getCurrentPlayer();
         int currPlayerIndex = game.getCurrentPlayerIndex();
-        ServerModel.getInstance().setState(ServerState.TURNSTART, game.getGameName());
+        ServerModel.getInstance().getGameInfo(game.getGameName()).setServerState(ServerState.TURNSTART);
+
+        GameName gameName = ServerModel.getInstance().getGameNameFromGameInfo(game);
 
         ClientProxy clientProxy = new ClientProxy();
         boolean isLastPlayer = currPlayerIndex == ServerModel.getInstance().getLastPlayerIndex();
         if (isLastPlayer && game.isLastRound()) {
             clientProxy.endGame(game.getGameName(), currPlayer.getUsername());
-            return new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
+            Command endGameCommand = new Command("model.CommandFacade", "_endGame", Arrays.asList(new Object[] {}));
+
+            return endGameCommand;
         }
         else {
             Player nextPlayer = game.getNextPlayer();
             game.setCurrentPlayer(nextPlayer);
             clientProxy.startTurn(game.getGameName(), currPlayer.getUsername(), nextPlayer.getUsername());
-            return new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
+
+            Command startNextTurnCommand = new Command("model.CommandFacade", "_startNextTurn", Arrays.asList(new Object[] {nextPlayer.getUsername()}));
+
+
+            return startNextTurnCommand;
         }
     }
 

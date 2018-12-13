@@ -40,14 +40,14 @@ public class TestGamePlay {
 
     @Before
     public void setUp() {
-        // create players
+        // createCommand players
         Player player1 = new Player("player1", PlayerColor.BLACK);
         Player player2 = new Player("player2", PlayerColor.BLUE);
         ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
         players.add(player2);
 
-        // create game
+        // createCommand game
         GameInfo game = new GameInfo(GAMENAME, players, 2);
         game.setCurrentPlayer(players.get(0));
         ServerModel.getInstance().getGames().put(GAMENAME, game);

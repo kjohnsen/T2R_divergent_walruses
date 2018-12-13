@@ -1,11 +1,14 @@
 package persistence;
 
+import java.util.ArrayList;
+
 import modelclasses.GameInfo;
 import modelclasses.GameName;
 
 public interface IGameInfoDAO {
-    public Result create(GameInfo gameInfo);
-    public GameInfo read(GameName gameName);
-    public Result update(GameInfo gameInfo);
-    public Result delete(GameInfo gameInfo);
+    Result createGameInfo(GameInfo gameInfo);
+    GameInfo readGameInfo(GameName gameName);
+    ArrayList<GameInfo> readAllGameInfos();
+    Result updateGameInfo(GameInfo gameInfo);
+    Result deleteGameInfo(GameInfo gameInfo);
 }
